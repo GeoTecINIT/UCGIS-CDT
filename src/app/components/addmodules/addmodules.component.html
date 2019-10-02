@@ -1,0 +1,126 @@
+<div class="card-body" style="background-color: #faf9f8">
+  <div class="row text-center">
+    <div class="col-lg-4 col-sm-6">
+      <div class="row text-center">
+        <div class="offset-md-2 col-md-6">
+          <div class="input-group">
+            <div class="input-group-prepend" dropdown>
+              <button type="button" class="btn btn-primary">
+                <i class="fa fa-search"></i>
+              </button>
+            </div>
+            <input #searchInput type="text" id="input-competence-filter" name="input-competence-filter"
+              class="form-control" (keyup)="searchInBok(searchInput.value)" placeholder="Search Knowledge" />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <button type="submit" class="btn btn-primary" tooltip="Search or navigate in the graph to add knowledge."
+            (click)="addBokKnowledge()">
+            Add
+          </button>
+        </div>
+      </div>
+      <div id="bubbles">
+      </div>
+    </div>
+    <div class="col-lg-8 col-sm-6 text-justify">
+      <a [hidden]="currentConcept != ''" (click)="navigateToConcept('GIST')">
+        < Back </a> <div #textBoK id="textBoK" [hidden]="currentConcept == '' && currentConcept != 'GIST'">
+    </div>
+    <div class="col" *ngIf="hasResults">
+      <h3 class="center">
+        {{ selectedNodes.length }} result(s) for
+        {{ searchInput.value }}
+      </h3>
+      <div *ngFor="let item of selectedNodes; index as i">
+        <div *ngIf="i < limitSearch">
+          <div class="inline">{{ item.nameShort }}</div>
+          <div class="inline" [innerHTML]="
+                item.name | truncate: 100:searchInput.value
+              "></div>
+          <a class="inline" (click)="navigateToConcept(item.nameShort)">
+            Details
+          </a>
+          <div class="small" [innerHTML]="
+                item.description | truncate: 100:searchInput.value
+              "></div>
+        </div>
+      </div>
+      <div>
+        <br />
+        <a *ngIf="limitSearch < selectedNodes.length" (click)="incrementLimit()">
+          Show more ...
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <h5>Adding new module</h5>
+      <div class="form-group">
+        <label for="title">Module name</label>
+        <input type="text" class="form-control" id="title" placeholder="Name" [(ngModel)]="newModule.name" name="title"
+          required />
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea class="form-control" id="description" placeholder="Description" name="textarea-input"
+          [(ngModel)]="newModule.description" rows="4"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-10">
+      <div class="form-group">
+        <label for="title">Assessment</label>
+        <input type="text" class="form-control" id="assessment" placeholder="Assessment method"
+          [(ngModel)]="newModule.assessment" name="title" required />
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="form-group">
+        <label for="field">Semester</label>
+        <span tooltip="In which semester is taught." class="badge badge-primary badge-pill">i</span>
+        <input type="number" size="1" class="form-control" id="numSemester" [(ngModel)]="newModule.numSemester"
+          name="numSemester" min="1" max="20" />
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label for="description">Prerequisitese</label>
+        <textarea class="form-control" id="prerequisites" placeholder="Prerequisites" name="textarea-input"
+          [(ngModel)]="newModule.prerequisites" rows="4"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label for="description">Learning Objectives</label>
+        <textarea class="form-control" id="learningObjectives" placeholder="Learning Objectives" name="textarea-input"
+          [(ngModel)]="newModule.learningObjectives" rows="4"></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button type="submit" class="btn btn-primary" tooltip="Create new module" (click)="createNewModule();">
+        Create New Module
+      </button>
+    </div>
+  </div>
+  <hr>
+</div>

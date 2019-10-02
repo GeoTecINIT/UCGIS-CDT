@@ -1,0 +1,67 @@
+<app-header
+  class="nav-bar-eo4geo"
+  [navbarBrandRouterLink]="['/dashboard']"
+  [fixed]="true"
+  [navbarBrandFull]="{
+    src: 'assets/img/brand/icon-inline.svg',
+    width: 255,
+    height: 45,
+    alt: 'CoreUI Logo'
+  }"
+  [sidebarToggler]="false"
+  [mobileSidebarToggler]="false"
+  [mobileAsideMenuToggler]="false"
+  [asideMenuToggler]="false"
+>
+  <!--   <ul class="nav navbar-nav d-md-down-none">
+    <li class="nav-item px-3">
+      <a class="nav-link" href="#">Home</a>
+      <a class="nav-link" routerLink="/list" routerLinkActive="active" href="#">List</a>
+    </li>
+  </ul> -->
+</app-header>
+<div class="app-body">
+  <app-sidebar [fixed]="true" [display]="false">
+    <!-- Change to true to show sidebar menu  [sidebarToggler]="'lg'"  -->
+    <app-sidebar-nav
+      [navItems]="navItems"
+      [perfectScrollbar]
+      [disabled]="sidebarMinimized"
+    ></app-sidebar-nav>
+    <app-sidebar-minimizer></app-sidebar-minimizer>
+  </app-sidebar>
+  <!-- Main content -->
+  <main class="main">
+    <!-- Breadcrumb -->
+    <!-- breaking change 'cui-breadcrumb' -->
+    <cui-breadcrumb>
+      <!-- Breadcrumb Menu-->
+      <li class="breadcrumb-menu d-md-down-none">
+        <div
+          class="btn-group"
+          role="group"
+          aria-label="Button group with nested dropdown"
+        >
+          <a class="btn" href="#"> Hello username! </a>
+          <a class="btn" href="http://eo4geo.uji.es"
+            ><i class="icon-home"></i>&nbsp;Home</a
+          >
+          <a class="btn" routerLink="#"
+            ><i class="icon-list"></i> &nbsp;Tools</a
+          >
+          <a class="btn" href="#"
+            ><i class="icon-settings"></i> &nbsp;Settings</a
+          >
+        </div>
+      </li>
+    </cui-breadcrumb>
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+    </div>
+    <!-- /.container-fluid -->
+  </main>
+</div>
+<app-footer class="footer-eo4geo">
+  <span><a href="#">EO4GEO</a></span>
+  <span class="ml-auto"> <a href="#">FAQ</a> <a href="#">Contact</a></span>
+</app-footer>
