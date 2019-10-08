@@ -7,18 +7,47 @@ import { Lecture } from './lecture.service';
 const collection = 'courses';
 
 export class Course extends Object {
+
+  public _id: string;
+  public name: string;
+  public numSemester: number;
+  public description: string;
+  public ects: number;
+  public assessment: string;
+  public bibliography: string;
+  public prerequisites: BokInput [];
+  public learningObjectives: BokInput [];
+  public lectures: Lecture[];
+   // -- public children = []; // needed for D3 nodes
+
   constructor(
-    public _id: string,
-    public name: string,
-    public numSemester: number,
-    public description: string,
-    public ects: number,
-    public assessment: string,
-    public prerequisites: BokInput [],
-    public learningObjectives: BokInput [],
-    public lectures: Lecture[]
+    public currentNode: any = null
   ) {
     super();
+    if (currentNode) {
+      this._id = currentNode.data.id;
+      this.name = currentNode.data.name;
+      this.numSemester = currentNode.data.numSemester;
+      this.description = currentNode.data.description;
+      this.ects = currentNode.data.ects;
+      this.assessment = currentNode.data.assessment;
+      this.bibliography = currentNode.data.bibliography;
+      this.prerequisites = currentNode.data.prerequisites ? currentNode.data.prerequisites : [];
+      this.learningObjectives = currentNode.data.learningObjectives;
+      this.lectures = currentNode.data.lectures;
+
+    } else {
+      this._id = '';
+      this.name = '';
+      this.numSemester = 0;
+      this.description = '';
+      this.ects = 0;
+      this.assessment = '';
+      this.bibliography = '';
+      this.prerequisites = [];
+      this.learningObjectives = [];
+      this.lectures = [];
+    }
   }
 }
 

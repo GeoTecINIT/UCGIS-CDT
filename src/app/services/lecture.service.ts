@@ -6,18 +6,40 @@ import { BokInput } from '../model/bokinput';
 const collection = 'lectures';
 
 export class Lecture extends Object {
+  public _id: string;
+  public name: string;
+  public description: string;
+  public ects: number;
+  public sourceDocs: BokInput[];
+  public learningObjectives: BokInput[];
+  public isPractical: boolean;
+  // --  public children = []; // needed for D3 nodes
+
   constructor(
-    public _id: string,
-    public name: string,
-    public description: string,
-    public ects: number,
-    public sourceDocs: BokInput [],
-    public learningObjectives: BokInput [],
-    public isPractical: boolean
+    public currentNode: any = null
   ) {
     super();
+    if (currentNode) {
+      this._id = currentNode.data.id;
+      this.name = currentNode.data.name;
+      this.description = currentNode.data.description;
+      this.ects = currentNode.data.ects;
+      this.sourceDocs = currentNode.data.sourceDocs;
+      this.learningObjectives = currentNode.data.learningObjectives;
+      this.isPractical = currentNode.data.isPractical;
+
+    } else {
+      this._id = '';
+      this.name = '';
+      this.description = '';
+      this.ects = 0;
+      this.sourceDocs = [];
+      this.learningObjectives = [];
+      this.isPractical = false;
+    }
   }
 }
+
 @Injectable({
   providedIn: 'root'
 })
