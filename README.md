@@ -1,4 +1,4 @@
-## Occupational Profile Tool - EO4GEO
+## Curriculum Design Tool - EO4GEO
 
 #### Prerequisites
 Before you begin, make sure your development environment includes `Node.js®` and an `npm` package manager.
@@ -21,7 +21,7 @@ npm install -g @angular/cli
 
 ``` bash
 # clone the repo
-$ git clone https://github.com/GeoTecINIT/EO4GEO-OPT.git my-project
+$ git clone https://github.com/GeoTecINIT/EO4GEO-CDT.git my-project
 
 # go into app's directory
 $ cd my-project
