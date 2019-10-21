@@ -1,7 +1,8 @@
-import { Component, OnDestroy, Inject } from '@angular/core';
+import { Component, OnDestroy, Inject, NgZone } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { navItems } from '../../_nav';
-
+import { AngularFireAuth } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,7 +13,13 @@ export class DefaultLayoutComponent implements OnDestroy {
   public sidebarMinimized = true;
   private changes: MutationObserver;
   public element: HTMLElement;
-  constructor(@Inject(DOCUMENT) _document?: any) {
+  public username: string;
+
+  constructor(
+    private afAuth: AngularFireAuth,
+    private ngZone: NgZone,
+    private router: Router,
+    @Inject(DOCUMENT) _document?: any) {
 
     this.changes = new MutationObserver((mutations) => {
       this.sidebarMinimized = _document.body.classList.contains('sidebar-minimized');
@@ -22,9 +29,21 @@ export class DefaultLayoutComponent implements OnDestroy {
       attributes: true,
       attributeFilter: ['class']
     });
+
+    this.afAuth.auth.onAuthStateChanged(user => {
+      if (user) {
+        // User is signed in.
+        this.username = user.email;
+      }
+    });
   }
 
   ngOnDestroy(): void {
     this.changes.disconnect();
+  }
+
+  logOut() {
+    this.afAuth.auth.signOut();
+    this.ngZone.run(() => this.router.navigateByUrl('/login')).then();
   }
 }
