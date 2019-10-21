@@ -12,7 +12,7 @@
               </button>
               <button type="submit" class="btn btn-pill btn-primary"
                 (click)="isSearchingExisting = !isSearchingExisting" [disabled]="currentTreeNode.depth == 3">
-                <i class="fa fa-search"></i> Explore existing {{textByDepth}}
+                <i class="fa fa-search"></i> Explore existing {{textByDepth}}s
               </button>
               <button type="submit" class="btn btn-pill btn-danger" (click)="removeNodeInTree()"
                 [disabled]="currentTreeNode.depth == 0">
@@ -63,14 +63,14 @@
                         <div class="form-group">
                           <label for="title">Title</label>
                           <input type="text" class="form-control" id="title" placeholder="Title"
-                            [(ngModel)]="model.name" name="title" required />
+                            [(ngModel)]="model.name" name="title" required (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
                       <div class="col-md-12">
                         <div class="form-group">
                           <label for="title">Affiliation</label>
                           <input type="text" class="form-control" id="affiliation" placeholder="Affiliation"
-                            [(ngModel)]="model.affiliation" name="affiliation" required />
+                            [(ngModel)]="model.affiliation" name="affiliation" required (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
                     </div>
@@ -95,26 +95,26 @@
                           <span tooltip="Number of semesters in the curricula."
                             class="badge badge-primary badge-pill">i</span>
                           <input type="number" size="1" class="form-control" id="numSemesters"
-                            [(ngModel)]="model.numSemesters" name="numSemesters" min="1" max="20" />
+                            [(ngModel)]="model.numSemesters" name="numSemesters" min="1" max="20" (keyup)="updateTreeStudyProgram()"/>
                         </div>
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-11">
+                      <div class="col-md-10">
                         <div class="form-group">
                           <label for="description">Description</label>
                           <textarea class="form-control" id="description" placeholder="Description"
-                            name="textarea-input" [(ngModel)]="model.description" rows="4"></textarea>
+                            name="description" [(ngModel)]="model.description" rows="4" (keyup)="updateTreeStudyProgram()"></textarea>
                         </div>
                       </div>
-                      <div class="col-md-1">
+                      <div class="col-md-2">
                         <div class="form-group">
                           <label for="eqf">EQF</label>
                           <span
                             tooltip="The core of the EQF concerns eight reference levels describing what a learner knows, understands and is able to do – 'learning outcomes', ranging from basic (Level 1) to advanced (Level 8)."
                             class="badge badge-primary badge-pill">i</span>
                           <input type="number" size="1" class="form-control" id="eqf" [(ngModel)]="model.eqf" name="eqf"
-                            min="1" max="8" />
+                            min="1" max="8" (keyup)="updateTreeStudyProgram()"/>
                         </div>
                       </div>
                     </div>
@@ -141,7 +141,7 @@
                         <div class="form-group">
                           <label for="title">Title</label>
                           <input type="text" class="form-control" id="title" placeholder="Title"
-                            [(ngModel)]="modelModule.name" name="title" required />
+                            [(ngModel)]="modelModule.name" name="title" required (keyup)="updateTreeModule()" />
                         </div>
                       </div>
                     </div>
@@ -149,9 +149,9 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label for="numSemester">Number of semester</label>
-                          <span tooltip="In which semester is taught" class="badge badge-primary badge-pill">i</span>
+                          <span tooltip="In which semester is taught." class="badge badge-primary badge-pill">i</span>
                           <input type="number" size="1" class="form-control" id="numSemester"
-                            [(ngModel)]="modelModule.numSemester" name="numSemester" min="1" max="15" />
+                            [(ngModel)]="modelModule.numSemester" name="numSemester" min="1" max="15" (keyup)="updateTreeModule()" />
                         </div>
                       </div>
                       <div class="col-md-6">
@@ -159,7 +159,7 @@
                           <label for="ects">ECTS</label>
                           <span tooltip="" class="badge badge-primary badge-pill">i</span>
                           <input type="number" size="1" class="form-control" id="ects" [(ngModel)]="modelModule.ects"
-                            name="ects" min="1" max="20" />
+                            name="ects" min="1" max="20" (keyup)="updateTreeModule()"/>
                         </div>
                       </div>
                     </div>
@@ -168,7 +168,7 @@
                         <div class="form-group">
                           <label for="description">Description</label>
                           <textarea class="form-control" id="description" placeholder="Description"
-                            name="textarea-input" [(ngModel)]="modelModule.description" rows="4"></textarea>
+                            name="description" [(ngModel)]="modelModule.description" rows="4" (keyup)="updateTreeModule()"></textarea>
                         </div>
                       </div>
                     </div>
@@ -176,8 +176,8 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <label for="assessment">Assessment</label>
-                          <textarea class="form-control" id="assessment" placeholder="Assessment" name="textarea-input"
-                            [(ngModel)]="modelModule.assessment" rows="4"></textarea>
+                          <textarea class="form-control" id="assessment" placeholder="Assessment" name="assesment"
+                            [(ngModel)]="modelModule.assessment" rows="4" (keyup)="updateTreeModule()"></textarea>
                         </div>
                       </div>
                     </div>
@@ -204,51 +204,85 @@
                         <div class="form-group">
                           <label for="title">Title</label>
                           <input type="text" class="form-control" id="title" placeholder="Title"
-                            [(ngModel)]="model.name" name="title" required />
+                            [(ngModel)]="modelCourse.name" name="title" required (keyup)="updateTreeCourse()" />
                         </div>
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-10">
-                        <div class="form-group">
-                          <label for="field">Field</label>
-                          <span
-                            tooltip="The term relates directly to a specific area of study. The International Standard Classification of Education: Fields of Education and Training 2013 (ISCED-F). Maintained by the UNESCO Institute for Statistics."
-                            class="badge badge-primary badge-pill">i</span>
-                          <ng-select [items]="fieldsService.allfields" name="field" bindLabel="name"
-                            groupBy="grandparent" [multiple]="false" [(ngModel)]="model.field">
-                            <ng-template ng-optgroup-tmp let-item="item">
-                              {{item.grandparent || 'Unnamed group'}}
-                            </ng-template>
-                          </ng-select>
-                        </div>
-                      </div>
-                      <div class="col-md-2">
-                        <div class="form-group">
-                          <label for="field">Amount of semesters</label>
-                          <span tooltip="Number of semesters in the curricula."
-                            class="badge badge-primary badge-pill">i</span>
-                          <input type="number" size="1" class="form-control" id="numSemesters"
-                            [(ngModel)]="model.numSemesters" name="numSemesters" min="1" max="20" />
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-11">
+                      <div class="col-md-12">
                         <div class="form-group">
                           <label for="description">Description</label>
                           <textarea class="form-control" id="description" placeholder="Description"
-                            name="textarea-input" [(ngModel)]="model.description" rows="4"></textarea>
+                            name="description" [(ngModel)]="modelCourse.description" rows="4"></textarea>
                         </div>
                       </div>
-                      <div class="col-md-1">
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
                         <div class="form-group">
-                          <label for="eqf">EQF</label>
-                          <span
-                            tooltip="The core of the EQF concerns eight reference levels describing what a learner knows, understands and is able to do – 'learning outcomes', ranging from basic (Level 1) to advanced (Level 8)."
-                            class="badge badge-primary badge-pill">i</span>
-                          <input type="number" size="1" class="form-control" id="eqf" [(ngModel)]="model.eqf" name="eqf"
-                            min="1" max="8" />
+                          <label for="title">Prerequisites</label>
+                          <div class="row">
+                            <div class="col-md-10">
+                              <div *ngIf="modelCourse && modelCourse.prerequisites">
+                                <ul>
+                                  <div *ngFor="let p of modelCourse.prerequisites; index as i ">
+                                    <li>{{p.concept_id}} <button type="button" class="btn btn-link"
+                                        (click)="removeBokKnowledge(modelCourse, i, 'prerequisites')">
+                                        <i class="fa fa-remove"></i>
+                                      </button></li>
+                                  </div>
+                                </ul>
+                              </div>
+                              <div *ngIf="!modelCourse.prerequisites">
+                                Explore the Body of Knowledge to add some.
+                              </div>
+                            </div>
+                            <div class="col-md-2">
+                              <button type="button" class="btn btn-primary" (click)="isDisplayBoK = !isDisplayBoK">
+                                <i class="fa" [ngClass]="{'fa-search': !isDisplayBoK, 'fa-close': isDisplayBoK}"></i>
+                                {{ isDisplayBoK? 'Close BoK' : 'Explore BoK' }}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="ects">ECTS/CP</label>
+                          <span tooltip="" class="badge badge-primary badge-pill">i</span>
+                          <input type="number" size="3" class="form-control" name="ects" id="ects" [(ngModel)]="modelCourse.ects"
+                            name="ects" min="1" max="999" />
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="numSemester">Number of semester</label>
+                          <span tooltip="In which semester is taught." class="badge badge-primary badge-pill">i</span>
+                          <input type="number" size="3" class="form-control" id="numSemester"
+                            [(ngModel)]="modelCourse.numSemester" name="numSemester" min="1" max="999" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="assessment">Assessment</label>
+                          <span tooltip="" class="badge badge-primary badge-pill">i</span>
+                          <input type="text" class="form-control" id="assessment" placeholder="Assessment"
+                            [(ngModel)]="modelCourse.assessment" name="assessment" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="bibliography">Bibliography</label>
+                          <span tooltip="" class="badge badge-primary badge-pill">i</span>
+                          <input type="text" class="form-control" id="bibliography" placeholder="Bibliography"
+                            [(ngModel)]="modelCourse.bibliography" name="bibliography" />
                         </div>
                       </div>
                     </div>
@@ -275,82 +309,215 @@
                         <div class="form-group">
                           <label for="title">Title</label>
                           <input type="text" class="form-control" id="title" placeholder="Title"
-                            [(ngModel)]="model.name" name="title" required />
+                            [(ngModel)]="modelLecture.name" name="title" required (keyup)="updateTreeLecture()" />
                         </div>
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-10">
-                        <div class="form-group">
-                          <label for="field">Field</label>
-                          <span
-                            tooltip="The term relates directly to a specific area of study. The International Standard Classification of Education: Fields of Education and Training 2013 (ISCED-F). Maintained by the UNESCO Institute for Statistics."
-                            class="badge badge-primary badge-pill">i</span>
-                          <ng-select [items]="fieldsService.allfields" name="field" bindLabel="name"
-                            groupBy="grandparent" [multiple]="false" [(ngModel)]="model.field">
-                            <ng-template ng-optgroup-tmp let-item="item">
-                              {{item.grandparent || 'Unnamed group'}}
-                            </ng-template>
-                          </ng-select>
-                        </div>
-                      </div>
-                      <div class="col-md-2">
-                        <div class="form-group">
-                          <label for="field">Amount of semesters</label>
-                          <span tooltip="Number of semesters in the curricula."
-                            class="badge badge-primary badge-pill">i</span>
-                          <input type="number" size="1" class="form-control" id="numSemesters"
-                            [(ngModel)]="model.numSemesters" name="numSemesters" min="1" max="20" />
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-11">
+                      <div class="col-md-12">
                         <div class="form-group">
                           <label for="description">Description</label>
                           <textarea class="form-control" id="description" placeholder="Description"
-                            name="textarea-input" [(ngModel)]="model.description" rows="4"></textarea>
-                        </div>
-                      </div>
-                      <div class="col-md-1">
-                        <div class="form-group">
-                          <label for="eqf">EQF</label>
-                          <span
-                            tooltip="The core of the EQF concerns eight reference levels describing what a learner knows, understands and is able to do – 'learning outcomes', ranging from basic (Level 1) to advanced (Level 8)."
-                            class="badge badge-primary badge-pill">i</span>
-                          <input type="number" size="1" class="form-control" id="eqf" [(ngModel)]="model.eqf" name="eqf"
-                            min="1" max="8" />
+                            name="description" [(ngModel)]="modelLecture.description" rows="4"></textarea>
                         </div>
                       </div>
                     </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="ects">ECTS/CP</label>
+                          <span tooltip="" class="badge badge-primary badge-pill">i</span>
+                          <input type="number" size="3" class="form-control" id="ects" [(ngModel)]="modelLecture.ects"
+                            name="ects" min="1" max="999" />
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="isPractical">Is practical</label>
+                          <span tooltip="Check this option if it is a practical lecture."
+                            class="badge badge-primary badge-pill">i</span>
+                          <label class="switch switch-pill switch-primary">
+                            <input type="checkbox" name="isPractical" class="switch-input" [(ngModel)]="modelLecture.isPractical">
+                            <span class="switch-slider"></span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="learningObjectives">Learning Objectives</label>
+                          <span tooltip="Learning objectives from the Body of Knowledge"
+                            class="badge badge-primary badge-pill">i</span>
+                          <div class="row">
+                            <div class="col-md-10">
+                              <div *ngIf="modelCourse && modelLecture.learningObjectives">
+                                <ul>
+                                  <div *ngFor="let p of modelLecture.learningObjectives; index as i ">
+                                    <li>{{p.concept_id}} <button type="button" class="btn btn-link"
+                                        (click)="removeBokKnowledge(modelLecture, i, 'learningObjectives')">
+                                        <i class="fa fa-remove"></i>
+                                      </button></li>
+                                  </div>
+                                </ul>
+                              </div>
+                              <div *ngIf="!modelLecture.learningObjectives">
+                                Explore the Body of Knowledge to add some.
+                              </div>
+                            </div>
+                            <div class="col-md-2">
+                              <button type="button" class="btn btn-primary" (click)="isDisplayBoK = !isDisplayBoK">
+                                <i class="fa" [ngClass]="{'fa-search': !isDisplayBoK, 'fa-close': isDisplayBoK}"></i>
+                                {{ isDisplayBoK? 'Close BoK' : 'Explore BoK' }}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label for="sourceDocs">Source Docs</label>
+                            <span tooltip="" class="badge badge-primary badge-pill">i</span>
+                            <input type="text" class="form-control" id="sourceDocs" placeholder="Source Docs"
+                              [(ngModel)]="modelLecture.sourceDocs" name="sourceDocs" />
+                          </div>
+                        </div>
+                      </div>
                   </div>
                 </div>
               </form>
             </div>
 
-          <!-- Existing modules -->
-          <div *ngIf="isSearchingExisting" class="col-md-6" #ExModDiv>
-            <div class="card card-accent-secondary">
-              <div class="card-header">
-                Explore existing modules
-                <span tooltip="These modules have been added by other user, and can be re-used in your study program."
-        class="badge badge-primary badge-pill">i</span>
-                <button class="btn btn-link float-right pull-right"
-                  (click)="LectDiv.classList.contains('col-md-12') ? LectDiv.className = 'col-md-6' : LectDiv.className = 'col-md-12'">
-                  <i class="float-right pull-right fa "
-                    [ngClass]="{'fa-window-minimize': LectDiv?.classList.contains('col-md-12'), 'fa-window-maximize': LectDiv?.classList.contains('col-md-6')}"></i>
-                </button>
+            <!-- Existing modules, courses and lectures -->
+            <div *ngIf="isSearchingExisting" class="col-md-6" #ExModDiv>
+              <div class="card card-accent-secondary">
+                <div class="card-header">
+                  Explore existing {{textByDepth}}s
+                  <span tooltip="These modules have been added by other user, and can be re-used in your study program."
+                    class="badge badge-primary badge-pill">i</span>
+                  <button class="btn btn-link float-right pull-right"
+                    (click)="ExModDiv.classList.contains('col-md-12') ? ExModDiv.className = 'col-md-6' : ExModDiv.className = 'col-md-12'">
+                    <i class="float-right pull-right fa "
+                      [ngClass]="{'fa-window-minimize': ExModDiv?.classList.contains('col-md-12'), 'fa-window-maximize': ExModDiv?.classList.contains('col-md-6')}"></i>
+                  </button>
+                </div>
+                <div class="card-body" style="background-color: #faf9f8">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="title">Filter by {{textByDepth}} name or description</label>
+                        <input type="text" class="form-control" id="filterText" placeholder="Type to filter"
+                          [(ngModel)]="filterText" name="filterText" (keyup)="filterModules()" />
+                      </div>
+                    </div>
+                  </div>
+                  <ul>
+                    <div *ngFor="let m of allModules; index as i">
+                      <li>
+                        <h5 class="card-title">{{ m.name }}</h5>
+                        <h6 class="text-muted inline">{{ m.numSemester }} semester</h6>
+                        <a (click)="addExistingToStudyProgram(m)" class="inline">Add to my Study Program</a>
+                        <a (click)="addExistingToStudyProgram(m)" class="inline">Show more...</a>
+                        <p class="card-text">{{ m.description }}</p>
+                      </li>
+                    </div>
+                  </ul>
+                  <!-- 
+                      <div class="row">
+                      <div *ngFor="let m of allModules; index as i">
+                        <div *ngIf="i < 10">
+                          <div class="col-sm-6">
+                            <div class="card" style="width: 18rem;">
+                              <div class="card-body">
+                                <h5 class="card-title">{{ m.name }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">{{ m.numSemester }} semester</h6>
+                                <p class="card-text">{{ m.description }}</p>
+                                <a (click)="addExistingToStudyProgram(m)" class="card-link">Add to my Study Program</a>
+                                <a href="#" class="card-link">Show more</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div> 
+                  -->
+                  <!--   <app-cmodules></app-cmodules> -->
+                </div>
               </div>
-              <div class="card-body" style="background-color: #faf9f8">
-                <app-cmodules></app-cmodules>
+            </div>
+          </div>
+
+          <!-- Search Knowledge and skills card -->
+          <div [hidden]="!isDisplayBoK" class="card card-accent-secondary">
+            <div class="card-header">
+              Body of Knowledge - Search knowledge and skills
+              <span
+                tooltip="Browse in the BoK for knowledge required for your new occupational profile. Once in the required knowledge, press the button 'Add' it will link the concept and the learning outcomes dependent on it."
+                class="badge badge-primary badge-pill">i</span>
+            </div>
+            <div class="card-body" style="background-color: #faf9f8">
+              <div class="row text-center">
+                <div class="col-lg-4 col-sm-6">
+                  <div class="row text-center">
+                    <div class="col-md-7">
+                      <div class="input-group">
+                        <div class="input-group-prepend" dropdown>
+                          <button type="button" class="btn btn-primary">
+                            <i class="fa fa-search"></i>
+                          </button>
+                        </div>
+                        <input #searchInput type="text" id="input-competence-filter" name="input-competence-filter"
+                          class="form-control" (keyup)="searchInBok(searchInput.value)"
+                          placeholder="Search Knowledge" />
+                      </div>
+                    </div>
+                    <div class="col-md-5">
+                      <button type="submit" class="btn btn-primary"
+                        tooltip="Search or navigate in the graph to add knowledge." (click)="addBokKnowledge()">
+                        Link this concept <i class="fa fa-arrow-right"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div id="bubbles">
+                  </div>
+                </div>
+                <div class="col-lg-8 col-sm-6 text-justify">
+                  <a [hidden]="currentConcept != ''" (click)="navigateToConcept('GIST')">
+                    < Back </a> <div #textBoK id="textBoK" [hidden]="currentConcept == '' && currentConcept != 'GIST'">
+                </div>
+                <div class="col" *ngIf="hasResults">
+                  <h3 class="center">
+                    {{ selectedNodes.length }} result(s) for
+                    {{ searchInput.value }}
+                  </h3>
+                  <div *ngFor="let item of selectedNodes; index as i">
+                    <div *ngIf="i < limitSearch">
+                      <div class="inline">{{ item.nameShort }}</div>
+                      <div class="inline" [innerHTML]="
+                                item.name | truncate: 100:searchInput.value
+                              "></div>
+                      <a class="inline" (click)="navigateToConcept(item.nameShort)">
+                        Details
+                      </a>
+                      <div class="small" [innerHTML]="item.description | truncate: 100:searchInput.value"></div>
+                    </div>
+                  </div>
+                  <div>
+                    <br />
+                    <a *ngIf="limitSearch < selectedNodes.length" (click)="incrementLimit()">
+                      Show more ...
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-
-          <!-- Search Knowledge and skills card -->
-          <!--   <div class="card card-accent-secondary">
+        <!-- Search Knowledge and skills card -->
+        <!--   <div class="card card-accent-secondary">
             <div class="card-header">
               Search knowledge and skills
               <span
@@ -417,8 +584,8 @@
             </div>
           </div>
         </div> -->
-          <!-- Knowledge added card -->
-          <!--  <div class="card card-accent-secondary">
+        <!-- Knowledge added card -->
+        <!--  <div class="card card-accent-secondary">
           <div class="card-header">Knowledge required <span
               tooltip="Knowledge is the body of facts, principles and theories and practices that is related to a field of work or study."
               class="badge badge-primary badge-pill">i</span></div>
@@ -433,8 +600,8 @@
             </div>
           </div>
         </div> -->
-          <!-- Skills added card -->
-          <!--         <div class="card card-accent-secondary">
+        <!-- Skills added card -->
+        <!--         <div class="card card-accent-secondary">
           <div class="card-header">
             Skills required
             <span
@@ -471,8 +638,8 @@
             </div>
           </div>
         </div> -->
-          <!-- Competences card -->
-          <!--         <div class="card card-accent-secondary">
+        <!-- Competences card -->
+        <!--         <div class="card card-accent-secondary">
           <div class="card-header">
             Competences required
             <span
@@ -544,10 +711,10 @@
             </div>
           </div>
         </div> -->
-        </div>
       </div>
     </div>
-    <!--/.col-->
   </div>
-  <!--/.row-->
+  <!--/.col-->
+</div>
+<!--/.row-->
 </div>

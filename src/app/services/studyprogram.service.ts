@@ -7,18 +7,44 @@ import { Field } from './fields.service';
 const collection = 'studyprograms';
 
 export class StudyProgram extends Object {
+
+  public _id: string;
+  public name: string;
+  public description: string;
+  public affiliation: string;
+  public level: string;
+  public eqf: number;
+  public modules: Module[];
+  public numSemesters: number;
+  public field: Field;
+   // -- public children = []; // needed for D3 nodes
+
   constructor(
-    public _id: string,
-    public name: string,
-    public description: string,
-    public affiliation: string,
-    public level: string,
-    public eqf: number,
-    public modules: Module[],
-    public numSemesters: number,
-    public field: Field
+    public currentNode: any = null
   ) {
     super();
+    if (currentNode) {
+      this._id = currentNode.data.id;
+      this.name = currentNode.data.name;
+      this.description = currentNode.data.description;
+      this.affiliation = currentNode.data.affiliation;
+      this.level = currentNode.data.level;
+      this.eqf = currentNode.data.eqf;
+      this.modules = currentNode.data.modules;
+      this.numSemesters = currentNode.data.numSemesters;
+      this.field = currentNode.data.field;
+
+    } else {
+      this._id = '';
+      this.name = '';
+      this.description = '';
+      this.affiliation = '';
+      this.level = '';
+      this.eqf = 0;
+      this.modules = [];
+      this.numSemesters = 0;
+      this.field = null;
+    }
   }
 }
 
@@ -44,9 +70,9 @@ export class StudyProgramService {
 
   getItemByKeyFromCollection(key, col): Observable<any> {
     return this.db
-    .collection(col)
-    .doc<any>(key)
-    .valueChanges();
+      .collection(col)
+      .doc<any>(key)
+      .valueChanges();
   }
 
   addNewStudyProgram(newSP: StudyProgram) {

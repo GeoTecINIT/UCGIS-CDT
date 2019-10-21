@@ -6,6 +6,9 @@ import { EscoCompetenceService } from '../../services/esco-competence.service';
 import { ActivatedRoute } from '@angular/router';
 import * as cv from '@eo4geo/curr-viz';
 import { Module, ModuleService } from '../../services/module.service';
+import { Course, CourseService } from '../../services/course.service';
+import { Lecture, LectureService } from '../../services/lecture.service';
+import { BokInput } from '../../model/bokinput';
 
 @Component({
   selector: 'app-newsp',
@@ -18,11 +21,13 @@ export class NewspComponent implements OnInit {
   filteredCompetences = [];
   fullcompetences = [];
 
-  model = new StudyProgram('', '', '', '', '', 0, [], 0, null);
-  modelModule = new Module('', '', 0, '', 0, '', [], [], []);
+  model = new StudyProgram(null);
+  modelModule = new Module(null);
+  modelCourse = new Course(null);
+  modelLecture = new Lecture(null);
 
-  textByDepth = 'Module';
-  textByDepthRemove = 'Study Program';
+  textByDepth = 'module';
+  textByDepthRemove = 'study program';
 
   public value: string[];
   public current: string;
@@ -39,8 +44,14 @@ export class NewspComponent implements OnInit {
 
   isfullESCOcompetences = false;
   isSearchingExisting = false;
+  isDisplayBoK = false;
 
   currentTreeNode = null;
+
+  allModules: Module[];
+  _allModules: Module[];
+
+  filterText: String = '';
 
   configFields = {
     displayKey: 'concatName', // if objects array passed which key to be displayed defaults to description
@@ -59,14 +70,21 @@ export class NewspComponent implements OnInit {
     private studyprogramService: StudyProgramService,
     public fieldsService: FieldsService,
     public escoService: EscoCompetenceService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private moduleService: ModuleService,
+    private courseService: CourseService,
+    private lectureService: LectureService
   ) {
+    this.moduleService
+      .subscribeToModules()
+      .subscribe(m => (this.allModules = m, this._allModules = m));
+
   }
 
   ngOnInit() {
-    //  bok.visualizeBOKData('#bubbles', 'assets/saved-bok.xml', '#textBoK');
     this.getMode();
     this.currentTreeNode = cv.getCurrentNode();
+    bok.visualizeBOKData('#bubbles', 'assets/saved-bok.xml', '#textBoK');
   }
 
   /* addBokKnowledge() {
@@ -170,39 +188,113 @@ export class NewspComponent implements OnInit {
     cv.displayCurricula('graphTree', treeData);
     this.currentTreeNode = cv.getCurrentNode();
   }
+
   refreshCurrentNode() {
+  /*   modelModule = new Module('', '', 0, '', 0, '', [], [], []);
+    modelCourse = new Course('', '', 0, '', 0, '', '', [], [], []);
+    modelLecture = new Lecture('', '', '', 0, [], [], false);
+ */
+    this.isSearchingExisting = false;
     this.currentTreeNode = cv.getCurrentNode();
     switch (this.currentTreeNode.depth) {
       case 0:
-        this.textByDepth = 'Module';
-        this.textByDepthRemove = 'Study Program';
+        this.textByDepth = 'module';
+        this.textByDepthRemove = 'study program';
+        this.model = new StudyProgram(this.currentTreeNode);
         break;
       case 1:
-        this.textByDepth = 'Course';
-        this.textByDepthRemove = 'Module';
+        this.textByDepth = 'course';
+        this.textByDepthRemove = 'module';
+        this.modelModule = new Module(this.currentTreeNode);
         break;
       case 2:
-        this.textByDepth = 'Lecture';
-        this.textByDepthRemove = 'Course';
+        this.textByDepth = 'lecture';
+        this.textByDepthRemove = 'course';
+        this.modelCourse = new Course(this.currentTreeNode);
         break;
       case 3:
-        this.textByDepth = 'Lecture';
-        this.textByDepthRemove = 'Lecture';
+        this.textByDepth = 'lecture';
+        this.textByDepthRemove = 'lecture';
+        this.modelLecture = new Lecture(this.currentTreeNode);
         break;
     }
   }
 
   addNodeInTree() {
+  /*   this.modelModule = new Module('', '', 0, '', 0, '', [], [], []);
+    this.modelCourse = new Course('', '', 0, '', 0, '', '', [], [], []);
+    this.modelLecture = new Lecture('', '', '', 0, [], [], false); */
     cv.addNewNode('New');
+  }
+
+  addExistingToStudyProgram(node) {
+    cv.addExistingNode(node);
+    /*  switch (node.class) {
+       case 'Module':
+         cv.addModule(node);
+         break;
+       case 'Course':
+             }
+  */
   }
 
   removeNodeInTree() {
     cv.removeSelectedNode();
   }
 
-  updateNodeInTree() {
-    cv.updateNode('New node');
+  updateNodeInTree(node) {
+    cv.updateNode(node);
   }
+
+  updateTreeStudyProgram() {
+    this.updateNodeInTree(this.model);
+
+  }
+
+  updateTreeModule() {
+    this.updateNodeInTree(this.modelModule);
+  }
+
+  updateTreeCourse() {
+    this.updateNodeInTree(this.modelCourse);
+  }
+
+  updateTreeLecture() {
+    this.updateNodeInTree(this.modelLecture);
+  }
+
+  filterModules() {
+    this.moduleService.filterModulesByNameDescription(this.filterText);
+  }
+
+  addBokKnowledge() {
+    const concept = this.textBoK.nativeElement.getElementsByTagName('h4')[0]
+      .textContent;
+    const newConcept = new BokInput('', concept, concept, '', []);
+
+    const divs = this.textBoK.nativeElement.getElementsByTagName('div');
+    if (divs['bokskills'] != null) {
+      const shortCode = this.textBoK.nativeElement.getElementsByTagName('h4')[0].innerText.split(' ')[0];
+      const as = divs['bokskills'].getElementsByTagName('a');
+      for (const skill of as) {
+        newConcept.skills.push(skill.innerText);
+      }
+    }
+    if (this.currentTreeNode.depth === 2) {
+      if (!this.modelCourse.prerequisites.includes(newConcept)) {
+        this.modelCourse.prerequisites.push(newConcept);
+      }
+    } else if (this.currentTreeNode.depth === 3) {
+      if (!this.modelLecture.learningObjectives.includes(newConcept)) {
+        this.modelLecture.learningObjectives.push(newConcept);
+      }
+    }
+  }
+
+  removeBokKnowledge(model, index, attrTxt) {
+    model[attrTxt].splice(index, 1);
+  }
+
   /*
     addExtraSkill(skill) {
       this.model.skills.push(skill);
