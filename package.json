@@ -1,7 +1,7 @@
 {
-  "name": "@eo4geo/opt",
+  "name": "@eo4geo/cdt",
   "version": "0.0.1",
-  "description": "Occupational Profile Tool",
+  "description": "Curriculum Design Tool",
   "author": {
     "name": "UJI",
     "url": "http://geotec.uji.es",
@@ -41,7 +41,7 @@
     "bootstrap": "^4.3.1",
     "chart.js": "^2.8.0",
     "core-js": "^2.6.5",
-    "firebase": "^6.0.2",
+    "firebase": "^7.2.1",
     "font-awesome": "^4.7.0",
     "jspdf": "^1.5.3",
     "moment": "^2.24.0",

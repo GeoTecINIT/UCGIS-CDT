@@ -8,6 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 // Import firebase-firestore
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
@@ -26,7 +27,6 @@ import { DefaultLayoutComponent } from './containers';
 import { P404Component } from './views/error/404.component';
 import { P500Component } from './views/error/500.component';
 import { LoginComponent } from './views/login/login.component';
-import { RegisterComponent } from './views/register/register.component';
 import { ListComponent } from './views/list/list.component';
 
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
@@ -87,6 +87,7 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
     FormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    AngularFireAuthModule,
     HttpClientModule,
     PopoverModule.forRoot(),
     ModalModule.forRoot(),
@@ -100,7 +101,6 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
     P404Component,
     P500Component,
     LoginComponent,
-    RegisterComponent,
     ListComponent,
     DetailComponent,
     NewspComponent,

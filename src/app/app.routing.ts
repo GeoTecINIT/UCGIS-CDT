@@ -7,16 +7,17 @@ import { DefaultLayoutComponent } from './containers';
 import { P404Component } from './views/error/404.component';
 import { P500Component } from './views/error/500.component';
 import { LoginComponent } from './views/login/login.component';
-import { RegisterComponent } from './views/register/register.component';
 
 import { ListComponent } from './views/list/list.component';
 import { DetailComponent } from './views/detail/detail.component';
 import { NewspComponent } from './views/newsp/newsp.component';
 
+import { AuthGuard} from './guards/auth.guard';
+
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'list',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
@@ -41,15 +42,9 @@ export const routes: Routes = [
     }
   },
   {
-    path: 'register',
-    component: RegisterComponent,
-    data: {
-      title: 'Register Page'
-    }
-  },
-  {
     path: '',
     component: DefaultLayoutComponent,
+    canActivate: [AuthGuard],
     data: {
       title: 'CDT'
     },
