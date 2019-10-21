@@ -71,11 +71,14 @@ export class NewspComponent implements OnInit {
     public fieldsService: FieldsService,
     public escoService: EscoCompetenceService,
     private route: ActivatedRoute,
-    private moduleService: ModuleService
+    private moduleService: ModuleService,
+    private courseService: CourseService,
+    private lectureService: LectureService
   ) {
     this.moduleService
       .subscribeToModules()
       .subscribe(m => (this.allModules = m, this._allModules = m));
+
   }
 
   ngOnInit() {

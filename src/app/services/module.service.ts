@@ -52,8 +52,8 @@ export class Module extends Object {
 })
 
 export class ModuleService {
-  private allModules: Module[];
-  private _allModules: Module[];
+  public allModules: Module[];
+  public _allModules: Module[];
   private db: AngularFirestore;
 
   constructor(db: AngularFirestore) {
