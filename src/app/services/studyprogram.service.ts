@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Module } from './module.service';
 import { Field } from './fields.service';
 
-const collection = 'studyprograms';
+const collection = 'StudyPrograms';
 
 export class StudyProgram extends Object {
 
@@ -14,10 +14,9 @@ export class StudyProgram extends Object {
   public affiliation: string;
   public level: string;
   public eqf: number;
-  public modules: Module[];
+  public children: Module[];
   public numSemesters: number;
   public field: Field;
-   // -- public children = []; // needed for D3 nodes
 
   constructor(
     public currentNode: any = null
@@ -30,7 +29,7 @@ export class StudyProgram extends Object {
       this.affiliation = currentNode.data.affiliation;
       this.level = currentNode.data.level;
       this.eqf = currentNode.data.eqf;
-      this.modules = currentNode.data.modules;
+      this.children = currentNode.data.children;
       this.numSemesters = currentNode.data.numSemesters;
       this.field = currentNode.data.field;
 
@@ -41,7 +40,7 @@ export class StudyProgram extends Object {
       this.affiliation = '';
       this.level = '';
       this.eqf = 0;
-      this.modules = [];
+      this.children = [];
       this.numSemesters = 0;
       this.field = null;
     }

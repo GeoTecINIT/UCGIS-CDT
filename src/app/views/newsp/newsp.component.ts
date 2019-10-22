@@ -5,9 +5,9 @@ import { FieldsService } from '../../services/fields.service';
 import { EscoCompetenceService } from '../../services/esco-competence.service';
 import { ActivatedRoute } from '@angular/router';
 import * as cv from '@eo4geo/curr-viz';
-import { Module, ModuleService } from '../../services/module.service';
-import { Course, CourseService } from '../../services/course.service';
-import { Lecture, LectureService } from '../../services/lecture.service';
+import { Module } from '../../services/module.service';
+import { Course } from '../../services/course.service';
+import { Lecture } from '../../services/lecture.service';
 import { BokInput } from '../../model/bokinput';
 
 @Component({
@@ -48,8 +48,17 @@ export class NewspComponent implements OnInit {
 
   currentTreeNode = null;
 
+  allStudyPrograms: StudyProgram[];
+
+/*
   allModules: Module[];
   _allModules: Module[];
+
+  allCourses: Course[];
+  _allCourses: Course[];
+
+  allLectures: Lecture[];
+  _allLectures: Lecture[]; */
 
   filterText: String = '';
 
@@ -70,15 +79,11 @@ export class NewspComponent implements OnInit {
     private studyprogramService: StudyProgramService,
     public fieldsService: FieldsService,
     public escoService: EscoCompetenceService,
-    private route: ActivatedRoute,
-    private moduleService: ModuleService,
-    private courseService: CourseService,
-    private lectureService: LectureService
+    private route: ActivatedRoute
   ) {
-    this.moduleService
-      .subscribeToModules()
-      .subscribe(m => (this.allModules = m, this._allModules = m));
-
+    this.studyprogramService
+      .subscribeToStudyPrograms()
+      .subscribe(res => (this.allStudyPrograms = res));
   }
 
   ngOnInit() {
@@ -190,10 +195,10 @@ export class NewspComponent implements OnInit {
   }
 
   refreshCurrentNode() {
-  /*   modelModule = new Module('', '', 0, '', 0, '', [], [], []);
-    modelCourse = new Course('', '', 0, '', 0, '', '', [], [], []);
-    modelLecture = new Lecture('', '', '', 0, [], [], false);
- */
+    /*   modelModule = new Module('', '', 0, '', 0, '', [], [], []);
+      modelCourse = new Course('', '', 0, '', 0, '', '', [], [], []);
+      modelLecture = new Lecture('', '', '', 0, [], [], false);
+   */
     this.isSearchingExisting = false;
     this.currentTreeNode = cv.getCurrentNode();
     switch (this.currentTreeNode.depth) {
@@ -221,21 +226,11 @@ export class NewspComponent implements OnInit {
   }
 
   addNodeInTree() {
-  /*   this.modelModule = new Module('', '', 0, '', 0, '', [], [], []);
-    this.modelCourse = new Course('', '', 0, '', 0, '', '', [], [], []);
-    this.modelLecture = new Lecture('', '', '', 0, [], [], false); */
     cv.addNewNode('New');
   }
 
   addExistingToStudyProgram(node) {
     cv.addExistingNode(node);
-    /*  switch (node.class) {
-       case 'Module':
-         cv.addModule(node);
-         break;
-       case 'Course':
-             }
-  */
   }
 
   removeNodeInTree() {
@@ -248,7 +243,6 @@ export class NewspComponent implements OnInit {
 
   updateTreeStudyProgram() {
     this.updateNodeInTree(this.model);
-
   }
 
   updateTreeModule() {
@@ -264,7 +258,8 @@ export class NewspComponent implements OnInit {
   }
 
   filterModules() {
-    this.moduleService.filterModulesByNameDescription(this.filterText);
+    console.log ('TODO: filtering modules');
+    // this.moduleService.filterModulesByNameDescription(this.filterText);
   }
 
   addBokKnowledge() {

@@ -70,7 +70,8 @@
                         <div class="form-group">
                           <label for="title">Affiliation</label>
                           <input type="text" class="form-control" id="affiliation" placeholder="Affiliation"
-                            [(ngModel)]="model.affiliation" name="affiliation" required (keyup)="updateTreeStudyProgram()" />
+                            [(ngModel)]="model.affiliation" name="affiliation" required
+                            (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
                     </div>
@@ -95,7 +96,8 @@
                           <span tooltip="Number of semesters in the curricula."
                             class="badge badge-primary badge-pill">i</span>
                           <input type="number" size="1" class="form-control" id="numSemesters"
-                            [(ngModel)]="model.numSemesters" name="numSemesters" min="1" max="20" (keyup)="updateTreeStudyProgram()"/>
+                            [(ngModel)]="model.numSemesters" name="numSemesters" min="1" max="20"
+                            (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
                     </div>
@@ -103,8 +105,8 @@
                       <div class="col-md-10">
                         <div class="form-group">
                           <label for="description">Description</label>
-                          <textarea class="form-control" id="description" placeholder="Description"
-                            name="description" [(ngModel)]="model.description" rows="4" (keyup)="updateTreeStudyProgram()"></textarea>
+                          <textarea class="form-control" id="description" placeholder="Description" name="description"
+                            [(ngModel)]="model.description" rows="4" (keyup)="updateTreeStudyProgram()"></textarea>
                         </div>
                       </div>
                       <div class="col-md-2">
@@ -114,7 +116,7 @@
                             tooltip="The core of the EQF concerns eight reference levels describing what a learner knows, understands and is able to do – 'learning outcomes', ranging from basic (Level 1) to advanced (Level 8)."
                             class="badge badge-primary badge-pill">i</span>
                           <input type="number" size="1" class="form-control" id="eqf" [(ngModel)]="model.eqf" name="eqf"
-                            min="1" max="8" (keyup)="updateTreeStudyProgram()"/>
+                            min="1" max="8" (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
                     </div>
@@ -151,7 +153,8 @@
                           <label for="numSemester">Number of semester</label>
                           <span tooltip="In which semester is taught." class="badge badge-primary badge-pill">i</span>
                           <input type="number" size="1" class="form-control" id="numSemester"
-                            [(ngModel)]="modelModule.numSemester" name="numSemester" min="1" max="15" (keyup)="updateTreeModule()" />
+                            [(ngModel)]="modelModule.numSemester" name="numSemester" min="1" max="15"
+                            (keyup)="updateTreeModule()" />
                         </div>
                       </div>
                       <div class="col-md-6">
@@ -159,7 +162,7 @@
                           <label for="ects">ECTS</label>
                           <span tooltip="" class="badge badge-primary badge-pill">i</span>
                           <input type="number" size="1" class="form-control" id="ects" [(ngModel)]="modelModule.ects"
-                            name="ects" min="1" max="20" (keyup)="updateTreeModule()"/>
+                            name="ects" min="1" max="20" (keyup)="updateTreeModule()" />
                         </div>
                       </div>
                     </div>
@@ -167,8 +170,8 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <label for="description">Description</label>
-                          <textarea class="form-control" id="description" placeholder="Description"
-                            name="description" [(ngModel)]="modelModule.description" rows="4" (keyup)="updateTreeModule()"></textarea>
+                          <textarea class="form-control" id="description" placeholder="Description" name="description"
+                            [(ngModel)]="modelModule.description" rows="4" (keyup)="updateTreeModule()"></textarea>
                         </div>
                       </div>
                     </div>
@@ -212,8 +215,8 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <label for="description">Description</label>
-                          <textarea class="form-control" id="description" placeholder="Description"
-                            name="description" [(ngModel)]="modelCourse.description" rows="4"></textarea>
+                          <textarea class="form-control" id="description" placeholder="Description" name="description"
+                            [(ngModel)]="modelCourse.description" (keyup)="updateTreeCourse()" rows="4"></textarea>
                         </div>
                       </div>
                     </div>
@@ -252,8 +255,8 @@
                         <div class="form-group">
                           <label for="ects">ECTS/CP</label>
                           <span tooltip="" class="badge badge-primary badge-pill">i</span>
-                          <input type="number" size="3" class="form-control" name="ects" id="ects" [(ngModel)]="modelCourse.ects"
-                            name="ects" min="1" max="999" />
+                          <input type="number" size="3" class="form-control" name="ects" id="ects"
+                            [(ngModel)]="modelCourse.ects" name="ects" min="1" max="999" (keyup)="updateTreeCourse()" />
                         </div>
                       </div>
                       <div class="col-md-6">
@@ -261,7 +264,7 @@
                           <label for="numSemester">Number of semester</label>
                           <span tooltip="In which semester is taught." class="badge badge-primary badge-pill">i</span>
                           <input type="number" size="3" class="form-control" id="numSemester"
-                            [(ngModel)]="modelCourse.numSemester" name="numSemester" min="1" max="999" />
+                            [(ngModel)]="modelCourse.numSemester" name="numSemester" min="1" max="999" (keyup)="updateTreeCourse()"/>
                         </div>
                       </div>
                     </div>
@@ -272,7 +275,7 @@
                           <label for="assessment">Assessment</label>
                           <span tooltip="" class="badge badge-primary badge-pill">i</span>
                           <input type="text" class="form-control" id="assessment" placeholder="Assessment"
-                            [(ngModel)]="modelCourse.assessment" name="assessment" />
+                            [(ngModel)]="modelCourse.assessment" name="assessment" (keyup)="updateTreeCourse()"/>
                         </div>
                       </div>
                     </div>
@@ -282,7 +285,7 @@
                           <label for="bibliography">Bibliography</label>
                           <span tooltip="" class="badge badge-primary badge-pill">i</span>
                           <input type="text" class="form-control" id="bibliography" placeholder="Bibliography"
-                            [(ngModel)]="modelCourse.bibliography" name="bibliography" />
+                            [(ngModel)]="modelCourse.bibliography" name="bibliography" (keyup)="updateTreeCourse()"/>
                         </div>
                       </div>
                     </div>
@@ -317,8 +320,8 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <label for="description">Description</label>
-                          <textarea class="form-control" id="description" placeholder="Description"
-                            name="description" [(ngModel)]="modelLecture.description" rows="4"></textarea>
+                          <textarea class="form-control" id="description" placeholder="Description" name="description"
+                            [(ngModel)]="modelLecture.description" rows="4" (keyup)="updateTreeLecture()"></textarea>
                         </div>
                       </div>
                     </div>
@@ -328,7 +331,7 @@
                           <label for="ects">ECTS/CP</label>
                           <span tooltip="" class="badge badge-primary badge-pill">i</span>
                           <input type="number" size="3" class="form-control" id="ects" [(ngModel)]="modelLecture.ects"
-                            name="ects" min="1" max="999" />
+                            name="ects" min="1" max="999" (keyup)="updateTreeLecture()" />
                         </div>
                       </div>
                       <div class="col-md-6">
@@ -337,7 +340,8 @@
                           <span tooltip="Check this option if it is a practical lecture."
                             class="badge badge-primary badge-pill">i</span>
                           <label class="switch switch-pill switch-primary">
-                            <input type="checkbox" name="isPractical" class="switch-input" [(ngModel)]="modelLecture.isPractical">
+                            <input type="checkbox" name="isPractical" class="switch-input"
+                              [(ngModel)]="modelLecture.isPractical">
                             <span class="switch-slider"></span>
                           </label>
                         </div>
@@ -376,15 +380,15 @@
                       </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <label for="sourceDocs">Source Docs</label>
-                            <span tooltip="" class="badge badge-primary badge-pill">i</span>
-                            <input type="text" class="form-control" id="sourceDocs" placeholder="Source Docs"
-                              [(ngModel)]="modelLecture.sourceDocs" name="sourceDocs" />
-                          </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="sourceDocs">Source Docs</label>
+                          <span tooltip="" class="badge badge-primary badge-pill">i</span>
+                          <input type="text" class="form-control" id="sourceDocs" placeholder="Source Docs"
+                            [(ngModel)]="modelLecture.sourceDocs" name="sourceDocs" (keyup)="updateTreeLecture()" />
                         </div>
                       </div>
+                    </div>
                   </div>
                 </div>
               </form>
@@ -413,15 +417,60 @@
                       </div>
                     </div>
                   </div>
-                  <ul>
-                    <div *ngFor="let m of allModules; index as i">
+                  <!--  <ul *ngIf="currentTreeNode.depth == 0">
+                    <div *ngFor="let sp of allStudyPrograms; index as i">
                       <li>
-                        <h5 class="card-title">{{ m.name }}</h5>
-                        <h6 class="text-muted inline">{{ m.numSemester }} semester</h6>
-                        <a (click)="addExistingToStudyProgram(m)" class="inline">Add to my Study Program</a>
-                        <a (click)="addExistingToStudyProgram(m)" class="inline">Show more...</a>
-                        <p class="card-text">{{ m.description }}</p>
+                        <h5 class="card-title">{{ sp.name }}</h5>
+                        <h6 class="text-muted inline">{{ sp.numSemesters }} semester</h6>
+                        <a (click)="addExistingToStudyProgram(sp)" class="inline">Add to my Study Program</a>
+                        <a (click)="addExistingToStudyProgram(sp)" class="inline">Show more...</a>
+                        <p class="card-text">{{ sp.description }}</p>
                       </li>
+                    </div>
+                  </ul> -->
+                  <ul *ngIf="currentTreeNode.depth == 0">
+                    <div *ngFor="let sp of allStudyPrograms; index as i">
+                      <div *ngFor="let m of sp.children; index as j">
+                        <li>
+                          <h5 class="card-title">{{ m.name }}</h5>
+                          <h6 class="text-muted inline">{{ m.numSemester }} semester</h6>
+                          <a (click)="addExistingToStudyProgram(m)" class="inline">Add to my Study Program</a>
+                          <a (click)="addExistingToStudyProgram(m)" class="inline">Show more...</a>
+                          <p class="card-text">{{ m.description }}</p>
+                        </li>
+                      </div>
+                    </div>
+                  </ul>
+                  <ul *ngIf="currentTreeNode.depth == 1">
+                    <div *ngFor="let sp of allStudyPrograms">
+                      <div *ngFor="let m of sp.children">
+                        <div *ngFor="let c of m.children">
+                          <li>
+                            <h5 class="card-title">{{ c.name }}</h5>
+                            <h6 class="text-muted inline">{{ c.numSemester }} semester</h6>
+                            <a (click)="addExistingToStudyProgram(c)" class="inline">Add to my Study Program</a>
+                            <a (click)="addExistingToStudyProgram(c)" class="inline">Show more...</a>
+                            <p class="card-text">{{ c.description }}</p>
+                          </li>
+                        </div>
+                      </div>
+                    </div>
+                  </ul>
+                  <ul *ngIf="currentTreeNode.depth == 2">
+                    <div *ngFor="let sp of allStudyPrograms">
+                      <div *ngFor="let m of sp.children">
+                        <div *ngFor="let c of m.children">
+                          <div *ngFor="let l of c.children">
+                            <li>
+                              <h5 class="card-title">{{ l.name }}</h5>
+                              <h6 class="text-muted inline">{{ l.ects }} ects</h6>
+                              <a (click)="addExistingToStudyProgram(l)" class="inline">Add to my Study Program</a>
+                              <a (click)="addExistingToStudyProgram(l)" class="inline">Show more...</a>
+                              <p class="card-text">{{ l.description }}</p>
+                            </li>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </ul>
                   <!-- 

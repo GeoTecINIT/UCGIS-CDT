@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { BokInput } from '../model/bokinput';
 import { Course } from './course.service';
+import { StudyProgramService, StudyProgram } from './studyprogram.service';
 
 const collection = 'modules';
 
@@ -15,8 +16,7 @@ export class Module extends Object {
   public assessment: string;
   public prerequisites: BokInput[];
   public learningObjectives: BokInput[];
-  public courses: Course[];
-  // --  public children = []; // needed for D3 nodes
+  public children: Course[];
 
   constructor(
     public currentNode: any = null
@@ -31,7 +31,7 @@ export class Module extends Object {
       this.assessment = currentNode.data.assessment;
       this.prerequisites = currentNode.data.prerequisites;
       this.learningObjectives = currentNode.data.learningObjectives;
-      this.courses = currentNode.data.courses;
+      this.children = currentNode.data.children;
 
     } else {
       this._id = '';
@@ -42,7 +42,7 @@ export class Module extends Object {
       this.assessment = '';
       this.prerequisites = [];
       this.learningObjectives = [];
-      this.courses = [];
+      this.children = [];
     }
   }
 }
@@ -52,11 +52,11 @@ export class Module extends Object {
 })
 
 export class ModuleService {
-  public allModules: Module[];
+  public allModules: Module[] = [];
   public _allModules: Module[];
   private db: AngularFirestore;
 
-  constructor(db: AngularFirestore) {
+  constructor(db: AngularFirestore, private studyprogramService: StudyProgramService) {
     this.db = db;
     this.getAllModules();
   }
@@ -69,6 +69,7 @@ export class ModuleService {
     this.subscribeToModules()
       .subscribe(m => (this.allModules = m, this._allModules = m));
   }
+
 
   filterModulesByNameDescription(txt) {
     /*

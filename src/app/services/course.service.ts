@@ -17,8 +17,7 @@ export class Course extends Object {
   public bibliography: string;
   public prerequisites: BokInput [];
   public learningObjectives: BokInput [];
-  public lectures: Lecture[];
-   // -- public children = []; // needed for D3 nodes
+  public children: Lecture[];
 
   constructor(
     public currentNode: any = null
@@ -34,7 +33,7 @@ export class Course extends Object {
       this.bibliography = currentNode.data.bibliography;
       this.prerequisites = currentNode.data.prerequisites ? currentNode.data.prerequisites : [];
       this.learningObjectives = currentNode.data.learningObjectives;
-      this.lectures = currentNode.data.lectures;
+      this.children = currentNode.data.children;
 
     } else {
       this._id = '';
@@ -46,7 +45,7 @@ export class Course extends Object {
       this.bibliography = '';
       this.prerequisites = [];
       this.learningObjectives = [];
-      this.lectures = [];
+      this.children = [];
     }
   }
 }

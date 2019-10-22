@@ -13,7 +13,6 @@ export class Lecture extends Object {
   public sourceDocs: BokInput[];
   public learningObjectives: BokInput[];
   public isPractical: boolean;
-  // --  public children = []; // needed for D3 nodes
 
   constructor(
     public currentNode: any = null
