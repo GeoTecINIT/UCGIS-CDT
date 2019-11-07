@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
-import { StudyProgramService , StudyProgram} from '../../services/studyprogram.service';
+import { StudyProgramService, StudyProgram } from '../../services/studyprogram.service';
 import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap/modal';
@@ -39,24 +39,30 @@ export class DetailComponent implements OnInit {
       .subscribe(program => {
         this.selectedProgram = program;
         this.selectedItem = program;
-        this.displayTree();
+        this.displayTree(program);
       });
   }
 
-  displayTree() {
+  displayTree(program) {
 
-    const treeData = {
-      'longName': 'New Study Program',
-      'type': 'studyProgram',
-      'name': 'New Study Program',
-      'parent': 'null',
-      'path': 0,
-      'proportions': [],
-      'r': 10,
-      'children': []
-    };
+    /*     const treeData = {
+          'longName': 'New Study Program',
+          'type': 'studyProgram',
+          'name': 'New Study Program',
+          'parent': 'null',
+          'path': 0,
+          'proportions': [],
+          'r': 10,
+          'children': []
+        };
+     */
 
-    cv.displayCurricula('graphTree', treeData);
+    program.parent = null;
+    program.proportions = [];
+    program.r = 10;
+
+    console.log('display graphTree');
+    cv.displayCurricula('graphTree', program);
   }
 
   addNode(name: string = 'New node') {
@@ -72,7 +78,7 @@ export class DetailComponent implements OnInit {
   selectItem(key, collection) {
     console.log('select item: ' + key + ' from ' + collection);
     this.studyprogramService
-    .getItemByKeyFromCollection(key, collection).subscribe(item => (this.selectedItem = item));
+      .getItemByKeyFromCollection(key, collection).subscribe(item => (this.selectedItem = item));
   }
 
   deselectItem() {

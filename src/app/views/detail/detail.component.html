@@ -39,7 +39,7 @@
           </div>
         </div>
         <div class="card-body">
-          <ng-container *ngIf="selectedProgram; else loading">
+          <ng-container> <!--  *ngIf="selectedProgram; else loading" -->
             <div class="row">
               <div class="col-md-6">
                 <h1>{{ selectedProgram.name }}</h1>
