@@ -5,10 +5,11 @@ import { FieldsService } from '../../services/fields.service';
 import { EscoCompetenceService } from '../../services/esco-competence.service';
 import { ActivatedRoute } from '@angular/router';
 import * as cv from '@eo4geo/curr-viz';
-import { Module, ModuleService } from '../../services/module.service';
-import { Course, CourseService } from '../../services/course.service';
-import { Lecture, LectureService } from '../../services/lecture.service';
+import { Module } from '../../services/module.service';
+import { Course } from '../../services/course.service';
+import { Lecture } from '../../services/lecture.service';
 import { BokInput } from '../../model/bokinput';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-newsp',
@@ -21,7 +22,7 @@ export class NewspComponent implements OnInit {
   filteredCompetences = [];
   fullcompetences = [];
 
-  model = new StudyProgram(null);
+  model = new StudyProgram();
   modelModule = new Module(null);
   modelCourse = new Course(null);
   modelLecture = new Lecture(null);
@@ -48,10 +49,19 @@ export class NewspComponent implements OnInit {
 
   currentTreeNode = null;
 
-  allModules: Module[];
-  _allModules: Module[];
+  allStudyPrograms: StudyProgram[];
 
   filterText: String = '';
+
+  switchTitle = true;
+  switchDescription = true;
+  switchLO = true;
+  switchPre = true;
+
+  showMoreIndexSP = -1;
+  showMoreIndexM = -1;
+  showMoreIndexC = -1;
+  showMoreIndexL = -1;
 
   configFields = {
     displayKey: 'concatName', // if objects array passed which key to be displayed defaults to description
@@ -71,14 +81,11 @@ export class NewspComponent implements OnInit {
     public fieldsService: FieldsService,
     public escoService: EscoCompetenceService,
     private route: ActivatedRoute,
-    private moduleService: ModuleService,
-    private courseService: CourseService,
-    private lectureService: LectureService
+    private afAuth: AngularFireAuth
   ) {
-    this.moduleService
-      .subscribeToModules()
-      .subscribe(m => (this.allModules = m, this._allModules = m));
-
+    this.studyprogramService
+      .subscribeToStudyPrograms()
+      .subscribe(res => (this.allStudyPrograms = res));
   }
 
   ngOnInit() {
@@ -87,35 +94,8 @@ export class NewspComponent implements OnInit {
     bok.visualizeBOKData('#bubbles', 'assets/saved-bok.xml', '#textBoK');
   }
 
-  /* addBokKnowledge() {
-     const divs = this.textBoK.nativeElement.getElementsByTagName('div');
-     if (divs['bokskills'] != null) {
-       const shortCode = this.textBoK.nativeElement.getElementsByTagName('h4')[0].innerText.split(' ')[0];
-       const as = divs['bokskills'].getElementsByTagName('a');
-       for (const skill of as) {
-         if (!this.model.skills.includes(shortCode + ' ' + skill.innerText)) {
-           this.model.skills.push(shortCode + ' ' + skill.innerText);
-         }
-       }
-     }
-     const concept = this.textBoK.nativeElement.getElementsByTagName('h4')[0]
-       .textContent;
-     if (!this.model.knowledge.includes(concept)) {
-       this.model.knowledge.push(concept);
-     }
-   }
-
-   removeCompetence(name: string, array: string[]) {
-     array.forEach((item, index) => {
-       if (item === name) {
-         array.splice(index, 1);
-       }
-     });
-   }
-
-   */
-
   saveStudyProgram() {
+    this.model.userId = this.afAuth.auth.currentUser.uid;
     if (this.mode === 'copy') {
       this.studyprogramService.updateStudyProgram(this._id, this.model);
     } else {
@@ -190,10 +170,10 @@ export class NewspComponent implements OnInit {
   }
 
   refreshCurrentNode() {
-  /*   modelModule = new Module('', '', 0, '', 0, '', [], [], []);
-    modelCourse = new Course('', '', 0, '', 0, '', '', [], [], []);
-    modelLecture = new Lecture('', '', '', 0, [], [], false);
- */
+    /*   modelModule = new Module('', '', 0, '', 0, '', [], [], []);
+      modelCourse = new Course('', '', 0, '', 0, '', '', [], [], []);
+      modelLecture = new Lecture('', '', '', 0, [], [], false);
+   */
     this.isSearchingExisting = false;
     this.currentTreeNode = cv.getCurrentNode();
     switch (this.currentTreeNode.depth) {
@@ -221,21 +201,11 @@ export class NewspComponent implements OnInit {
   }
 
   addNodeInTree() {
-  /*   this.modelModule = new Module('', '', 0, '', 0, '', [], [], []);
-    this.modelCourse = new Course('', '', 0, '', 0, '', '', [], [], []);
-    this.modelLecture = new Lecture('', '', '', 0, [], [], false); */
     cv.addNewNode('New');
   }
 
   addExistingToStudyProgram(node) {
     cv.addExistingNode(node);
-    /*  switch (node.class) {
-       case 'Module':
-         cv.addModule(node);
-         break;
-       case 'Course':
-             }
-  */
   }
 
   removeNodeInTree() {
@@ -247,29 +217,32 @@ export class NewspComponent implements OnInit {
   }
 
   updateTreeStudyProgram() {
-    this.updateNodeInTree(this.model);
-
-  }
-
-  updateTreeModule() {
-    this.updateNodeInTree(this.modelModule);
-  }
-
-  updateTreeCourse() {
-    this.updateNodeInTree(this.modelCourse);
-  }
-
-  updateTreeLecture() {
-    this.updateNodeInTree(this.modelLecture);
+    switch (this.currentTreeNode.depth) {
+      case 0:
+        this.updateNodeInTree(this.model);
+        break;
+      case 1:
+        this.updateNodeInTree(this.modelModule);
+        break;
+      case 2:
+        this.updateNodeInTree(this.modelCourse);
+        break;
+      case 3:
+        this.updateNodeInTree(this.modelLecture);
+        break;
+    }
   }
 
   filterModules() {
-    this.moduleService.filterModulesByNameDescription(this.filterText);
+    console.log('TODO: filtering modules');
+    // this.moduleService.filterModulesByNameDescription(this.filterText);
   }
 
   addBokKnowledge() {
     const concept = this.textBoK.nativeElement.getElementsByTagName('h4')[0]
       .textContent;
+    const description = this.textBoK.nativeElement.children[1].children[3].textContent;
+
     const newConcept = new BokInput('', concept, concept, '', []);
 
     const divs = this.textBoK.nativeElement.getElementsByTagName('div');
@@ -280,14 +253,27 @@ export class NewspComponent implements OnInit {
         newConcept.skills.push(skill.innerText);
       }
     }
-    if (this.currentTreeNode.depth === 2) {
+    if (this.currentTreeNode.depth === 0) {
+      this.model.name = this.switchTitle ? this.model.name + ' ' + concept : this.model.name;
+      this.model.description = this.switchTitle ? this.model.description + ' ' + description : this.model.description;
+    } else if (this.currentTreeNode.depth === 1) {
+      this.modelModule.name = this.switchTitle ? this.modelModule.name + ' ' + concept : this.modelModule.name;
+      this.modelModule.description = this.switchTitle ? this.modelModule.description + ' ' + description : this.modelModule.description;
+    } else if (this.currentTreeNode.depth === 2) {
       if (!this.modelCourse.prerequisites.includes(newConcept)) {
         this.modelCourse.prerequisites.push(newConcept);
       }
+      this.modelCourse.name = this.switchTitle ? this.modelCourse.name + ' ' + concept : this.modelCourse.name;
+      this.modelCourse.description = this.switchTitle ? this.modelCourse.description + ' ' + description : this.modelCourse.description;
     } else if (this.currentTreeNode.depth === 3) {
       if (!this.modelLecture.learningObjectives.includes(newConcept)) {
-        this.modelLecture.learningObjectives.push(newConcept);
+        newConcept.skills.forEach(sk => {
+          const newSkill = new BokInput('', sk, newConcept.concept_id, '', []);
+          this.modelLecture.learningObjectives.push(newSkill);
+        });
       }
+      this.modelLecture.name = this.switchTitle ? this.modelLecture.name + ' ' + concept : this.modelLecture.name;
+      this.modelLecture.description = this.switchTitle ? this.modelLecture.description + ' ' + description : this.modelLecture.description;
     }
   }
 

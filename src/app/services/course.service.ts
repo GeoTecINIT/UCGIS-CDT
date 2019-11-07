@@ -17,24 +17,24 @@ export class Course extends Object {
   public bibliography: string;
   public prerequisites: BokInput [];
   public learningObjectives: BokInput [];
-  public lectures: Lecture[];
-   // -- public children = []; // needed for D3 nodes
+  public children: Lecture[];
 
   constructor(
     public currentNode: any = null
   ) {
     super();
     if (currentNode) {
-      this._id = currentNode.data.id;
-      this.name = currentNode.data.name;
-      this.numSemester = currentNode.data.numSemester;
-      this.description = currentNode.data.description;
-      this.ects = currentNode.data.ects;
-      this.assessment = currentNode.data.assessment;
-      this.bibliography = currentNode.data.bibliography;
+      this._id = currentNode.data.id ? currentNode.data.id : '';
+      this.name = currentNode.data.name ? currentNode.data.name : '';
+      this.numSemester = currentNode.data.numSemester ? currentNode.data.numSemester : 0;
+      this.description = currentNode.data.description ? currentNode.data.description : '';
+      this.ects = currentNode.data.ects ? currentNode.data.ects : 0;
+      this.assessment  = currentNode.data.assessment ? currentNode.data.assessment : '';
+      this.bibliography  = currentNode.data.bibliography ? currentNode.data.bibliography : '';
       this.prerequisites = currentNode.data.prerequisites ? currentNode.data.prerequisites : [];
-      this.learningObjectives = currentNode.data.learningObjectives;
-      this.lectures = currentNode.data.lectures;
+      this.learningObjectives = currentNode.data.learningObjectives ? currentNode.data.learningObjectives : [];
+      this.children = currentNode.children ? currentNode.children : [];
+      this.currentNode = null;
 
     } else {
       this._id = '';
@@ -46,7 +46,7 @@ export class Course extends Object {
       this.bibliography = '';
       this.prerequisites = [];
       this.learningObjectives = [];
-      this.lectures = [];
+      this.children = [];
     }
   }
 }
@@ -93,5 +93,4 @@ export class CourseService {
       .doc<Course>(courseId)
       .update(updatedCourse);
   }
-
 }

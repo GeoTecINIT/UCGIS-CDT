@@ -15,23 +15,23 @@ export class Module extends Object {
   public assessment: string;
   public prerequisites: BokInput[];
   public learningObjectives: BokInput[];
-  public courses: Course[];
-  // --  public children = []; // needed for D3 nodes
+  public children: Course[];
 
   constructor(
     public currentNode: any = null
   ) {
     super();
     if (currentNode) {
-      this._id = currentNode.data.id;
-      this.name = currentNode.data.name;
-      this.numSemester = currentNode.data.numSemester;
-      this.description = currentNode.data.description;
-      this.ects = currentNode.data.ects;
-      this.assessment = currentNode.data.assessment;
-      this.prerequisites = currentNode.data.prerequisites;
-      this.learningObjectives = currentNode.data.learningObjectives;
-      this.courses = currentNode.data.courses;
+      this._id = currentNode.data.id ? currentNode.data.id : '';
+      this.name = currentNode.data.name ? currentNode.data.name : '';
+      this.description = currentNode.data.description ? currentNode.data.description : '';
+      this.numSemester = currentNode.data.numSemester ? currentNode.data.numSemester : 0;
+      this.ects = currentNode.data.ects ? currentNode.data.ects : 0;
+      this.assessment = currentNode.data.assessment ? currentNode.data.assessment : '';
+      this.prerequisites = currentNode.data.prerequisites ? currentNode.data.prerequisites : [];
+      this.learningObjectives = currentNode.data.learningObjectives ? currentNode.data.learningObjectives : [];
+      this.children = currentNode.children ? currentNode.children : [];
+      this.currentNode = null;
 
     } else {
       this._id = '';
@@ -42,7 +42,7 @@ export class Module extends Object {
       this.assessment = '';
       this.prerequisites = [];
       this.learningObjectives = [];
-      this.courses = [];
+      this.children = [];
     }
   }
 }
@@ -52,7 +52,7 @@ export class Module extends Object {
 })
 
 export class ModuleService {
-  public allModules: Module[];
+  public allModules: Module[] = [];
   public _allModules: Module[];
   private db: AngularFirestore;
 
@@ -69,6 +69,7 @@ export class ModuleService {
     this.subscribeToModules()
       .subscribe(m => (this.allModules = m, this._allModules = m));
   }
+
 
   filterModulesByNameDescription(txt) {
     /*
@@ -107,5 +108,4 @@ export class ModuleService {
       .doc<Module>(moduleId)
       .update(updatedMod);
   }
-
 }

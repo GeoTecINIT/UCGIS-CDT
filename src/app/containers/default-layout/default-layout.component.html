@@ -1,25 +1,4 @@
-<app-header
-  class="nav-bar-eo4geo"
-  [navbarBrandRouterLink]="['/dashboard']"
-  [fixed]="true"
-  [navbarBrandFull]="{
-    src: 'assets/img/brand/icon-inline.svg',
-    width: 255,
-    height: 45,
-    alt: 'EO4GEO Tools Logo'
-  }"
-  [sidebarToggler]="false"
-  [mobileSidebarToggler]="false"
-  [mobileAsideMenuToggler]="false"
-  [asideMenuToggler]="false"
->
-  <!--   <ul class="nav navbar-nav d-md-down-none">
-    <li class="nav-item px-3">
-      <a class="nav-link" href="#">Home</a>
-      <a class="nav-link" routerLink="/list" routerLinkActive="active" href="#">List</a>
-    </li>
-  </ul> -->
-</app-header>
+<app-eo4geo-header></app-eo4geo-header>
 <div class="app-body">
   <app-sidebar [fixed]="true" [display]="false">
     <!-- Change to true to show sidebar menu  [sidebarToggler]="'lg'"  -->
@@ -43,11 +22,8 @@
           aria-label="Button group with nested dropdown">
 
           <a class="btn"> Hello {{username}}! </a>
-          <a class="btn" href="http://eo4geo.uji.es"><i class="icon-list"></i> &nbsp;All tools</a>
-          <a class="btn" href="#" routerLink="/list"><i class="icon-home"></i>&nbsp;CDT</a >
-          
-        <!--   <a class="btn" href="#"><i class="icon-settings"></i> &nbsp;Settings</a> -->
-          <a class="btn" href="#" (click)="logOut()"><i class="icon-logout"></i> &nbsp;Log Out</a>
+          <a class="btn" href="#" routerLink="/list"><i class="icon-home"></i>&nbsp;Home</a >
+          <a class="btn" href="#" routerLink="/login" (click)="logOut()"><i class="icon-logout"></i> <span [innerText]="isAnonymous ? '&nbsp;Login' : '&nbsp;Log Out'"></span></a>
         </div>
       </li>
     </cui-breadcrumb>
@@ -57,7 +33,4 @@
     <!-- /.container-fluid -->
   </main>
 </div>
-<app-footer class="footer-eo4geo">
-  <span><a href="http://eo4geo.uji.es">EO4GEO</a></span>
-  <span class="ml-auto"> <a href="#">FAQ</a> <a href="mailto:eo4geo@gmail.com?subject=EO4GEO Tools Contact">Contact</a></span>
-</app-footer>
+<app-eo4geo-footer></app-eo4geo-footer>

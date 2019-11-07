@@ -13,20 +13,20 @@ export class Lecture extends Object {
   public sourceDocs: BokInput[];
   public learningObjectives: BokInput[];
   public isPractical: boolean;
-  // --  public children = []; // needed for D3 nodes
 
   constructor(
     public currentNode: any = null
   ) {
     super();
     if (currentNode) {
-      this._id = currentNode.data.id;
-      this.name = currentNode.data.name;
-      this.description = currentNode.data.description;
-      this.ects = currentNode.data.ects;
-      this.sourceDocs = currentNode.data.sourceDocs;
-      this.learningObjectives = currentNode.data.learningObjectives;
-      this.isPractical = currentNode.data.isPractical;
+      this._id = currentNode.data.id ? currentNode.data.id : '';
+      this.name = currentNode.data.name ? currentNode.data.name : '';
+      this.description = currentNode.data.description ? currentNode.data.description : '';
+      this.ects = currentNode.data.ects ? currentNode.data.ects : 0;
+      this.sourceDocs = currentNode.data.sourceDocs ? currentNode.data.sourceDocs : [];
+      this.learningObjectives = currentNode.data.learningObjectives ? currentNode.data.learningObjectives : [];
+      this.isPractical = currentNode.data.isPractical ? currentNode.data.isPractical : false;
+      this.currentNode = null;
 
     } else {
       this._id = '';
@@ -82,5 +82,4 @@ export class LectureService {
       .doc<Lecture>(lectureId)
       .update(updatedLec);
   }
-
 }

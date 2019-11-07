@@ -44,7 +44,6 @@ export class LoginComponent implements OnInit {
       // User is signed in.
       this.ngZone.run(() => this.router.navigateByUrl(this.return)).then();
     }
-    firebase.analytics();
   }
 
   login() {

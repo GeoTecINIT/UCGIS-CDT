@@ -30,9 +30,10 @@ ngx-select-dropdown {
 .inline {
     display: inline-block;
     margin-left: 1em;
-    margin-top: 1em;
+  //  margin-top: 1em;
 }
 
 a {
     color: #1b8eb7 !important;
+    cursor: pointer !important;
 }

@@ -16,4 +16,7 @@ export class AddmodulesComponent implements OnInit {
   ngOnInit() {
   }
 
+  createNewModule() {
+  }
+
 }

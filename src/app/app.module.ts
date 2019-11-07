@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireAuthGuard } from '@angular/fire/auth-guard';
 
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
@@ -68,6 +69,9 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 
+import { Eo4geoFooterComponent } from './components/eo4geo-footer/eo4geo-footer.component';
+import { Eo4geoHeaderComponent } from './components/eo4geo-header/eo4geo-header.component';
+
 
 @NgModule({
   imports: [
@@ -109,13 +113,16 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
     HighlightPipe,
     PopupComponent,
     AddmodulesComponent,
-    CmodulesComponent
+    CmodulesComponent,
+    Eo4geoFooterComponent,
+    Eo4geoHeaderComponent
   ],
   providers: [
     {
       provide: LocationStrategy,
       useClass: HashLocationStrategy
     },
+    AngularFireAuthGuard,
     Base64img
   ],
   bootstrap: [AppComponent]
