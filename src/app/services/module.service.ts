@@ -3,7 +3,6 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { BokInput } from '../model/bokinput';
 import { Course } from './course.service';
-import { StudyProgramService, StudyProgram } from './studyprogram.service';
 
 const collection = 'modules';
 
@@ -23,15 +22,16 @@ export class Module extends Object {
   ) {
     super();
     if (currentNode) {
-      this._id = currentNode.data.id;
-      this.name = currentNode.data.name;
-      this.numSemester = currentNode.data.numSemester;
-      this.description = currentNode.data.description;
-      this.ects = currentNode.data.ects;
-      this.assessment = currentNode.data.assessment;
-      this.prerequisites = currentNode.data.prerequisites;
-      this.learningObjectives = currentNode.data.learningObjectives;
-      this.children = currentNode.data.children;
+      this._id = currentNode.data.id ? currentNode.data.id : '';
+      this.name = currentNode.data.name ? currentNode.data.name : '';
+      this.description = currentNode.data.description ? currentNode.data.description : '';
+      this.numSemester = currentNode.data.numSemester ? currentNode.data.numSemester : 0;
+      this.ects = currentNode.data.ects ? currentNode.data.ects : 0;
+      this.assessment = currentNode.data.assessment ? currentNode.data.assessment : '';
+      this.prerequisites = currentNode.data.prerequisites ? currentNode.data.prerequisites : [];
+      this.learningObjectives = currentNode.data.learningObjectives ? currentNode.data.learningObjectives : [];
+      this.children = currentNode.children ? currentNode.children : [];
+      this.currentNode = null;
 
     } else {
       this._id = '';
@@ -56,7 +56,7 @@ export class ModuleService {
   public _allModules: Module[];
   private db: AngularFirestore;
 
-  constructor(db: AngularFirestore, private studyprogramService: StudyProgramService) {
+  constructor(db: AngularFirestore) {
     this.db = db;
     this.getAllModules();
   }
@@ -108,5 +108,4 @@ export class ModuleService {
       .doc<Module>(moduleId)
       .update(updatedMod);
   }
-
 }

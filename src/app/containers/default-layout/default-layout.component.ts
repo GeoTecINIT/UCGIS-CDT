@@ -14,6 +14,7 @@ export class DefaultLayoutComponent implements OnDestroy {
   private changes: MutationObserver;
   public element: HTMLElement;
   public username: string;
+  isAnonymous = true;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -34,6 +35,7 @@ export class DefaultLayoutComponent implements OnDestroy {
       if (user) {
         // User is signed in.
         this.username = user.email;
+        this.isAnonymous = this.afAuth.auth.currentUser.isAnonymous;
       }
     });
   }

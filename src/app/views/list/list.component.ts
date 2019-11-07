@@ -6,6 +6,7 @@ import { Observable, Subscription } from 'rxjs';
 import { StudyProgramService , StudyProgram} from '../../services/studyprogram.service';
 import { FormControl } from '@angular/forms';
 import { ModalDirective } from 'ngx-bootstrap/modal';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-list',
@@ -17,10 +18,19 @@ export class ListComponent implements OnInit {
   advancedSearch = false;
   filteredStudyPrograms: any[];
   searchText: string;
+  isAnonymous = null;
 
   @ViewChild('dangerModal') public dangerModal: ModalDirective;
 
-  constructor(private studyprogramService: StudyProgramService) { }
+  constructor(private studyprogramService: StudyProgramService, public afAuth: AngularFireAuth) {
+    this.afAuth.auth.onAuthStateChanged(user => {
+      if (user) {
+        this.isAnonymous = user.isAnonymous;
+      } else {
+        this.isAnonymous = true;
+      }
+    });
+   }
 
   ngOnInit() {
     this.studyprogramService

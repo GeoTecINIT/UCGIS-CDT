@@ -12,12 +12,12 @@ import { ListComponent } from './views/list/list.component';
 import { DetailComponent } from './views/detail/detail.component';
 import { NewspComponent } from './views/newsp/newsp.component';
 
-import { AuthGuard} from './guards/auth.guard';
+import { AngularFireAuthGuard } from '@angular/fire/auth-guard';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'list',
     pathMatch: 'full'
   },
   {
@@ -44,7 +44,6 @@ export const routes: Routes = [
   {
     path: '',
     component: DefaultLayoutComponent,
-    canActivate: [AuthGuard],
     data: {
       title: 'CDT'
     },
@@ -68,6 +67,7 @@ export const routes: Routes = [
         data: {
           title: 'New'
         },
+        canActivate: [AngularFireAuthGuard],
         component: NewspComponent
       },
       {
@@ -75,6 +75,7 @@ export const routes: Routes = [
         data: {
           title: 'Duplicate'
         },
+        canActivate: [AngularFireAuthGuard],
         component: NewspComponent
       }
     ]
