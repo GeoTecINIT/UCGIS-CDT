@@ -14,7 +14,7 @@ export class StudyProgram extends Object {
   public name: string;
   public description: string;
   public affiliation: string;
-  public level: string;
+  // public level: string;
   public eqf: number;
   public children: Module[];
   public numSemesters: number;
@@ -30,7 +30,7 @@ export class StudyProgram extends Object {
       this.name = currentNode.data.name ? currentNode.data.name : '';
       this.description = currentNode.data.description ? currentNode.data.description : '';
       this.affiliation = currentNode.data.affiliation ? currentNode.data.affiliation : '';
-      this.level = currentNode.data.level ? currentNode.data.level : '';
+     //  this.level = currentNode.data.level ? currentNode.data.level : '';
       this.eqf = currentNode.data.eqf ? currentNode.data.eqf : 0;
       this.children = currentNode.children ? currentNode.children : [];
       this.numSemesters = currentNode.data.numSemesters ? currentNode.data.numSemesters : 0;
@@ -42,7 +42,7 @@ export class StudyProgram extends Object {
       this.name = '';
       this.description = '';
       this.affiliation = '';
-      this.level = '';
+     // this.level = '';
       this.eqf = 0;
       this.children = [];
       this.numSemesters = 0;

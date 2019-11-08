@@ -241,7 +241,7 @@ export class NewspComponent implements OnInit {
   addBokKnowledge() {
     const concept = this.textBoK.nativeElement.getElementsByTagName('h4')[0]
       .textContent;
-    const description = this.textBoK.nativeElement.children[1].children[3].textContent;
+    const desc = this.textBoK.nativeElement.children[1].children[3].textContent;
 
     const newConcept = new BokInput('', concept, concept, '', []);
 
@@ -255,25 +255,29 @@ export class NewspComponent implements OnInit {
     }
     if (this.currentTreeNode.depth === 0) {
       this.model.name = this.switchTitle ? this.model.name + ' ' + concept : this.model.name;
-      this.model.description = this.switchTitle ? this.model.description + ' ' + description : this.model.description;
+      this.model.description = this.switchTitle ? this.model.description + ' ' + desc : this.model.description;
     } else if (this.currentTreeNode.depth === 1) {
       this.modelModule.name = this.switchTitle ? this.modelModule.name + ' ' + concept : this.modelModule.name;
-      this.modelModule.description = this.switchTitle ? this.modelModule.description + ' ' + description : this.modelModule.description;
+      this.modelModule.description = this.switchDescription ? this.modelModule.description + ' ' + desc : this.modelModule.description;
     } else if (this.currentTreeNode.depth === 2) {
-      if (!this.modelCourse.prerequisites.includes(newConcept)) {
-        this.modelCourse.prerequisites.push(newConcept);
+      if (this.switchPre) {
+        if (!this.modelCourse.prerequisites.includes(newConcept)) {
+          this.modelCourse.prerequisites.push(newConcept);
+        }
       }
       this.modelCourse.name = this.switchTitle ? this.modelCourse.name + ' ' + concept : this.modelCourse.name;
-      this.modelCourse.description = this.switchTitle ? this.modelCourse.description + ' ' + description : this.modelCourse.description;
+      this.modelCourse.description = this.switchDescription ? this.modelCourse.description + ' ' + desc : this.modelCourse.description;
     } else if (this.currentTreeNode.depth === 3) {
-      if (!this.modelLecture.learningObjectives.includes(newConcept)) {
-        newConcept.skills.forEach(sk => {
-          const newSkill = new BokInput('', sk, newConcept.concept_id, '', []);
-          this.modelLecture.learningObjectives.push(newSkill);
-        });
+      if (this.switchLO) {
+        if (!this.modelLecture.learningObjectives.includes(newConcept)) {
+          newConcept.skills.forEach(sk => {
+            const newSkill = new BokInput('', sk, newConcept.concept_id, '', []);
+            this.modelLecture.learningObjectives.push(newSkill);
+          });
+        }
       }
       this.modelLecture.name = this.switchTitle ? this.modelLecture.name + ' ' + concept : this.modelLecture.name;
-      this.modelLecture.description = this.switchTitle ? this.modelLecture.description + ' ' + description : this.modelLecture.description;
+      this.modelLecture.description = this.switchDescription ? this.modelLecture.description + ' ' + desc : this.modelLecture.description;
     }
   }
 

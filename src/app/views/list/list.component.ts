@@ -51,7 +51,7 @@ export class ListComponent implements OnInit {
     this.filteredStudyPrograms = this.studyPrograms.filter(
       it =>
         it.name.toLowerCase().includes(search) ||
-        it.level.toLowerCase().includes(search)
+        it.description.toLowerCase().includes(search)
     );
   }
 }
