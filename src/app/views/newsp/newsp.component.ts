@@ -202,10 +202,12 @@ export class NewspComponent implements OnInit {
 
   addNodeInTree() {
     cv.addNewNode('New');
+    this.updateTreeStudyProgram();
   }
 
   addExistingToStudyProgram(node) {
     cv.addExistingNode(node);
+    this.updateTreeStudyProgram();
   }
 
   removeNodeInTree() {
@@ -279,41 +281,12 @@ export class NewspComponent implements OnInit {
       this.modelLecture.name = this.switchTitle ? this.modelLecture.name + ' ' + concept : this.modelLecture.name;
       this.modelLecture.description = this.switchDescription ? this.modelLecture.description + ' ' + desc : this.modelLecture.description;
     }
+
+    this.updateTreeStudyProgram();
   }
 
   removeBokKnowledge(model, index, attrTxt) {
     model[attrTxt].splice(index, 1);
   }
 
-  /*
-    addExtraSkill(skill) {
-      this.model.skills.push(skill);
-    }
-    // Add custom competence to model to force updating component, and to competences lists to find it again if removed
-    addExtraCompetence(comp) {
-      this.model.competences = [...this.model.competences, { preferredLabel: comp }];
-      this.escoService.allcompetences = [...this.escoService.allcompetences, { preferredLabel: comp }];
-      this.escoService.basicCompetences = [...this.escoService.basicCompetences, { preferredLabel: comp }];
-      console.log('add compr:' + comp);
-    }
-    fullListESCO() {
-      this.isfullESCOcompetences = !this.isfullESCOcompetences;
-    }
-    // custom search to match term also in altLabels
-    customSearchFn(term: string, item: Competence) {
-      let found = false;
-      term = term.toLocaleLowerCase();
-      if (item.preferredLabel.toLocaleLowerCase().indexOf(term) > -1) {
-        found = true;
-      }
-      if (item.altLabels && item.altLabels.length > 0) {
-        item.altLabels.forEach((alt) => {
-          if (alt.toLocaleLowerCase().indexOf(term) > -1) {
-          found = true;
-          }
-        });
-      }
-      return found;
-    }
-    */
 }

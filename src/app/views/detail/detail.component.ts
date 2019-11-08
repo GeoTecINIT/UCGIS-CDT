@@ -42,6 +42,7 @@ export class DetailComponent implements OnInit {
       .subscribe(program => {
         this.selectedProgram = program;
         this.displayTree(program);
+        console.log(this.selectedProgram);
       });
   }
 
@@ -69,6 +70,7 @@ export class DetailComponent implements OnInit {
         this.model = new Lecture(this.currentTreeNode);
         break;
     }
+    console.log(this.model);
   }
 
 }

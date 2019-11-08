@@ -46,7 +46,7 @@
                 <h1>{{ selectedProgram.name }}</h1>
                 <h5>{{ selectedProgram.affiliation }} </h5>
               </div>
-              <div class="col-md-2 offset-md-3">
+              <div class="col-md-2 offset-md-3" *ngIf="selectedProgram.field">
                 <h5>{{ selectedProgram.field.name }} ({{ selectedProgram.field.grandparent }})</h5>
               </div>
               <div class="col-md-1">
@@ -81,7 +81,7 @@
                     <label>Info</label>
                     <span tooltip="Click on any node to see more information about the module, course or lecture."
                       class="badge badge-primary badge-pill">i</span>
-                      <button class="btn btn-link float-right pull-right"
+                    <button class="btn btn-link float-right pull-right"
                       (click)="graphTextDiv.classList.contains('col-md-12') ? graphTextDiv.className = 'col-md-6' : graphTextDiv.className = 'col-md-12'">
                       <i class="float-right pull-right fa "
                         [ngClass]="{'fa-window-minimize': graphTextDiv?.classList.contains('col-md-12'), 'fa-window-maximize': graphTextDiv?.classList.contains('col-md-6')}"></i>
@@ -92,7 +92,7 @@
                         <p><b>Affiliation:</b> {{ model.affiliation }}</p>
                         <p class="text-justify">{{ model.description }}</p>
                         <p><b>EQF Level:</b> {{ model.eqf }}</p>
-                        <p><b>Field:</b> {{ model.field.name }} ({{ model.field.grandparent }})</p>
+                        <div *ngIf="model.field"> <p><b>Field:</b> {{ model.field.name }} ({{ model.field.grandparent }})</p> </div>
                         <p><b>Number of semesters:</b> {{ model.numSemesters }}</p>
                       </div>
                       <div *ngIf="currentTreeNode.depth == 1">
