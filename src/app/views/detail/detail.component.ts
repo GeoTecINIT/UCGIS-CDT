@@ -1,10 +1,12 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { StudyProgramService, StudyProgram } from '../../services/studyprogram.service';
+import { Module } from '../../services/module.service';
+import { Course } from '../../services/course.service';
+import { Lecture } from '../../services/lecture.service';
 import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import * as cv from '@eo4geo/curr-viz';
-
 
 @Component({
   selector: 'app-detail',
@@ -14,14 +16,15 @@ import * as cv from '@eo4geo/curr-viz';
 export class DetailComponent implements OnInit {
 
   statistics = [];
-  selectedItem = null;
+
+  currentTreeNode = null;
+  model = null;
 
   selectedProgram: StudyProgram;
   @ViewChild('dangerModal') public dangerModal: ModalDirective;
   @ViewChild('graphC') graphCElem: ElementRef;
 
   tree: any;
-  isCollapsed = false;
 
   constructor(
     public studyprogramService: StudyProgramService,
@@ -29,60 +32,43 @@ export class DetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getOccuProfileId();
+    this.getStudyProgId();
   }
 
-  getOccuProfileId(): void {
+  getStudyProgId(): void {
     const _id = this.route.snapshot.paramMap.get('name');
     this.studyprogramService
       .getStudyProgramById(_id)
       .subscribe(program => {
         this.selectedProgram = program;
-        this.selectedItem = program;
         this.displayTree(program);
       });
   }
 
   displayTree(program) {
-
-    /*     const treeData = {
-          'longName': 'New Study Program',
-          'type': 'studyProgram',
-          'name': 'New Study Program',
-          'parent': 'null',
-          'path': 0,
-          'proportions': [],
-          'r': 10,
-          'children': []
-        };
-     */
-
     program.parent = null;
     program.proportions = [];
     program.r = 10;
-
-    console.log('display graphTree');
     cv.displayCurricula('graphTree', program);
+    this.refreshCurrentNode();
   }
 
-  addNode(name: string = 'New node') {
-    console.log('Name:' + name);
-    cv.addNewNode(name);
-  }
-
-  removeNode() {
-    console.log('remove node');
-    cv.removeSelectedNode();
-  }
-
-  selectItem(key, collection) {
-    console.log('select item: ' + key + ' from ' + collection);
-    this.studyprogramService
-      .getItemByKeyFromCollection(key, collection).subscribe(item => (this.selectedItem = item));
-  }
-
-  deselectItem() {
-    this.selectedItem = null;
+  refreshCurrentNode() {
+    this.currentTreeNode = cv.getCurrentNode();
+    switch (this.currentTreeNode.depth) {
+      case 0:
+        this.model = new StudyProgram(this.currentTreeNode);
+        break;
+      case 1:
+        this.model = new Module(this.currentTreeNode);
+        break;
+      case 2:
+        this.model = new Course(this.currentTreeNode);
+        break;
+      case 3:
+        this.model = new Lecture(this.currentTreeNode);
+        break;
+    }
   }
 
 }

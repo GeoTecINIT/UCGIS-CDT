@@ -505,15 +505,17 @@
                               <h5 class="card-title">{{ l.name }}</h5>
                               <h6 class="text-muted inline">{{ l.ects }} ects</h6>
                               <a (click)="addExistingToStudyProgram(l)" class="inline">Add</a>
-                              <div *ngIf="!(showMoreIndexM == j && showMoreIndexSP == i && showMoreIndexC == k && showMoreIndexL == m)">
-                                  <a (click)="showMoreIndexM = j; showMoreIndexSP = i; showMoreIndexC = k; showMoreIndexC = m"
-                                    class="inline">Show more...</a>
-                                </div>
-                                <div *ngIf="showMoreIndexM == j && showMoreIndexSP == i && showMoreIndexC == k && showMoreIndexL == m">
-                                  <a (click)="showMoreIndexM = -1; showMoreIndexSP = -1; showMoreIndexC = -1; showMoreIndexC = -1"
-                                    class="inline">Show less...</a>
-                                  <p class="card-text">{{ c.description }}</p>
-                                </div>
+                              <div
+                                *ngIf="!(showMoreIndexM == j && showMoreIndexSP == i && showMoreIndexC == k && showMoreIndexL == m)">
+                                <a (click)="showMoreIndexM = j; showMoreIndexSP = i; showMoreIndexC = k; showMoreIndexC = m"
+                                  class="inline">Show more...</a>
+                              </div>
+                              <div
+                                *ngIf="showMoreIndexM == j && showMoreIndexSP == i && showMoreIndexC == k && showMoreIndexL == m">
+                                <a (click)="showMoreIndexM = -1; showMoreIndexSP = -1; showMoreIndexC = -1; showMoreIndexC = -1"
+                                  class="inline">Show less...</a>
+                                <p class="card-text">{{ c.description }}</p>
+                              </div>
                             </li>
                           </div>
                         </div>
