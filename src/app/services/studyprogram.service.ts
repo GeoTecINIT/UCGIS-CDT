@@ -26,7 +26,7 @@ export class StudyProgram extends Object {
   ) {
     super();
     if (currentNode) {
-      this._id = currentNode.data.id ? currentNode.data.id : '';
+      this._id = currentNode.data._id ? currentNode.data._id : '';
       this.name = currentNode.data.name ? currentNode.data.name : '';
       this.description = currentNode.data.description ? currentNode.data.description : '';
       this.affiliation = currentNode.data.affiliation ? currentNode.data.affiliation : '';

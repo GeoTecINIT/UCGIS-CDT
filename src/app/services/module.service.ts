@@ -22,7 +22,7 @@ export class Module extends Object {
   ) {
     super();
     if (currentNode) {
-      this._id = currentNode.data.id ? currentNode.data.id : '';
+      this._id = currentNode.data._id ? currentNode.data._id : '';
       this.name = currentNode.data.name ? currentNode.data.name : '';
       this.description = currentNode.data.description ? currentNode.data.description : '';
       this.numSemester = currentNode.data.numSemester ? currentNode.data.numSemester : 0;

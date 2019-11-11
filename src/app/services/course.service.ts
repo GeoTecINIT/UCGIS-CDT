@@ -24,7 +24,7 @@ export class Course extends Object {
   ) {
     super();
     if (currentNode) {
-      this._id = currentNode.data.id ? currentNode.data.id : '';
+      this._id = currentNode.data._id ? currentNode.data._id : '';
       this.name = currentNode.data.name ? currentNode.data.name : '';
       this.numSemester = currentNode.data.numSemester ? currentNode.data.numSemester : 0;
       this.description = currentNode.data.description ? currentNode.data.description : '';
