@@ -13,6 +13,7 @@ export class Lecture extends Object {
   public sourceDocs: BokInput[];
   public learningObjectives: BokInput[];
   public isPractical: boolean;
+  public concepts: string[];
 
   constructor(
     public currentNode: any = null
@@ -26,6 +27,7 @@ export class Lecture extends Object {
       this.sourceDocs = currentNode.data.sourceDocs ? currentNode.data.sourceDocs : [];
       this.learningObjectives = currentNode.data.learningObjectives ? currentNode.data.learningObjectives : [];
       this.isPractical = currentNode.data.isPractical ? currentNode.data.isPractical : false;
+      this.concepts = currentNode.data.concepts ? currentNode.data.concepts : [];
       this.currentNode = null;
 
     } else {
@@ -36,6 +38,7 @@ export class Lecture extends Object {
       this.sourceDocs = [];
       this.learningObjectives = [];
       this.isPractical = false;
+      this.concepts = [];
     }
   }
 }

@@ -20,6 +20,7 @@ export class StudyProgram extends Object {
   public numSemesters: number;
   public field: Field;
   public userId: string;
+  public concepts: string[];
 
   constructor(
     public currentNode: any = null
@@ -36,6 +37,7 @@ export class StudyProgram extends Object {
       this.numSemesters = currentNode.data.numSemesters ? currentNode.data.numSemesters : 0;
       this.field = currentNode.data.field ? currentNode.data.field : null;
       this.userId = currentNode.data.userId ? currentNode.data.userId : '';
+      this.concepts = currentNode.data.concepts ? currentNode.data.concepts : [];
       // this.currentNode = null;
     } else {
       this._id = '';
@@ -48,6 +50,7 @@ export class StudyProgram extends Object {
       this.numSemesters = 0;
       this.field = null;
       this.userId = '';
+      this.concepts = [];
     }
   }
 }

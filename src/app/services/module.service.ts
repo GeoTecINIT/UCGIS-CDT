@@ -16,6 +16,7 @@ export class Module extends Object {
   public prerequisites: BokInput[];
   public learningObjectives: BokInput[];
   public children: Course[];
+  public concepts: string[];
 
   constructor(
     public currentNode: any = null
@@ -31,6 +32,7 @@ export class Module extends Object {
       this.prerequisites = currentNode.data.prerequisites ? currentNode.data.prerequisites : [];
       this.learningObjectives = currentNode.data.learningObjectives ? currentNode.data.learningObjectives : [];
       this.children = currentNode.children ? currentNode.children : [];
+      this.concepts = currentNode.data.concepts ? currentNode.data.concepts : [];
       this.currentNode = null;
 
     } else {
@@ -43,6 +45,7 @@ export class Module extends Object {
       this.prerequisites = [];
       this.learningObjectives = [];
       this.children = [];
+      this.concepts = [];
     }
   }
 }
