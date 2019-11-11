@@ -16,13 +16,14 @@ export class Module extends Object {
   public prerequisites: BokInput[];
   public learningObjectives: BokInput[];
   public children: Course[];
+  public concepts: string[];
 
   constructor(
     public currentNode: any = null
   ) {
     super();
     if (currentNode) {
-      this._id = currentNode.data.id ? currentNode.data.id : '';
+      this._id = currentNode.data._id ? currentNode.data._id : '';
       this.name = currentNode.data.name ? currentNode.data.name : '';
       this.description = currentNode.data.description ? currentNode.data.description : '';
       this.numSemester = currentNode.data.numSemester ? currentNode.data.numSemester : 0;
@@ -31,6 +32,7 @@ export class Module extends Object {
       this.prerequisites = currentNode.data.prerequisites ? currentNode.data.prerequisites : [];
       this.learningObjectives = currentNode.data.learningObjectives ? currentNode.data.learningObjectives : [];
       this.children = currentNode.children ? currentNode.children : [];
+      this.concepts = currentNode.data.concepts ? currentNode.data.concepts : [];
       this.currentNode = null;
 
     } else {
@@ -43,6 +45,7 @@ export class Module extends Object {
       this.prerequisites = [];
       this.learningObjectives = [];
       this.children = [];
+      this.concepts = [];
     }
   }
 }

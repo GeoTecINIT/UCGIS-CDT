@@ -20,13 +20,14 @@ export class StudyProgram extends Object {
   public numSemesters: number;
   public field: Field;
   public userId: string;
+  public concepts: string[];
 
   constructor(
     public currentNode: any = null
   ) {
     super();
     if (currentNode) {
-      this._id = currentNode.data.id ? currentNode.data.id : '';
+      this._id = currentNode.data._id ? currentNode.data._id : '';
       this.name = currentNode.data.name ? currentNode.data.name : '';
       this.description = currentNode.data.description ? currentNode.data.description : '';
       this.affiliation = currentNode.data.affiliation ? currentNode.data.affiliation : '';
@@ -36,6 +37,7 @@ export class StudyProgram extends Object {
       this.numSemesters = currentNode.data.numSemesters ? currentNode.data.numSemesters : 0;
       this.field = currentNode.data.field ? currentNode.data.field : null;
       this.userId = currentNode.data.userId ? currentNode.data.userId : '';
+      this.concepts = currentNode.data.concepts ? currentNode.data.concepts : [];
       // this.currentNode = null;
     } else {
       this._id = '';
@@ -48,6 +50,7 @@ export class StudyProgram extends Object {
       this.numSemesters = 0;
       this.field = null;
       this.userId = '';
+      this.concepts = [];
     }
   }
 }

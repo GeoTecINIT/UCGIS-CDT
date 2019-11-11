@@ -111,9 +111,7 @@ export class NewspComponent implements OnInit {
       } else {
         this.title = 'Duplicate Study Program';
       }
-      this.getStudyprogramId();
       this.fillForm();
-      // this.displayTree();
     } else {
       this.title = 'Add New Study Program';
       this.displayTree();
@@ -128,9 +126,14 @@ export class NewspComponent implements OnInit {
   }
 
   fillForm(): void {
+    this._id = this.route.snapshot.paramMap.get('name');
     this.studyprogramService
       .getStudyProgramById(this._id)
-      .subscribe(sp => (this.model = sp));
+      .subscribe(sp => {
+        this.model = sp;
+        this.displayTree(sp);
+        console.log(sp);
+      });
   }
 
   searchInBok(text: string) {
@@ -150,23 +153,32 @@ export class NewspComponent implements OnInit {
     this.limitSearch = this.limitSearch + 5;
   }
 
-  displayTree() {
+  displayTree(program = null) {
 
-    console.log('Display tree');
+    if (program) {
+      console.log('Display existing tree');
+      program.parent = null;
+      program.proportions = [];
+      program.r = 10;
+      cv.displayCurricula('graphTree', program);
+      this.refreshCurrentNode();
+    } else {
 
-    const treeData = {
-      'longName': 'New Study Program',
-      'type': 'studyProgram',
-      'name': 'New Study Program',
-      'parent': 'null',
-      'path': 0,
-      'proportions': [],
-      'r': 10,
-      'children': []
-    };
+      console.log('Display new tree');
+      const treeData = {
+        'longName': 'New Study Program',
+        'type': 'studyProgram',
+        'name': 'New Study Program',
+        'parent': 'null',
+        'path': 0,
+        'proportions': [],
+        'r': 10,
+        'children': []
+      };
 
-    cv.displayCurricula('graphTree', treeData);
-    this.currentTreeNode = cv.getCurrentNode();
+      cv.displayCurricula('graphTree', treeData);
+      this.currentTreeNode = cv.getCurrentNode();
+    }
   }
 
   refreshCurrentNode() {
@@ -257,10 +269,16 @@ export class NewspComponent implements OnInit {
     }
     if (this.currentTreeNode.depth === 0) {
       this.model.name = this.switchTitle ? this.model.name + ' ' + concept : this.model.name;
-      this.model.description = this.switchTitle ? this.model.description + ' ' + desc : this.model.description;
+      this.model.description = this.switchDescription ? this.model.description + ' ' + desc : this.model.description;
+      if (this.switchTitle || this.switchDescription) {
+        this.model.concepts.push(concept);
+      }
     } else if (this.currentTreeNode.depth === 1) {
       this.modelModule.name = this.switchTitle ? this.modelModule.name + ' ' + concept : this.modelModule.name;
       this.modelModule.description = this.switchDescription ? this.modelModule.description + ' ' + desc : this.modelModule.description;
+      if (this.switchTitle || this.switchDescription) {
+        this.modelModule.concepts.push(concept);
+      }
     } else if (this.currentTreeNode.depth === 2) {
       if (this.switchPre) {
         if (!this.modelCourse.prerequisites.includes(newConcept)) {
@@ -269,6 +287,9 @@ export class NewspComponent implements OnInit {
       }
       this.modelCourse.name = this.switchTitle ? this.modelCourse.name + ' ' + concept : this.modelCourse.name;
       this.modelCourse.description = this.switchDescription ? this.modelCourse.description + ' ' + desc : this.modelCourse.description;
+      if (this.switchTitle || this.switchDescription || this.switchPre) {
+        this.modelCourse.concepts.push(concept);
+      }
     } else if (this.currentTreeNode.depth === 3) {
       if (this.switchLO) {
         if (!this.modelLecture.learningObjectives.includes(newConcept)) {
@@ -280,6 +301,9 @@ export class NewspComponent implements OnInit {
       }
       this.modelLecture.name = this.switchTitle ? this.modelLecture.name + ' ' + concept : this.modelLecture.name;
       this.modelLecture.description = this.switchDescription ? this.modelLecture.description + ' ' + desc : this.modelLecture.description;
+      if (this.switchTitle || this.switchDescription || this.switchLO) {
+        this.modelLecture.concepts.push(concept);
+      }
     }
 
     this.updateTreeStudyProgram();
