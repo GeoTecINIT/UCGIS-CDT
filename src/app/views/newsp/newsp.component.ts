@@ -10,6 +10,8 @@ import { Course } from '../../services/course.service';
 import { Lecture } from '../../services/lecture.service';
 import { BokInput } from '../../model/bokinput';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { ModalDirective } from 'ngx-bootstrap/modal';
+
 
 @Component({
   selector: 'app-newsp',
@@ -29,6 +31,7 @@ export class NewspComponent implements OnInit {
 
   textByDepth = 'module';
   textByDepthRemove = 'study program';
+  linkBoKto = 'name';
 
   public value: string[];
   public current: string;
@@ -75,6 +78,8 @@ export class NewspComponent implements OnInit {
   };
 
   @ViewChild('textBoK') textBoK: ElementRef;
+
+  @ViewChild('bokModal') public bokModal: ModalDirective;
 
   constructor(
     private studyprogramService: StudyProgramService,
@@ -182,10 +187,6 @@ export class NewspComponent implements OnInit {
   }
 
   refreshCurrentNode() {
-    /*   modelModule = new Module('', '', 0, '', 0, '', [], [], []);
-      modelCourse = new Course('', '', 0, '', 0, '', '', [], [], []);
-      modelLecture = new Lecture('', '', '', 0, [], [], false);
-   */
     this.isSearchingExisting = false;
     this.currentTreeNode = cv.getCurrentNode();
     switch (this.currentTreeNode.depth) {
@@ -267,45 +268,45 @@ export class NewspComponent implements OnInit {
         newConcept.skills.push(skill.innerText);
       }
     }
-    if (this.currentTreeNode.depth === 0) {
-      this.model.name = this.switchTitle ? this.model.name + ' ' + concept : this.model.name;
-      this.model.description = this.switchDescription ? this.model.description + ' ' + desc : this.model.description;
-      if (this.switchTitle || this.switchDescription) {
-        this.model.concepts.push(concept);
-      }
-    } else if (this.currentTreeNode.depth === 1) {
-      this.modelModule.name = this.switchTitle ? this.modelModule.name + ' ' + concept : this.modelModule.name;
-      this.modelModule.description = this.switchDescription ? this.modelModule.description + ' ' + desc : this.modelModule.description;
-      if (this.switchTitle || this.switchDescription) {
-        this.modelModule.concepts.push(concept);
-      }
-    } else if (this.currentTreeNode.depth === 2) {
-      if (this.switchPre) {
-        if (!this.modelCourse.prerequisites.includes(newConcept)) {
-          this.modelCourse.prerequisites.push(newConcept);
-        }
-      }
-      this.modelCourse.name = this.switchTitle ? this.modelCourse.name + ' ' + concept : this.modelCourse.name;
-      this.modelCourse.description = this.switchDescription ? this.modelCourse.description + ' ' + desc : this.modelCourse.description;
-      if (this.switchTitle || this.switchDescription || this.switchPre) {
-        this.modelCourse.concepts.push(concept);
-      }
-    } else if (this.currentTreeNode.depth === 3) {
-      if (this.switchLO) {
-        if (!this.modelLecture.learningObjectives.includes(newConcept)) {
-          newConcept.skills.forEach(sk => {
-            const newSkill = new BokInput('', sk, newConcept.concept_id, '', []);
-            this.modelLecture.learningObjectives.push(newSkill);
-          });
-        }
-      }
-      this.modelLecture.name = this.switchTitle ? this.modelLecture.name + ' ' + concept : this.modelLecture.name;
-      this.modelLecture.description = this.switchDescription ? this.modelLecture.description + ' ' + desc : this.modelLecture.description;
-      if (this.switchTitle || this.switchDescription || this.switchLO) {
-        this.modelLecture.concepts.push(concept);
-      }
+
+    let modelToUpdate;
+    switch (this.currentTreeNode.depth) {
+      case 0:
+        modelToUpdate = this.model;
+        break;
+      case 1:
+        modelToUpdate = this.modelModule;
+        break;
+      case 2:
+        modelToUpdate = this.modelCourse;
+        break;
+      case 3:
+        modelToUpdate = this.modelLecture;
+        break;
     }
 
+    switch (this.linkBoKto) {
+      case 'name':
+        modelToUpdate[this.linkBoKto] = modelToUpdate[this.linkBoKto] + ' ' + concept;
+        break;
+      case 'description':
+        modelToUpdate[this.linkBoKto] = modelToUpdate[this.linkBoKto] + ' ' + desc;
+        break;
+      case 'prerequisites':
+        if (!modelToUpdate.prerequisites.includes(newConcept)) {
+          modelToUpdate.prerequisites.push(newConcept);
+        }
+        break;
+      case 'learningObjectives':
+        if (!modelToUpdate.learningObjectives.includes(newConcept)) {
+          newConcept.skills.forEach(sk => {
+            const newSkill = new BokInput('', sk, newConcept.concept_id, '', []);
+            modelToUpdate.learningObjectives.push(newSkill);
+          });
+        }
+        break;
+    }
+    this.bokModal.hide();
     this.updateTreeStudyProgram();
   }
 
