@@ -59,19 +59,34 @@
                   </div>
                   <div class="card-body" style="background-color: #faf9f8">
                     <div class="row">
-                      <div class="col-md-12">
+                      <div class="col-md-10">
                         <div class="form-group">
                           <label for="title">Title</label>
                           <input type="text" class="form-control" id="title" placeholder="Title"
                             [(ngModel)]="model.name" name="title" required (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
-                      <div class="col-md-12">
+                      <div class="col-md-2 align-middle m-auto">
+                        <button type="button" class="btn btn-primary btn-sm" (click)="bokModal.show(); linkBoKto='name'">
+                          Link BoK title
+                        </button>
+                      </div>
+                      <div class="col-md-10">
                         <div class="form-group">
                           <label for="title">Affiliation</label>
                           <input type="text" class="form-control" id="affiliation" placeholder="Affiliation"
                             [(ngModel)]="model.affiliation" name="affiliation" required
                             (keyup)="updateTreeStudyProgram()" />
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <label for="eqf">EQF</label>
+                          <span
+                            tooltip="The core of the EQF concerns eight reference levels describing what a learner knows, understands and is able to do – 'learning outcomes', ranging from basic (Level 1) to advanced (Level 8)."
+                            class="badge badge-primary badge-pill">i</span>
+                          <input type="number" size="1" class="form-control" id="eqf" [(ngModel)]="model.eqf" name="eqf"
+                            min="1" max="8" (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
                     </div>
@@ -100,6 +115,7 @@
                             (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
+
                     </div>
                     <div class="row">
                       <div class="col-md-10">
@@ -109,28 +125,23 @@
                             [(ngModel)]="model.description" rows="4" (keyup)="updateTreeStudyProgram()"></textarea>
                         </div>
                       </div>
-                      <div class="col-md-2">
-                        <div class="form-group">
-                          <label for="eqf">EQF</label>
-                          <span
-                            tooltip="The core of the EQF concerns eight reference levels describing what a learner knows, understands and is able to do – 'learning outcomes', ranging from basic (Level 1) to advanced (Level 8)."
-                            class="badge badge-primary badge-pill">i</span>
-                          <input type="number" size="1" class="form-control" id="eqf" [(ngModel)]="model.eqf" name="eqf"
-                            min="1" max="8" (keyup)="updateTreeStudyProgram()" />
-                        </div>
+                      <div class="col-md-2 align-middle m-auto">
+                        <button type="button" class="btn btn-primary btn-sm" (click)="bokModal.show(); linkBoKto='description'">
+                          Link BoK description
+                        </button>
                       </div>
                     </div>
-                    <div class="row">
+                    <!--  <div class="row">
                       <div class="col-md-8">
                         Explore the Body of Knowledge to use its content in your study program.
                       </div>
                       <div class="col-md-4">
-                        <button type="button" class="btn btn-primary" (click)="isDisplayBoK = !isDisplayBoK">
+                        <button type="button" class="btn btn-primary" (click)="bokModal.show(); isDisplayBoK = !isDisplayBoK"> 
                           <i class="fa" [ngClass]="{'fa-search': !isDisplayBoK, 'fa-close': isDisplayBoK}"></i>
                           {{ isDisplayBoK? 'Close BoK' : 'Explore BoK' }}
                         </button>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </form>
@@ -150,12 +161,17 @@
                   </div>
                   <div class="card-body" style="background-color: #faf9f8">
                     <div class="row">
-                      <div class="col-md-12">
+                      <div class="col-md-10">
                         <div class="form-group">
                           <label for="title">Title</label>
                           <input type="text" class="form-control" id="title" placeholder="Title"
                             [(ngModel)]="modelModule.name" name="title" required (keyup)="updateTreeStudyProgram()" />
                         </div>
+                      </div>
+                      <div class="col-md-2 align-middle m-auto">
+                        <button type="button" class="btn btn-primary btn-sm" (click)="bokModal.show(); linkBoKto='name'">
+                          Link BoK title
+                        </button>
                       </div>
                     </div>
                     <div class="row">
@@ -178,13 +194,45 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-12">
+                      <div class="col-md-10">
                         <div class="form-group">
                           <label for="description">Description</label>
                           <textarea class="form-control" id="description" placeholder="Description" name="description"
                             [(ngModel)]="modelModule.description" rows="4"
                             (keyup)="updateTreeStudyProgram()"></textarea>
                         </div>
+                      </div>
+                      <div class="col-md-2 align-middle m-auto">
+                        <button type="button" class="btn btn-primary btn-sm" (click)="bokModal.show(); linkBoKto='description'">
+                          Link BoK description
+                        </button>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-10">
+                        <div class="form-group">
+                          <label for="prerequisites">Prerequisites</label>
+                          <div class="col-md-12">
+                            <div *ngIf="modelModule && modelModule.prerequisites">
+                              <ul>
+                                <div *ngFor="let p of modelModule.prerequisites; index as i ">
+                                  <li>{{p.concept_id}} <button type="button" class="btn btn-link"
+                                      (click)="removeBokKnowledge(modelModule, i, 'prerequisites')">
+                                      <i class="fa fa-remove"></i>
+                                    </button></li>
+                                </div>
+                              </ul>
+                            </div>
+                            <div *ngIf="!modelModule.prerequisites || modelModule.prerequisites.length == 0">
+                              Explore the Body of Knowledge to add some.
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-2 align-middle m-auto">
+                        <button type="button" class="btn btn-primary btn-sm" (click)="bokModal.show(); linkBoKto='prerequisites'">
+                          Link BoK prerequisite
+                        </button>
                       </div>
                     </div>
                     <div class="row">
@@ -196,7 +244,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="row">
+                    <!--  <div class="row">
                       <div class="col-md-8">
                         Explore the Body of Knowledge to use its content in your study program.
                       </div>
@@ -206,7 +254,7 @@
                           {{ isDisplayBoK? 'Close BoK' : 'Explore BoK' }}
                         </button>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </form>
@@ -226,16 +274,21 @@
                   </div>
                   <div class="card-body" style="background-color: #faf9f8">
                     <div class="row">
-                      <div class="col-md-12">
+                      <div class="col-md-10">
                         <div class="form-group">
                           <label for="title">Title</label>
                           <input type="text" class="form-control" id="title" placeholder="Title"
                             [(ngModel)]="modelCourse.name" name="title" required (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
+                      <div class="col-md-2 align-middle m-auto">
+                        <button type="button" class="btn btn-primary btn-sm" (click)="bokModal.show(); linkBoKto='name'">
+                          Link BoK title
+                        </button>
+                      </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-12">
+                      <div class="col-md-10">
                         <div class="form-group">
                           <label for="description">Description</label>
                           <textarea class="form-control" id="description" placeholder="Description" name="description"
@@ -243,9 +296,14 @@
                             rows="4"></textarea>
                         </div>
                       </div>
+                      <div class="col-md-2 align-middle m-auto">
+                        <button type="button" class="btn btn-primary btn-sm" (click)="bokModal.show(); linkBoKto='description'">
+                          Link BoK description
+                        </button>
+                      </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-12">
+                      <div class="col-md-10">
                         <div class="form-group">
                           <label for="title">Prerequisites</label>
                           <div class="row">
@@ -266,6 +324,40 @@
                             </div>
                           </div>
                         </div>
+                      </div>
+                      <div class="col-md-2 align-middle m-auto">
+                        <button type="button" class="btn btn-primary btn-sm" (click)="bokModal.show(); linkBoKto='prerequisites'">
+                          Link BoK prerequisite
+                        </button>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-10">
+                        <div class="form-group">
+                          <label for="title">Learning Objectives</label>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div *ngIf="modelCourse && modelCourse.learningObjectives">
+                                <ul>
+                                  <div *ngFor="let p of modelCourse.prerequisites; index as i ">
+                                    <li>{{p.concept_id}} <button type="button" class="btn btn-link"
+                                        (click)="removeBokKnowledge(modelCourse, i, 'learningObjectives')">
+                                        <i class="fa fa-remove"></i>
+                                      </button></li>
+                                  </div>
+                                </ul>
+                              </div>
+                              <div *ngIf="!modelCourse.learningObjectives || modelCourse.learningObjectives.length == 0">
+                                Explore the Body of Knowledge to add some.
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-2 align-middle m-auto">
+                        <button type="button" class="btn btn-primary btn-sm" (click)="bokModal.show(); linkBoKto='learningObjectives'">
+                          Link BoK learning objectives
+                        </button>
                       </div>
                     </div>
                     <div class="row">
@@ -310,7 +402,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="row">
+                    <!--  <div class="row">
                       <div class="col-md-8">
                         Explore the Body of Knowledge to use its content in your study program.
                       </div>
@@ -320,7 +412,7 @@
                           {{ isDisplayBoK? 'Close BoK' : 'Explore BoK' }}
                         </button>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </form>
@@ -340,22 +432,32 @@
                   </div>
                   <div class="card-body" style="background-color: #faf9f8">
                     <div class="row">
-                      <div class="col-md-12">
+                      <div class="col-md-10">
                         <div class="form-group">
                           <label for="title">Title</label>
                           <input type="text" class="form-control" id="title" placeholder="Title"
                             [(ngModel)]="modelLecture.name" name="title" required (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
+                      <div class="col-md-2 align-middle m-auto">
+                        <button type="button" class="btn btn-primary btn-sm" (click)="bokModal.show(); linkBoKto='name'">
+                          Link BoK title
+                        </button>
+                      </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-12">
+                      <div class="col-md-10">
                         <div class="form-group">
                           <label for="description">Description</label>
                           <textarea class="form-control" id="description" placeholder="Description" name="description"
                             [(ngModel)]="modelLecture.description" rows="4"
                             (keyup)="updateTreeStudyProgram()"></textarea>
                         </div>
+                      </div>
+                      <div class="col-md-2 align-middle m-auto">
+                        <button type="button" class="btn btn-primary btn-sm" (click)="bokModal.show(); linkBoKto='description'">
+                          Link BoK description
+                        </button>
                       </div>
                     </div>
                     <div class="row">
@@ -380,44 +482,19 @@
                         </div>
                       </div>
                     </div>
+           
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group">
-                          <label for="learningObjectives">Learning Objectives</label>
-                          <span tooltip="Learning objectives from the Body of Knowledge"
-                            class="badge badge-primary badge-pill">i</span>
-                          <div class="row">
-                            <div class="col-md-12">
-                              <div *ngIf="modelCourse && modelLecture.learningObjectives">
-                                <ul>
-                                  <div *ngFor="let p of modelLecture.learningObjectives; index as i ">
-                                    <li>{{p.name}} <button type="button" class="btn btn-link"
-                                        (click)="removeBokKnowledge(modelLecture, i, 'learningObjectives')">
-                                        <i class="fa fa-remove"></i>
-                                      </button></li>
-                                  </div>
-                                </ul>
-                              </div>
-                              <div *ngIf="!modelLecture.learningObjectives">
-                                Explore the Body of Knowledge to add some.
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group">
-                          <label for="sourceDocs">Source Docs</label>
+                          <label for="bibliography">Bibliography</label>
                           <span tooltip="" class="badge badge-primary badge-pill">i</span>
-                          <input type="text" class="form-control" id="sourceDocs" placeholder="Source Docs"
-                            [(ngModel)]="modelLecture.sourceDocs" name="sourceDocs"
+                          <input type="text" class="form-control" id="bibliography" placeholder="Bibliography"
+                            [(ngModel)]="modelLecture.bibliography" name="bibliography"
                             (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
                     </div>
-                    <div class="row">
+                    <!--  <div class="row">
                       <div class="col-md-8">
                         Explore the Body of Knowledge to use its content in your study program.
                       </div>
@@ -427,7 +504,7 @@
                           {{ isDisplayBoK? 'Close BoK' : 'Explore BoK' }}
                         </button>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </form>
@@ -547,317 +624,140 @@
             </div>
           </div>
 
-          <!-- Search Knowledge and skills card -->
-          <div [hidden]="!isDisplayBoK" class="card card-accent-secondary">
-            <div class="card-header">
-              Body of Knowledge - Search knowledge and skills
-              <span
-                tooltip="Browse in the BoK for knowledge required for your new occupational profile. Once in the required knowledge, press the button 'Add' it will link the concept and the learning outcomes dependent on it."
-                class="badge badge-primary badge-pill">i</span>
-            </div>
-            <div class="card-body" style="background-color: #faf9f8">
-              <div class="row text-center">
-                <div class="col-lg-4 col-sm-6">
-                  <div class="row text-center">
-                    <div class="col-md-12">
-                      <div class="input-group">
-                        <div class="input-group-prepend" dropdown>
-                          <button type="button" class="btn btn-primary">
-                            <i class="fa fa-search"></i>
-                          </button>
-                        </div>
-                        <input #searchInput type="text" id="input-competence-filter" name="input-competence-filter"
-                          class="form-control" (keyup)="searchInBok(searchInput.value)"
-                          placeholder="Search Knowledge" />
+
+
+          <!--  -->
+
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>
+
+<div bsModal #bokModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-info modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Link BoK content to your study program.</h4>
+        <button type="button" class="close" (click)="bokModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Search Knowledge and skills card  [hidden]="!isDisplayBoK" -->
+        <div class="card card-accent-secondary">
+          <div class="card-header">
+            Body of Knowledge - Search knowledge and skills
+            <span
+              tooltip="Browse in the BoK for knowledge required for your new occupational profile. Once in the required knowledge, press the button 'Add' it will link the concept and the learning outcomes dependent on it."
+              class="badge badge-primary badge-pill">i</span>
+          </div>
+          <div class="card-body" style="background-color: #faf9f8">
+            <div class="row text-center">
+              <div class="col-lg-4 col-sm-6">
+                <div class="row text-center">
+                  <div class="col-md-12">
+                    <div class="input-group">
+                      <div class="input-group-prepend" dropdown>
+                        <button type="button" class="btn btn-primary">
+                          <i class="fa fa-search"></i>
+                        </button>
                       </div>
+                      <input #searchInput type="text" id="input-competence-filter" name="input-competence-filter"
+                        class="form-control" (keyup)="searchInBok(searchInput.value)" placeholder="Search Knowledge" />
                     </div>
-                    <!-- <div class="col-md-5">
-                      <button type="submit" class="btn btn-primary"
-                        tooltip="Search or navigate in the graph to add knowledge." (click)="addBokKnowledge()">
-                        Link this concept <i class="fa fa-arrow-right"></i>
-                      </button>
-                    </div> -->
-                  </div>
-                  <div id="bubbles">
                   </div>
                 </div>
-                <div class="col-lg-8 col-sm-6 text-justify">
-                  <div class="row text-center">
-                    <div class="col-sm-3">
-                      Select attributes to link:
-                    </div>
-                    <div class="col-md-6" style="display: inline-flex">
-                      <span class="input-group-prepend">
-                        <label class="switch switch-label switch-pill switch-outline-primary-alt">
-                          <input class="switch-input" type="checkbox" value="title" (checked)="switchTitle"
-                            [(ngModel)]="switchTitle" />
-                          <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
-                        </label>
-                        <div class="pl-1 pr-2">Title</div>
-                      </span>
-                      <span class="input-group-prepend">
-                        <label class="switch switch-label switch-pill switch-outline-primary-alt">
-                          <input class="switch-input" type="checkbox" value="description" (checked)="switchDescription"
-                            [(ngModel)]="switchDescription" />
-                          <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
-                        </label>
-                        <div class="pl-1 pr-2">Description</div>
-                      </span>
-                      <span class="input-group-prepend">
-                        <label class="switch switch-label switch-pill switch-outline-primary-alt">
-                          <input class="switch-input" type="checkbox" value="prerequisites" (checked)="switchPre"
-                            [disabled]="currentTreeNode.depth!=2" [(ngModel)]="switchPre" />
-                          <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
-                        </label>
-                        <div class="pl-1 pr-2">Prerequisites</div>
-                      </span>
-                      <span class="input-group-prepend">
-                        <label class="switch switch-label switch-pill switch-outline-primary-alt">
-                          <input class="switch-input" type="checkbox" value="learningObjectives" (checked)="switchLO"
-                            [disabled]="currentTreeNode.depth!=3" [(ngModel)]="switchLO" />
-                          <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
-                        </label>
-                        <div class="pl-1 pr-2">Learning Objectives</div>
-                      </span>
-                    </div>
-                    <div class="col-sm-3">
-                      <button type="submit" class="btn btn-primary"
-                        tooltip="Search or navigate in the graph to add knowledge." (click)="addBokKnowledge()">
-                        Link this concept <i class="fa fa-arrow-up"></i>
-                      </button>
-                    </div>
-                  </div>
-                  <a [hidden]="currentConcept != ''" (click)="navigateToConcept('GIST')">
-                    < Back </a> <div #textBoK id="textBoK" [hidden]="currentConcept == '' && currentConcept != 'GIST'">
+                <div id="bubbles">
                 </div>
-                <div class="col" *ngIf="hasResults">
-                  <h3 class="center">
-                    {{ selectedNodes.length }} result(s) for
-                    {{ searchInput.value }}
-                  </h3>
-                  <div *ngFor="let item of selectedNodes; index as i">
-                    <div *ngIf="i < limitSearch">
-                      <div class="inline">{{ item.nameShort }}</div>
-                      <div class="inline" [innerHTML]="
-                                item.name | truncate: 100:searchInput.value
-                              "></div>
-                      <a class="inline" (click)="navigateToConcept(item.nameShort)">
-                        Details
-                      </a>
-                      <div class="small" [innerHTML]="item.description | truncate: 100:searchInput.value"></div>
-                    </div>
+              </div>
+              <div class="col-lg-8 col-sm-6 text-justify">
+                <!--     <div class="row text-center">
+                  <div class="col-sm-3">
+                    Select attributes to link:
                   </div>
-                  <div>
-                    <br />
-                    <a *ngIf="limitSearch < selectedNodes.length" (click)="incrementLimit()">
-                      Show more ...
+                  <div class="col-md-6" style="display: inline-flex">
+                    <span class="input-group-prepend">
+                      <label class="switch switch-label switch-pill switch-outline-primary-alt">
+                        <input class="switch-input" type="checkbox" value="title" (checked)="switchTitle"
+                          [(ngModel)]="switchTitle" />
+                        <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
+                      </label>
+                      <div class="pl-1 pr-2">Title</div>
+                    </span>
+                    <span class="input-group-prepend">
+                      <label class="switch switch-label switch-pill switch-outline-primary-alt">
+                        <input class="switch-input" type="checkbox" value="description" (checked)="switchDescription"
+                          [(ngModel)]="switchDescription" />
+                        <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
+                      </label>
+                      <div class="pl-1 pr-2">Description</div>
+                    </span>
+                    <span class="input-group-prepend">
+                      <label class="switch switch-label switch-pill switch-outline-primary-alt">
+                        <input class="switch-input" type="checkbox" value="prerequisites" (checked)="switchPre"
+                          [disabled]="currentTreeNode.depth!=2" [(ngModel)]="switchPre" />
+                        <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
+                      </label>
+                      <div class="pl-1 pr-2">Prerequisites</div>
+                    </span>
+                    <span class="input-group-prepend">
+                      <label class="switch switch-label switch-pill switch-outline-primary-alt">
+                        <input class="switch-input" type="checkbox" value="learningObjectives" (checked)="switchLO"
+                          [disabled]="currentTreeNode.depth!=3" [(ngModel)]="switchLO" />
+                        <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
+                      </label>
+                      <div class="pl-1 pr-2">Learning Objectives</div>
+                    </span>
+                  </div>
+                  <div class="col-sm-3">
+                    <button type="submit" class="btn btn-primary"
+                      tooltip="Search or navigate in the graph to add knowledge." (click)="addBokKnowledge()">
+                      Link this concept <i class="fa fa-arrow-up"></i>
+                    </button>
+                  </div>
+                </div> -->
+                <a [hidden]="currentConcept != ''" (click)="navigateToConcept('GIST')">
+                  < Back </a> <div #textBoK id="textBoK" [hidden]="currentConcept == '' && currentConcept != 'GIST'">
+              </div>
+              <div class="col" *ngIf="hasResults">
+                <h3 class="center">
+                  {{ selectedNodes.length }} result(s) for
+                  {{ searchInput.value }}
+                </h3>
+                <div *ngFor="let item of selectedNodes; index as i">
+                  <div *ngIf="i < limitSearch">
+                    <div class="inline">{{ item.nameShort }}</div>
+                    <div class="inline" [innerHTML]="
+                                      item.name | truncate: 100:searchInput.value
+                                    "></div>
+                    <a class="inline" (click)="navigateToConcept(item.nameShort)">
+                      Details
                     </a>
+                    <div class="small" [innerHTML]="item.description | truncate: 100:searchInput.value"></div>
                   </div>
+                </div>
+                <div>
+                  <br />
+                  <a *ngIf="limitSearch < selectedNodes.length" (click)="incrementLimit()">
+                    Show more ...
+                  </a>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-        <!-- Search Knowledge and skills card -->
-        <!--   <div class="card card-accent-secondary">
-            <div class="card-header">
-              Search knowledge and skills
-              <span
-                tooltip="Browse in the BoK for knowledge required for your new occupational profile. Once in the required knowledge, press the button 'Add' it will link the concept and the learning outcomes dependent on it."
-                class="badge badge-primary badge-pill">i</span>
-            </div>
-            <div class="card-body" style="background-color: #faf9f8">
-              <div class="row text-center">
-                <div class="col-lg-4 col-sm-6">
-                  <div class="row text-center">
-                    <div class="offset-md-2 col-md-6">
-                      <div class="input-group">
-                        <div class="input-group-prepend" dropdown>
-                          <button type="button" class="btn btn-primary">
-                            <i class="fa fa-search"></i>
-                          </button>
-                        </div>
-                        <input #searchInput type="text" id="input-competence-filter" name="input-competence-filter"
-                          class="form-control" (keyup)="searchInBok(searchInput.value)"
-                          placeholder="Search Knowledge" />
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      <button type="submit" class="btn btn-primary"
-                        tooltip="Search or navigate in the graph to add knowledge." (click)="addBokKnowledge()">
-                        Add
-                      </button>
-                    </div>
-                  </div>
-                  <div id="bubbles">
-                  </div>
-                </div>
-                <div class="col-lg-8 col-sm-6 text-justify">
-                  <a [hidden]="currentConcept != ''" (click)="navigateToConcept('GIST')">
-                    < Back </a> <div #textBoK id="textBoK" [hidden]="currentConcept == '' && currentConcept != 'GIST'">
-                </div>
-                <div class="col" *ngIf="hasResults">
-                  <h3 class="center">
-                    {{ selectedNodes.length }} result(s) for
-                    {{ searchInput.value }}
-                  </h3>
-                  <div *ngFor="let item of selectedNodes; index as i">
-                    <div *ngIf="i < limitSearch">
-                      <div class="inline">{{ item.nameShort }}</div>
-                      <div class="inline" [innerHTML]="
-                            item.name | truncate: 100:searchInput.value
-                          "></div>
-                      <a class="inline" (click)="navigateToConcept(item.nameShort)">
-                        Details
-                      </a>
-                      <div class="small" [innerHTML]="
-                            item.description | truncate: 100:searchInput.value
-                          "></div>
-                    </div>
-                  </div>
-                  <div>
-                    <br />
-                    <a *ngIf="limitSearch < selectedNodes.length" (click)="incrementLimit()">
-                      Show more ...
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
-        <!-- Knowledge added card -->
-        <!--  <div class="card card-accent-secondary">
-          <div class="card-header">Knowledge required <span
-              tooltip="Knowledge is the body of facts, principles and theories and practices that is related to a field of work or study."
-              class="badge badge-primary badge-pill">i</span></div>
-          <div class="card-body" style="background-color: #faf9f8">
-            <div class="col-md-12">
-              <p *ngIf="model.knowledge.length == 0">You didn't add any knowledge required yet. Browse in the BoK in
-                previous section to add some.</p>
-              <button *ngFor="let mk of model.knowledge" type="button" class="btn btn-pill"
-                [ngClass]="'bok-' + (mk | slice: 1:3)" (click)="removeCompetence(mk, model.knowledge)">
-                <i class="fa fa-close"></i> {{ mk }}
-              </button>
-            </div>
-          </div>
-        </div> -->
-        <!-- Skills added card -->
-        <!--         <div class="card card-accent-secondary">
-          <div class="card-header">
-            Skills required
-            <span
-              tooltip="Skills represent the ability to apply knowledge and use know-how to complete tasks and solve problems in a certain occupational profile. Skills are associated with Body of Knowledge concepts or can be manually added."
-              class="badge badge-primary badge-pill">i</span>
-          </div>
-          <div class="card-body" style="background-color: #faf9f8">
-            <div class="row">
-              <div class="col-md-12">
-                <p *ngIf="model.skills.length == 0">You didn't add any skills required yet. Browse in the BoK in
-                  previous section to add some.</p>
-                <div *ngIf="model.skills.length > 0">
-                  <button *ngFor="let ms of model.skills" (click)="removeCompetence(ms, model.skills)" type="button"
-                    class="btn btn-pill btn-light">
-                    <i class="fa fa-close"></i> {{ ms }}
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4 text-right">
-                If you cannot find the specified skill, you can also add your own skill here:
-              </div>
-              <div class="col-md-6">
-                <input #skillExtra type="text" class="form-control" id="skillExtra" placeholder="Skill description"
-                  name="skillExtra" />
-              </div>
-              <div class="col-md-2">
-                <button type="submit" class="btn btn-primary" tooltip="Add your custom skill."
-                  (click)="addExtraSkill(skillExtra.value); skillExtra.value= ''">
-                  Add Skill
-                </button>
-              </div>
-            </div>
-          </div>
-        </div> -->
-        <!-- Competences card -->
-        <!--         <div class="card card-accent-secondary">
-          <div class="card-header">
-            Competences required
-            <span
-              tooltip="Competence is the proven ability to use knowledge, skills and personal, social and/or methodological abilities, in work or study situations and in professional and personal development. Based on ESCO"
-              class="badge badge-primary badge-pill">i</span>
-          </div>
-          <div class="card-body" style="background-color: #faf9f8">
-            <div class="row">
-              <div class="col-md-2">
-                <div class="input-group">
-                  <ng-select *ngIf="isfullESCOcompetences" [items]="escoService.allcompetences" name="competences"
-                    bindLabel="preferredLabel" groupBy="reuseLevel" [multiple]="true" [searchFn]="customSearchFn"
-                    placeholder="Search..." [clearSearchOnAdd]="true" [(ngModel)]="model.competences">
-                    <ng-template ng-optgroup-tmp let-item="item">
-                      {{item.reuseLevel || 'Unnamed group'}}
-                    </ng-template>
-                  </ng-select>
-                  <ng-select *ngIf="!isfullESCOcompetences" [items]="competences" name="competences"
-                    bindLabel="preferredLabel" groupBy="reuseLevel" [multiple]="true" [searchFn]="customSearchFn"
-                    placeholder="Search..." [clearSearchOnAdd]="true" [(ngModel)]="model.competences" >
-                    <ng-template ng-optgroup-tmp let-item="item">
-                      {{item.reuseLevel || 'Unnamed group'}}
-                    </ng-template>
-                  </ng-select>
-                </div>
-              </div>
-              <div class="col-md-3">
-                  <span class="input-group-prepend">
-                      <label class="switch switch-label switch-pill switch-outline-primary-alt">
-                        <input class="switch-input" type="checkbox" value="isfullESCOcompetences"
-                          [(ngModel)]="isfullESCOcompetences" checked />
-                        <span class="switch-slider" tooltip="Click here to add to the dropdown full list of ESCO skills."
-                          data-checked="✓" data-unchecked="X"></span>
-                      </label>
-                      <div class="pl-1">Search <a href="https://ec.europa.eu/esco/portal/skill">ESCO</a> skills</div>
-                    </span>
-                </div>
-              <div class="col-md-7">
-                  <button *ngFor="let mc of model.competences" type="button" class="btn btn-pill btn-primary"
-                    (click)="removeCompetence(mc, model.competences)">
-                    <i class="fa fa-close"></i> {{ mc.preferredLabel }}
-                  </button>
-                </div>
-            </div>
-            <div class="row pt-1">
-              <div class="col-md-12">
-                
-                This service uses the <a href="http://ec.europa.eu/esco"> ESCO </a> classification of the
-                    European Commission.
-              </div>
-            </div>
-            <div class="row pt-1">
-       
-              <div class="col-md-4 text-right">
-                If you cannot find the specified competence, you can also add your own competences here:
-              </div>
-              <div class="col-md-6">
-                <input #competenceExtra type="text" class="form-control" id="competenceExtra"
-                  placeholder="Competence description" name="competenceExtra"
-                  (keyup)="competenceExtraAdd.disabled = false" />
-              </div>
-              <div class="col-md-2">
-                <button #competenceExtraAdd type="submit" class="btn btn-primary" tooltip="Add your custom competence."
-                  (click)="addExtraCompetence(competenceExtra.value); competenceExtra.value= ''; competenceExtraAdd.disabled = true"
-                  disabled>
-                  Add Competence
-                </button>
-              </div>
-            </div>
-          </div>
-        </div> -->
       </div>
+
     </div>
-  </div>
-  <!--/.col-->
-</div>
-<!--/.row-->
-</div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="addBokKnowledge()">Link</button>
+      <button type="button" class="btn btn-danger" (click)="bokModal.hide()">Close</button>
+    </div>
+  </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

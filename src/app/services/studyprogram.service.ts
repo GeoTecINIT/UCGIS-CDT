@@ -31,20 +31,18 @@ export class StudyProgram extends Object {
       this.name = currentNode.data.name ? currentNode.data.name : '';
       this.description = currentNode.data.description ? currentNode.data.description : '';
       this.affiliation = currentNode.data.affiliation ? currentNode.data.affiliation : '';
-     //  this.level = currentNode.data.level ? currentNode.data.level : '';
       this.eqf = currentNode.data.eqf ? currentNode.data.eqf : 0;
       this.children = currentNode.children ? currentNode.children : [];
       this.numSemesters = currentNode.data.numSemesters ? currentNode.data.numSemesters : 0;
       this.field = currentNode.data.field ? currentNode.data.field : null;
       this.userId = currentNode.data.userId ? currentNode.data.userId : '';
       this.concepts = currentNode.data.concepts ? currentNode.data.concepts : [];
-      // this.currentNode = null;
+      this.currentNode = null;
     } else {
       this._id = '';
       this.name = '';
       this.description = '';
       this.affiliation = '';
-     // this.level = '';
       this.eqf = 0;
       this.children = [];
       this.numSemesters = 0;

@@ -10,8 +10,7 @@ export class Lecture extends Object {
   public name: string;
   public description: string;
   public ects: number;
-  public sourceDocs: BokInput[];
-  public learningObjectives: BokInput[];
+  public bibliography: String;
   public isPractical: boolean;
   public concepts: string[];
 
@@ -24,8 +23,7 @@ export class Lecture extends Object {
       this.name = currentNode.data.name ? currentNode.data.name : '';
       this.description = currentNode.data.description ? currentNode.data.description : '';
       this.ects = currentNode.data.ects ? currentNode.data.ects : 0;
-      this.sourceDocs = currentNode.data.sourceDocs ? currentNode.data.sourceDocs : [];
-      this.learningObjectives = currentNode.data.learningObjectives ? currentNode.data.learningObjectives : [];
+      this.bibliography = currentNode.data.bibliography ? currentNode.data.bibliography : '';
       this.isPractical = currentNode.data.isPractical ? currentNode.data.isPractical : false;
       this.concepts = currentNode.data.concepts ? currentNode.data.concepts : [];
       this.currentNode = null;
@@ -35,8 +33,7 @@ export class Lecture extends Object {
       this.name = '';
       this.description = '';
       this.ects = 0;
-      this.sourceDocs = [];
-      this.learningObjectives = [];
+      this.bibliography = '';
       this.isPractical = false;
       this.concepts = [];
     }
