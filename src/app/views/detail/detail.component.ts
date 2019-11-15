@@ -40,9 +40,11 @@ export class DetailComponent implements OnInit {
     this.studyprogramService
       .getStudyProgramById(_id)
       .subscribe(program => {
-        this.selectedProgram = program;
-        this.displayTree(program);
-        console.log(this.selectedProgram);
+        if (program) {
+          this.selectedProgram = program;
+          this.displayTree(program);
+          console.log(this.selectedProgram);
+        }
       });
   }
 

@@ -11,6 +11,7 @@ import { Lecture } from '../../services/lecture.service';
 import { BokInput } from '../../model/bokinput';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { ModalDirective } from 'ngx-bootstrap/modal';
+import { SlicePipe } from '@angular/common';
 
 
 @Component({
@@ -187,6 +188,7 @@ export class NewspComponent implements OnInit {
   }
 
   refreshCurrentNode() {
+    console.log('refresh currrent node');
     this.isSearchingExisting = false;
     this.currentTreeNode = cv.getCurrentNode();
     switch (this.currentTreeNode.depth) {
@@ -234,15 +236,19 @@ export class NewspComponent implements OnInit {
   updateTreeStudyProgram() {
     switch (this.currentTreeNode.depth) {
       case 0:
+        console.log('-- update Study Program');
         this.updateNodeInTree(this.model);
         break;
       case 1:
+        console.log('-- update Module');
         this.updateNodeInTree(this.modelModule);
         break;
       case 2:
+        console.log('-- update Course');
         this.updateNodeInTree(this.modelCourse);
         break;
       case 3:
+        console.log('-- update Lecture');
         this.updateNodeInTree(this.modelLecture);
         break;
     }
@@ -256,9 +262,8 @@ export class NewspComponent implements OnInit {
   addBokKnowledge() {
     const concept = this.textBoK.nativeElement.getElementsByTagName('h4')[0]
       .textContent;
-    const desc = this.textBoK.nativeElement.children[1].children[3].textContent;
 
-    const newConcept = new BokInput('', concept, concept, '', []);
+    const newConcept = new BokInput('', concept, concept, '', [], '');
 
     const divs = this.textBoK.nativeElement.getElementsByTagName('div');
     if (divs['bokskills'] != null) {
@@ -287,28 +292,37 @@ export class NewspComponent implements OnInit {
 
     switch (this.linkBoKto) {
       case 'name':
+        newConcept.linkedTo = 'name';
         modelToUpdate[this.linkBoKto] = modelToUpdate[this.linkBoKto] + ' ' + concept;
         break;
       case 'description':
+        const desc = this.textBoK.nativeElement.children[1].children[3].textContent;
+        newConcept.linkedTo = 'description';
         modelToUpdate[this.linkBoKto] = modelToUpdate[this.linkBoKto] + ' ' + desc;
         break;
       case 'prerequisites':
+        newConcept.linkedTo = 'prerequisites';
         if (!modelToUpdate.prerequisites.includes(newConcept)) {
           modelToUpdate.prerequisites.push(newConcept);
         }
         break;
       case 'learningObjectives':
+        newConcept.linkedTo = 'learningObjectives';
         if (!modelToUpdate.learningObjectives.includes(newConcept)) {
           newConcept.skills.forEach(sk => {
-            const newSkill = new BokInput('', sk, newConcept.concept_id, '', []);
+            const newSkill = new BokInput('', sk, newConcept.concept_id, '', [], 'learningObjectives');
             modelToUpdate.learningObjectives.push(newSkill);
           });
         }
         break;
     }
+    modelToUpdate.linksToBok.push(newConcept);
+    modelToUpdate.concepts.push(newConcept.concept_id);
+
     this.bokModal.hide();
     this.updateTreeStudyProgram();
   }
+
 
   removeBokKnowledge(model, index, attrTxt) {
     model[attrTxt].splice(index, 1);

@@ -13,6 +13,7 @@ export class Lecture extends Object {
   public bibliography: String;
   public isPractical: boolean;
   public concepts: string[];
+  public linksToBok: BokInput[];
 
   constructor(
     public currentNode: any = null
@@ -27,6 +28,7 @@ export class Lecture extends Object {
       this.isPractical = currentNode.data.isPractical ? currentNode.data.isPractical : false;
       this.concepts = currentNode.data.concepts ? currentNode.data.concepts : [];
       this.currentNode = null;
+      this.linksToBok = currentNode.data.linksToBok ? currentNode.data.linksToBok : [];
 
     } else {
       this._id = '';
@@ -36,6 +38,7 @@ export class Lecture extends Object {
       this.bibliography = '';
       this.isPractical = false;
       this.concepts = [];
+      this.linksToBok = [];
     }
   }
 }

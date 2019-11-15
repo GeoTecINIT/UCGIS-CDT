@@ -19,6 +19,8 @@ export class Course extends Object {
   public learningObjectives: BokInput [];
   public children: Lecture[];
   public concepts: string[];
+  public linksToBok: BokInput[];
+  data: any;
 
   constructor(
     public currentNode: any = null
@@ -37,6 +39,7 @@ export class Course extends Object {
       this.children = currentNode.children ? currentNode.children : [];
       this.concepts = currentNode.data.concepts ? currentNode.data.concepts : [];
       this.currentNode = null;
+      this.linksToBok = currentNode.data.linksToBok ? currentNode.data.linksToBok : [];
 
     } else {
       this._id = '';
@@ -50,6 +53,7 @@ export class Course extends Object {
       this.learningObjectives = [];
       this.children = [];
       this.concepts = [];
+      this.linksToBok = [];
     }
   }
 }

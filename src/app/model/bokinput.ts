@@ -4,7 +4,8 @@ export class BokInput extends Object {
     public name: string,
     public concept_id: string,
     public definition: string,
-    public skills: string[]
+    public skills: string[],
+    public linkedTo: string
   ) {
     super();
   }
