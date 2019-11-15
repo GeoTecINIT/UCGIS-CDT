@@ -12,7 +12,8 @@
         <div class="card-header">
           <div class="row">
             <div class="col-sm-4 col-md-2" tooltip="{{isAnonymous? 'Login to be able to add study programs' : ''}}">
-              <button type="button" class="btn btn-block btn-outline-primary" routerLink="/newsp/empty" [disabled]="isAnonymous">
+              <button type="button" class="btn btn-block btn-outline-primary" routerLink="/newsp/empty"
+                [disabled]="isAnonymous">
                 New Study Program
               </button>
             </div>
@@ -82,6 +83,7 @@
               <button type="button" class="btn text-justify" routerLink="/detail/{{ sp._id }}">
                 <span>
                   <h1>{{ sp.name }}</h1>
+                  <p class="text-muted">{{ sp.description | slice:0:300 }} ... </p>
                   EQF Level: {{ sp.eqf }}
 
                 </span>
@@ -98,31 +100,29 @@
 
             <div class="col-md-2">
               <div class="row">
-                <div class="col-3 col-sm-3 col-md-3">
+                <div class="col-3 col-sm-3 col-md-3 no-padding">
                   <button type="button" class="btn btn-block btn-link" [popover]="popTemplateList" tooltip="Share"
                     popoverTitle="Copy link, export to PDF or XML" placement="top" [outsideClick]="true">
                     <i class="fa fa-share-alt fa-lg mt-4"></i>
                   </button>
                 </div>
-                <div class="col-3 col-sm-3 col-md-3">
-                  <button type="button" class="btn btn-block btn-link"
-                    tooltip="{{isAnonymous? 'Login to be able to duplicate' : 'Duplicate'}}"
-                    routerLink="/newsp/duplicate/{{ sp._id }}" [disabled]="isAnonymous">
+                <div class="col-3 col-sm-3 col-md-3 no-padding"
+                  tooltip="{{isAnonymous? 'Login to be able to duplicate' : 'Duplicate'}}">
+                  <button type="button" class="btn btn-block btn-link" routerLink="/newsp/duplicate/{{ sp._id }}"
+                    [disabled]="isAnonymous">
                     <i class="fa fa-copy fa-lg mt-4"></i>
                   </button>
                 </div>
-                <div class="col-3 col-sm-3 col-md-3">
-                  <button type="button" class="btn btn-block btn-link"
-                    tooltip="{{isAnonymous? 'Login to be able to edit' : sp.userId==afAuth.auth.currentUser?.uid?  'Edit' : 'You can edit only your own profiles'}}"
-                    routerLink="/newsp/copy/{{ sp._id }}"
+                <div class="col-3 col-sm-3 col-md-3 no-padding"
+                  tooltip="{{isAnonymous? 'Login to be able to edit' : sp.userId==afAuth.auth.currentUser?.uid?  'Edit' : 'You can edit only your own profiles'}}">
+                  <button type="button" class="btn btn-block btn-link" routerLink="/newsp/copy/{{ sp._id }}"
                     [disabled]="isAnonymous || sp.userId!=afAuth.auth.currentUser?.uid">
                     <i class="fa fa-edit fa-lg mt-4"></i>
                   </button>
                 </div>
-                <div class="col-3 col-sm-3 col-md-3">
-                  <button type="button" class="btn btn-block btn-link"
-                    tooltip="{{isAnonymous? 'Login to be able to remove' : sp.userId==afAuth.auth.currentUser?.uid?  'Remove' : 'You can remove only your own profiles'}}"
-                    data-toggle="modal" (click)="dangerModal.show()"
+                <div class="col-3 col-sm-3 col-md-3 no-padding"
+                  tooltip="{{isAnonymous? 'Login to be able to remove' : sp.userId==afAuth.auth.currentUser?.uid?  'Remove' : 'You can remove only your own profiles'}}">
+                  <button type="button" class="btn btn-block btn-link" data-toggle="modal" (click)="dangerModal.show()"
                     [disabled]="isAnonymous || sp.userId!=afAuth.auth.currentUser?.uid">
                     <i class="fa fa-trash-o fa-lg mt-4"></i>
                   </button>
