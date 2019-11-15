@@ -67,9 +67,29 @@
                         </div>
                       </div>
                       <div class="col-md-2 align-middle m-auto">
-                        <button type="button" class="btn btn-primary btn-sm" (click)="bokModal.show(); linkBoKto='name'">
+                        <button type="button" class="btn btn-primary btn-sm"
+                          (click)="bokModal.show(); linkBoKto='name'">
                           Link BoK title
                         </button>
+                      </div>
+                      <div class="col-md-12 align-middle m-auto">
+                        <!-- <div *ngIf="model.linksToBok.length >= 4" style="display: flex;">
+                          <div *ngFor="let l of model.linksToBok; index as i ">
+                            <p class="text-small" *ngIf="l.linkedTo=='name'">{{l.concept_id | slice:0:10 }}...
+                              <button type="button" class="btn btn-link btn-sm"
+                                (click)="removeBokKnowledge(model, i, 'linksToBok')">
+                                <i class="fa fa-remove"></i>
+                              </button></p>
+                          </div>
+                        </div> -->
+                        <div *ngIf="model.linksToBok.length" style="display: flex;">
+                          <div *ngFor="let l of model.linksToBok; index as i ">
+                            <p class="text-small" *ngIf="l.linkedTo=='name'">{{l.concept_id }} <button type="button"
+                                class="btn btn-link btn-sm" (click)="removeBokKnowledge(model, i, 'linksToBok')">
+                                <i class="fa fa-remove"></i>
+                              </button></p>
+                          </div>
+                        </div>
                       </div>
                       <div class="col-md-10">
                         <div class="form-group">
@@ -126,22 +146,25 @@
                         </div>
                       </div>
                       <div class="col-md-2 align-middle m-auto">
-                        <button type="button" class="btn btn-primary btn-sm" (click)="bokModal.show(); linkBoKto='description'">
+                        <button type="button" class="btn btn-primary btn-sm"
+                          (click)="bokModal.show(); linkBoKto='description'">
                           Link BoK description
                         </button>
                       </div>
                     </div>
-                    <!--  <div class="row">
-                      <div class="col-md-8">
-                        Explore the Body of Knowledge to use its content in your study program.
+                    <div class="row">
+                      <div class="col-md-12 align-middle m-auto">
+                        <div *ngIf="model.linksToBok.length" style="display: flex;">
+                          <div *ngFor="let l of model.linksToBok; index as i ">
+                            <p class="text-small" *ngIf="l.linkedTo=='description'">{{l.concept_id }} <button
+                                type="button" class="btn btn-link btn-sm"
+                                (click)="removeBokKnowledge(model, i, 'linksToBok')">
+                                <i class="fa fa-remove"></i>
+                              </button></p>
+                          </div>
+                        </div>
                       </div>
-                      <div class="col-md-4">
-                        <button type="button" class="btn btn-primary" (click)="bokModal.show(); isDisplayBoK = !isDisplayBoK"> 
-                          <i class="fa" [ngClass]="{'fa-search': !isDisplayBoK, 'fa-close': isDisplayBoK}"></i>
-                          {{ isDisplayBoK? 'Close BoK' : 'Explore BoK' }}
-                        </button>
-                      </div>
-                    </div> -->
+                    </div>
                   </div>
                 </div>
               </form>
@@ -168,11 +191,22 @@
                             [(ngModel)]="modelModule.name" name="title" required (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
+
                       <div class="col-md-2 align-middle m-auto">
-                        <button type="button" class="btn btn-primary btn-sm" (click)="bokModal.show(); linkBoKto='name'">
+                        <button type="button" class="btn btn-primary btn-sm"
+                          (click)="bokModal.show(); linkBoKto='name'">
                           Link BoK title
                         </button>
                       </div>
+                    </div>
+                    <div class="col-md-12 align-middle m-auto" style="display: flex;">
+                      <div *ngFor="let l of modelModule.linksToBok; index as i ">
+                        <p class="text-small" *ngIf="l.linkedTo=='name'">{{l.concept_id }} <button type="button"
+                            class="btn btn-link btn-sm" (click)="removeBokKnowledge(modelModule, i, 'linksToBok')">
+                            <i class="fa fa-remove"></i>
+                          </button></p>
+                      </div>
+
                     </div>
                     <div class="row">
                       <div class="col-md-6">
@@ -203,9 +237,20 @@
                         </div>
                       </div>
                       <div class="col-md-2 align-middle m-auto">
-                        <button type="button" class="btn btn-primary btn-sm" (click)="bokModal.show(); linkBoKto='description'">
+                        <button type="button" class="btn btn-primary btn-sm"
+                          (click)="bokModal.show(); linkBoKto='description'">
                           Link BoK description
                         </button>
+                      </div>
+                      <div class="col-md-12 align-middle m-auto" style="display: flex;">
+                        <div *ngFor="let l of modelModule.linksToBok; index as i ">
+                          <p class="text-small" *ngIf="l.linkedTo=='description'">{{l.concept_id }} <button
+                              type="button" class="btn btn-link btn-sm"
+                              (click)="removeBokKnowledge(modelModule, i, 'linksToBok')">
+                              <i class="fa fa-remove"></i>
+                            </button></p>
+                        </div>
+
                       </div>
                     </div>
                     <div class="row">
@@ -230,8 +275,52 @@
                         </div>
                       </div>
                       <div class="col-md-2 align-middle m-auto">
-                        <button type="button" class="btn btn-primary btn-sm" (click)="bokModal.show(); linkBoKto='prerequisites'">
+                        <button type="button" class="btn btn-primary btn-sm"
+                          (click)="bokModal.show(); linkBoKto='prerequisites'">
                           Link BoK prerequisite
+                        </button>
+                      </div>
+                      <!--     <div class="col-md-12 align-middle m-auto">
+                        <div *ngIf="modelModule.linksToBok.length" style="display: flex;">
+                          <div *ngFor="let l of modelModule.linksToBok; index as i ">
+                            <p class="text-small" *ngIf="l.linkedTo=='prerequisites'">{{l.concept_id }} <button
+                                type="button" class="btn btn-link btn-sm"
+                                (click)="removeBokKnowledge(modelModule, i, 'linksToBok')">
+                                <i class="fa fa-remove"></i>
+                              </button></p>
+                          </div>
+                        </div>
+                      </div> -->
+                    </div>
+                    <div class="row">
+                      <div class="col-md-10">
+                        <div class="form-group">
+                          <label for="title">Learning Objectives</label>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div *ngIf="modelModule && modelModule.learningObjectives">
+                                <ul>
+                                  <div *ngFor="let p of modelModule.learningObjectives; index as i ">
+                                    <li>{{p.name}}
+                                      <!-- <button type="button" class="btn btn-link"
+                                        (click)="removeBokKnowledge(modelModule, i, 'learningObjectives')">
+                                        <i class="fa fa-remove"></i>
+                                      </button> -->
+                                    </li>
+                                  </div>
+                                </ul>
+                              </div>
+                              <div
+                                *ngIf="!modelModule.learningObjectives || modelModule.learningObjectives.length == 0">
+                                Add some courses and explore BoK to add some.
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-2 align-middle m-auto">
+                        <button type="button" class="btn btn-primary btn-sm" disabled>
+                          Inherited from child courses
                         </button>
                       </div>
                     </div>
@@ -244,17 +333,6 @@
                         </div>
                       </div>
                     </div>
-                    <!--  <div class="row">
-                      <div class="col-md-8">
-                        Explore the Body of Knowledge to use its content in your study program.
-                      </div>
-                      <div class="col-md-4">
-                        <button type="button" class="btn btn-primary" (click)="isDisplayBoK = !isDisplayBoK">
-                          <i class="fa" [ngClass]="{'fa-search': !isDisplayBoK, 'fa-close': isDisplayBoK}"></i>
-                          {{ isDisplayBoK? 'Close BoK' : 'Explore BoK' }}
-                        </button>
-                      </div>
-                    </div> -->
                   </div>
                 </div>
               </form>
@@ -282,9 +360,18 @@
                         </div>
                       </div>
                       <div class="col-md-2 align-middle m-auto">
-                        <button type="button" class="btn btn-primary btn-sm" (click)="bokModal.show(); linkBoKto='name'">
+                        <button type="button" class="btn btn-primary btn-sm"
+                          (click)="bokModal.show(); linkBoKto='name'">
                           Link BoK title
                         </button>
+                      </div>
+                      <div class="col-md-12 align-middle m-auto" style="display: flex;">
+                        <div *ngFor="let l of modelCourse.linksToBok; index as i ">
+                          <p class="text-small" *ngIf="l.linkedTo=='name'">{{l.concept_id }} <button type="button"
+                              class="btn btn-link btn-sm" (click)="removeBokKnowledge(modelCourse, i, 'linksToBok')">
+                              <i class="fa fa-remove"></i>
+                            </button></p>
+                        </div>
                       </div>
                     </div>
                     <div class="row">
@@ -297,9 +384,19 @@
                         </div>
                       </div>
                       <div class="col-md-2 align-middle m-auto">
-                        <button type="button" class="btn btn-primary btn-sm" (click)="bokModal.show(); linkBoKto='description'">
+                        <button type="button" class="btn btn-primary btn-sm"
+                          (click)="bokModal.show(); linkBoKto='description'">
                           Link BoK description
                         </button>
+                      </div>
+                      <div class="col-md-12 align-middle m-auto" style="display: flex;">
+                        <div *ngFor="let l of modelCourse.linksToBok; index as i ">
+                          <p class="text-small" *ngIf="l.linkedTo=='description'">{{l.concept_id }} <button
+                              type="button" class="btn btn-link btn-sm"
+                              (click)="removeBokKnowledge(modelCourse, i, 'linksToBok')">
+                              <i class="fa fa-remove"></i>
+                            </button></p>
+                        </div>
                       </div>
                     </div>
                     <div class="row">
@@ -326,10 +423,18 @@
                         </div>
                       </div>
                       <div class="col-md-2 align-middle m-auto">
-                        <button type="button" class="btn btn-primary btn-sm" (click)="bokModal.show(); linkBoKto='prerequisites'">
+                        <button type="button" class="btn btn-primary btn-sm"
+                          (click)="bokModal.show(); linkBoKto='prerequisites'">
                           Link BoK prerequisite
                         </button>
                       </div>
+                      <!-- <div *ngFor="let l of modelCourse.linksToBok; index as i ">
+                        <p class="text-small" *ngIf="l.linkedTo=='prerequisites'">{{l.concept_id }} <button
+                            type="button" class="btn btn-link btn-sm"
+                            (click)="removeBokKnowledge(modelCourse, i, 'linksToBok')">
+                            <i class="fa fa-remove"></i>
+                          </button></p>
+                      </div> -->
                     </div>
                     <div class="row">
                       <div class="col-md-10">
@@ -339,15 +444,16 @@
                             <div class="col-md-12">
                               <div *ngIf="modelCourse && modelCourse.learningObjectives">
                                 <ul>
-                                  <div *ngFor="let p of modelCourse.prerequisites; index as i ">
-                                    <li>{{p.concept_id}} <button type="button" class="btn btn-link"
+                                  <div *ngFor="let p of modelCourse.learningObjectives; index as i ">
+                                    <li>{{p.name}} <button type="button" class="btn btn-link"
                                         (click)="removeBokKnowledge(modelCourse, i, 'learningObjectives')">
                                         <i class="fa fa-remove"></i>
                                       </button></li>
                                   </div>
                                 </ul>
                               </div>
-                              <div *ngIf="!modelCourse.learningObjectives || modelCourse.learningObjectives.length == 0">
+                              <div
+                                *ngIf="!modelCourse.learningObjectives || modelCourse.learningObjectives.length == 0">
                                 Explore the Body of Knowledge to add some.
                               </div>
                             </div>
@@ -355,10 +461,18 @@
                         </div>
                       </div>
                       <div class="col-md-2 align-middle m-auto">
-                        <button type="button" class="btn btn-primary btn-sm" (click)="bokModal.show(); linkBoKto='learningObjectives'">
+                        <button type="button" class="btn btn-primary btn-sm"
+                          (click)="bokModal.show(); linkBoKto='learningObjectives'">
                           Link BoK learning objectives
                         </button>
                       </div>
+                      <!--      <div *ngFor="let l of modelCourse.linksToBok; index as i ">
+                        <p class="text-small" *ngIf="l.linkedTo=='learningObjectives'">{{l.concept_id }} <button
+                            type="button" class="btn btn-link btn-sm"
+                            (click)="removeBokKnowledge(modelCourse, i, 'linksToBok')">
+                            <i class="fa fa-remove"></i>
+                          </button></p>
+                      </div> -->
                     </div>
                     <div class="row">
                       <div class="col-md-6">
@@ -402,17 +516,6 @@
                         </div>
                       </div>
                     </div>
-                    <!--  <div class="row">
-                      <div class="col-md-8">
-                        Explore the Body of Knowledge to use its content in your study program.
-                      </div>
-                      <div class="col-md-4">
-                        <button type="button" class="btn btn-primary" (click)="isDisplayBoK = !isDisplayBoK">
-                          <i class="fa" [ngClass]="{'fa-search': !isDisplayBoK, 'fa-close': isDisplayBoK}"></i>
-                          {{ isDisplayBoK? 'Close BoK' : 'Explore BoK' }}
-                        </button>
-                      </div>
-                    </div> -->
                   </div>
                 </div>
               </form>
@@ -440,9 +543,18 @@
                         </div>
                       </div>
                       <div class="col-md-2 align-middle m-auto">
-                        <button type="button" class="btn btn-primary btn-sm" (click)="bokModal.show(); linkBoKto='name'">
+                        <button type="button" class="btn btn-primary btn-sm"
+                          (click)="bokModal.show(); linkBoKto='name'">
                           Link BoK title
                         </button>
+                      </div>
+                      <div class="col-md-12 align-middle m-auto" style="display: flex;">
+                        <div *ngFor="let l of modelLecture.linksToBok; index as i ">
+                          <p class="text-small" *ngIf="l.linkedTo=='name'">{{l.concept_id }} <button type="button"
+                              class="btn btn-link btn-sm" (click)="removeBokKnowledge(modelLecture, i, 'linksToBok')">
+                              <i class="fa fa-remove"></i>
+                            </button></p>
+                        </div>
                       </div>
                     </div>
                     <div class="row">
@@ -455,9 +567,19 @@
                         </div>
                       </div>
                       <div class="col-md-2 align-middle m-auto">
-                        <button type="button" class="btn btn-primary btn-sm" (click)="bokModal.show(); linkBoKto='description'">
+                        <button type="button" class="btn btn-primary btn-sm"
+                          (click)="bokModal.show(); linkBoKto='description'">
                           Link BoK description
                         </button>
+                      </div>
+                      <div class="col-md-12 align-middle m-auto" style="display: flex;">
+                        <div *ngFor="let l of modelLecture.linksToBok; index as i ">
+                          <p class="text-small" *ngIf="l.linkedTo=='description'">{{l.concept_id }} <button
+                              type="button" class="btn btn-link btn-sm"
+                              (click)="removeBokKnowledge(modelLecture, i, 'linksToBok')">
+                              <i class="fa fa-remove"></i>
+                            </button></p>
+                        </div>
                       </div>
                     </div>
                     <div class="row">
@@ -482,7 +604,7 @@
                         </div>
                       </div>
                     </div>
-           
+
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group">
@@ -494,17 +616,6 @@
                         </div>
                       </div>
                     </div>
-                    <!--  <div class="row">
-                      <div class="col-md-8">
-                        Explore the Body of Knowledge to use its content in your study program.
-                      </div>
-                      <div class="col-md-4">
-                        <button type="button" class="btn btn-primary" (click)="isDisplayBoK = !isDisplayBoK">
-                          <i class="fa" [ngClass]="{'fa-search': !isDisplayBoK, 'fa-close': isDisplayBoK}"></i>
-                          {{ isDisplayBoK? 'Close BoK' : 'Explore BoK' }}
-                        </button>
-                      </div>
-                    </div> -->
                   </div>
                 </div>
               </form>

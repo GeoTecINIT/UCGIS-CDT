@@ -17,6 +17,7 @@ export class Module extends Object {
   public learningObjectives: BokInput[];
   public children: Course[];
   public concepts: string[];
+  public linksToBok: BokInput[];
 
   constructor(
     public currentNode: any = null
@@ -30,11 +31,20 @@ export class Module extends Object {
       this.ects = currentNode.data.ects ? currentNode.data.ects : 0;
       this.assessment = currentNode.data.assessment ? currentNode.data.assessment : '';
       this.prerequisites = currentNode.data.prerequisites ? currentNode.data.prerequisites : [];
-      this.learningObjectives = currentNode.data.learningObjectives ? currentNode.data.learningObjectives : [];
       this.children = currentNode.children ? currentNode.children : [];
       this.concepts = currentNode.data.concepts ? currentNode.data.concepts : [];
       this.currentNode = null;
-
+      this.learningObjectives = [];
+      if (this.children.length > 0) {
+        this.children.forEach(child => {
+          if (child.data && child.data.learningObjectives) {
+            child.data.learningObjectives.forEach(lo => {
+              this.learningObjectives.push(lo);
+            });
+          }
+        });
+      }
+      this.linksToBok = currentNode.data.linksToBok ? currentNode.data.linksToBok : [];
     } else {
       this._id = '';
       this.name = '';
@@ -46,6 +56,7 @@ export class Module extends Object {
       this.learningObjectives = [];
       this.children = [];
       this.concepts = [];
+      this.linksToBok = [];
     }
   }
 }
@@ -72,7 +83,6 @@ export class ModuleService {
     this.subscribeToModules()
       .subscribe(m => (this.allModules = m, this._allModules = m));
   }
-
 
   filterModulesByNameDescription(txt) {
     /*
@@ -111,4 +121,6 @@ export class ModuleService {
       .doc<Module>(moduleId)
       .update(updatedMod);
   }
+
+
 }

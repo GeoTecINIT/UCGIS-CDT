@@ -5,6 +5,7 @@ import { Module } from './module.service';
 import { Course } from './course.service';
 import { Lecture } from './lecture.service';
 import { Field } from './fields.service';
+import { BokInput } from '../model/bokinput';
 
 const collection = 'StudyPrograms';
 
@@ -21,6 +22,7 @@ export class StudyProgram extends Object {
   public field: Field;
   public userId: string;
   public concepts: string[];
+  public linksToBok: BokInput[];
 
   constructor(
     public currentNode: any = null
@@ -38,6 +40,8 @@ export class StudyProgram extends Object {
       this.userId = currentNode.data.userId ? currentNode.data.userId : '';
       this.concepts = currentNode.data.concepts ? currentNode.data.concepts : [];
       this.currentNode = null;
+      this.linksToBok = currentNode.data.linksToBok ? currentNode.data.linksToBok : [];
+
     } else {
       this._id = '';
       this.name = '';
@@ -49,6 +53,7 @@ export class StudyProgram extends Object {
       this.field = null;
       this.userId = '';
       this.concepts = [];
+      this.linksToBok = [];
     }
   }
 }
