@@ -11,7 +11,7 @@ import { Lecture } from '../../services/lecture.service';
 import { BokInput } from '../../model/bokinput';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { SlicePipe } from '@angular/common';
+// import { SlicePipe } from '@angular/common';
 
 
 @Component({

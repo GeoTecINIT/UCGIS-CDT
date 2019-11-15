@@ -7,6 +7,8 @@ import { StudyProgramService , StudyProgram} from '../../services/studyprogram.s
 import { FormControl } from '@angular/forms';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { SlicePipe } from '@angular/common';
+
 
 @Component({
   selector: 'app-list',
@@ -24,6 +26,7 @@ export class ListComponent implements OnInit {
 
   constructor(private studyprogramService: StudyProgramService, public afAuth: AngularFireAuth) {
     this.afAuth.auth.onAuthStateChanged(user => {
+      console.log(user);
       if (user) {
         this.isAnonymous = user.isAnonymous;
       } else {
