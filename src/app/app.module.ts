@@ -57,6 +57,7 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
 // Custom Pipes
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { HighlightPipe } from './pipes/highlight.pipe';
+import { FilterPipe } from './pipes/filter.pipe';
 
 import { PopupComponent } from './components/popup/popup.component';
 import { Base64img } from './components/popup/base64img';
@@ -111,6 +112,7 @@ import { Eo4geoHeaderComponent } from './components/eo4geo-header/eo4geo-header.
     LoadingIndicatorComponent,
     TruncatePipe,
     HighlightPipe,
+    FilterPipe,
     PopupComponent,
     AddmodulesComponent,
     CmodulesComponent,

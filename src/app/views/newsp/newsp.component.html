@@ -636,17 +636,24 @@
                 </div>
                 <div class="card-body" style="background-color: #faf9f8">
                   <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                       <div class="form-group">
-                        <label for="title">Filter by {{textByDepth}} name or description</label>
+                        <label for="title">Filter {{textByDepth}} by name</label>
                         <input type="text" class="form-control" id="filterText" placeholder="Type to filter"
-                          [(ngModel)]="filterText" name="filterText" (keyup)="filterModules()" />
+                          [(ngModel)]="filterText" name="filterText" />
                       </div>
                     </div>
+                    <!-- <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="title">Filter {{textByDepth}} by affiliation</label>
+                        <input type="text" class="form-control" id="filterTextAff" placeholder="Type to filter"
+                          [(ngModel)]="filterTextAff" name="filterTextAff" />
+                      </div>
+                    </div> -->
                   </div>
                   <ul *ngIf="currentTreeNode.depth == 0">
                     <div *ngFor="let sp of allStudyPrograms; index as i">
-                      <div *ngFor="let m of sp.children; index as j">
+                      <div *ngFor="let m of (sp.children | filter:filterText); index as j">
                         <li>
                           <h5 class="card-title">{{ m.name }}</h5>
                           <h6 class="text-muted inline">{{ m.numSemester }} semester</h6>
@@ -678,7 +685,7 @@
                   <ul *ngIf="currentTreeNode.depth == 1">
                     <div *ngFor="let sp of allStudyPrograms; index as i">
                       <div *ngFor="let m of sp.children; index as j">
-                        <div *ngFor="let c of m.children; index as k">
+                        <div *ngFor="let c of (m.children | filter:filterText); index as k">
                           <li>
                             <h5 class="card-title">{{ c.name }}</h5>
                             <h6 class="text-muted inline">{{ c.numSemester }} semester</h6>
@@ -709,7 +716,7 @@
                     <div *ngFor="let sp of allStudyPrograms; index as i">
                       <div *ngFor="let m of sp.children; index as j">
                         <div *ngFor="let c of m.children; index as k">
-                          <div *ngFor="let l of c.children; index as m">
+                          <div *ngFor="let l of (c.children | filter:filterText); index as m">
                             <li>
                               <h5 class="card-title">{{ l.name }}</h5>
                               <h6 class="text-muted inline">{{ l.ects }} ects</h6>

@@ -56,6 +56,7 @@ export class NewspComponent implements OnInit {
   allStudyPrograms: StudyProgram[];
 
   filterText: String = '';
+  filterTextAff: String = '';
 
   switchTitle = true;
   switchDescription = true;
