@@ -650,6 +650,7 @@
                         <li>
                           <h5 class="card-title">{{ m.name }}</h5>
                           <h6 class="text-muted inline">{{ m.numSemester }} semester</h6>
+                          <h6 class="text-muted inline"> - {{ sp.affiliation }}</h6>
                           <a (click)="addExistingToStudyProgram(m)" class="inline">Add</a>
                           <div *ngIf="!(showMoreIndexM == j && showMoreIndexSP == i)">
                             <a (click)="showMoreIndexM = j; showMoreIndexSP = i" class="inline">Show more...</a>
@@ -657,6 +658,18 @@
                           <div *ngIf="showMoreIndexM == j && showMoreIndexSP == i">
                             <a (click)="showMoreIndexM = -1; showMoreIndexSP = -1" class="inline">Show less...</a>
                             <p class="card-text">{{ m.description }}</p>
+                            <div *ngIf="m.children.length > 0">
+                              <b>Children nodes that will be also included:</b>
+                              <div *ngFor="let c of m.children" style="padding-left: 1em;">
+                                - {{ c.name }}
+                                <div *ngIf="c.children.length > 0">
+                                  <div *ngFor="let l of c.children" style="padding-left: 2em;">
+                                    - {{ l.name }}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <br>
                           </div>
                         </li>
                       </div>
@@ -669,6 +682,7 @@
                           <li>
                             <h5 class="card-title">{{ c.name }}</h5>
                             <h6 class="text-muted inline">{{ c.numSemester }} semester</h6>
+                            <h6 class="text-muted inline"> - {{ sp.affiliation }}</h6>
                             <a (click)="addExistingToStudyProgram(c)" class="inline">Add</a>
                             <div *ngIf="!(showMoreIndexM == j && showMoreIndexSP == i && showMoreIndexC == k)">
                               <a (click)="showMoreIndexM = j; showMoreIndexSP = i; showMoreIndexC = k"
@@ -678,7 +692,14 @@
                               <a (click)="showMoreIndexM = -1; showMoreIndexSP = -1; showMoreIndexC = -1"
                                 class="inline">Show less...</a>
                               <p class="card-text">{{ c.description }}</p>
+                              <div *ngIf="c.children.length > 0">
+                                <b>Children nodes that will be also included:</b>
+                                <div *ngFor="let l of c.children" style="padding-left: 1em;">
+                                  - {{ l.name }}
+                                </div>
+                              </div>
                             </div>
+                            <br>
                           </li>
                         </div>
                       </div>
@@ -692,15 +713,16 @@
                             <li>
                               <h5 class="card-title">{{ l.name }}</h5>
                               <h6 class="text-muted inline">{{ l.ects }} ects</h6>
+                              <h6 class="text-muted inline"> - {{ sp.affiliation }}</h6>
                               <a (click)="addExistingToStudyProgram(l)" class="inline">Add</a>
                               <div
                                 *ngIf="!(showMoreIndexM == j && showMoreIndexSP == i && showMoreIndexC == k && showMoreIndexL == m)">
-                                <a (click)="showMoreIndexM = j; showMoreIndexSP = i; showMoreIndexC = k; showMoreIndexC = m"
+                                <a (click)="showMoreIndexM = j; showMoreIndexSP = i; showMoreIndexC = k; showMoreIndexL = m"
                                   class="inline">Show more...</a>
                               </div>
                               <div
                                 *ngIf="showMoreIndexM == j && showMoreIndexSP == i && showMoreIndexC == k && showMoreIndexL == m">
-                                <a (click)="showMoreIndexM = -1; showMoreIndexSP = -1; showMoreIndexC = -1; showMoreIndexC = -1"
+                                <a (click)="showMoreIndexM = -1; showMoreIndexSP = -1; showMoreIndexC = -1; showMoreIndexL = -1"
                                   class="inline">Show less...</a>
                                 <p class="card-text">{{ c.description }}</p>
                               </div>
