@@ -33,6 +33,7 @@ export class NewspComponent implements OnInit {
   textByDepth = 'module';
   textByDepthRemove = 'study program';
   linkBoKto = 'name';
+  customLO = '';
 
   public value: string[];
   public current: string;
@@ -80,7 +81,7 @@ export class NewspComponent implements OnInit {
   };
 
   @ViewChild('textBoK') textBoK: ElementRef;
-
+  @ViewChild('graphTreeDiv') public graphTreeDiv: ElementRef;
   @ViewChild('bokModal') public bokModal: ModalDirective;
 
   constructor(
@@ -161,16 +162,14 @@ export class NewspComponent implements OnInit {
   }
 
   displayTree(program = null) {
-
     if (program) {
       console.log('Display existing tree');
       program.parent = null;
       program.proportions = [];
       program.r = 10;
-      cv.displayCurricula('graphTree', program);
+      cv.displayCurricula('graphTree', program, this.graphTreeDiv.nativeElement.clientWidth, 650);
       this.refreshCurrentNode();
     } else {
-
       console.log('Display new tree');
       const treeData = {
         'longName': 'New Study Program',
@@ -182,8 +181,7 @@ export class NewspComponent implements OnInit {
         'r': 10,
         'children': []
       };
-
-      cv.displayCurricula('graphTree', treeData);
+      cv.displayCurricula('graphTree', treeData, this.graphTreeDiv.nativeElement.clientWidth, 650);
       this.currentTreeNode = cv.getCurrentNode();
     }
   }
@@ -324,9 +322,13 @@ export class NewspComponent implements OnInit {
     this.updateTreeStudyProgram();
   }
 
-
   removeBokKnowledge(model, index, attrTxt) {
     model[attrTxt].splice(index, 1);
+  }
+
+  addCustomLO() {
+    this.modelCourse.learningObjectives.push(new BokInput('', this.customLO, this.customLO, '', [], ''));
+    this.customLO = '';
   }
 
 }
