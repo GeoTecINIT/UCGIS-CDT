@@ -53,12 +53,13 @@ export class DetailComponent implements OnInit {
     program.parent = null;
     program.proportions = [];
     program.r = 10;
-    cv.displayCurricula('graphTree', program, this.graphTreeDiv.nativeElement.clientWidth - 50, 650);
+    cv.displayCurricula('graphTree', program, 600, 650);
     this.refreshCurrentNode();
   }
 
   refreshTreeSize() {
-    this.displayTree(this.selectedProgram);
+    cv.displayCurricula('graphTree', this.selectedProgram, this.graphTreeDiv.nativeElement.clientWidth - 50, 650);
+    this.refreshCurrentNode();
   }
 
   refreshCurrentNode() {

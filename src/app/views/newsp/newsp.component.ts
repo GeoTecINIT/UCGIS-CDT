@@ -222,11 +222,13 @@ export class NewspComponent implements OnInit {
   addNodeInTree() {
     cv.addNewNode('New');
     this.updateTreeStudyProgram();
+    this.refreshCurrentNode();
   }
 
   addExistingToStudyProgram(node) {
     cv.addExistingNode(node);
     this.updateTreeStudyProgram();
+    this.refreshCurrentNode();
   }
 
   removeNodeInTree() {
