@@ -36,7 +36,7 @@
                   <span tooltip="Click on any node to see more information about the module, course or lecture."
                     class="badge badge-primary badge-pill">i</span>
                   <button class="btn btn-link float-right pull-right"
-                    (click)="graphTreeDiv.classList.contains('col-md-12') ? graphTreeDiv.className = 'col-md-6' : graphTreeDiv.className = 'col-md-12'">
+                    (click)="graphTreeDiv.classList.contains('col-md-12') ? graphTreeDiv.className = 'col-md-6' : graphTreeDiv.className = 'col-md-12'; refreshTreeSize()">
                     <i class="float-right pull-right fa "
                       [ngClass]="{'fa-window-minimize': graphTreeDiv?.classList.contains('col-md-12'), 'fa-window-maximize': graphTreeDiv?.classList.contains('col-md-6')}"></i>
                   </button>
