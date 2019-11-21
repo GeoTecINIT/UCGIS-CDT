@@ -23,6 +23,7 @@ export class DetailComponent implements OnInit {
   selectedProgram: StudyProgram;
   @ViewChild('dangerModal') public dangerModal: ModalDirective;
   @ViewChild('graphC') graphCElem: ElementRef;
+  @ViewChild('graphTreeDiv') graphTreeDiv: ElementRef;
 
   tree: any;
 
@@ -52,8 +53,12 @@ export class DetailComponent implements OnInit {
     program.parent = null;
     program.proportions = [];
     program.r = 10;
-    cv.displayCurricula('graphTree', program);
+    cv.displayCurricula('graphTree', program, this.graphTreeDiv.nativeElement.clientWidth - 50, 650);
     this.refreshCurrentNode();
+  }
+
+  refreshTreeSize() {
+    this.displayTree(this.selectedProgram);
   }
 
   refreshCurrentNode() {
