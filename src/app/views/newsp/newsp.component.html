@@ -36,7 +36,7 @@
                   <span tooltip="Click on any node to see more information about the module, course or lecture."
                     class="badge badge-primary badge-pill">i</span>
                   <button class="btn btn-link float-right pull-right"
-                    (click)="graphTreeDiv.classList.contains('col-md-12') ? graphTreeDiv.className = 'col-md-6' : graphTreeDiv.className = 'col-md-12'">
+                    (click)="graphTreeDiv.classList.contains('col-md-12') ? graphTreeDiv.className = 'col-md-6' : graphTreeDiv.className = 'col-md-12'; refreshTreeSize()">
                     <i class="float-right pull-right fa "
                       [ngClass]="{'fa-window-minimize': graphTreeDiv?.classList.contains('col-md-12'), 'fa-window-maximize': graphTreeDiv?.classList.contains('col-md-6')}"></i>
                   </button>
@@ -65,7 +65,7 @@
                           <input type="text" class="form-control" id="title" placeholder="Title"
                             [(ngModel)]="model.name" name="title" required (keyup)="updateTreeStudyProgram()" />
                           <div *ngIf="model.linksToBok.length > 0" style="display: flex;">
-                            <p class="text-small"> Linked BOK concept(s): </p>
+                            <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of model.linksToBok; index as i ">
                               <p class="text-small" *ngIf="l.linkedTo=='name'">{{l.concept_id }} <button type="button"
                                   class="btn btn-link btn-xs" (click)="removeBokKnowledge(model, i, 'linksToBok')">
@@ -135,7 +135,7 @@
                           <textarea class="form-control" id="description" placeholder="Description" name="description"
                             [(ngModel)]="model.description" rows="4" (keyup)="updateTreeStudyProgram()"></textarea>
                           <div *ngIf="model.linksToBok.length > 0" style="display: flex;">
-                            <p class="text-small"> Linked BOK concept(s): </p>
+                            <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of model.linksToBok; index as i ">
                               <p class="text-small" *ngIf="l.linkedTo=='description'">{{l.concept_id }} <button
                                   type="button" class="btn btn-link btn-xs"
@@ -178,7 +178,7 @@
                           <input type="text" class="form-control" id="title" placeholder="Title"
                             [(ngModel)]="modelModule.name" name="title" required (keyup)="updateTreeStudyProgram()" />
                           <div *ngIf="modelModule.linksToBok.length > 0" style="display: flex;">
-                            <p class="text-small"> Linked BOK concept(s): </p>
+                            <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of modelModule.linksToBok; index as i ">
                               <p class="text-small" *ngIf="l.linkedTo=='name'">{{l.concept_id }} <button type="button"
                                   class="btn btn-link btn-xs"
@@ -223,7 +223,7 @@
                             [(ngModel)]="modelModule.description" rows="4"
                             (keyup)="updateTreeStudyProgram()"></textarea>
                           <div *ngIf="modelModule.linksToBok.length > 0" style="display: flex;">
-                            <p class="text-small"> Linked BOK concept(s): </p>
+                            <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of modelModule.linksToBok; index as i ">
                               <p class="text-small" *ngIf="l.linkedTo=='description'">{{l.concept_id }} <button
                                   type="button" class="btn btn-link btn-xs"
@@ -347,7 +347,7 @@
                           <input type="text" class="form-control" id="title" placeholder="Title"
                             [(ngModel)]="modelCourse.name" name="title" required (keyup)="updateTreeStudyProgram()" />
                           <div *ngIf="modelCourse.linksToBok.length > 0" style="display: flex;">
-                            <p class="text-small"> Linked BOK concept(s): </p>
+                            <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of modelCourse.linksToBok; index as i ">
                               <p class="text-small" *ngIf="l.linkedTo=='name'">{{l.concept_id }} <button type="button"
                                   class="btn btn-link btn-xs"
@@ -373,7 +373,7 @@
                             [(ngModel)]="modelCourse.description" (keyup)="updateTreeStudyProgram()"
                             rows="4"></textarea>
                           <div *ngIf="modelCourse.linksToBok.length > 0" style="display: flex;">
-                            <p class="text-small"> Linked BOK concept(s): </p>
+                            <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of modelCourse.linksToBok; index as i ">
                               <p class="text-small" *ngIf="l.linkedTo=='description'">{{l.concept_id }} <button
                                   type="button" class="btn btn-link btn-xs"
@@ -449,14 +449,24 @@
                                 class="text-placeholder">
                                 Explore the Body of Knowledge to add some or add custom learning Objectives.
                               </div>
+                              <div *ngIf="modelCourse.linksToBok.length > 0" style="display: flex;">
+                                <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
+                                <div *ngFor="let l of modelCourse.linksToBok; index as i ">
+                                  <p class="text-small" *ngIf="l.linkedTo=='learningObjectives'">{{l.concept_id }}
+                                    <button type="button" class="btn btn-link btn-xs"
+                                      (click)="removeBokKnowledge(modelCourse, i, 'linksToBok')">
+                                      <i class="fa fa-remove"></i>
+                                    </button></p>
+                                </div>
+                              </div>
                               <br>
                               <div class="row">
-                                  <div class="col-md-2"></div>
+                                <div class="col-md-2"></div>
                                 <div class="col-md-6">
                                   <input type="text" class="form-control" id="customLO"
                                     placeholder="Add custom learning objective" [(ngModel)]="customLO"
                                     name="customLO" />
-                                </div> 
+                                </div>
                                 <div class="col-md-4">
                                   <button type="button" class="btn btn-primary btn-sm" (click)="addCustomLO()">
                                     Add custom LO
@@ -548,7 +558,7 @@
                           <input type="text" class="form-control" id="title" placeholder="Title"
                             [(ngModel)]="modelLecture.name" name="title" required (keyup)="updateTreeStudyProgram()" />
                           <div *ngIf="modelLecture.linksToBok.length > 0" style="display: flex;">
-                            <p class="text-small"> Linked BOK concept(s): </p>
+                            <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of modelLecture.linksToBok; index as i ">
                               <p class="text-small" *ngIf="l.linkedTo=='name'">{{l.concept_id }} <button type="button"
                                   class="btn btn-link btn-xs"
@@ -575,7 +585,7 @@
                             [(ngModel)]="modelLecture.description" rows="4"
                             (keyup)="updateTreeStudyProgram()"></textarea>
                           <div *ngIf="modelLecture.linksToBok.length > 0" style="display: flex;">
-                            <p class="text-small"> Linked BOK concept(s): </p>
+                            <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of modelLecture.linksToBok; index as i ">
                               <p class="text-small" *ngIf="l.linkedTo=='description'">{{l.concept_id }} <button
                                   type="button" class="btn btn-link btn-xs"
@@ -677,7 +687,7 @@
                             <a (click)="showMoreIndexM = -1; showMoreIndexSP = -1" class="inline">Show less...</a>
                             <p class="card-text">{{ m.description }}</p>
                             <div *ngIf="m.children.length > 0">
-                              <b>Children nodes that will be also included:</b>
+                              <b>Child nodes that will also be included:</b>
                               <div *ngFor="let c of m.children" style="padding-left: 1em;">
                                 - {{ c.name }}
                                 <div *ngIf="c.children.length > 0">
@@ -711,7 +721,7 @@
                                 class="inline">Show less...</a>
                               <p class="card-text">{{ c.description }}</p>
                               <div *ngIf="c.children.length > 0">
-                                <b>Children nodes that will be also included:</b>
+                                <b>Child nodes that will also be included: </b>
                                 <div *ngFor="let l of c.children" style="padding-left: 1em;">
                                   - {{ l.name }}
                                 </div>

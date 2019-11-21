@@ -163,11 +163,12 @@ export class NewspComponent implements OnInit {
 
   displayTree(program = null) {
     if (program) {
-      console.log('Display existing tree');
+      console.log('Display existing tree : ');
+      console.log(program);
       program.parent = null;
       program.proportions = [];
       program.r = 10;
-      cv.displayCurricula('graphTree', program, this.graphTreeDiv.nativeElement.clientWidth, 650);
+      cv.displayCurricula('graphTree', program, this.graphTreeDiv.nativeElement.clientWidth - 50, 650);
       this.refreshCurrentNode();
     } else {
       console.log('Display new tree');
@@ -181,9 +182,13 @@ export class NewspComponent implements OnInit {
         'r': 10,
         'children': []
       };
-      cv.displayCurricula('graphTree', treeData, this.graphTreeDiv.nativeElement.clientWidth, 650);
+      cv.displayCurricula('graphTree', treeData, this.graphTreeDiv.nativeElement.clientWidth - 50, 650);
       this.currentTreeNode = cv.getCurrentNode();
     }
+  }
+
+  refreshTreeSize() {
+    this.displayTree(this.model);
   }
 
   refreshCurrentNode() {
@@ -295,7 +300,8 @@ export class NewspComponent implements OnInit {
         modelToUpdate[this.linkBoKto] = modelToUpdate[this.linkBoKto] + ' ' + concept;
         break;
       case 'description':
-        const desc = this.textBoK.nativeElement.children[1].children[3].textContent;
+        // tslint:disable-next-line:max-line-length
+        const desc = this.textBoK.nativeElement.children[1].children.length > 0 ? this.textBoK.nativeElement.children[1].children[3].textContent : '';
         newConcept.linkedTo = 'description';
         modelToUpdate[this.linkBoKto] = modelToUpdate[this.linkBoKto] + ' ' + desc;
         break;
