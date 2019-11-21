@@ -9,7 +9,38 @@
             </div>
             <div class="col-sm-4 offset-md-4 col-md-4"></div>
             <div class="col-sm-4 col-md-2">
-              <div *ngIf="currentTreeNode; else loading" class="row">
+              <div *ngIf="currentTreeNode && selectedProgram; else loading" class="row">
+                
+                        <div class="col-3 col-sm-3 col-md-3 no-padding">
+                          <button type="button" class="btn btn-block btn-link" [popover]="popTemplate" tooltip="Share"
+                            popoverTitle="Copy link, export to PDF or XML" placement="top" [outsideClick]="true">
+                            <i class="fa fa-share-alt fa-lg mt-4"></i>
+                          </button>
+                        </div>
+                        <div class="col-3 col-sm-3 col-md-3 no-padding"
+                          tooltip="{{isAnonymous? 'Login to be able to duplicate' : 'Duplicate'}}">
+                          <button type="button" class="btn btn-block btn-link" routerLink="/newsp/duplicate/{{ selectedProgram._id }}"
+                            [disabled]="isAnonymous">
+                            <i class="fa fa-copy fa-lg mt-4"></i>
+                          </button>
+                        </div>
+                        <div class="col-3 col-sm-3 col-md-3 no-padding"
+                          tooltip="{{isAnonymous? 'Login to be able to edit' : selectedProgram.userId==afAuth.auth.currentUser?.uid?  'Edit' : 'You can edit only your own profiles'}}">
+                          <button type="button" class="btn btn-block btn-link" routerLink="/newsp/copy/{{ selectedProgram._id }}"
+                            [disabled]="isAnonymous || selectedProgram.userId!=afAuth.auth.currentUser?.uid">
+                            <i class="fa fa-edit fa-lg mt-4"></i>
+                          </button>
+                        </div>
+                        <div class="col-3 col-sm-3 col-md-3 no-padding"
+                          tooltip="{{isAnonymous? 'Login to be able to remove' : selectedProgram.userId==afAuth.auth.currentUser?.uid?  'Remove' : 'You can remove only your own profiles'}}">
+                          <button type="button" class="btn btn-block btn-link" data-toggle="modal" (click)="dangerModal.show()"
+                            [disabled]="isAnonymous || selectedProgram.userId!=afAuth.auth.currentUser?.uid">
+                            <i class="fa fa-trash-o fa-lg mt-4"></i>
+                          </button>
+                        </div>
+                
+           
+<!-- 
                 <div class="cols-xs-2 col-md-3">
                   <button type="button" class="btn btn-block btn-link" [popover]="popTemplate" tooltip="Share"
                     popoverTitle="Copy link, export to PDF or XML" placement="top" [outsideClick]="true">
@@ -33,7 +64,7 @@
                     (click)="dangerModal.show()">
                     <i class="fa fa-trash-o fa-lg"></i>
                   </button>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>

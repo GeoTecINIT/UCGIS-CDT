@@ -7,6 +7,7 @@ import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import * as cv from '@eo4geo/curr-viz';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-detail',
@@ -26,11 +27,21 @@ export class DetailComponent implements OnInit {
   @ViewChild('graphTreeDiv') graphTreeDiv: ElementRef;
 
   tree: any;
+  isAnonymous = null;
 
   constructor(
     public studyprogramService: StudyProgramService,
-    private route: ActivatedRoute
-  ) { }
+    private route: ActivatedRoute, public afAuth: AngularFireAuth
+  ) {
+    this.afAuth.auth.onAuthStateChanged(user => {
+      console.log(user);
+      if (user) {
+        this.isAnonymous = user.isAnonymous;
+      } else {
+        this.isAnonymous = true;
+      }
+    });
+  }
 
   ngOnInit() {
     this.getStudyProgId();
