@@ -9,38 +9,39 @@
             </div>
             <div class="col-sm-4 offset-md-4 col-md-4"></div>
             <div class="col-sm-4 col-md-2">
-              <div *ngIf="currentTreeNode && selectedProgram; else loading" class="row">
-                
-                        <div class="col-3 col-sm-3 col-md-3 no-padding">
-                          <button type="button" class="btn btn-block btn-link" [popover]="popTemplate" tooltip="Share"
-                            popoverTitle="Copy link, export to PDF or XML" placement="top" [outsideClick]="true">
-                            <i class="fa fa-share-alt fa-lg mt-4"></i>
-                          </button>
-                        </div>
-                        <div class="col-3 col-sm-3 col-md-3 no-padding"
-                          tooltip="{{isAnonymous? 'Login to be able to duplicate' : 'Duplicate'}}">
-                          <button type="button" class="btn btn-block btn-link" routerLink="/newsp/duplicate/{{ selectedProgram._id }}"
-                            [disabled]="isAnonymous">
-                            <i class="fa fa-copy fa-lg mt-4"></i>
-                          </button>
-                        </div>
-                        <div class="col-3 col-sm-3 col-md-3 no-padding"
-                          tooltip="{{isAnonymous? 'Login to be able to edit' : selectedProgram.userId==afAuth.auth.currentUser?.uid?  'Edit' : 'You can edit only your own profiles'}}">
-                          <button type="button" class="btn btn-block btn-link" routerLink="/newsp/copy/{{ selectedProgram._id }}"
-                            [disabled]="isAnonymous || selectedProgram.userId!=afAuth.auth.currentUser?.uid">
-                            <i class="fa fa-edit fa-lg mt-4"></i>
-                          </button>
-                        </div>
-                        <div class="col-3 col-sm-3 col-md-3 no-padding"
-                          tooltip="{{isAnonymous? 'Login to be able to remove' : selectedProgram.userId==afAuth.auth.currentUser?.uid?  'Remove' : 'You can remove only your own profiles'}}">
-                          <button type="button" class="btn btn-block btn-link" data-toggle="modal" (click)="dangerModal.show()"
-                            [disabled]="isAnonymous || selectedProgram.userId!=afAuth.auth.currentUser?.uid">
-                            <i class="fa fa-trash-o fa-lg mt-4"></i>
-                          </button>
-                        </div>
-                
-           
-<!-- 
+              <div *ngIf="currentTreeNode && selectedProgram" class="row">
+
+                <div class="col-3 col-sm-3 col-md-3 no-padding">
+                  <button type="button" class="btn btn-block btn-link" [popover]="popTemplate" tooltip="Share"
+                    popoverTitle="Copy link, export to PDF or XML" placement="top" [outsideClick]="true">
+                    <i class="fa fa-share-alt fa-lg mt-4"></i>
+                  </button>
+                </div>
+                <div class="col-3 col-sm-3 col-md-3 no-padding"
+                  tooltip="{{isAnonymous? 'Login to be able to duplicate' : 'Duplicate'}}">
+                  <button type="button" class="btn btn-block btn-link"
+                    routerLink="/newsp/duplicate/{{ selectedProgram._id }}" [disabled]="isAnonymous">
+                    <i class="fa fa-copy fa-lg mt-4"></i>
+                  </button>
+                </div>
+                <div class="col-3 col-sm-3 col-md-3 no-padding"
+                  tooltip="{{isAnonymous? 'Login to be able to edit' : selectedProgram.userId==afAuth.auth.currentUser?.uid?  'Edit' : 'You can edit only your own profiles'}}">
+                  <button type="button" class="btn btn-block btn-link"
+                    routerLink="/newsp/copy/{{ selectedProgram._id }}"
+                    [disabled]="isAnonymous || selectedProgram.userId!=afAuth.auth.currentUser?.uid">
+                    <i class="fa fa-edit fa-lg mt-4"></i>
+                  </button>
+                </div>
+                <div class="col-3 col-sm-3 col-md-3 no-padding"
+                  tooltip="{{isAnonymous? 'Login to be able to remove' : selectedProgram.userId==afAuth.auth.currentUser?.uid?  'Remove' : 'You can remove only your own profiles'}}">
+                  <button type="button" class="btn btn-block btn-link" data-toggle="modal" (click)="dangerModal.show()"
+                    [disabled]="isAnonymous || selectedProgram.userId!=afAuth.auth.currentUser?.uid">
+                    <i class="fa fa-trash-o fa-lg mt-4"></i>
+                  </button>
+                </div>
+
+
+                <!-- 
                 <div class="cols-xs-2 col-md-3">
                   <button type="button" class="btn btn-block btn-link" [popover]="popTemplate" tooltip="Share"
                     popoverTitle="Copy link, export to PDF or XML" placement="top" [outsideClick]="true">
@@ -69,15 +70,16 @@
             </div>
           </div>
         </div>
-        <div class="card-body" [hidden]="currentTreeNode == null">
+        <div class="card-body">
           <ng-container>
             <!--  *ngIf="selectedProgram; else loading" -->
-            <div class="row" *ngIf="selectedProgram; else loading">
+            <div class="row" *ngIf="model; else loading">
+              <!-- -->
               <div class="col-md-6">
                 <h1>{{ selectedProgram.name }}</h1>
                 <h5>{{ selectedProgram.affiliation }} </h5>
               </div>
-              <div class="col-md-2 offset-md-3" *ngIf="selectedProgram.field">
+              <div class="col-md-2 offset-md-3" *ngIf="selectedProgram && selectedProgram.field">
                 <h5>{{ selectedProgram.field.name }} ({{ selectedProgram.field.grandparent }})</h5>
               </div>
               <div class="col-md-1">
@@ -89,7 +91,7 @@
               </div>
             </div>
 
-            <div class="row">
+            <div class="row" (window:resize)="onResize()">
               <div class="col-md-6" #graphTreeDiv (click)="refreshCurrentNode()">
                 <div class="card card-accent-secondary">
                   <div class="card-header">
@@ -106,7 +108,8 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-6" *ngIf="model; else loading" #graphTextDiv>
+              <div class="col-md-6" #graphTextDiv *ngIf="model">
+                <!-- *ngIf="model; else loading" -->
                 <div class="card card-accent-secondary">
                   <div class="card-header">
                     <label>Info</label>
@@ -123,7 +126,9 @@
                         <p><b>Affiliation:</b> {{ model.affiliation }}</p>
                         <p class="text-justify">{{ model.description }}</p>
                         <p><b>EQF Level:</b> {{ model.eqf }}</p>
-                        <div *ngIf="model.field"> <p><b>Field:</b> {{ model.field.name }} ({{ model.field.grandparent }})</p> </div>
+                        <div *ngIf="model && model.field">
+                          <p><b>Field:</b> {{ model.field.name }} ({{ model.field.grandparent }})</p>
+                        </div>
                         <p><b>Number of semesters:</b> {{ model.numSemesters }}</p>
                       </div>
                       <div *ngIf="currentTreeNode.depth == 1">
