@@ -115,7 +115,7 @@ export class NewspComponent implements OnInit {
     this.mode = this.route.snapshot.paramMap.get('mode');
     if (this.mode === 'duplicate' || this.mode === 'copy') {
       if (this.mode === 'copy') {
-        this.title = 'Copy Study Program';
+        this.title = 'Edit Study Program';
       } else {
         this.title = 'Duplicate Study Program';
       }
@@ -185,6 +185,10 @@ export class NewspComponent implements OnInit {
       cv.displayCurricula('graphTree', treeData, this.graphTreeDiv.nativeElement.clientWidth - 50, 650);
       this.currentTreeNode = cv.getCurrentNode();
     }
+  }
+
+  onResize() {
+    this.refreshTreeSize();
   }
 
   refreshTreeSize() {

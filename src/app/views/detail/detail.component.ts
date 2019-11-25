@@ -45,6 +45,14 @@ export class DetailComponent implements OnInit {
 
   ngOnInit() {
     this.getStudyProgId();
+
+    console.log('Width ngOnInit  : ' + this.graphTreeDiv.nativeElement.clientWidth);
+
+
+  }
+
+  onResize() {
+    this.refreshTreeSize();
   }
 
   getStudyProgId(): void {
@@ -64,8 +72,9 @@ export class DetailComponent implements OnInit {
     program.parent = null;
     program.proportions = [];
     program.r = 10;
-    cv.displayCurricula('graphTree', program, 600, 650);
+    cv.displayCurricula('graphTree', program, this.graphTreeDiv.nativeElement.clientWidth - 50, 650);
     this.refreshCurrentNode();
+   // this.refreshTreeSize();
   }
 
   refreshTreeSize() {
