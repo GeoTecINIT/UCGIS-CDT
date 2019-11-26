@@ -5,12 +5,12 @@
     </button>
   </div>
   <div class="col-sm-4 col-md-4">
-    <button type="button" class="btn btn-block btn-link" (click)="generatePDF(); poppdf.show()">
+    <button type="button" class="btn btn-block btn-link"  (click)="popxml.show()" >    <!--  (click)="generatePDF(); poppdf.show()" -->
       <i class="fa fa-file-pdf-o fa-lg mt-4"></i>
     </button>
   </div>
   <div class="col-sm-4 col-md-4">
-    <button type="button" class="btn btn-block btn-link">
+    <button type="button" class="btn btn-block btn-link"  (click)="popxml.show()" >
       <i class="fa fa-file-code-o fa-lg mt-4"></i>
     </button>
   </div>
@@ -19,3 +19,6 @@
 </span>
 <span tooltip="Check your downloads folder!" triggers="click" #poppdf="bs-tooltip">
   </span>
+  <span tooltip="This is under developement, copy the link to share." triggers="click"
+  #popxml="bs-tooltip">
+</span>
