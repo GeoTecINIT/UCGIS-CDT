@@ -5,7 +5,7 @@
         Your Study Programs
       </h1>
       <div class="text-center" [hidden]="!isAnonymous">
-        <h5>You have limited functionality because you are not logged in. Login to use all functionality in the tool.
+        <h5>You have limited functionality because you are not logged in. <a href="#" routerLink="/login"> Login </a> to use all functionality in the tool.
         </h5>
       </div>
       <div class="card card-accent-primary">
@@ -29,9 +29,9 @@
               </div>
             </div>
             <div class="col-sm-4 col-md-2">
-              <button type="button" class="btn btn-block btn-link" (click)="advancedSearch = !advancedSearch">
+            <!--   <button type="button" class="btn btn-block btn-link" (click)="advancedSearch = !advancedSearch">
                 Advanced Search
-              </button>
+              </button> -->
             </div>
             <!-- Advanced search -->
             <!--         <ng-container *ngIf="advancedSearch">
@@ -114,14 +114,14 @@
                   </button>
                 </div>
                 <div class="col-3 col-sm-3 col-md-3 no-padding"
-                  tooltip="{{isAnonymous? 'Login to be able to edit' : sp.userId==afAuth.auth.currentUser?.uid?  'Edit' : 'You can edit only your own profiles'}}">
+                  tooltip="{{isAnonymous? 'Login to be able to edit' : sp.userId==afAuth.auth.currentUser?.uid?  'Edit' : 'You can edit only your own study programs'}}">
                   <button type="button" class="btn btn-block btn-link" routerLink="/newsp/copy/{{ sp._id }}"
                     [disabled]="isAnonymous || sp.userId!=afAuth.auth.currentUser?.uid">
                     <i class="fa fa-edit fa-lg mt-4"></i>
                   </button>
                 </div>
                 <div class="col-3 col-sm-3 col-md-3 no-padding"
-                  tooltip="{{isAnonymous? 'Login to be able to remove' : sp.userId==afAuth.auth.currentUser?.uid?  'Remove' : 'You can remove only your own profiles'}}">
+                  tooltip="{{isAnonymous? 'Login to be able to remove' : sp.userId==afAuth.auth.currentUser?.uid?  'Remove' : 'You can remove only your own stydy programs'}}">
                   <button type="button" class="btn btn-block btn-link" data-toggle="modal" (click)="dangerModal.show()"
                     [disabled]="isAnonymous || sp.userId!=afAuth.auth.currentUser?.uid">
                     <i class="fa fa-trash-o fa-lg mt-4"></i>
