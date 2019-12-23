@@ -29,17 +29,25 @@
               </div>
             </div>
             <div class="col-sm-4 col-md-2">
-            <!--   <button type="button" class="btn btn-block btn-link" (click)="advancedSearch = !advancedSearch">
+              <button type="button" class="btn btn-block btn-link" (click)="advancedSearch = !advancedSearch">
                 Advanced Search
-              </button> -->
+              </button>
             </div>
             <!-- Advanced search -->
-            <!--         <ng-container *ngIf="advancedSearch">
+            <ng-container *ngIf="advancedSearch">
               <div class="card-body">
                 <div class="row">
-                  <div class="col-md-2 offset-md-6 col-sm-4" style="display: inline-flex">
-                   
-                    
+                  <div class="col-md-2 offset-md-4 col-sm-3" style="display: inline-flex">
+                    <span class="input-group-prepend">
+                      <label class="switch switch-label switch-pill switch-outline-primary-alt">
+                        <input class="switch-input" type="checkbox" value="affiliation" [(ngModel)]="affiliationFilter"
+                          checked />
+                        <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
+                      </label>
+                      <div class="pl-1">Affiliation</div>
+                    </span>
+                  </div>
+                  <div class="col-md-2 col-sm-3" style="display: inline-flex">
                     <span class="input-group-prepend">
                       <label class="switch switch-label switch-pill switch-outline-primary-alt">
                         <input class="switch-input" type="checkbox" value="knowledges" [(ngModel)]="knowledgeFilter"
@@ -49,9 +57,8 @@
                       <div class="pl-1">Knowledges</div>
                     </span>
                   </div>
-                  <div class="col-md-2 col-sm-4" style="display: inline-flex">
-                   
-                    
+
+                  <div class="col-md-2 col-sm-3" style="display: inline-flex">
                     <span class="input-group-prepend">
                       <label class="switch switch-label switch-pill switch-outline-primary-alt">
                         <input class="switch-input" type="checkbox" value="skills" [(ngModel)]="skillFilter" checked />
@@ -60,21 +67,20 @@
                       <div class="pl-1">Skills</div>
                     </span>
                   </div>
-                  <div class="col-md-2 col-sm-4" style="display: inline-flex">
-                  
-                    
+
+                  <div class="col-md-2 col-sm-3" style="display: inline-flex">
                     <span class="input-group-prepend">
                       <label class="switch switch-label switch-pill switch-outline-primary-alt">
-                        <input class="switch-input" type="checkbox" vale="competences" [(ngModel)]="competencesFilter"
+                        <input class="switch-input" type="checkbox" value="fieldFilter" [(ngModel)]="fieldFilter"
                           checked />
                         <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
                       </label>
-                      <div class="pl-1">Compentences</div>
+                      <div class="pl-1">Field</div>
                     </span>
                   </div>
                 </div>
               </div>
-            </ng-container> -->
+            </ng-container>
           </div>
         </div>
         <div class="card-body">
@@ -83,6 +89,7 @@
               <button type="button" class="btn text-justify" routerLink="/detail/{{ sp._id }}">
                 <span>
                   <h1>{{ sp.name }}</h1>
+                  <h6>{{ sp.affiliation }}</h6>
                   <p class="text-muted">{{ sp.description | slice:0:300 }} ... </p>
                   EQF Level: {{ sp.eqf }}
 
