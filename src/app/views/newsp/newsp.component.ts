@@ -336,7 +336,9 @@ export class NewspComponent implements OnInit {
 
   removeBokKnowledge(model, index, attrTxt) {
     model[attrTxt].splice(index, 1);
-  }
+    model.concepts.splice(index, 1);
+    this.updateTreeStudyProgram();
+   }
 
   addCustomLO() {
     this.modelCourse.learningObjectives.push(new BokInput('', this.customLO, this.customLO, '', [], ''));
