@@ -93,17 +93,57 @@ export class ListComponent implements OnInit {
               }
             });
           }
-          sp.children.forEach(mod => {
-            mod.linksToBok.forEach(linkM => { // Module links
+        });
+      }
+      sp.children.forEach(mod => {
+        mod.linksToBok.forEach(linkM => { // Module links
+          if (this.knowledgeFilter) {
+            if (linkM.concept_id.toLowerCase().includes(this.searchText.toLowerCase())) {
+              if (this.filteredStudyPrograms.indexOf(sp) === -1) {
+                this.filteredStudyPrograms.push(sp);
+              }
+            }
+          }
+          if (this.skillFilter) {
+            linkM.skills.forEach(sk => {
+              if (sk.toLowerCase().includes(this.searchText.toLowerCase())) {
+                if (this.filteredStudyPrograms.indexOf(sp) === -1) {
+                  this.filteredStudyPrograms.push(sp);
+                }
+              }
+            });
+          }
+        });
+        mod.children.forEach(cour => {
+          cour.linksToBok.forEach(linkC => { // Course links
+            if (this.knowledgeFilter) {
+              if (linkC.concept_id.toLowerCase().includes(this.searchText.toLowerCase())) {
+                if (this.filteredStudyPrograms.indexOf(sp) === -1) {
+                  this.filteredStudyPrograms.push(sp);
+                }
+              }
+            }
+            if (this.skillFilter) {
+              linkC.skills.forEach(sk => {
+                if (sk.toLowerCase().includes(this.searchText.toLowerCase())) {
+                  if (this.filteredStudyPrograms.indexOf(sp) === -1) {
+                    this.filteredStudyPrograms.push(sp);
+                  }
+                }
+              });
+            }
+          });
+          cour.children.forEach(lect => {
+            lect.linksToBok.forEach(linkL => { // Lecture links
               if (this.knowledgeFilter) {
-                if (linkM.concept_id.toLowerCase().includes(this.searchText.toLowerCase())) {
+                if (linkL.concept_id.toLowerCase().includes(this.searchText.toLowerCase())) {
                   if (this.filteredStudyPrograms.indexOf(sp) === -1) {
                     this.filteredStudyPrograms.push(sp);
                   }
                 }
               }
               if (this.skillFilter) {
-                linkM.skills.forEach(sk => {
+                linkL.skills.forEach(sk => {
                   if (sk.toLowerCase().includes(this.searchText.toLowerCase())) {
                     if (this.filteredStudyPrograms.indexOf(sp) === -1) {
                       this.filteredStudyPrograms.push(sp);
@@ -112,49 +152,9 @@ export class ListComponent implements OnInit {
                 });
               }
             });
-            mod.children.forEach(cour => {
-              cour.linksToBok.forEach(linkC => { // Course links
-                if (this.knowledgeFilter) {
-                  if (linkC.concept_id.toLowerCase().includes(this.searchText.toLowerCase())) {
-                    if (this.filteredStudyPrograms.indexOf(sp) === -1) {
-                      this.filteredStudyPrograms.push(sp);
-                    }
-                  }
-                  if (this.skillFilter) {
-                    linkC.skills.forEach(sk => {
-                      if (sk.toLowerCase().includes(this.searchText.toLowerCase())) {
-                        if (this.filteredStudyPrograms.indexOf(sp) === -1) {
-                          this.filteredStudyPrograms.push(sp);
-                        }
-                      }
-                    });
-                  }
-                }
-              });
-              cour.children.forEach(lect => {
-                lect.linksToBok.forEach(linkL => { // Lecture links
-                  if (this.knowledgeFilter) {
-                    if (linkL.concept_id.toLowerCase().includes(this.searchText.toLowerCase())) {
-                      if (this.filteredStudyPrograms.indexOf(sp) === -1) {
-                        this.filteredStudyPrograms.push(sp);
-                      }
-                    }
-                  }
-                  if (this.skillFilter) {
-                    linkL.skills.forEach(sk => {
-                      if (sk.toLowerCase().includes(this.searchText.toLowerCase())) {
-                        if (this.filteredStudyPrograms.indexOf(sp) === -1) {
-                          this.filteredStudyPrograms.push(sp);
-                        }
-                      }
-                    });
-                  }
-                });
-              });
-            });
           });
         });
-      }
+      });
       if (this.fieldFilter) {
         // tslint:disable-next-line:max-line-length
         if (sp.field.name.toLowerCase().includes(this.searchText.toLowerCase()) || sp.field.parent.toLowerCase().includes(this.searchText.toLowerCase())) {
