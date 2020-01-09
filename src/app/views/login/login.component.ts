@@ -97,14 +97,14 @@ export class LoginComponent implements OnInit {
 
   forgotPwd() {
     const actionCodeSettings = {
-      url: 'https://ocuprotool.web.app/#/login', // the domain has to be added to firebase console whitelist
+      url: 'https://eo4geo-cdt.web.app/#/login', // the domain has to be added to firebase console whitelist
       handleCodeInApp: false
     };
 
     this.afAuth.auth.sendPasswordResetEmail(this.email, actionCodeSettings)
       .then(() => {
         // Password reset email sent.
-        this.errorLogin = 'An email has been sent to your address. It contains a link to recover your password.';
+        this.errorLogin = 'Check your email to recover your password.';
       })
       .catch(error => {
         // Error occurred. Inspect error.code.

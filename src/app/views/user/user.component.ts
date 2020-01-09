@@ -10,16 +10,13 @@ import { User, UserService } from '../../services/user.service';
 export class UserComponent implements OnInit {
 
   public msgSaved: string;
-  public msgPwdSaved: string;
-  public msgError: string;
+  public msgPwdRecover: string;
+  public msgPwdRecoverError: string;
 
   public email: string;
   public affiliation: string;
   public name: string;
 
-  public oldPwd: string;
-  public newPwd: string;
-  public repNewPwd: string;
   public user: User;
 
   return = '';
@@ -31,8 +28,6 @@ export class UserComponent implements OnInit {
     private router: Router
   ) {
 
-    console.log ('user component');
-  //  this.ngZone.run(() => this.router.navigateByUrl(this.return)).then();
     this.afAuth.auth.onAuthStateChanged(user => {
       if (user) {
         this.userService.getUserById(user.uid).subscribe(usr => {
@@ -42,21 +37,33 @@ export class UserComponent implements OnInit {
             this.userService.addNewUser(user);
           }
         });
-
-        // this.user = user;
-        // User is signed in.
-        //  console.log('login inside ' + this.afAuth.auth.currentUser.email + ' - route:' + this.return );
-
       }
     });
   }
 
   ngOnInit() {
-    console.log ('user component');
   }
 
-  savePwd() {
+  recoverPwd() {
 
+    const actionCodeSettings = {
+      url: 'https://eo4geo-cdt.web.app/#/user', // the domain has to be added to firebase console whitelist
+      handleCodeInApp: false
+    };
+
+    this.afAuth.auth.sendPasswordResetEmail(this.user.email, actionCodeSettings)
+      .then(() => {
+        // Password reset email sent.
+        this.msgPwdRecover = 'Check your email to recover your password.';
+      })
+      .catch(error => {
+        // Error occurred. Inspect error.code.
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        this.msgPwdRecoverError = errorMessage;
+        console.log(errorCode + ' - ' + errorMessage);
+      });
   }
 
   save() {
