@@ -1,89 +1,60 @@
-
-            <div class="animated fadeIn">
-      <div class="row">
-        <div class="col-sm-12 col-md-12">
-          <h1 class="title">
-            User Details
-          </h1>
-     <!--      <div class="card-group"> -->
-            <div class="card card-accent-primary">
-              <div class="card-body" *ngIf="user; else loading">
-                <form>
-                  <div class="row">
-                    <div class="col-sm-12 col-md-6">
-                      <p class="text-muted">Details</p>
-                      <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text"><i class="icon-envelope"></i></span>
-                        </div>
-                        <input type="text" class="form-control" placeholder="Email" name="email" required
-                          [(ngModel)]="user.email" disabled>
-                      </div>
-                      <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text"><i class="icon-user"></i></span>
-                        </div>
-                        <input type="text" class="form-control" placeholder="Name" name="name" required
-                          [(ngModel)]="user.name">
-                      </div>
-                      <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text"><i class="icon-home"></i></span>
-                        </div>
-                        <input type="text" class="form-control" placeholder="Affiliation" name="affiliation" required
-                          [(ngModel)]="user.affiliation">
-                      </div>
-                      <div class="row">
-                        <div class="col-6">
-                          <button type="button" class="btn btn-primary px-4" (click)="save()">Save changes</button>
-                        </div>
-                        <div class="col-6">
-                          <p class="text-success" [innerText]="msgSaved" [hidden]="!msgSaved"></p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                      <p class="text-muted">Change password</p>
-                      <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text"><i class="icon-lock"></i></span>
-                        </div>
-                        <input type="password" class="form-control" placeholder="Old Password" name="oldPwd" required
-                          [(ngModel)]="oldPwd">
-                      </div>
-                      <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text"><i class="icon-lock"></i></span>
-                        </div>
-                        <input type="password" class="form-control" placeholder="New password" name="newPwd" required
-                          [(ngModel)]="newPwd">
-                      </div>
-                      <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text"><i class="icon-lock"></i></span>
-                        </div>
-                        <input type="password" class="form-control" placeholder="Repeat new password" name="repNewPwd"
-                          required [(ngModel)]="repNewPwd">
-                      </div>
-                      <button type="button" class="btn btn-primary px-4" (click)="savePwd()">Change password</button>
-                      <div class="row">
-                        <div class="col-12">
-                          <p class="text-center text-danger mt-4" [innerText]="msgError" [hidden]="!msgError"></p>
-                          <p class="text-center text-success mt-4" [innerText]="msgPwdSaved" [hidden]="!msgPwdSaved">
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+      <h1 class="title">
+        User Details
+      </h1>
+      <!--      <div class="card-group"> -->
+      <div class="card card-accent-primary">
+        <div class="card-body" *ngIf="user; else loading">
+          <form>
+            <div class="row">
+              <div class="col-sm-12 col-md-12">
+                <p class="text-muted">Details</p>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-envelope"></i></span>
                   </div>
-                </form>
+                  <input type="text" class="form-control" placeholder="Email" name="email" required
+                    [(ngModel)]="user.email" disabled>
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-user"></i></span>
+                  </div>
+                  <input type="text" class="form-control" placeholder="Name" name="name" required
+                    [(ngModel)]="user.name">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-home"></i></span>
+                  </div>
+                  <input type="text" class="form-control" placeholder="Affiliation" name="affiliation" required
+                    [(ngModel)]="user.affiliation">
+                </div>
+                <div class="row">
+                  <div class="col-sm-6 col-md-3 mb-3">
+                    <button type="button" class="btn btn-primary px-4" (click)="save()">Save changes</button>
+                  </div>
+                  <div class="col-sm-6 col-md-3 mb-3">
+                    <p class="text-success" [innerText]="msgSaved" [hidden]="!msgSaved"></p>
+                  </div>
+                  <div class="col-sm-6 col-md-3">
+                    <button type="button" class="btn btn-primary px-4" (click)="recoverPwd()">Recover password</button>
+                  </div>
+                  <div class="col-sm-6 col-md-3">
+                    <p class="text-success" [innerText]="msgPwdRecover" [hidden]="!msgPwdRecover"></p>
+                    <p class="text-danger" [innerText]="msgPwdRecoverError" [hidden]="!msgPwdRecoverError"></p>
+                  </div>
+                </div>
               </div>
-              <ng-template #loading>
-                <app-loading-indicator></app-loading-indicator>
-              </ng-template>
             </div>
-          </div>
+          </form>
         </div>
+        <ng-template #loading>
+          <app-loading-indicator></app-loading-indicator>
+        </ng-template>
       </div>
-<!--     </div> -->
-<!--   </main>
- --><!-- </div> -->
+    </div>
+  </div>
+</div>
