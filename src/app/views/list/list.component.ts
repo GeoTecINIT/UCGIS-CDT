@@ -25,6 +25,7 @@ export class ListComponent implements OnInit {
   filteredStudyPrograms: any[];
   searchText: string;
   isAnonymous = null;
+  ownUsrId = null;
 
   @ViewChild('dangerModal') public dangerModal: ModalDirective;
 
@@ -33,8 +34,10 @@ export class ListComponent implements OnInit {
       console.log(user);
       if (user) {
         this.isAnonymous = user.isAnonymous;
+        this.ownUsrId = user.uid;
       } else {
         this.isAnonymous = true;
+        this.ownUsrId = null;
       }
     });
   }

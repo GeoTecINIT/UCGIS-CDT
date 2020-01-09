@@ -15,7 +15,7 @@ export class StudyProgram extends Object {
   public name: string;
   public description: string;
   public affiliation: string;
-  // public level: string;
+  public levelPublic: Boolean;
   public eqf: number;
   public children: Module[];
   public numSemesters: number;
@@ -41,6 +41,7 @@ export class StudyProgram extends Object {
       this.concepts = currentNode.data.concepts ? currentNode.data.concepts : [];
       this.currentNode = null;
       this.linksToBok = currentNode.data.linksToBok ? currentNode.data.linksToBok : [];
+      this.levelPublic = currentNode.data.levelPublic ? currentNode.data.levelPublic : true;
 
     } else {
       this._id = '';
@@ -54,6 +55,7 @@ export class StudyProgram extends Object {
       this.userId = '';
       this.concepts = [];
       this.linksToBok = [];
+      this.levelPublic = true;
     }
   }
 }

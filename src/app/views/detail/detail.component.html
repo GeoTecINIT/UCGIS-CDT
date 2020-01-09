@@ -7,7 +7,12 @@
             <div class="col-sm-4 col-md-2">
               Detail
             </div>
-            <div class="col-sm-4 offset-md-4 col-md-4"></div>
+            <div *ngIf="!selectedProgram.levelPublic" class="col-sm-4 offset-md-2 col-md-6">
+              <label>Private Study Program</label>
+              <span tooltip="This Study Program will not be listed in the main view for other users. You can only access with the link."
+                class="badge badge-primary badge-pill">i</span>
+            </div>
+            <div *ngIf="selectedProgram.levelPublic" class="col-sm-4 offset-md-2 col-md-6"></div>
             <div class="col-sm-4 col-md-2">
               <div *ngIf="currentTreeNode && selectedProgram" class="row">
 
@@ -172,7 +177,7 @@
                         </ul>
                       </div>
                       <div *ngIf="model.learningObjectives && model.learningObjectives.length > 0">
-                        <span><b>Learning Objectives:</b></span>
+                        <span><b>Learning Outcomes:</b></span>
                         <ul>
                           <div *ngFor="let l of model.learningObjectives">
                             <li>{{ l.name }}</li>
