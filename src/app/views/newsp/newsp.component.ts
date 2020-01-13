@@ -178,6 +178,7 @@ export class NewspComponent implements OnInit {
         'name': 'New Study Program',
         'parent': 'null',
         'path': 0,
+        'depth': 0,
         'proportions': [],
         'r': 10,
         'children': []
