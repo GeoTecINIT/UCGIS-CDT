@@ -14,6 +14,7 @@ export class Lecture extends Object {
   public isPractical: boolean;
   public concepts: string[];
   public linksToBok: BokInput[];
+  public depth = 3;
 
   constructor(
     public currentNode: any = null

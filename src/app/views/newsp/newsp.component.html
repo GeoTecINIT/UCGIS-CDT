@@ -6,16 +6,33 @@
         <div class="card-header">
           <div class="row">
             <div class="col-md-8 text-center">
-              <button type="submit" class="btn btn-pill btn-primary" (click)="addNodeInTree()"
+              <!--              <button type="submit" class="btn btn-pill btn-primary" (click)="addNodeInTree(1)"
                 [disabled]="currentTreeNode.depth == 3">
                 <i class="fa fa-plus"></i> Create new {{textByDepth}}
-              </button>
+              </button> -->
+
+
+              <div class="btn-group" dropdown>
+                <button id="button-animated" dropdownToggle type="button"
+                  class="btn btn-pill btn-primary dropdown-toggle" aria-controls="dropdown-animated">
+                  <i class="fa fa-plus"></i> Create new <span class="caret"></span>
+                </button>
+                <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu" role="menu"
+                  aria-labelledby="button-animated">
+                  <!--                   <li role="menuitem"><a class="dropdown-item pt-2 pb-2" (click)="addNodeInTree(0)">Study Program</a></li>-->
+                  <li role="menuitem"><a class="dropdown-item pt-2 pb-2" [ngClass]="{'disabled': currentTreeNode.data.depth>=1}" (click)="addNodeInTree(1)">Module</a></li>
+                  <li role="menuitem"><a class="dropdown-item pt-2 pb-2" [ngClass]="{'disabled': currentTreeNode.data.depth>=2}" (click)="addNodeInTree(2)">Course</a></li>
+                  <li role="menuitem"><a class="dropdown-item pt-2 pb-2" [ngClass]="{'disabled': currentTreeNode.data.depth>=3}" (click)="addNodeInTree(3)">Lecture</a></li>
+                </ul>
+              </div>
+
+
               <button type="submit" class="btn btn-pill btn-primary"
-                (click)="isSearchingExisting = !isSearchingExisting" [disabled]="currentTreeNode.depth == 3">
+                (click)="isSearchingExisting = !isSearchingExisting" [disabled]="currentTreeNode.data.depth == 3">
                 <i class="fa fa-search"></i> Explore existing {{textByDepth}}s
               </button>
               <button type="submit" class="btn btn-pill btn-danger" (click)="removeNodeInTree()"
-                [disabled]="currentTreeNode.depth == 0">
+                [disabled]="currentTreeNode.data.depth == 0">
                 <i class="fa fa-minus"></i> Remove {{textByDepthRemove}}
               </button>
             </div>
@@ -55,7 +72,7 @@
               </div>
             </div>
             <!-- depth = 0 -> general info card -->
-            <div *ngIf="!isSearchingExisting && currentTreeNode.depth == 0" class="col-md-6" #GIDiv>
+            <div *ngIf="!isSearchingExisting && currentTreeNode.data.depth == 0" class="col-md-6" #GIDiv>
               <form #newOPForm="ngForm">
                 <div class="card card-accent-secondary">
                   <div class="card-header">
@@ -168,7 +185,7 @@
               </form>
             </div>
             <!-- depth = 1 -> Modules -->
-            <div *ngIf="!isSearchingExisting && currentTreeNode.depth == 1" class="col-md-6" #ModDiv>
+            <div *ngIf="!isSearchingExisting && currentTreeNode.data.depth == 1" class="col-md-6" #ModDiv>
               <form #newOPForm="ngForm">
                 <div class="card card-accent-secondary">
                   <div class="card-header">
@@ -337,7 +354,7 @@
               </form>
             </div>
             <!-- depth = 2 -> Course -->
-            <div *ngIf="!isSearchingExisting && currentTreeNode.depth == 2" class="col-md-6" #CourseDiv>
+            <div *ngIf="!isSearchingExisting && currentTreeNode.data.depth == 2" class="col-md-6" #CourseDiv>
               <form #newOPForm="ngForm">
                 <div class="card card-accent-secondary">
                   <div class="card-header">
@@ -474,8 +491,7 @@
                                 <div class="col-md-2"></div>
                                 <div class="col-md-6">
                                   <input type="text" class="form-control" id="customLO"
-                                    placeholder="Add custom learning outcome" [(ngModel)]="customLO"
-                                    name="customLO" />
+                                    placeholder="Add custom learning outcome" [(ngModel)]="customLO" name="customLO" />
                                 </div>
                                 <div class="col-md-4">
                                   <button type="button" class="btn btn-primary btn-sm" (click)="addCustomLO()">
@@ -548,7 +564,7 @@
               </form>
             </div>
             <!-- depth = 3 -> Lectures -->
-            <div *ngIf="!isSearchingExisting && currentTreeNode.depth == 3" class="col-md-6" #LectDiv>
+            <div *ngIf="!isSearchingExisting && currentTreeNode.data.depth == 3" class="col-md-6" #LectDiv>
               <form #newOPForm="ngForm">
                 <div class="card card-accent-secondary">
                   <div class="card-header">
@@ -682,7 +698,7 @@
                       </div>
                     </div> -->
                   </div>
-                  <ul *ngIf="currentTreeNode.depth == 0">
+                  <ul *ngIf="currentTreeNode.data.depth == 0">
                     <div *ngFor="let sp of allStudyPrograms; index as i">
                       <div *ngFor="let m of (sp.children | filter:filterText); index as j">
                         <li>
@@ -713,7 +729,7 @@
                       </div>
                     </div>
                   </ul>
-                  <ul *ngIf="currentTreeNode.depth == 1">
+                  <ul *ngIf="currentTreeNode.data.depth == 1">
                     <div *ngFor="let sp of allStudyPrograms; index as i">
                       <div *ngFor="let m of sp.children; index as j">
                         <div *ngFor="let c of (m.children | filter:filterText); index as k">
@@ -743,7 +759,7 @@
                       </div>
                     </div>
                   </ul>
-                  <ul *ngIf="currentTreeNode.depth == 2">
+                  <ul *ngIf="currentTreeNode.data.depth == 2">
                     <div *ngFor="let sp of allStudyPrograms; index as i">
                       <div *ngFor="let m of sp.children; index as j">
                         <div *ngFor="let c of m.children; index as k">

@@ -20,6 +20,8 @@ export class Course extends Object {
   public children: Lecture[];
   public concepts: string[];
   public linksToBok: BokInput[];
+  public depth = 2;
+
   data: any;
 
   constructor(

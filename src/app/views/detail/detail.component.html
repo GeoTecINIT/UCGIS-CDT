@@ -9,7 +9,8 @@
             </div>
             <div *ngIf="!selectedProgram.levelPublic" class="col-sm-4 offset-md-2 col-md-6">
               <label>Private Study Program</label>
-              <span tooltip="This Study Program will not be listed in the main view for other users. You can only access with the link."
+              <span
+                tooltip="This Study Program will not be listed in the main view for other users. You can only access with the link."
                 class="badge badge-primary badge-pill">i</span>
             </div>
             <div *ngIf="selectedProgram.levelPublic" class="col-sm-4 offset-md-2 col-md-6"></div>
@@ -126,7 +127,7 @@
                         [ngClass]="{'fa-window-minimize': graphTextDiv?.classList.contains('col-md-12'), 'fa-window-maximize': graphTextDiv?.classList.contains('col-md-6')}"></i>
                     </button>
                     <div *ngIf="currentTreeNode">
-                      <div *ngIf="currentTreeNode.depth == 0">
+                      <div *ngIf="currentTreeNode.data.depth == 0">
                         <h4> Study Program: {{ model.name }} </h4> <!-- Study Program -->
                         <p><b>Affiliation:</b> {{ model.affiliation }}</p>
                         <p class="text-justify">{{ model.description }}</p>
@@ -136,17 +137,17 @@
                         </div>
                         <p><b>Number of semesters:</b> {{ model.numSemesters }}</p>
                       </div>
-                      <div *ngIf="currentTreeNode.depth == 1">
+                      <div *ngIf="currentTreeNode.data.depth == 1">
                         <!-- Module -->
                         <h4> Module: {{ model.name }} </h4>
                         <p class="text-justify">{{ model.description }}</p>
                       </div>
-                      <div *ngIf="currentTreeNode.depth == 2">
+                      <div *ngIf="currentTreeNode.data.depth == 2">
                         <!-- Course -->
                         <h4> Course: {{ model.name }} </h4>
                         <p class="text-justify">{{ model.description }}</p>
                       </div>
-                      <div *ngIf="currentTreeNode.depth == 3">
+                      <div *ngIf="currentTreeNode.data.depth == 3">
                         <!-- Lecture -->
                         <h4> Lecture: {{ model.name }} </h4>
                         <p class="text-justify">{{ model.description }}</p>

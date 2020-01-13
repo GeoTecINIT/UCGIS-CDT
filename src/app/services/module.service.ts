@@ -18,6 +18,7 @@ export class Module extends Object {
   public children: Course[];
   public concepts: string[];
   public linksToBok: BokInput[];
+  public depth = 1;
 
   constructor(
     public currentNode: any = null
