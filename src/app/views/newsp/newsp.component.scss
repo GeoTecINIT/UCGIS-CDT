@@ -7,6 +7,10 @@
   border-bottom: 0;
 }
 
+.dropdown-item.disabled, .dropdown-item:disabled {
+  color: #73818f !important;
+}
+
 .badge-pill {
   vertical-align: super;
 }

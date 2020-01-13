@@ -23,6 +23,7 @@ export class StudyProgram extends Object {
   public userId: string;
   public concepts: string[];
   public linksToBok: BokInput[];
+  public depth = 0;
 
   constructor(
     public currentNode: any = null

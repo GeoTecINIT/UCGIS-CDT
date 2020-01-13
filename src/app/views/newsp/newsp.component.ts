@@ -199,7 +199,7 @@ export class NewspComponent implements OnInit {
     console.log('refresh currrent node');
     this.isSearchingExisting = false;
     this.currentTreeNode = cv.getCurrentNode();
-    switch (this.currentTreeNode.depth) {
+    switch (this.currentTreeNode.data.depth) {
       case 0:
         this.textByDepth = 'module';
         this.textByDepthRemove = 'study program';
@@ -223,8 +223,8 @@ export class NewspComponent implements OnInit {
     }
   }
 
-  addNodeInTree() {
-    cv.addNewNode('New');
+  addNodeInTree(depth) {
+    cv.addNewNodeWithDepth('New', depth);
     this.updateTreeStudyProgram();
     this.refreshCurrentNode();
   }
@@ -244,7 +244,7 @@ export class NewspComponent implements OnInit {
   }
 
   updateTreeStudyProgram() {
-    switch (this.currentTreeNode.depth) {
+    switch (this.currentTreeNode.data.depth) {
       case 0:
         console.log('-- update Study Program');
         this.updateNodeInTree(this.model);
@@ -285,7 +285,7 @@ export class NewspComponent implements OnInit {
     }
 
     let modelToUpdate;
-    switch (this.currentTreeNode.depth) {
+    switch (this.currentTreeNode.data.depth) {
       case 0:
         modelToUpdate = this.model;
         break;

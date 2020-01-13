@@ -84,7 +84,7 @@ export class DetailComponent implements OnInit {
 
   refreshCurrentNode() {
     this.currentTreeNode = cv.getCurrentNode();
-    switch (this.currentTreeNode.depth) {
+    switch (this.currentTreeNode.data.depth) {
       case 0:
         this.model = new StudyProgram(this.currentTreeNode);
         break;
