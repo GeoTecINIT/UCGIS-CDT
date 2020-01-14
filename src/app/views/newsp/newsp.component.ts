@@ -11,7 +11,7 @@ import { Lecture } from '../../services/lecture.service';
 import { BokInput } from '../../model/bokinput';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-// import { SlicePipe } from '@angular/common';
+import { AngularFireAnalytics } from '@angular/fire/analytics';
 
 
 @Component({
@@ -89,7 +89,8 @@ export class NewspComponent implements OnInit {
     public fieldsService: FieldsService,
     public escoService: EscoCompetenceService,
     private route: ActivatedRoute,
-    private afAuth: AngularFireAuth
+    private afAuth: AngularFireAuth,
+    public analytics: AngularFireAnalytics
   ) {
     this.studyprogramService
       .subscribeToStudyPrograms()
@@ -100,6 +101,7 @@ export class NewspComponent implements OnInit {
     this.getMode();
     this.currentTreeNode = cv.getCurrentNode();
     bok.visualizeBOKData('#bubbles', 'assets/saved-bok.xml', '#textBoK');
+    this.analytics.logEvent('NewSP', {'mode': this.mode});
   }
 
   saveStudyProgram() {
