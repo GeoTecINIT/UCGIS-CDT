@@ -10,6 +10,8 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireAuthGuard } from '@angular/fire/auth-guard';
+import { AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService } from '@angular/fire/analytics';
+import { AngularFirePerformanceModule } from '@angular/fire/performance';
 
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
@@ -94,6 +96,8 @@ import { Eo4geoHeaderComponent } from './components/eo4geo-header/eo4geo-header.
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
+    AngularFireAnalyticsModule,
+    AngularFirePerformanceModule,
     HttpClientModule,
     PopoverModule.forRoot(),
     ModalModule.forRoot(),
@@ -127,7 +131,9 @@ import { Eo4geoHeaderComponent } from './components/eo4geo-header/eo4geo-header.
       useClass: HashLocationStrategy
     },
     AngularFireAuthGuard,
-    Base64img
+    Base64img,
+    ScreenTrackingService, // automatically integrates with the Angular Router to provide Firebase with screen view tracking
+    UserTrackingService // dynamically import firebase/auth, monitor for changes in the logged in user
   ],
   bootstrap: [AppComponent]
 })
