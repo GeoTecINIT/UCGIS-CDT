@@ -50,9 +50,11 @@ export class NewspComponent implements OnInit {
 
   isfullESCOcompetences = false;
   isSearchingExisting = false;
+  isSearchingSpecific = false;
   isDisplayBoK = false;
 
   currentTreeNode = null;
+  currentStudyProgram = null;
 
   allStudyPrograms: StudyProgram[];
 
@@ -348,4 +350,7 @@ export class NewspComponent implements OnInit {
     this.customLO = '';
   }
 
+  showExistingToStudyProgram(node) {
+      this.currentStudyProgram = node;
+  }
 }

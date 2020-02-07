@@ -28,7 +28,7 @@
 
 
               <button type="submit" class="btn btn-pill btn-primary"
-                (click)="isSearchingExisting = !isSearchingExisting" [disabled]="currentTreeNode.data.depth == 3">
+                (click)="isSearchingExisting = !isSearchingExisting; isSearchingSpecific = false" [disabled]="currentTreeNode.data.depth == 3">
                 <i class="fa fa-search"></i> Explore existing {{textByDepth}}s
               </button>
               <button type="submit" class="btn btn-pill btn-danger" (click)="removeNodeInTree()"
@@ -43,7 +43,7 @@
                   <input class="switch-input" type="checkbox" value="knowledges" [(ngModel)]="model.levelPublic" />
                   <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
                 </label>
-                <div class="pl-1">Public </div>
+                <div class="pl-1">Public {{isSearchingSpecific}} {{isSearchingExisting}}</div>
               </span>
             </div>
             <div class="col-md-2 text-right">
@@ -72,7 +72,7 @@
               </div>
             </div>
             <!-- depth = 0 -> general info card -->
-            <div *ngIf="!isSearchingExisting && currentTreeNode.data.depth == 0" class="col-md-6" #GIDiv>
+            <div *ngIf="!isSearchingExisting && currentTreeNode.data.depth == 0 && !isSearchingSpecific" class="col-md-6" #GIDiv>
               <form #newOPForm="ngForm">
                 <div class="card card-accent-secondary">
                   <div class="card-header">
@@ -185,7 +185,7 @@
               </form>
             </div>
             <!-- depth = 1 -> Modules -->
-            <div *ngIf="!isSearchingExisting && currentTreeNode.data.depth == 1" class="col-md-6" #ModDiv>
+            <div *ngIf="!isSearchingExisting && currentTreeNode.data.depth == 1 && !isSearchingSpecific" class="col-md-6" #ModDiv>
               <form #newOPForm="ngForm">
                 <div class="card card-accent-secondary">
                   <div class="card-header">
@@ -354,7 +354,7 @@
               </form>
             </div>
             <!-- depth = 2 -> Course -->
-            <div *ngIf="!isSearchingExisting && currentTreeNode.data.depth == 2" class="col-md-6" #CourseDiv>
+            <div *ngIf="!isSearchingExisting && currentTreeNode.data.depth == 2 && !isSearchingSpecific" class="col-md-6" #CourseDiv>
               <form #newOPForm="ngForm">
                 <div class="card card-accent-secondary">
                   <div class="card-header">
@@ -564,7 +564,7 @@
               </form>
             </div>
             <!-- depth = 3 -> Lectures -->
-            <div *ngIf="!isSearchingExisting && currentTreeNode.data.depth == 3" class="col-md-6" #LectDiv>
+            <div *ngIf="!isSearchingExisting && currentTreeNode.data.depth == 3 && !isSearchingSpecific" class="col-md-6" #LectDiv>
               <form #newOPForm="ngForm">
                 <div class="card card-accent-secondary">
                   <div class="card-header">
@@ -669,7 +669,7 @@
             </div>
 
             <!-- Existing modules, courses and lectures -->
-            <div *ngIf="isSearchingExisting" class="col-md-6" #ExModDiv>
+            <div *ngIf="isSearchingExisting && !isSearchingSpecific" class="col-md-6" #ExModDiv>
               <div class="card card-accent-secondary">
                 <div class="card-header">
                   Explore existing {{textByDepth}}s
@@ -702,10 +702,10 @@
                     <div *ngFor="let sp of allStudyPrograms; index as i">
                       <div *ngFor="let m of (sp.children | filter:filterText); index as j">
                         <li>
-                          <h5 class="card-title">{{ m.name }}</h5>
+                          <a class="card-title" (click)="showExistingToStudyProgram(m); isSearchingSpecific = !isSearchingSpecific; isSearchingExisting = !isSearchingExisting" >{{ m.name }}</a>
                           <h6 class="text-muted inline">{{ m.numSemester }} semester</h6>
                           <h6 class="text-muted inline"> - {{ sp.affiliation }}</h6>
-                          <a (click)="addExistingToStudyProgram(m)" class="inline">Add</a>
+                          <!--a (click)="addExistingToStudyProgram(m)" class="inline">Add</a>
                           <div *ngIf="!(showMoreIndexM == j && showMoreIndexSP == i)">
                             <a (click)="showMoreIndexM = j; showMoreIndexSP = i" class="inline">Show more...</a>
                           </div>
@@ -724,7 +724,7 @@
                               </div>
                             </div>
                             <br>
-                          </div>
+                          </div-->
                         </li>
                       </div>
                     </div>
@@ -734,10 +734,11 @@
                       <div *ngFor="let m of sp.children; index as j">
                         <div *ngFor="let c of (m.children | filter:filterText); index as k">
                           <li>
-                            <h5 class="card-title">{{ c.name }}</h5>
+                            <a (click)="addExistingToStudyProgram(c)" class="inline">{{ c.name }}</a>
+                            <h5 class="card-title" >{{ c.name }}</h5>
                             <h6 class="text-muted inline">{{ c.numSemester }} semester</h6>
                             <h6 class="text-muted inline"> - {{ sp.affiliation }}</h6>
-                            <a (click)="addExistingToStudyProgram(c)" class="inline">Add</a>
+                            <!--a (click)="addExistingToStudyProgram(c)" class="inline">Add</a>
                             <div *ngIf="!(showMoreIndexM == j && showMoreIndexSP == i && showMoreIndexC == k)">
                               <a (click)="showMoreIndexM = j; showMoreIndexSP = i; showMoreIndexC = k"
                                 class="inline">Show more...</a>
@@ -752,7 +753,7 @@
                                   - {{ l.name }}
                                 </div>
                               </div>
-                            </div>
+                            </div-->
                             <br>
                           </li>
                         </div>
@@ -768,7 +769,7 @@
                               <h5 class="card-title">{{ l.name }}</h5>
                               <h6 class="text-muted inline">{{ l.ects }} ects</h6>
                               <h6 class="text-muted inline"> - {{ sp.affiliation }}</h6>
-                              <a (click)="addExistingToStudyProgram(l)" class="inline">Add</a>
+                              <!--a (click)="addExistingToStudyProgram(l)" class="inline">Add</a>
                               <div
                                 *ngIf="!(showMoreIndexM == j && showMoreIndexSP == i && showMoreIndexC == k && showMoreIndexL == m)">
                                 <a (click)="showMoreIndexM = j; showMoreIndexSP = i; showMoreIndexC = k; showMoreIndexL = m"
@@ -779,7 +780,7 @@
                                 <a (click)="showMoreIndexM = -1; showMoreIndexSP = -1; showMoreIndexC = -1; showMoreIndexL = -1"
                                   class="inline">Show less...</a>
                                 <p class="card-text">{{ c.description }}</p>
-                              </div>
+                              </div-->
                             </li>
                           </div>
                         </div>
@@ -809,9 +810,70 @@
                 </div>
               </div>
             </div>
+            <!-- Show specific existing module -->
+            <div *ngIf="isSearchingSpecific && !isSearchingExisting" class="col-md-6" #SpModDiv>
+              <div class="card card-accent-secondary">
+                <div class="card-header">
+                  <h5>{{currentStudyProgram.name}}</h5>
+                </div>
+                <div class="card-body" style="background-color: #faf9f8">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                          <h4> Module: {{ currentStudyProgram.name }} </h4>
+                          <p class="text-justify">{{ currentStudyProgram.description }}</p>
+
+                        <div *ngIf="currentStudyProgram.numSemester">
+                          <p><b> In semester:</b> {{ currentStudyProgram.numSemester }}</p>
+                        </div>
+                        <div *ngIf="currentStudyProgram.ects">
+                          <p><b> ECTS:</b> {{ currentStudyProgram.ects }}</p>
+                        </div>
+                        <div *ngIf="currentStudyProgram.assessment">
+                          <p><b>Assessment:</b> {{ currentStudyProgram.assessment }}</p>
+                        </div>
+                        <div *ngIf="currentStudyProgram.bibliography">
+                          <p><b>Bibliography:</b> {{ currentStudyProgram.bibliography }}</p>
+                        </div>
+                        <div *ngIf="currentStudyProgram.sourceDocs">
+                          <p><b>Bibliography:</b> {{ currentStudyProgram.sourceDocs }}</p>
+                        </div>
+                        <div *ngIf="currentStudyProgram.prerequisites && currentStudyProgram.prerequisites.length > 0">
+                          <span><b>Prerequisites</b></span>
+                          <ul>
+                            <div *ngFor="let p of currentStudyProgram.prerequisites">
+                              <li>{{ p.name }}</li>
+                            </div>
+                          </ul>
+                        </div>
+                        <div *ngIf="currentStudyProgram.learningObjectives && currentStudyProgram.learningObjectives.length > 0">
+                          <span><b>Learning Outcomes:</b></span>
+                          <ul>
+                            <div *ngFor="let l of currentStudyProgram.learningObjectives">
+                              <li>{{ l.name }}</li>
+                            </div>
+                          </ul>
+                        </div>
+                        <div *ngIf="currentStudyProgram.children.length > 0">
+                          <b>Child nodes that will also be included: </b>
+                          <div *ngFor="let l of currentStudyProgram.children" style="padding-left: 1em;">
+                            - {{ l.name }}
+                          </div>
+                        </div>
+                        <button type="submit" class="btn btn-pill btn-primary pull-right" (click)="addExistingToStudyProgram(currentStudyProgram)">
+                          <i class="fa fa-save"></i> Add
+                        </button>
+                        <button type="submit" class="btn btn-pill btn-primary" (click)="isSearchingSpecific = false; isSearchingExisting = !isSearchingExisting">
+                          <i class="fa fa-save"></i> Back
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
           </div>
-
-
 
           <!--  -->
 
