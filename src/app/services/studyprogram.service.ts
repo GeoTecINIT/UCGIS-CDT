@@ -10,7 +10,6 @@ import { BokInput } from '../model/bokinput';
 const collection = 'StudyPrograms';
 
 export class StudyProgram extends Object {
-
   public _id: string;
   public name: string;
   public description: string;
@@ -25,9 +24,7 @@ export class StudyProgram extends Object {
   public linksToBok: BokInput[];
   public depth = 0;
 
-  constructor(
-    public currentNode: any = null
-  ) {
+  constructor(public currentNode: any = null) {
     super();
     if (currentNode) {
       this._id = currentNode.data._id ? currentNode.data._id : '';
@@ -43,7 +40,6 @@ export class StudyProgram extends Object {
       this.currentNode = null;
       this.linksToBok = currentNode.data.linksToBok ? currentNode.data.linksToBok : [];
       this.levelPublic = currentNode.data.levelPublic ? currentNode.data.levelPublic : true;
-
     } else {
       this._id = '';
       this.name = 'New Study Program';

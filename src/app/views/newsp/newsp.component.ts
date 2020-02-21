@@ -25,6 +25,7 @@ export class NewspComponent implements OnInit {
   filteredCompetences = [];
   fullcompetences = [];
 
+  modelToSave = null;
   model = new StudyProgram();
   modelModule = new Module(null);
   modelCourse = new Course(null);
@@ -99,15 +100,16 @@ export class NewspComponent implements OnInit {
   ngOnInit() {
     this.getMode();
     this.currentTreeNode = cv.getCurrentNode();
+    console.log('Display existing tree : ');
     bok.visualizeBOKData('#bubbles', 'assets/saved-bok.xml', '#textBoK');
   }
 
   saveStudyProgram() {
     this.model.userId = this.afAuth.auth.currentUser.uid;
     if (this.mode === 'copy') {
-      this.studyprogramService.updateStudyProgram(this._id, this.model);
+      this.studyprogramService.updateStudyProgram(this._id, this.modelToSave);
     } else {
-      this.studyprogramService.addNewStudyProgram(this.model);
+      this.studyprogramService.addNewStudyProgram(this.modelToSave);
     }
   }
 
@@ -183,7 +185,7 @@ export class NewspComponent implements OnInit {
         'r': 10,
         'children': []
       };
-      cv.displayCurricula('graphTree', treeData, this.graphTreeDiv.nativeElement.clientWidth - 50, 650);
+      cv.displayCurricula('graphTree', null, this.graphTreeDiv.nativeElement.clientWidth - 50, 650);
       this.currentTreeNode = cv.getCurrentNode();
     }
   }
@@ -245,23 +247,37 @@ export class NewspComponent implements OnInit {
   }
 
   updateTreeStudyProgram() {
-    switch (this.currentTreeNode.data.depth) {
-      case 0:
-        console.log('-- update Study Program');
-        this.updateNodeInTree(this.model);
-        break;
-      case 1:
-        console.log('-- update Module');
-        this.updateNodeInTree(this.modelModule);
-        break;
-      case 2:
-        console.log('-- update Course');
-        this.updateNodeInTree(this.modelCourse);
-        break;
-      case 3:
-        console.log('-- update Lecture');
-        this.updateNodeInTree(this.modelLecture);
-        break;
+    if (this.currentTreeNode && this.currentTreeNode.data) {
+      switch (this.currentTreeNode.data.depth) {
+        case 0:
+          console.log('-- update Study Program');
+          this.updateNodeInTree(this.model);
+          if (!this.modelToSave) {
+            this.modelToSave = this.model;
+          }
+          break;
+        case 1:
+          console.log('-- update Module');
+          this.updateNodeInTree(this.modelModule);
+          if (!this.modelToSave) {
+            this.modelToSave = this.modelModule;
+          }
+          break;
+        case 2:
+          console.log('-- update Course');
+          this.updateNodeInTree(this.modelCourse);
+          if (!this.modelToSave) {
+            this.modelToSave = this.modelCourse;
+          }
+          break;
+        case 3:
+          console.log('-- update Lecture');
+          this.updateNodeInTree(this.modelLecture);
+          if (!this.modelToSave) {
+            this.modelToSave = this.modelLecture;
+          }
+          break;
+      }
     }
   }
 
@@ -339,7 +355,7 @@ export class NewspComponent implements OnInit {
     model[attrTxt].splice(index, 1);
     model.concepts.splice(index, 1);
     this.updateTreeStudyProgram();
-   }
+  }
 
   addCustomLO() {
     this.modelCourse.learningObjectives.push(new BokInput('', this.customLO, this.customLO, '', [], ''));
