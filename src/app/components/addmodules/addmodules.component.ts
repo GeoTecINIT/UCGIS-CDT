@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ModuleService, Module } from '../../services/module.service';
+/* import { Component, OnInit } from '@angular/core';
+import { Module } from '../../services/module.service';
 
 
 @Component({
@@ -20,3 +20,4 @@ export class AddmodulesComponent implements OnInit {
   }
 
 }
+ */

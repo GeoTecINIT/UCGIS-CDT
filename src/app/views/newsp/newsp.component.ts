@@ -25,19 +25,25 @@ export class NewspComponent implements OnInit {
   filteredCompetences = [];
   fullcompetences = [];
 
-  modelToSave = null;
-  model = new StudyProgram();
-  modelModule = new Module(null);
-  modelCourse = new Course(null);
-  modelLecture = new Lecture(null);
+  model = null;
+  modelModule = null;
+  modelCourse = null;
+  modelLecture = null;
+
+  /*   model = new StudyProgram();
+    modelModule = new Module(null);
+    modelCourse = new Course(null);
+    modelLecture = new Lecture(null); */
 
   textByDepth = 'module';
   textByDepthRemove = 'study program';
   linkBoKto = 'name';
   customLO = '';
 
-  public value: string[];
-  public current: string;
+  // public value: string[];
+  // public current: string;
+
+  highestItemLevel = -1;
 
   selectedSP: StudyProgram;
   _id: string;
@@ -105,11 +111,30 @@ export class NewspComponent implements OnInit {
   }
 
   saveStudyProgram() {
-    this.model.userId = this.afAuth.auth.currentUser.uid;
+    let modelToSave = null;
+
+    switch (this.highestItemLevel) {
+      case 0:
+        modelToSave = this.model;
+        break;
+      case 1:
+        modelToSave = this.modelModule;
+        break;
+      case 2:
+        modelToSave = this.modelCourse;
+        break;
+      case 3:
+        modelToSave = this.modelLecture;
+        break;
+    }
+    console.log('Save model with depth: ' + this.highestItemLevel);
+    console.log(modelToSave);
+
+    modelToSave.userId = this.afAuth.auth.currentUser.uid;
     if (this.mode === 'copy') {
-      this.studyprogramService.updateStudyProgram(this._id, this.modelToSave);
+      this.studyprogramService.updateStudyProgram(this._id, modelToSave);
     } else {
-      this.studyprogramService.addNewStudyProgram(this.modelToSave);
+      this.studyprogramService.addNewStudyProgram(modelToSave);
     }
   }
 
@@ -130,19 +155,39 @@ export class NewspComponent implements OnInit {
 
   getStudyprogramId(): void {
     this._id = this.route.snapshot.paramMap.get('name');
-    this.studyprogramService
+    const spObs = this.studyprogramService
       .getStudyProgramById(this._id)
-      .subscribe(sp => (this.selectedSP = sp));
+      .subscribe(sp => {
+        this.selectedSP = sp;
+        spObs.unsubscribe();
+      });
   }
 
   fillForm(): void {
     this._id = this.route.snapshot.paramMap.get('name');
-    this.studyprogramService
+    const spObs = this.studyprogramService
       .getStudyProgramById(this._id)
       .subscribe(sp => {
         this.model = sp;
+        switch (sp.depth) {
+          case 0:
+            this.model = sp;
+            break;
+          case 1:
+            this.modelModule = sp;
+            break;
+          case 2:
+            this.modelCourse = sp;
+            break;
+          case 3:
+            this.modelLecture = sp;
+            break;
+        }
+        this.highestItemLevel = this.model.depth;
         this.displayTree(sp);
         console.log(sp);
+        console.log('Highest item level: ' + this.highestItemLevel);
+        spObs.unsubscribe();
       });
   }
 
@@ -227,6 +272,9 @@ export class NewspComponent implements OnInit {
   }
 
   addNodeInTree(depth) {
+    if (this.highestItemLevel === -1) {
+      this.highestItemLevel = depth;
+    }
     cv.addNewNodeWithDepth('New', depth);
     this.updateTreeStudyProgram();
     this.refreshCurrentNode();
@@ -252,30 +300,30 @@ export class NewspComponent implements OnInit {
         case 0:
           console.log('-- update Study Program');
           this.updateNodeInTree(this.model);
-          if (!this.modelToSave) {
-            this.modelToSave = this.model;
-          }
+          /*   if (!this.modelToSave) {
+              this.modelToSave = this.model;
+            } */
           break;
         case 1:
           console.log('-- update Module');
           this.updateNodeInTree(this.modelModule);
-          if (!this.modelToSave) {
-            this.modelToSave = this.modelModule;
-          }
+          /*  if (!this.modelToSave) {
+             this.modelToSave = this.modelModule;
+           } */
           break;
         case 2:
           console.log('-- update Course');
           this.updateNodeInTree(this.modelCourse);
-          if (!this.modelToSave) {
-            this.modelToSave = this.modelCourse;
-          }
+          /*  if (!this.modelToSave) {
+             this.modelToSave = this.modelCourse;
+           } */
           break;
         case 3:
           console.log('-- update Lecture');
           this.updateNodeInTree(this.modelLecture);
-          if (!this.modelToSave) {
+          /* if (!this.modelToSave) {
             this.modelToSave = this.modelLecture;
-          }
+          } */
           break;
       }
     }

@@ -15,6 +15,11 @@ export class Lecture extends Object {
   public concepts: string[];
   public linksToBok: BokInput[];
   public depth = 3;
+  public userId: string;
+  public affiliation: string;
+  public levelPublic: Boolean;
+  public children: any[];
+  public eqf: number;
 
   constructor(
     public currentNode: any = null
@@ -30,6 +35,11 @@ export class Lecture extends Object {
       this.concepts = currentNode.data.concepts ? currentNode.data.concepts : [];
       this.currentNode = null;
       this.linksToBok = currentNode.data.linksToBok ? currentNode.data.linksToBok : [];
+      this.userId = currentNode.data.userId ? currentNode.data.userId : '';
+      this.affiliation = currentNode.data.affiliation ? currentNode.data.affiliation : '';
+      this.levelPublic = currentNode.data.levelPublic ? currentNode.data.levelPublic : true;
+      this.children = [];
+      this.eqf = currentNode.data.eqf ? currentNode.data.eqf : 0;
 
     } else {
       this._id = '';
@@ -40,14 +50,19 @@ export class Lecture extends Object {
       this.isPractical = false;
       this.concepts = [];
       this.linksToBok = [];
+      this.userId = '';
+      this.affiliation = '';
+      this.levelPublic = true;
+      this.children = [];
+      this.eqf = 0;
     }
   }
 }
-
+/*
 @Injectable({
   providedIn: 'root'
 })
-export class LectureService {
+ export class LectureService {
   private db: AngularFirestore;
   constructor(db: AngularFirestore) {
     this.db = db;
@@ -86,4 +101,4 @@ export class LectureService {
       .doc<Lecture>(lectureId)
       .update(updatedLec);
   }
-}
+} */

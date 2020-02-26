@@ -19,24 +19,24 @@
                 <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu" role="menu"
                   aria-labelledby="button-animated">
                   <li role="menuitem"><a class="dropdown-item pt-2 pb-2"
-                      [ngClass]="{'disabled': currentTreeNode.data.depth>=0}" (click)="addNodeInTree(0)">Study
+                      [ngClass]="{'disabled': currentTreeNode && currentTreeNode.data.depth>=0}" (click)="addNodeInTree(0)">Study
                       Program</a></li>
                   <li role="menuitem"><a class="dropdown-item pt-2 pb-2"
-                      [ngClass]="{'disabled': currentTreeNode.data.depth>=1}" (click)="addNodeInTree(1)">Module</a></li>
+                      [ngClass]="{'disabled': currentTreeNode && currentTreeNode.data.depth>=1}" (click)="addNodeInTree(1)">Module</a></li>
                   <li role="menuitem"><a class="dropdown-item pt-2 pb-2"
-                      [ngClass]="{'disabled': currentTreeNode.data.depth>=2}" (click)="addNodeInTree(2)">Course</a></li>
+                      [ngClass]="{'disabled': currentTreeNode && currentTreeNode.data.depth>=2}" (click)="addNodeInTree(2)">Course</a></li>
                   <li role="menuitem"><a class="dropdown-item pt-2 pb-2"
-                      [ngClass]="{'disabled': currentTreeNode.data.depth>=3}" (click)="addNodeInTree(3)">Lecture</a>
+                      [ngClass]="{'disabled': currentTreeNode && currentTreeNode.data.depth>=3}" (click)="addNodeInTree(3)">Lecture</a>
                   </li>
                 </ul>
               </div>
 
               <button type="submit" class="btn btn-pill btn-primary"
-                (click)="isSearchingExisting = !isSearchingExisting" [disabled]="currentTreeNode.data.depth == 3">
+                (click)="isSearchingExisting = !isSearchingExisting" [disabled]="currentTreeNode && currentTreeNode.data.depth == 3">
                 <i class="fa fa-search"></i> Explore existing {{textByDepth}}s
               </button>
-              <button type="submit" class="btn btn-pill btn-danger" (click)="removeNodeInTree()"
-                [disabled]="currentTreeNode.data.depth == 0">
+              <button type="submit" class="btn btn-pill btn-danger" (click)="removeNodeInTree()"> 
+                <!-- [disabled]="currentTreeNode.data.depth == 0" -->
                 <i class="fa fa-minus"></i> Remove {{textByDepthRemove}}
               </button>
             </div>
@@ -44,7 +44,8 @@
               <span class="input-group-prepend">
                 <div class="pr-1"> Visibility: Private </div>
                 <label class="switch switch-label switch-pill switch-outline-primary-alt">
-                  <input class="switch-input" type="checkbox" value="knowledges" [(ngModel)]="model.levelPublic" />
+                  <input class="switch-input" type="checkbox" value="knowledges"
+                    [(ngModel)]="model && model.levelPublic" />
                   <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
                 </label>
                 <div class="pl-1">Public </div>
@@ -75,8 +76,7 @@
                 </div>
               </div>
             </div>
-
-            <div *ngIf="currentTreeNode" class="col-md-6" #NodeDiv>
+            <div *ngIf="currentTreeNode && (model || modelModule || modelCourse || modelLecture)" class="col-md-6" #NodeDiv>
               <!-- depth = 0 -> general info card -->
               <div *ngIf="!isSearchingExisting && currentTreeNode.data.depth == 0">
                 <form #newOPForm="ngForm">

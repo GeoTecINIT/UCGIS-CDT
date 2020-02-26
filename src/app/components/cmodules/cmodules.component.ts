@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+/* import { Component, OnInit } from '@angular/core';
 import { ModuleService, Module } from '../../services/module.service';
 
 @Component({
@@ -27,3 +27,4 @@ export class CmodulesComponent implements OnInit {
   }
 
 }
+ */

@@ -64,8 +64,8 @@ import { PopupComponent } from './components/popup/popup.component';
 import { Base64img } from './components/popup/base64img';
 
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { AddmodulesComponent } from './components/addmodules/addmodules.component';
-import { CmodulesComponent } from './components/cmodules/cmodules.component';
+/* import { AddmodulesComponent } from './components/addmodules/addmodules.component';
+import { CmodulesComponent } from './components/cmodules/cmodules.component'; */
 
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -116,8 +116,8 @@ import { Eo4geoHeaderComponent } from './components/eo4geo-header/eo4geo-header.
     HighlightPipe,
     FilterPipe,
     PopupComponent,
-    AddmodulesComponent,
-    CmodulesComponent,
+/*     AddmodulesComponent,
+    CmodulesComponent, */
     Eo4geoFooterComponent,
     Eo4geoHeaderComponent
   ],
