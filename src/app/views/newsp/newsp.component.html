@@ -19,28 +19,33 @@
                 <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu" role="menu"
                   aria-labelledby="button-animated">
                   <li role="menuitem"><a class="dropdown-item pt-2 pb-2"
-                      [ngClass]="{'disabled': currentTreeNode && currentTreeNode.data.depth>=0}" (click)="addNodeInTree(0)">Study
+                      [ngClass]="{'disabled': currentTreeNode && currentTreeNode.data.depth>=0}"
+                      (click)="addNodeInTree(0)">Study
                       Program</a></li>
                   <li role="menuitem"><a class="dropdown-item pt-2 pb-2"
-                      [ngClass]="{'disabled': currentTreeNode && currentTreeNode.data.depth>=1}" (click)="addNodeInTree(1)">Module</a></li>
+                      [ngClass]="{'disabled': currentTreeNode && currentTreeNode.data.depth>=1}"
+                      (click)="addNodeInTree(1)">Module</a></li>
                   <li role="menuitem"><a class="dropdown-item pt-2 pb-2"
-                      [ngClass]="{'disabled': currentTreeNode && currentTreeNode.data.depth>=2}" (click)="addNodeInTree(2)">Course</a></li>
+                      [ngClass]="{'disabled': currentTreeNode && currentTreeNode.data.depth>=2}"
+                      (click)="addNodeInTree(2)">Course</a></li>
                   <li role="menuitem"><a class="dropdown-item pt-2 pb-2"
-                      [ngClass]="{'disabled': currentTreeNode && currentTreeNode.data.depth>=3}" (click)="addNodeInTree(3)">Lecture</a>
+                      [ngClass]="{'disabled': currentTreeNode && currentTreeNode.data.depth>=3}"
+                      (click)="addNodeInTree(3)">Lecture</a>
                   </li>
                 </ul>
               </div>
 
               <button type="submit" class="btn btn-pill btn-primary"
-                (click)="isSearchingExisting = !isSearchingExisting" [disabled]="currentTreeNode && currentTreeNode.data.depth == 3">
+                (click)="isSearchingExisting = !isSearchingExisting"
+                [hidden]="!currentTreeNode || currentTreeNode.data.depth == 3">
                 <i class="fa fa-search"></i> Explore existing {{textByDepth}}s
               </button>
-              <button type="submit" class="btn btn-pill btn-danger" (click)="removeNodeInTree()"> 
-                <!-- [disabled]="currentTreeNode.data.depth == 0" -->
+              <button type="submit" class="btn btn-pill btn-danger" (click)="removeNodeInTree()"
+                [hidden]="!currentTreeNode">
                 <i class="fa fa-minus"></i> Remove {{textByDepthRemove}}
               </button>
             </div>
-            <div class="col-md-2" style="display: inline-flex">
+            <div class="col-md-2" style="display: inline-flex" [hidden]="!currentTreeNode">
               <span class="input-group-prepend">
                 <div class="pr-1"> Visibility: Private </div>
                 <label class="switch switch-label switch-pill switch-outline-primary-alt">
@@ -52,7 +57,8 @@
               </span>
             </div>
             <div class="col-md-2 text-right">
-              <button type="submit" class="btn btn-pill btn-primary" (click)="saveStudyProgram()" routerLink="/list">
+              <button type="submit" class="btn btn-pill btn-primary" (click)="saveStudyProgram()" routerLink="/list"
+                [hidden]="!currentTreeNode">
                 <i class="fa fa-save"></i> Save
               </button>
             </div>
@@ -61,7 +67,7 @@
         <!-- card body -->
         <div class="card-body">
           <div class="row" (window:resize)="onResize()">
-            <div class="col-md-6" #graphTreeDiv (click)="refreshCurrentNode()">
+            <div class="col-md-6" #graphTreeDiv (click)="refreshCurrentNode()" [hidden]="!currentTreeNode">
               <div class="card card-accent-secondary">
                 <div class="card-header">
                   <label>General view</label>
@@ -76,7 +82,8 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="currentTreeNode && (model || modelModule || modelCourse || modelLecture)" class="col-md-6" #NodeDiv>
+            <div *ngIf="currentTreeNode && (model || modelModule || modelCourse || modelLecture)" class="col-md-6"
+              #NodeDiv>
               <!-- depth = 0 -> general info card -->
               <div *ngIf="!isSearchingExisting && currentTreeNode.data.depth == 0">
                 <form #newOPForm="ngForm">
@@ -227,6 +234,26 @@
                             (click)="bokModal.show(); linkBoKto='name'">
                             Link BoK title
                           </button>
+                        </div>
+                      </div>
+                      <div class="row" *ngIf="highestItemLevel == 1">
+                        <div class="col-md-10">
+                          <div class="form-group">
+                            <label for="title">Affiliation</label>
+                            <input type="text" class="form-control" id="affiliation" placeholder="Affiliation"
+                              [(ngModel)]="modelModule.affiliation" name="affiliation" required
+                              (keyup)="updateTreeStudyProgram()" />
+                          </div>
+                        </div>
+                        <div class="col-md-2">
+                          <div class="form-group">
+                            <label for="eqf">EQF</label>
+                            <span
+                              tooltip="The core of the EQF concerns eight reference levels describing what a learner knows, understands and is able to do – 'learning outcomes', ranging from basic (Level 1) to advanced (Level 8)."
+                              class="badge badge-primary badge-pill">i</span>
+                            <input type="number" size="1" class="form-control" id="eqf" [(ngModel)]="modelModule.eqf"
+                              name="eqf" min="1" max="8" (keyup)="updateTreeStudyProgram()" />
+                          </div>
                         </div>
                       </div>
                       <div class="row">
@@ -398,6 +425,26 @@
                             (click)="bokModal.show(); linkBoKto='name'">
                             Link BoK title
                           </button>
+                        </div>
+                      </div>
+                      <div class="row" *ngIf="highestItemLevel == 2">
+                        <div class="col-md-10">
+                          <div class="form-group">
+                            <label for="title">Affiliation</label>
+                            <input type="text" class="form-control" id="affiliation" placeholder="Affiliation"
+                              [(ngModel)]="modelCourse.affiliation" name="affiliation" required
+                              (keyup)="updateTreeStudyProgram()" />
+                          </div>
+                        </div>
+                        <div class="col-md-2">
+                          <div class="form-group">
+                            <label for="eqf">EQF</label>
+                            <span
+                              tooltip="The core of the EQF concerns eight reference levels describing what a learner knows, understands and is able to do – 'learning outcomes', ranging from basic (Level 1) to advanced (Level 8)."
+                              class="badge badge-primary badge-pill">i</span>
+                            <input type="number" size="1" class="form-control" id="eqf" [(ngModel)]="modelCourse.eqf"
+                              name="eqf" min="1" max="8" (keyup)="updateTreeStudyProgram()" />
+                          </div>
                         </div>
                       </div>
                       <div class="row">
@@ -613,7 +660,26 @@
                             Link BoK title
                           </button>
                         </div>
-
+                      </div>
+                      <div class="row" *ngIf="highestItemLevel == 3">
+                        <div class="col-md-10">
+                          <div class="form-group">
+                            <label for="title">Affiliation</label>
+                            <input type="text" class="form-control" id="affiliation" placeholder="Affiliation"
+                              [(ngModel)]="modelLecture.affiliation" name="affiliation" required
+                              (keyup)="updateTreeStudyProgram()" />
+                          </div>
+                        </div>
+                        <div class="col-md-2">
+                          <div class="form-group">
+                            <label for="eqf">EQF</label>
+                            <span
+                              tooltip="The core of the EQF concerns eight reference levels describing what a learner knows, understands and is able to do – 'learning outcomes', ranging from basic (Level 1) to advanced (Level 8)."
+                              class="badge badge-primary badge-pill">i</span>
+                            <input type="number" size="1" class="form-control" id="eqf" [(ngModel)]="modelLecture.eqf"
+                              name="eqf" min="1" max="8" (keyup)="updateTreeStudyProgram()" />
+                          </div>
+                        </div>
                       </div>
                       <div class="row">
                         <div class="col-md-10">
@@ -824,11 +890,38 @@
               </div>
 
             </div> <!-- </div> if currentTreeNode -->
-            <div *ngIf="!currentTreeNode" class="col-md-6">
-              To start creating your curricula create the highest item. After that, click on any item to add lower level
-              items.
+            <div *ngIf="!currentTreeNode" class="col-md-12">
+              <div class="card card-accent-secondary">
+                <div class="card-header">
+                  How to get started
+                </div>
+                <div class="card-body" style="background-color: #faf9f8">
+                  <div class="row">
+                    <div class="col-md-12">
+                      To start creating your curricula create the highest item. After that, click on any item to add
+                      lower level
+                      items.
 
-            </div> <!-- </div> if !currentTreeNode -->
+                      <br><br>
+                      The hierarchy is as follows:
+                      <br><br>
+                      &emsp; Study Program
+                      <br>
+                      &emsp; &emsp; Module
+                      <br>
+                      &emsp; &emsp; &emsp; Course
+                      <br>
+                      &emsp; &emsp; &emsp; &emsp; Lecture
+                      <br><br>
+
+                      If you only need to create a Course and Lectures, start by creating a Course. If you require many
+                      Courses, you can start with Study Program (and skip Modules) or start with Module.
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
           </div>
 
