@@ -298,40 +298,19 @@ export class NewspComponent implements OnInit {
     if (this.currentTreeNode && this.currentTreeNode.data) {
       switch (this.currentTreeNode.data.depth) {
         case 0:
-          console.log('-- update Study Program');
           this.updateNodeInTree(this.model);
-          /*   if (!this.modelToSave) {
-              this.modelToSave = this.model;
-            } */
           break;
         case 1:
-          console.log('-- update Module');
           this.updateNodeInTree(this.modelModule);
-          /*  if (!this.modelToSave) {
-             this.modelToSave = this.modelModule;
-           } */
           break;
         case 2:
-          console.log('-- update Course');
           this.updateNodeInTree(this.modelCourse);
-          /*  if (!this.modelToSave) {
-             this.modelToSave = this.modelCourse;
-           } */
           break;
         case 3:
-          console.log('-- update Lecture');
           this.updateNodeInTree(this.modelLecture);
-          /* if (!this.modelToSave) {
-            this.modelToSave = this.modelLecture;
-          } */
           break;
       }
     }
-  }
-
-  filterModules() {
-    console.log('TODO: filtering modules');
-    // this.moduleService.filterModulesByNameDescription(this.filterText);
   }
 
   addBokKnowledge() {
