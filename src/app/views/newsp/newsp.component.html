@@ -11,7 +11,6 @@
                 <i class="fa fa-plus"></i> Create new {{textByDepth}}
               </button> -->
 
-
               <div class="btn-group" dropdown>
                 <button id="button-animated" dropdownToggle type="button"
                   class="btn btn-pill btn-primary dropdown-toggle" aria-controls="dropdown-animated">
@@ -19,35 +18,47 @@
                 </button>
                 <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu" role="menu"
                   aria-labelledby="button-animated">
-                  <!--                   <li role="menuitem"><a class="dropdown-item pt-2 pb-2" (click)="addNodeInTree(0)">Study Program</a></li>-->
-                  <li role="menuitem"><a class="dropdown-item pt-2 pb-2" [ngClass]="{'disabled': currentTreeNode.data.depth>=1}" (click)="addNodeInTree(1)">Module</a></li>
-                  <li role="menuitem"><a class="dropdown-item pt-2 pb-2" [ngClass]="{'disabled': currentTreeNode.data.depth>=2}" (click)="addNodeInTree(2)">Course</a></li>
-                  <li role="menuitem"><a class="dropdown-item pt-2 pb-2" [ngClass]="{'disabled': currentTreeNode.data.depth>=3}" (click)="addNodeInTree(3)">Lecture</a></li>
+                  <li role="menuitem"><a class="dropdown-item pt-2 pb-2"
+                      [ngClass]="{'disabled': currentTreeNode && currentTreeNode.data.depth>=0}"
+                      (click)="addNodeInTree(0)">Study
+                      Program</a></li>
+                  <li role="menuitem"><a class="dropdown-item pt-2 pb-2"
+                      [ngClass]="{'disabled': currentTreeNode && currentTreeNode.data.depth>=1}"
+                      (click)="addNodeInTree(1)">Module</a></li>
+                  <li role="menuitem"><a class="dropdown-item pt-2 pb-2"
+                      [ngClass]="{'disabled': currentTreeNode && currentTreeNode.data.depth>=2}"
+                      (click)="addNodeInTree(2)">Course</a></li>
+                  <li role="menuitem"><a class="dropdown-item pt-2 pb-2"
+                      [ngClass]="{'disabled': currentTreeNode && currentTreeNode.data.depth>=3}"
+                      (click)="addNodeInTree(3)">Lecture</a>
+                  </li>
                 </ul>
               </div>
 
-
               <button type="submit" class="btn btn-pill btn-primary"
-                (click)="isSearchingExisting = !isSearchingExisting" [disabled]="currentTreeNode.data.depth == 3">
+                (click)="isSearchingExisting = !isSearchingExisting; isSearchingSpecific = false"
+                [hidden]="!currentTreeNode || currentTreeNode.data.depth == 3">
                 <i class="fa fa-search"></i> Explore existing {{textByDepth}}s
               </button>
               <button type="submit" class="btn btn-pill btn-danger" (click)="removeNodeInTree()"
-                [disabled]="currentTreeNode.data.depth == 0">
+                [hidden]="!currentTreeNode">
                 <i class="fa fa-minus"></i> Remove {{textByDepthRemove}}
               </button>
             </div>
-            <div class="col-md-2" style="display: inline-flex">
+            <div class="col-md-2" style="display: inline-flex" [hidden]="!currentTreeNode">
               <span class="input-group-prepend">
                 <div class="pr-1"> Visibility: Private </div>
                 <label class="switch switch-label switch-pill switch-outline-primary-alt">
-                  <input class="switch-input" type="checkbox" value="knowledges" [(ngModel)]="model.levelPublic" />
+                  <input class="switch-input" type="checkbox" value="knowledges"
+                    [(ngModel)]="model && model.levelPublic" />
                   <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
                 </label>
-                <div class="pl-1">Public </div>
+                <div class="pl-1">Public</div>
               </span>
             </div>
             <div class="col-md-2 text-right">
-              <button type="submit" class="btn btn-pill btn-primary" (click)="saveStudyProgram()" routerLink="/list">
+              <button type="submit" class="btn btn-pill btn-primary" (click)="saveStudyProgram()" routerLink="/list"
+                [hidden]="!currentTreeNode">
                 <i class="fa fa-save"></i> Save
               </button>
             </div>
@@ -56,7 +67,7 @@
         <!-- card body -->
         <div class="card-body">
           <div class="row" (window:resize)="onResize()">
-            <div class="col-md-6" #graphTreeDiv (click)="refreshCurrentNode()">
+            <div class="col-md-6" #graphTreeDiv (click)="refreshCurrentNode()" [hidden]="!currentTreeNode">
               <div class="card card-accent-secondary">
                 <div class="card-header">
                   <label>General view</label>
@@ -71,17 +82,19 @@
                 </div>
               </div>
             </div>
-            <!-- depth = 0 -> general info card -->
-            <div *ngIf="!isSearchingExisting && currentTreeNode.data.depth == 0" class="col-md-6" #GIDiv>
-              <form #newOPForm="ngForm">
+            <div *ngIf="currentTreeNode && (model || modelModule || modelCourse || modelLecture)" class="col-md-6"
+              #NodeDiv>
+              <!-- depth = 0 -> general info card -->
+              <div *ngIf="!isSearchingExisting && currentTreeNode.data.depth == 0 && !isSearchingSpecific">
+                <!--               <form #newOPForm="ngForm"> -->
                 <div class="card card-accent-secondary">
                   <div class="card-header">
                     Study Program Information
                     <span tooltip="" class="badge badge-primary badge-pill">i</span>
                     <button class="btn btn-link float-right pull-right"
-                      (click)="GIDiv.classList.contains('col-md-12') ? GIDiv.className = 'col-md-6' : GIDiv.className = 'col-md-12'">
+                      (click)="NodeDiv.classList.contains('col-md-12') ? NodeDiv.className = 'col-md-6' : NodeDiv.className = 'col-md-12'">
                       <i class="float-right pull-right fa "
-                        [ngClass]="{'fa-window-minimize': GIDiv?.classList.contains('col-md-12'), 'fa-window-maximize': GIDiv?.classList.contains('col-md-6')}"></i>
+                        [ngClass]="{'fa-window-minimize': NodeDiv?.classList.contains('col-md-12'), 'fa-window-maximize': NodeDiv?.classList.contains('col-md-6')}"></i>
                     </button>
                   </div>
                   <div class="card-body" style="background-color: #faf9f8">
@@ -153,7 +166,6 @@
                             (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
-
                     </div>
                     <div class="row">
                       <div class="col-md-10">
@@ -182,19 +194,19 @@
                     </div>
                   </div>
                 </div>
-              </form>
-            </div>
-            <!-- depth = 1 -> Modules -->
-            <div *ngIf="!isSearchingExisting && currentTreeNode.data.depth == 1" class="col-md-6" #ModDiv>
-              <form #newOPForm="ngForm">
+              </div>
+              <!--   </form> -->
+              <!-- depth = 1 -> Modules -->
+              <div *ngIf="!isSearchingExisting && currentTreeNode.data.depth == 1 && !isSearchingSpecific">
+                <!-- <form #newOPForm="ngForm"> -->
                 <div class="card card-accent-secondary">
                   <div class="card-header">
                     Module Information
                     <span tooltip="" class="badge badge-primary badge-pill">i</span>
                     <button class="btn btn-link float-right pull-right"
-                      (click)="ModDiv.classList.contains('col-md-12') ? ModDiv.className = 'col-md-6' : ModDiv.className = 'col-md-12'">
+                      (click)="NodeDiv.classList.contains('col-md-12') ? NodeDiv.className = 'col-md-6' : NodeDiv.className = 'col-md-12'">
                       <i class="float-right pull-right fa "
-                        [ngClass]="{'fa-window-minimize': ModDiv?.classList.contains('col-md-12'), 'fa-window-maximize': ModDiv?.classList.contains('col-md-6')}"></i>
+                        [ngClass]="{'fa-window-minimize': NodeDiv?.classList.contains('col-md-12'), 'fa-window-maximize': NodeDiv?.classList.contains('col-md-6')}"></i>
                     </button>
                   </div>
                   <div class="card-body" style="background-color: #faf9f8">
@@ -221,6 +233,26 @@
                           (click)="bokModal.show(); linkBoKto='name'">
                           Link BoK title
                         </button>
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="highestItemLevel == 1">
+                      <div class="col-md-10">
+                        <div class="form-group">
+                          <label for="title">Affiliation</label>
+                          <input type="text" class="form-control" id="affiliation" placeholder="Affiliation"
+                            [(ngModel)]="modelModule.affiliation" name="affiliation" required
+                            (keyup)="updateTreeStudyProgram()" />
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <label for="eqf">EQF</label>
+                          <span
+                            tooltip="The core of the EQF concerns eight reference levels describing what a learner knows, understands and is able to do – 'learning outcomes', ranging from basic (Level 1) to advanced (Level 8)."
+                            class="badge badge-primary badge-pill">i</span>
+                          <input type="number" size="1" class="form-control" id="eqf" [(ngModel)]="modelModule.eqf"
+                            name="eqf" min="1" max="8" (keyup)="updateTreeStudyProgram()" />
+                        </div>
                       </div>
                     </div>
                     <div class="row">
@@ -351,19 +383,19 @@
                     </div>
                   </div>
                 </div>
-              </form>
-            </div>
-            <!-- depth = 2 -> Course -->
-            <div *ngIf="!isSearchingExisting && currentTreeNode.data.depth == 2" class="col-md-6" #CourseDiv>
-              <form #newOPForm="ngForm">
+                <!--   </form> -->
+              </div>
+              <!-- depth = 2 -> Course -->
+              <div *ngIf="!isSearchingExisting && currentTreeNode.data.depth == 2 && !isSearchingSpecific">
+                <!-- <form #newOPForm="ngForm"> -->
                 <div class="card card-accent-secondary">
                   <div class="card-header">
                     Course Information
                     <span tooltip="" class="badge badge-primary badge-pill">i</span>
                     <button class="btn btn-link float-right pull-right"
-                      (click)="CourseDiv.classList.contains('col-md-12') ? CourseDiv.className = 'col-md-6' : CourseDiv.className = 'col-md-12'">
+                      (click)="NodeDiv.classList.contains('col-md-12') ? NodeDiv.className = 'col-md-6' : NodeDiv.className = 'col-md-12'">
                       <i class="float-right pull-right fa "
-                        [ngClass]="{'fa-window-minimize': CourseDiv?.classList.contains('col-md-12'), 'fa-window-maximize': CourseDiv?.classList.contains('col-md-6')}"></i>
+                        [ngClass]="{'fa-window-minimize': NodeDiv?.classList.contains('col-md-12'), 'fa-window-maximize': NodeDiv?.classList.contains('col-md-6')}"></i>
                     </button>
                   </div>
                   <div class="card-body" style="background-color: #faf9f8">
@@ -390,6 +422,26 @@
                           (click)="bokModal.show(); linkBoKto='name'">
                           Link BoK title
                         </button>
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="highestItemLevel == 2">
+                      <div class="col-md-10">
+                        <div class="form-group">
+                          <label for="title">Affiliation</label>
+                          <input type="text" class="form-control" id="affiliation" placeholder="Affiliation"
+                            [(ngModel)]="modelCourse.affiliation" name="affiliation" required
+                            (keyup)="updateTreeStudyProgram()" />
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <label for="eqf">EQF</label>
+                          <span
+                            tooltip="The core of the EQF concerns eight reference levels describing what a learner knows, understands and is able to do – 'learning outcomes', ranging from basic (Level 1) to advanced (Level 8)."
+                            class="badge badge-primary badge-pill">i</span>
+                          <input type="number" size="1" class="form-control" id="eqf" [(ngModel)]="modelCourse.eqf"
+                            name="eqf" min="1" max="8" (keyup)="updateTreeStudyProgram()" />
+                        </div>
                       </div>
                     </div>
                     <div class="row">
@@ -561,19 +613,20 @@
                     </div>
                   </div>
                 </div>
-              </form>
-            </div>
-            <!-- depth = 3 -> Lectures -->
-            <div *ngIf="!isSearchingExisting && currentTreeNode.data.depth == 3" class="col-md-6" #LectDiv>
-              <form #newOPForm="ngForm">
+              </div>
+              <!--   </form> -->
+
+              <!-- depth = 3 -> Lectures -->
+              <div *ngIf="!isSearchingExisting && currentTreeNode.data.depth == 3 && !isSearchingSpecific">
+                <!-- <form #newOPForm="ngForm"> -->
                 <div class="card card-accent-secondary">
                   <div class="card-header">
                     Lecture Information
                     <span tooltip="" class="badge badge-primary badge-pill">i</span>
                     <button class="btn btn-link float-right pull-right"
-                      (click)="LectDiv.classList.contains('col-md-12') ? LectDiv.className = 'col-md-6' : LectDiv.className = 'col-md-12'">
+                      (click)="NodeDiv.classList.contains('col-md-12') ? NodeDiv.className = 'col-md-6' : NodeDiv.className = 'col-md-12'">
                       <i class="float-right pull-right fa "
-                        [ngClass]="{'fa-window-minimize': LectDiv?.classList.contains('col-md-12'), 'fa-window-maximize': LectDiv?.classList.contains('col-md-6')}"></i>
+                        [ngClass]="{'fa-window-minimize': NodeDiv?.classList.contains('col-md-12'), 'fa-window-maximize': NodeDiv?.classList.contains('col-md-6')}"></i>
                     </button>
                   </div>
                   <div class="card-body" style="background-color: #faf9f8">
@@ -601,7 +654,26 @@
                           Link BoK title
                         </button>
                       </div>
-
+                    </div>
+                    <div class="row" *ngIf="highestItemLevel == 3">
+                      <div class="col-md-10">
+                        <div class="form-group">
+                          <label for="title">Affiliation</label>
+                          <input type="text" class="form-control" id="affiliation" placeholder="Affiliation"
+                            [(ngModel)]="modelLecture.affiliation" name="affiliation" required
+                            (keyup)="updateTreeStudyProgram()" />
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <label for="eqf">EQF</label>
+                          <span
+                            tooltip="The core of the EQF concerns eight reference levels describing what a learner knows, understands and is able to do – 'learning outcomes', ranging from basic (Level 1) to advanced (Level 8)."
+                            class="badge badge-primary badge-pill">i</span>
+                          <input type="number" size="1" class="form-control" id="eqf" [(ngModel)]="modelLecture.eqf"
+                            name="eqf" min="1" max="8" (keyup)="updateTreeStudyProgram()" />
+                        </div>
+                      </div>
                     </div>
                     <div class="row">
                       <div class="col-md-10">
@@ -665,47 +737,49 @@
                     </div>
                   </div>
                 </div>
-              </form>
-            </div>
+                <!--    </form> -->
+              </div>
 
-            <!-- Existing modules, courses and lectures -->
-            <div *ngIf="isSearchingExisting" class="col-md-6" #ExModDiv>
-              <div class="card card-accent-secondary">
-                <div class="card-header">
-                  Explore existing {{textByDepth}}s
-                  <span tooltip="These modules have been added by other user, and can be re-used in your study program."
-                    class="badge badge-primary badge-pill">i</span>
-                  <button class="btn btn-link float-right pull-right"
-                    (click)="ExModDiv.classList.contains('col-md-12') ? ExModDiv.className = 'col-md-6' : ExModDiv.className = 'col-md-12'">
-                    <i class="float-right pull-right fa "
-                      [ngClass]="{'fa-window-minimize': ExModDiv?.classList.contains('col-md-12'), 'fa-window-maximize': ExModDiv?.classList.contains('col-md-6')}"></i>
-                  </button>
-                </div>
-                <div class="card-body" style="background-color: #faf9f8">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label for="title">Filter {{textByDepth}} by name</label>
-                        <input type="text" class="form-control" id="filterText" placeholder="Type to filter"
-                          [(ngModel)]="filterText" name="filterText" />
+              <!-- Existing modules, courses and lectures -->
+              <div *ngIf="isSearchingExisting && !isSearchingSpecific">
+                <div class="card card-accent-secondary">
+                  <div class="card-header">
+                    Explore existing {{textByDepth}}s
+                    <span
+                      tooltip="These modules have been added by other user, and can be re-used in your study program."
+                      class="badge badge-primary badge-pill">i</span>
+                    <button class="btn btn-link float-right pull-right"
+                      (click)="NodeDiv.classList.contains('col-md-12') ? NodeDiv.className = 'col-md-6' : NodeDiv.className = 'col-md-12'">
+                      <i class="float-right pull-right fa "
+                        [ngClass]="{'fa-window-minimize': NodeDiv?.classList.contains('col-md-12'), 'fa-window-maximize': NodeDiv?.classList.contains('col-md-6')}"></i>
+                    </button>
+                  </div>
+                  <div class="card-body" style="background-color: #faf9f8">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="title">Filter {{textByDepth}} by name</label>
+                          <input type="text" class="form-control" id="filterText" placeholder="Type to filter"
+                            [(ngModel)]="filterText" name="filterText" />
+                        </div>
                       </div>
-                    </div>
-                    <!-- <div class="col-md-6">
+                      <!-- <div class="col-md-6">
                       <div class="form-group">
                         <label for="title">Filter {{textByDepth}} by affiliation</label>
                         <input type="text" class="form-control" id="filterTextAff" placeholder="Type to filter"
                           [(ngModel)]="filterTextAff" name="filterTextAff" />
                       </div>
                     </div> -->
-                  </div>
-                  <ul *ngIf="currentTreeNode.data.depth == 0">
-                    <div *ngFor="let sp of allStudyPrograms; index as i">
-                      <div *ngFor="let m of (sp.children | filter:filterText); index as j">
-                        <li>
-                          <h5 class="card-title">{{ m.name }}</h5>
-                          <h6 class="text-muted inline">{{ m.numSemester }} semester</h6>
-                          <h6 class="text-muted inline"> - {{ sp.affiliation }}</h6>
-                          <a (click)="addExistingToStudyProgram(m)" class="inline">Add</a>
+                    </div>
+                    <ul *ngIf="currentTreeNode.data.depth == 0">
+                      <div *ngFor="let sp of allStudyPrograms; index as i">
+                        <div *ngFor="let m of (sp.children | filter:filterText); index as j">
+                          <li>
+                            <a class="card-title"
+                              (click)="showExistingToStudyProgram(m); isSearchingSpecific = !isSearchingSpecific; isSearchingExisting = !isSearchingExisting">{{ m.name }}</a>
+                            <h6 class="text-muted inline">{{ m.numSemester }} semester</h6>
+                            <h6 class="text-muted inline"> - {{ sp.affiliation }}</h6>
+                            <!--a (click)="addExistingToStudyProgram(m)" class="inline">Add</a>
                           <div *ngIf="!(showMoreIndexM == j && showMoreIndexSP == i)">
                             <a (click)="showMoreIndexM = j; showMoreIndexSP = i" class="inline">Show more...</a>
                           </div>
@@ -724,69 +798,96 @@
                               </div>
                             </div>
                             <br>
-                          </div>
-                        </li>
+                          </div-->
+                          </li>
+                        </div>
                       </div>
-                    </div>
-                  </ul>
-                  <ul *ngIf="currentTreeNode.data.depth == 1">
-                    <div *ngFor="let sp of allStudyPrograms; index as i">
-                      <div *ngFor="let m of sp.children; index as j">
-                        <div *ngFor="let c of (m.children | filter:filterText); index as k">
+                    </ul>
+                    <ul *ngIf="currentTreeNode.data.depth == 0">
+                      <div *ngFor="let sp of allStudyPrograms; index as i">
+                        <div *ngFor="let m of (sp.children | filter:filterText); index as j">
                           <li>
+                            <a (click)="addExistingToStudyProgram(c)" class="inline">{{ c.name }}</a>
                             <h5 class="card-title">{{ c.name }}</h5>
                             <h6 class="text-muted inline">{{ c.numSemester }} semester</h6>
                             <h6 class="text-muted inline"> - {{ sp.affiliation }}</h6>
-                            <a (click)="addExistingToStudyProgram(c)" class="inline">Add</a>
+                            <!--a (click)="addExistingToStudyProgram(c)" class="inline">Add</a>
                             <div *ngIf="!(showMoreIndexM == j && showMoreIndexSP == i && showMoreIndexC == k)">
                               <a (click)="showMoreIndexM = j; showMoreIndexSP = i; showMoreIndexC = k"
                                 class="inline">Show more...</a>
                             </div>
-                            <div *ngIf="showMoreIndexM == j && showMoreIndexSP == i && showMoreIndexC == k">
-                              <a (click)="showMoreIndexM = -1; showMoreIndexSP = -1; showMoreIndexC = -1"
-                                class="inline">Show less...</a>
-                              <p class="card-text">{{ c.description }}</p>
-                              <div *ngIf="c.children.length > 0">
-                                <b>Child nodes that will also be included: </b>
-                                <div *ngFor="let l of c.children" style="padding-left: 1em;">
-                                  - {{ l.name }}
+                            <div *ngIf="showMoreIndexM == j && showMoreIndexSP == i">
+                              <a (click)="showMoreIndexM = -1; showMoreIndexSP = -1" class="inline">Show less...</a>
+                              <p class="card-text">{{ m.description }}</p>
+                              <div *ngIf="m.children.length > 0">
+                                <b>Child nodes that will also be included:</b>
+                                <div *ngFor="let c of m.children" style="padding-left: 1em;">
+                                  - {{ c.name }}
+                                  <div *ngIf="c.children.length > 0">
+                                    <div *ngFor="let l of c.children" style="padding-left: 2em;">
+                                      - {{ l.name }}
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
+                            </div-->
                             <br>
                           </li>
                         </div>
                       </div>
-                    </div>
-                  </ul>
-                  <ul *ngIf="currentTreeNode.data.depth == 2">
-                    <div *ngFor="let sp of allStudyPrograms; index as i">
-                      <div *ngFor="let m of sp.children; index as j">
-                        <div *ngFor="let c of m.children; index as k">
-                          <div *ngFor="let l of (c.children | filter:filterText); index as m">
+                    </ul>
+                    <ul *ngIf="currentTreeNode.data.depth == 1">
+                      <div *ngFor="let sp of allStudyPrograms; index as i">
+                        <div *ngFor="let m of sp.children; index as j">
+                          <div *ngFor="let c of (m.children | filter:filterText); index as k">
                             <li>
-                              <h5 class="card-title">{{ l.name }}</h5>
-                              <h6 class="text-muted inline">{{ l.ects }} ects</h6>
+                              <h5 class="card-title">{{ c.name }}</h5>
+                              <h6 class="text-muted inline">{{ c.numSemester }} semester</h6>
                               <h6 class="text-muted inline"> - {{ sp.affiliation }}</h6>
-                              <a (click)="addExistingToStudyProgram(l)" class="inline">Add</a>
+                              <!--a (click)="addExistingToStudyProgram(l)" class="inline">Add</a>
                               <div
                                 *ngIf="!(showMoreIndexM == j && showMoreIndexSP == i && showMoreIndexC == k && showMoreIndexL == m)">
                                 <a (click)="showMoreIndexM = j; showMoreIndexSP = i; showMoreIndexC = k; showMoreIndexL = m"
                                   class="inline">Show more...</a>
                               </div>
-                              <div
-                                *ngIf="showMoreIndexM == j && showMoreIndexSP == i && showMoreIndexC == k && showMoreIndexL == m">
-                                <a (click)="showMoreIndexM = -1; showMoreIndexSP = -1; showMoreIndexC = -1; showMoreIndexL = -1"
+                              <div *ngIf="showMoreIndexM == j && showMoreIndexSP == i && showMoreIndexC == k">
+                                <a (click)="showMoreIndexM = -1; showMoreIndexSP = -1; showMoreIndexC = -1"
                                   class="inline">Show less...</a>
                                 <p class="card-text">{{ c.description }}</p>
-                              </div>
+                              </div-->
                             </li>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </ul>
-                  <!-- 
+                    </ul>
+                    <ul *ngIf="currentTreeNode.data.depth == 2">
+                      <div *ngFor="let sp of allStudyPrograms; index as i">
+                        <div *ngFor="let m of sp.children; index as j">
+                          <div *ngFor="let c of m.children; index as k">
+                            <div *ngFor="let l of (c.children | filter:filterText); index as m">
+                              <li>
+                                <h5 class="card-title">{{ l.name }}</h5>
+                                <h6 class="text-muted inline">{{ l.ects }} ects</h6>
+                                <h6 class="text-muted inline"> - {{ sp.affiliation }}</h6>
+                                <a (click)="addExistingToStudyProgram(l)" class="inline">Add</a>
+                                <div
+                                  *ngIf="!(showMoreIndexM == j && showMoreIndexSP == i && showMoreIndexC == k && showMoreIndexL == m)">
+                                  <a (click)="showMoreIndexM = j; showMoreIndexSP = i; showMoreIndexC = k; showMoreIndexL = m"
+                                    class="inline">Show more...</a>
+                                </div>
+                                <div
+                                  *ngIf="showMoreIndexM == j && showMoreIndexSP == i && showMoreIndexC == k && showMoreIndexL == m">
+                                  <a (click)="showMoreIndexM = -1; showMoreIndexSP = -1; showMoreIndexC = -1; showMoreIndexL = -1"
+                                    class="inline">Show less...</a>
+                                  <p class="card-text">{{ c.description }}</p>
+                                </div>
+                              </li>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </ul>
+                    <!-- 
                       <div class="row">
                       <div *ngFor="let m of allModules; index as i">
                         <div *ngIf="i < 10">
@@ -805,17 +906,121 @@
                       </div>
                     </div> 
                   -->
-                  <!--   <app-cmodules></app-cmodules> -->
+                    <!--   <app-cmodules></app-cmodules> -->
+                  </div>
+                </div>
+              </div>
+           
+          <!-- Show specific existing module -->
+          <div *ngIf="isSearchingSpecific && !isSearchingExisting">
+            <div class="card card-accent-secondary">
+              <div class="card-header">
+                <h5>{{currentStudyProgram.name}}</h5>
+                <span tooltip="This item has been added by other user, and can be re-used in your study program."
+                  class="badge badge-primary badge-pill">i</span>
+                <button class="btn btn-link float-right pull-right"
+                  (click)="NodeDiv.classList.contains('col-md-12') ? NodeDiv.className = 'col-md-6' : NodeDiv.className = 'col-md-12'">
+                  <i class="float-right pull-right fa "
+                    [ngClass]="{'fa-window-minimize': NodeDiv?.classList.contains('col-md-12'), 'fa-window-maximize': NodeDiv?.classList.contains('col-md-6')}"></i>
+                </button>
+              </div>
+              <div class="card-body" style="background-color: #faf9f8">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <h4> Module: {{ currentStudyProgram.name }} </h4>
+                      <p class="text-justify">{{ currentStudyProgram.description }}</p>
+
+                      <div *ngIf="currentStudyProgram.numSemester">
+                        <p><b> In semester:</b> {{ currentStudyProgram.numSemester }}</p>
+                      </div>
+                      <div *ngIf="currentStudyProgram.ects">
+                        <p><b> ECTS:</b> {{ currentStudyProgram.ects }}</p>
+                      </div>
+                      <div *ngIf="currentStudyProgram.assessment">
+                        <p><b>Assessment:</b> {{ currentStudyProgram.assessment }}</p>
+                      </div>
+                      <div *ngIf="currentStudyProgram.bibliography">
+                        <p><b>Bibliography:</b> {{ currentStudyProgram.bibliography }}</p>
+                      </div>
+                      <div *ngIf="currentStudyProgram.sourceDocs">
+                        <p><b>Bibliography:</b> {{ currentStudyProgram.sourceDocs }}</p>
+                      </div>
+                      <div *ngIf="currentStudyProgram.prerequisites && currentStudyProgram.prerequisites.length > 0">
+                        <span><b>Prerequisites</b></span>
+                        <ul>
+                          <div *ngFor="let p of currentStudyProgram.prerequisites">
+                            <li>{{ p.name }}</li>
+                          </div>
+                        </ul>
+                      </div>
+                      <div
+                        *ngIf="currentStudyProgram.learningObjectives && currentStudyProgram.learningObjectives.length > 0">
+                        <span><b>Learning Outcomes:</b></span>
+                        <ul>
+                          <div *ngFor="let l of currentStudyProgram.learningObjectives">
+                            <li>{{ l.name }}</li>
+                          </div>
+                        </ul>
+                      </div>
+                      <div *ngIf="currentStudyProgram.children.length > 0">
+                        <b>Child nodes that will also be included: </b>
+                        <div *ngFor="let l of currentStudyProgram.children" style="padding-left: 1em;">
+                          - {{ l.name }}
+                        </div>
+                      </div>
+                      <button type="submit" class="btn btn-pill btn-primary pull-right"
+                        (click)="addExistingToStudyProgram(currentStudyProgram)">
+                        <i class="fa fa-save"></i> Add
+                      </button>
+                      <button type="submit" class="btn btn-pill btn-primary"
+                        (click)="isSearchingSpecific = false; isSearchingExisting = !isSearchingExisting">
+                        <i class="fa fa-save"></i> Back
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          </div>
+          </div>
+        </div>
+
+        <div *ngIf="!currentTreeNode" class="col-md-12">
+          <div class="card card-accent-secondary">
+            <div class="card-header">
+              How to get started
+            </div>
+            <div class="card-body" style="background-color: #faf9f8">
+              <div class="row">
+                <div class="col-md-12">
+                  To start creating your curricula create the highest item. After that, click on any item to add
+                  lower level
+                  items.
+
+                  <br><br>
+                  The hierarchy is as follows:
+                  <br><br>
+                  &emsp; Study Program
+                  <br>
+                  &emsp; &emsp; Module
+                  <br>
+                  &emsp; &emsp; &emsp; Course
+                  <br>
+                  &emsp; &emsp; &emsp; &emsp; Lecture
+                  <br><br>
+
+                  If you only need to create a Course and Lectures, start by creating a Course. If you require many
+                  Courses, you can start with Study Program (and skip Modules) or start with Module.
+
                 </div>
               </div>
             </div>
           </div>
-
-
-
-          <!--  -->
-
         </div>
+
       </div>
     </div>
     <!--/.col-->
@@ -909,42 +1114,43 @@
                   </div>
                 </div> -->
                 <a [hidden]="currentConcept != ''" (click)="navigateToConcept('GIST')">
-                  < Back </a> <div #textBoK id="textBoK" [hidden]="currentConcept == '' && currentConcept != 'GIST'">
-              </div>
-              <div class="col" *ngIf="hasResults">
-                <h3 class="center">
-                  {{ selectedNodes.length }} result(s) for
-                  {{ searchInput.value }}
-                </h3>
-                <div *ngFor="let item of selectedNodes; index as i">
-                  <div *ngIf="i < limitSearch">
-                    <div class="inline">{{ item.nameShort }}</div>
-                    <div class="inline" [innerHTML]="
+                  < Back </a>
+                    <div #textBoK id="textBoK" [hidden]="currentConcept == '' && currentConcept != 'GIST'">
+                    </div>
+                    <div class="col" *ngIf="hasResults">
+                      <h3 class="center">
+                        {{ selectedNodes.length }} result(s) for
+                        {{ searchInput.value }}
+                      </h3>
+                      <div *ngFor="let item of selectedNodes; index as i">
+                        <div *ngIf="i < limitSearch">
+                          <div class="inline">{{ item.nameShort }}</div>
+                          <div class="inline" [innerHTML]="
                                       item.name | truncate: 100:searchInput.value
                                     "></div>
-                    <a class="inline" (click)="navigateToConcept(item.nameShort)">
-                      Details
-                    </a>
-                    <div class="small" [innerHTML]="item.description | truncate: 100:searchInput.value"></div>
-                  </div>
-                </div>
-                <div>
-                  <br />
-                  <a *ngIf="limitSearch < selectedNodes.length" (click)="incrementLimit()">
-                    Show more ...
-                  </a>
-                </div>
+                          <a class="inline" (click)="navigateToConcept(item.nameShort)">
+                            Details
+                          </a>
+                          <div class="small" [innerHTML]="item.description | truncate: 100:searchInput.value"></div>
+                        </div>
+                      </div>
+                      <div>
+                        <br />
+                        <a *ngIf="limitSearch < selectedNodes.length" (click)="incrementLimit()">
+                          Show more ...
+                        </a>
+                      </div>
+                    </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-primary" (click)="addBokKnowledge()">Link</button>
-      <button type="button" class="btn btn-danger" (click)="bokModal.hide()">Close</button>
-    </div>
-  </div><!-- /.modal-content -->
-</div><!-- /.modal-dialog -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="addBokKnowledge()">Link</button>
+        <button type="button" class="btn btn-danger" (click)="bokModal.hide()">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
