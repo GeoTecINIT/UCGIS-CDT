@@ -19,6 +19,10 @@ export class Module extends Object {
   public concepts: string[];
   public linksToBok: BokInput[];
   public depth = 1;
+  public userId: string;
+  public affiliation: string;
+  public levelPublic: Boolean;
+  public eqf: number;
 
   constructor(
     public currentNode: any = null
@@ -46,6 +50,11 @@ export class Module extends Object {
         });
       }
       this.linksToBok = currentNode.data.linksToBok ? currentNode.data.linksToBok : [];
+      this.userId = currentNode.data.userId ? currentNode.data.userId : '';
+      this.affiliation = currentNode.data.affiliation ? currentNode.data.affiliation : '';
+      this.levelPublic = currentNode.data.levelPublic ? currentNode.data.levelPublic : true;
+      this.eqf = currentNode.data.eqf ? currentNode.data.eqf : 0;
+
     } else {
       this._id = '';
       this.name = '';
@@ -58,11 +67,15 @@ export class Module extends Object {
       this.children = [];
       this.concepts = [];
       this.linksToBok = [];
+      this.userId = '';
+      this.affiliation = '';
+      this.levelPublic = true;
+      this.eqf = 0;
     }
   }
 }
 
-@Injectable({
+/* @Injectable({
   providedIn: 'root'
 })
 
@@ -86,11 +99,11 @@ export class ModuleService {
   }
 
   filterModulesByNameDescription(txt) {
-    /*
+   
     return this.allModules.filter(function(el) {
          return el.name.toLowerCase().indexOf(txt.toLowerCase()) > -1;
      });
-     */
+    
   }
 
   getModuleById(moduleId: string): Observable<Module> {
@@ -125,3 +138,4 @@ export class ModuleService {
 
 
 }
+ */
