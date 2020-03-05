@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { BokInput } from '../model/bokinput';
+import { Field } from './fields.service';
 
 const collection = 'lectures';
 
@@ -20,6 +21,7 @@ export class Lecture extends Object {
   public levelPublic: Boolean;
   public children: any[];
   public eqf: number;
+  public field: Field;
 
   constructor(
     public currentNode: any = null
@@ -40,6 +42,7 @@ export class Lecture extends Object {
       this.levelPublic = currentNode.data.levelPublic ? currentNode.data.levelPublic : true;
       this.children = [];
       this.eqf = currentNode.data.eqf ? currentNode.data.eqf : 0;
+      this.field = currentNode.data.field ? currentNode.data.field : null;
 
     } else {
       this._id = '';
@@ -55,6 +58,7 @@ export class Lecture extends Object {
       this.levelPublic = true;
       this.children = [];
       this.eqf = 0;
+      this.field = null;
     }
   }
 }
