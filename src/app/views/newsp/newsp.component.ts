@@ -64,6 +64,7 @@ export class NewspComponent implements OnInit {
   currentStudyProgram = null;
 
   allStudyPrograms: StudyProgram[];
+  allItems: any[];
 
   filterText: String = '';
   filterTextAff: String = '';
@@ -77,6 +78,8 @@ export class NewspComponent implements OnInit {
   showMoreIndexM = -1;
   showMoreIndexC = -1;
   showMoreIndexL = -1;
+
+  depthSearching = 1;
 
   configFields = {
     displayKey: 'concatName', // if objects array passed which key to be displayed defaults to description
@@ -103,7 +106,10 @@ export class NewspComponent implements OnInit {
   ) {
     this.studyprogramService
       .subscribeToStudyPrograms()
-      .subscribe(res => (this.allStudyPrograms = res));
+      .subscribe(res => {
+        this.allStudyPrograms = res;
+        this.exploreChildrenToAddItems();
+      });
   }
 
   ngOnInit() {
@@ -111,7 +117,7 @@ export class NewspComponent implements OnInit {
     this.currentTreeNode = cv.getCurrentNode();
     console.log('Display existing tree : ');
     bok.visualizeBOKData('#bubbles', 'assets/saved-bok.xml', '#textBoK');
-    this.analytics.logEvent('NewSP', {'mode': this.mode});
+    this.analytics.logEvent('NewSP', { 'mode': this.mode });
   }
 
   saveStudyProgram() {
@@ -188,6 +194,7 @@ export class NewspComponent implements OnInit {
             break;
         }
         this.highestItemLevel = this.model.depth;
+        this.depthSearching = this.highestItemLevel + 1;
         this.displayTree(sp);
         console.log(sp);
         console.log('Highest item level: ' + this.highestItemLevel);
@@ -278,6 +285,7 @@ export class NewspComponent implements OnInit {
   addNodeInTree(depth) {
     if (this.highestItemLevel === -1) {
       this.highestItemLevel = depth;
+      this.depthSearching = this.highestItemLevel + 1;
     }
     cv.addNewNodeWithDepth('New', depth);
     this.updateTreeStudyProgram();
@@ -394,6 +402,43 @@ export class NewspComponent implements OnInit {
   }
 
   showExistingToStudyProgram(node) {
-      this.currentStudyProgram = node;
+    this.currentStudyProgram = node;
+  }
+
+  exploreChildrenToAddItems() {
+    this.allItems = [];
+    this.allStudyPrograms.forEach(s => {
+      this.allItems.push(s);
+      if (s.children) {
+        s.children.forEach(m => {
+          m.affiliation = s.affiliation; // propagate affiliation and eqf to children
+          m.eqf = s.eqf;
+          m.field = s.field;
+          this.allItems.push(m);
+          if (m.children) {
+            m.children.forEach(c => {
+              c.affiliation = s.affiliation; // propagate affiliation and eqf to children
+              c.eqf = s.eqf;
+              c.field = s.field;
+              this.allItems.push(c);
+              if (c.children) {
+                c.children.forEach(l => {
+                  l.affiliation = s.affiliation; // propagate affiliation and eqf to children
+                  l.eqf = s.eqf;
+                  l.field = s.field;
+                  this.allItems.push(l);
+                });
+              }
+            });
+          }
+        });
+      }
+    });
+    this.allItems.sort((left, right) => {
+      if (left.name < right.name) { return -1; }
+      if (left.name > right.name) { return 1; } else { return 0; }
+    });
+
+    console.log(this.allItems);
   }
 }

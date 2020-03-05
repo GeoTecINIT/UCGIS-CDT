@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { BokInput } from '../model/bokinput';
 import { Lecture } from './lecture.service';
+import { Field } from './fields.service';
 
 const collection = 'courses';
 
@@ -25,6 +26,7 @@ export class Course extends Object {
   public affiliation: string;
   public levelPublic: Boolean;
   public eqf: number;
+  public field: Field;
 
   data: any;
 
@@ -50,6 +52,7 @@ export class Course extends Object {
       this.affiliation = currentNode.data.affiliation ? currentNode.data.affiliation : '';
       this.levelPublic = currentNode.data.levelPublic ? currentNode.data.levelPublic : true;
       this.eqf = currentNode.data.eqf ? currentNode.data.eqf : 0;
+      this.field = currentNode.data.field ? currentNode.data.field : null;
 
     } else {
       this._id = '';
@@ -68,6 +71,7 @@ export class Course extends Object {
       this.affiliation = '';
       this.levelPublic = true;
       this.eqf = 0;
+      this.field = null;
     }
   }
 }
