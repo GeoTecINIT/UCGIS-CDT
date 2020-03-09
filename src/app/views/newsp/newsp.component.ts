@@ -251,7 +251,22 @@ export class NewspComponent implements OnInit {
   }
 
   refreshTreeSize() {
-    this.displayTree(this.model);
+    if (this.currentTreeNode && this.currentTreeNode.data) {
+      switch (this.currentTreeNode.data.depth) {
+        case 0:
+          this.displayTree(this.model);
+          break;
+        case 1:
+          this.displayTree(this.modelModule);
+          break;
+        case 2:
+          this.displayTree(this.modelCourse);
+          break;
+        case 3:
+          this.displayTree(this.modelLecture);
+          break;
+      }
+    }
   }
 
   refreshCurrentNode() {
@@ -363,9 +378,9 @@ export class NewspComponent implements OnInit {
         break;
       case 'description':
         // tslint:disable-next-line:max-line-length
-        const desc = this.textBoK.nativeElement.children[1].children.length > 0 ? this.textBoK.nativeElement.children[1].children[3].textContent : '';
+        const desc = this.textBoK.nativeElement.children[2].children.length > 0 ? this.textBoK.nativeElement.children[2].children[1].textContent : '';
         newConcept.linkedTo = 'description';
-        modelToUpdate[this.linkBoKto] = modelToUpdate[this.linkBoKto] + ' ' + desc;
+        modelToUpdate[this.linkBoKto] = modelToUpdate[this.linkBoKto] + ' ' + desc;  // currentDescription
         break;
       case 'prerequisites':
         newConcept.linkedTo = 'prerequisites';

@@ -185,6 +185,14 @@
                           </div>
                         </ul>
                       </div>
+                      <div *ngIf="model.linksToBok && model.linksToBok.length > 0">
+                        <span><b>Links to BoK:</b></span>
+                        <ul>
+                          <div *ngFor="let lb of model.linksToBok">
+                            <li>Link in {{ lb.linkedTo }}: <a href="https://bok.eo4geo.eu/{{ lb.concept_id }}">{{ lb.name }}</a> </li>
+                          </div>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
