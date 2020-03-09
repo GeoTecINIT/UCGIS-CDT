@@ -45,10 +45,6 @@ export class DetailComponent implements OnInit {
 
   ngOnInit() {
     this.getStudyProgId();
-
-    console.log('Width ngOnInit  : ' + this.graphTreeDiv.nativeElement.clientWidth);
-
-
   }
 
   onResize() {
@@ -62,8 +58,9 @@ export class DetailComponent implements OnInit {
       .subscribe(program => {
         if (program) {
           this.selectedProgram = program;
+          this.saveBoKCodes(this.selectedProgram);
           this.displayTree(program);
-          console.log(this.selectedProgram);
+          //  console.log(this.selectedProgram);
         }
       });
   }
@@ -74,7 +71,18 @@ export class DetailComponent implements OnInit {
     program.r = 10;
     cv.displayCurricula('graphTree', program, this.graphTreeDiv.nativeElement.clientWidth - 50, 650);
     this.refreshCurrentNode();
-   // this.refreshTreeSize();
+    // this.refreshTreeSize();
+  }
+
+  saveBoKCodes(node) {
+    node.linksToBok.forEach(l => {
+      l.concept_id = l.name.split(']')[0].substring(1);
+      if (node.children) {
+        node.children.forEach(child => {
+          this.saveBoKCodes(child);
+        });
+      }
+    });
   }
 
   refreshTreeSize() {
