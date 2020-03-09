@@ -144,7 +144,7 @@
                     <div class="row">
                       <div class="col-md-10">
                         <div class="form-group">
-                          <label for="field">Field</label>
+                          <label for="field">Field of study</label>
                           <span
                             tooltip="The term relates directly to a specific area of study. The International Standard Classification of Education: Fields of Education and Training 2013 (ISCED-F). Maintained by the UNESCO Institute for Statistics."
                             class="badge badge-primary badge-pill">i</span>
@@ -158,7 +158,7 @@
                       </div>
                       <div class="col-md-2">
                         <div class="form-group">
-                          <label for="field">Amount of semesters</label>
+                          <label for="numSemesters">Amount of semesters</label>
                           <span tooltip="Number of semesters in the curricula."
                             class="badge badge-primary badge-pill">i</span>
                           <input type="number" size="1" class="form-control" id="numSemesters"
@@ -784,10 +784,10 @@
                     </div> -->
                     </div>
                     <ul>
-                      <div *ngFor="let i of (allItems| filter:filterText); index as i">
+                      <div *ngFor="let i of (allItems| filter:filterText); index as in">
                         <li *ngIf="i.depth==depthSearching"><a class="card-title"
                             (click)="showExistingToStudyProgram(i); isSearchingSpecific = !isSearchingSpecific; isSearchingExisting = !isSearchingExisting">{{ i.name }}</a>
-                          <h6 *ngIf="i.field" class="text-muted inline"> - Field: {{ i.field.name }}</h6>
+                          <h6 *ngIf="i.field" class="text-muted inline"> - Field of study: {{ i.field.name }}</h6>
                           <h6 *ngIf="i.affiliation != ''" class="text-muted inline"> - {{ i.affiliation }}</h6>
                           <h6 *ngIf="i.eqf != 0" class="text-muted inline"> - EQF: {{ i.eqf }}</h6>
                         </li>

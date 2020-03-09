@@ -26,6 +26,7 @@ export class ListComponent implements OnInit {
   searchText: string;
   isAnonymous = null;
   ownUsrId = null;
+  showOnlyDepth = -1;
 
   @ViewChild('dangerModal') public dangerModal: ModalDirective;
 

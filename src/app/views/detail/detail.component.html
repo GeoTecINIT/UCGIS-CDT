@@ -85,8 +85,8 @@
                 <h1>{{ selectedProgram.name }}</h1>
                 <h5>{{ selectedProgram.affiliation }} </h5>
               </div>
-              <div class="col-md-2 offset-md-3" *ngIf="selectedProgram && selectedProgram.field">
-                <h5>{{ selectedProgram.field.name }} ({{ selectedProgram.field.grandparent }})</h5>
+              <div class="col-md-4 offset-md-1" *ngIf="selectedProgram && selectedProgram.field">
+                <h5>Field of study: {{ selectedProgram.field.name }} ({{ selectedProgram.field.grandparent }})</h5>
               </div>
               <div class="col-md-1">
                 <button type="button" class="btn btn-default btn-secondary"
@@ -133,7 +133,7 @@
                         <p class="text-justify">{{ model.description }}</p>
                         <p><b>EQF Level:</b> {{ model.eqf }}</p>
                         <div *ngIf="model && model.field">
-                          <p><b>Field:</b> {{ model.field.name }} ({{ model.field.grandparent }})</p>
+                          <p><b>Field of study:</b> {{ model.field.name }} ({{ model.field.grandparent }})</p>
                         </div>
                         <p><b>Number of semesters:</b> {{ model.numSemesters }}</p>
                       </div>
