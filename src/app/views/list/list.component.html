@@ -12,13 +12,14 @@
       <div class="card card-accent-primary">
         <div class="card-header">
           <div class="row">
-            <div class="col-sm-4 col-md-2" tooltip="{{isAnonymous? 'Login to be able to add study programs' : ''}}">
+            <div class="col-sm-3 col-md-2" tooltip="{{isAnonymous? 'Login to be able to add study programs' : ''}}">
               <button type="button" class="btn btn-block btn-outline-primary" routerLink="/newsp/empty"
                 [disabled]="isAnonymous">
-                New Study Program
+                New
               </button>
             </div>
-            <div class="col-sm-4 offset-md-4 col-md-4">
+            <div class="col-sm-3 col-md-4">
+              <!-- offset-md-2  -->
               <div class="input-group">
                 <span class="input-group-prepend">
                   <button class="btn btn-primary" type="button">
@@ -29,7 +30,21 @@
                   autocomplete="search" [(ngModel)]="searchText" (keyup)="filter()" />
               </div>
             </div>
-            <div class="col-sm-4 col-md-2">
+            <div class="col-sm-3 col-md-4">
+              <div class="text-center">
+                <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyDepth==-1}"
+                  (click)="showOnlyDepth=-1">All</button>
+                <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyDepth==0}"
+                  (click)="showOnlyDepth=0">Study Programs</button>
+                <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyDepth==1}"
+                  (click)="showOnlyDepth=1">Modules</button>
+                <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyDepth==2}"
+                  (click)="showOnlyDepth=2">Courses</button>
+                <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyDepth==3}"
+                  (click)="showOnlyDepth=3">Lectures</button>
+              </div>
+            </div>
+            <div class="col-sm-3 col-md-2">
               <button type="button" class="btn btn-block btn-link" (click)="advancedSearch = !advancedSearch">
                 Advanced Search
               </button>
@@ -76,7 +91,7 @@
                           checked />
                         <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
                       </label>
-                      <div class="pl-1">Field</div>
+                      <div class="pl-1">Field of study</div>
                     </span>
                   </div>
                 </div>
@@ -86,54 +101,57 @@
         </div>
         <div class="card-body">
           <div *ngFor="let sp of filteredStudyPrograms">
-            <div class="row" *ngIf="sp.levelPublic || sp.userId==ownUsrId">
-              <div class="col-md-10">
-                <button type="button" class="btn text-justify" routerLink="/detail/{{ sp._id }}">
-                  <span>
-                    <h1 style="display: inline;">{{ sp.name }}</h1>
-                    <!-- <h6 *ngIf="sp.levelPublic" style="display: inline;" class="text-level">Public</h6> -->
-                    <h6 *ngIf="!sp.levelPublic" style="display: inline;" class="text-level">Private</h6>
-                    <h6>{{ sp.affiliation }}</h6>
-                    <p class="text-muted">{{ sp.description | slice:0:300 }} ... </p>
-                    EQF Level: {{ sp.eqf }}
-                  </span>
-                  <!-- <span
+            <div *ngIf="showOnlyDepth === -1 || sp.depth === showOnlyDepth ">
+              <div class="row" *ngIf="sp.levelPublic || sp.userId==ownUsrId">
+                <div class="col-md-10">
+                  <button type="button" class="btn text-justify" routerLink="/detail/{{ sp._id }}">
+                    <span>
+                      <h1 style="display: inline;">{{ sp.name }}</h1>
+                      <!-- <h6 *ngIf="sp.levelPublic" style="display: inline;" class="text-level">Public</h6> -->
+                      <h6 *ngIf="!sp.levelPublic" style="display: inline;" class="text-level">Private</h6>
+                      <h6>{{ sp.affiliation }}</h6>
+                      <p class="text-muted">{{ sp.description | slice:0:300 }} ... </p>
+                      EQF Level: {{ sp.eqf }}
+                    </span>
+                    <!-- <span
                   *ngFor="let mk of o.knowledge"
                   class="badge badge-pill float-right"
                   [ngClass]="'bok-' + (mk | slice: 1:3)"
                 >
                   {{ mk }}
                 </span> -->
-                </button>
-              </div>
-              <div class="col-md-2">
-                <div class="row">
-                  <div class="col-3 col-sm-3 col-md-3 no-padding">
-                    <button type="button" class="btn btn-block btn-link" [popover]="popTemplateList" tooltip="Share"
-                      popoverTitle="Copy link, export to PDF or XML" placement="top" [outsideClick]="true">
-                      <i class="fa fa-share-alt fa-lg mt-4"></i>
-                    </button>
-                  </div>
-                  <div class="col-3 col-sm-3 col-md-3 no-padding"
-                    tooltip="{{isAnonymous? 'Login to be able to duplicate' : 'Duplicate'}}">
-                    <button type="button" class="btn btn-block btn-link" routerLink="/newsp/duplicate/{{ sp._id }}"
-                      [disabled]="isAnonymous">
-                      <i class="fa fa-copy fa-lg mt-4"></i>
-                    </button>
-                  </div>
-                  <div class="col-3 col-sm-3 col-md-3 no-padding"
-                    tooltip="{{isAnonymous? 'Login to be able to edit' : sp.userId==afAuth.auth.currentUser?.uid?  'Edit' : 'You can edit only your own study programs'}}">
-                    <button type="button" class="btn btn-block btn-link" routerLink="/newsp/copy/{{ sp._id }}"
-                      [disabled]="isAnonymous || sp.userId!=afAuth.auth.currentUser?.uid">
-                      <i class="fa fa-edit fa-lg mt-4"></i>
-                    </button>
-                  </div>
-                  <div class="col-3 col-sm-3 col-md-3 no-padding"
-                    tooltip="{{isAnonymous? 'Login to be able to remove' : sp.userId==afAuth.auth.currentUser?.uid?  'Remove' : 'You can remove only your own stydy programs'}}">
-                    <button type="button" class="btn btn-block btn-link" data-toggle="modal"
-                      (click)="dangerModal.show()" [disabled]="isAnonymous || sp.userId!=afAuth.auth.currentUser?.uid">
-                      <i class="fa fa-trash-o fa-lg mt-4"></i>
-                    </button>
+                  </button>
+                </div>
+                <div class="col-md-2">
+                  <div class="row">
+                    <div class="col-3 col-sm-3 col-md-3 no-padding">
+                      <button type="button" class="btn btn-block btn-link" [popover]="popTemplateList" tooltip="Share"
+                        popoverTitle="Copy link, export to PDF or XML" placement="top" [outsideClick]="true">
+                        <i class="fa fa-share-alt fa-lg mt-4"></i>
+                      </button>
+                    </div>
+                    <div class="col-3 col-sm-3 col-md-3 no-padding"
+                      tooltip="{{isAnonymous? 'Login to be able to duplicate' : 'Duplicate'}}">
+                      <button type="button" class="btn btn-block btn-link" routerLink="/newsp/duplicate/{{ sp._id }}"
+                        [disabled]="isAnonymous">
+                        <i class="fa fa-copy fa-lg mt-4"></i>
+                      </button>
+                    </div>
+                    <div class="col-3 col-sm-3 col-md-3 no-padding"
+                      tooltip="{{isAnonymous? 'Login to be able to edit' : sp.userId==afAuth.auth.currentUser?.uid?  'Edit' : 'You can edit only your own study programs'}}">
+                      <button type="button" class="btn btn-block btn-link" routerLink="/newsp/copy/{{ sp._id }}"
+                        [disabled]="isAnonymous || sp.userId!=afAuth.auth.currentUser?.uid">
+                        <i class="fa fa-edit fa-lg mt-4"></i>
+                      </button>
+                    </div>
+                    <div class="col-3 col-sm-3 col-md-3 no-padding"
+                      tooltip="{{isAnonymous? 'Login to be able to remove' : sp.userId==afAuth.auth.currentUser?.uid?  'Remove' : 'You can remove only your own stydy programs'}}">
+                      <button type="button" class="btn btn-block btn-link" data-toggle="modal"
+                        (click)="dangerModal.show()"
+                        [disabled]="isAnonymous || sp.userId!=afAuth.auth.currentUser?.uid">
+                        <i class="fa fa-trash-o fa-lg mt-4"></i>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
