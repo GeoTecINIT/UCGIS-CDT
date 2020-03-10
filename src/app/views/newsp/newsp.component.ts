@@ -152,13 +152,13 @@ export class NewspComponent implements OnInit {
     this.mode = this.route.snapshot.paramMap.get('mode');
     if (this.mode === 'duplicate' || this.mode === 'copy') {
       if (this.mode === 'copy') {
-        this.title = 'Edit Study Program';
+        this.title = 'Edit Curriculum Item';
       } else {
-        this.title = 'Duplicate Study Program';
+        this.title = 'Duplicate Curriculum Item';
       }
       this.fillForm();
     } else {
-      this.title = 'Add New Study Program';
+      this.title = 'Add New Curriculum Item';
       this.displayTree();
     }
   }
