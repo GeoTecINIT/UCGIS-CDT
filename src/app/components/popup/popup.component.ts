@@ -17,8 +17,8 @@ export class PopupComponent implements OnInit {
     public studyprogramService: StudyProgramService,
     private route: ActivatedRoute) { }
 
-  public static END_PAGE_LINE = 235;
-  public static URL_BOK = 'https://findinbokv2.firebaseapp.com/bok/';
+  public static END_PAGE_LINE = 230;
+  public static URL_BOK = 'https://bok.eo4geo.eu/';
     public static URL_FIREBASE = 'https://findinbokv2.firebaseapp.com';
 
   @Input() idOP: any;
@@ -66,14 +66,15 @@ export class PopupComponent implements OnInit {
         doc.setFontType('bold');
         doc.setTextColor('#1a80b6');
         if (this.selectedSP.name != null) {
+            currentLinePoint = currentLinePoint + 5;
             const titleLines = doc.setFontSize(38).splitTextToSize(this.selectedSP.name, 150);
             doc.text(30, currentLinePoint, titleLines);
             doc.link(15, currentLinePoint - 5, 600, currentLinePoint - 4, { url: 'https://eo4geo-cdt.web.app/' });
             currentLinePoint = currentLinePoint + (15 * titleLines.length);
         }
-        if (this.selectedSP.affiliation != null) {
+        if (this.selectedSP.affiliation != null && this.selectedSP.affiliation != '') {
             doc.setFontSize(12).setTextColor('#1a80b6').setFontType('bold'); // headline
-            doc.text(30, currentLinePoint, this.selectedSP.affiliation);
+            doc.text(30, currentLinePoint, 'Organising entities: ' + this.selectedSP.affiliation);
             currentLinePoint = currentLinePoint + 8;
         }
         doc.setFontSize(12).setTextColor('#1a80b6').setFontType('bold'); // headline
@@ -84,41 +85,17 @@ export class PopupComponent implements OnInit {
         currentLinePoint = currentLinePoint + 7;
         if (this.selectedSP.field != null) {
             doc.setTextColor('#000').setFontType('normal').setFontSize(10);
-            doc.text(30, currentLinePoint, this.selectedSP.field.name + ' (' + this.selectedSP.field.grandparent + ')');
+            doc.text(30, currentLinePoint, 'Study area: ' + this.selectedSP.field.name + ' (' + this.selectedSP.field.grandparent + ')');
             currentLinePoint = currentLinePoint + 8;
-        }
-        doc.setFontSize(11).setTextColor('#E2C319').setFontType('bold');
-        doc.text(35, currentLinePoint, this.selectedSP.name);
-        currentLinePoint = currentLinePoint + 5;
-
-        if ( this.selectedSP.children && this.selectedSP.children.length > 0 ) {
-            this.selectedSP.children.forEach( module => {
-                doc.setFontSize(11).setTextColor('#E2C319').setFontType('bold');
-                doc.text(40, currentLinePoint, module.name);
-                currentLinePoint = currentLinePoint + 5;
-                if ( module.children && module.children.length > 0 ) {
-                    module.children.forEach( course => {
-                        doc.setFontSize(11).setTextColor('#E2C319').setFontType('bold');
-                        doc.text(45, currentLinePoint, course.name);
-                        currentLinePoint = currentLinePoint + 5;
-                        if ( course.children && course.children.length > 0 ) {
-                            course.children.forEach( lecture => {
-                                doc.setFontSize(11).setTextColor('#E2C319').setFontType('bold');
-                                doc.text(50, currentLinePoint, lecture.name);
-                                currentLinePoint = currentLinePoint + 5;
-                            });
-                        }
-                    });
-                }
-            });
         }
         if (this.selectedSP.description != null) {
             currentLinePoint = currentLinePoint + 5;
             doc.setTextColor('#000').setFontType('normal');
             const lines = doc.setFontSize(11).splitTextToSize(this.selectedSP.description, 150);
             doc.text(30, currentLinePoint, lines, {maxWidth: 150, align: "justify"}); // description
-            currentLinePoint = currentLinePoint + 5 + (4 * lines.length);
+            currentLinePoint = currentLinePoint + 6 + (4 * lines.length);
         }
+
         if ( this.selectedSP.concepts && this.selectedSP.concepts.length > 0 ) {
             currentLinePoint = currentLinePoint + 5;
             doc.setFontSize(12).setTextColor('#1a80b6').setFontType('bold'); // headline
@@ -132,9 +109,45 @@ export class PopupComponent implements OnInit {
                 currentLinePoint = currentLinePoint + 5+ (4 * concept.length);
             });
         }
+      if ( this.selectedSP.children && this.selectedSP.children.length > 0 ) {
+        currentLinePoint = currentLinePoint + 10;
+        doc.setFontSize(12).setTextColor('#000').setFontType('bold');
+        doc.text(30, currentLinePoint, 'Index' );
+        currentLinePoint = currentLinePoint + 7;
+        let countM = 1;
+        let countC = 1;
+        let countL = 1;
+        doc.setFontSize(11).setTextColor('#000').setFontType('normal');
+        doc.text(30, currentLinePoint, this.selectedSP.name);
+        currentLinePoint = currentLinePoint + 5;
+        this.selectedSP.children.forEach( module => {
+          doc.setFontSize(11).setTextColor('#000').setFontType('normal');
+          doc.text(35, currentLinePoint,  countM + '. ' +module.name);
+          currentLinePoint = currentLinePoint + 5;
+          if ( module.children && module.children.length > 0 ) {
+            module.children.forEach( course => {
+              doc.setFontSize(11).setTextColor('#000').setFontType('normal');
+              doc.text(40, currentLinePoint, countM + '.' + countC + '. ' + course.name);
+              currentLinePoint = currentLinePoint + 5;
+
+              if ( course.children && course.children.length > 0 ) {
+                course.children.forEach( lecture => {
+                  doc.setFontSize(11).setTextColor('#000').setFontType('normal');
+                  doc.text(45, currentLinePoint, countM + '.' + countC + '.' + countL + '. ' + lecture.name);
+                  currentLinePoint = currentLinePoint + 5;
+                  countL = countL + 1;
+                });
+              }
+              countC = countC + 1;
+            });
+          }
+          countM = countM + 1;
+        });
+        currentLinePoint = currentLinePoint + 15;
+      }
         if ( this.selectedSP.children && this.selectedSP.children.length > 0 ) {
             currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
-            currentLinePoint = currentLinePoint + 5;
+            currentLinePoint = currentLinePoint + 7;
             doc.setFontSize(12).setTextColor('#1a80b6').setFontType('bold'); // headline
             doc.text(30, currentLinePoint, 'Modules');
             doc.setTextColor('#000').setFontType('normal').setFontSize(8); // normal text
@@ -149,7 +162,7 @@ export class PopupComponent implements OnInit {
                 if (module.linksToBok != null && module.linksToBok.length > 0 ) {
                     currentLinePoint = currentLinePoint + 3;
                     doc.setFontSize(9).setTextColor('#E2C319').setFontType('bold'); // headline
-                    doc.text(35, currentLinePoint, 'Links: ' );
+                    doc.text(35, currentLinePoint, 'Linked BoK concepts: ' );
                     currentLinePoint = currentLinePoint + 5;
                     module.linksToBok.forEach(link => {
                         const linkId = link.concept_id.split(']', 1)[0].split('[', 2).length > 0 ? PopupComponent.URL_BOK + link.concept_id.split(']', 1)[0].split('[', 2)[1] : PopupComponent.URL_FIREBASE;
@@ -205,7 +218,7 @@ export class PopupComponent implements OnInit {
                     currentLinePoint = currentLinePoint + 4 * coLines.length;
                 }
                 if (  module.children &&  module.children.length > 0 ) {
-                    currentLinePoint = currentLinePoint + 5;
+                    currentLinePoint = currentLinePoint + 10;
                     currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                     doc.setFontSize(12).setTextColor('#1a80b6').setFontType('bold'); // headline
                     doc.text(35, currentLinePoint, 'Courses ');
@@ -246,10 +259,14 @@ export class PopupComponent implements OnInit {
                         }
                         if (courses.description != null) {
                             currentLinePoint = currentLinePoint + 5;
-                            currentLinePoint = this.checkEndOfPage(currentLinePoint , doc);
-                            doc.setTextColor('#000').setFontType('normal');
                             const linesDesc = doc.setFontSize(11).splitTextToSize(courses.description, 150);
                             const numLines =  doc.setFontSize(11).splitTextToSize(courses.description.replace(/(\r\n|\n|\r)/gm,""), 150);
+                            let expectedLine = currentLinePoint + 9 + (4 * numLines.length);
+                            if (expectedLine > PopupComponent.END_PAGE_LINE) {
+                              currentLinePoint = this.checkEndOfPage(expectedLine , doc);
+                            }
+                            doc.setTextColor('#000').setFontType('normal');
+                            doc.setFontSize(11);
                             doc.text(40, currentLinePoint, linesDesc, {maxWidth: 140, align: "justify"});
                             currentLinePoint = currentLinePoint + 9 + (4 * numLines.length);
                         }
@@ -410,7 +427,7 @@ export class PopupComponent implements OnInit {
     }
 
     getLinksToBok ( data: any ) {
-        const linksToBok = 'https://eo4geo-opt.web.app/#/detail/linksToBok';
+        const linksToBok = 'https://eo4geo-cdt.web.app/#/detail/linksToBok';
         let resultLinks = '';
         data.linksToBok.forEach( link => {
             const skills = this.getSkills(link);
@@ -430,7 +447,7 @@ export class PopupComponent implements OnInit {
         return resultLinks;
     }
     getLearningObjectives ( data: any ) {
-        const learningObjectives = 'https://eo4geo-opt.web.app/#/detail/learningObjectives';
+        const learningObjectives = 'https://eo4geo-cdt.web.app/#/detail/learningObjectives';
         let resultLearningObjectives = '';
         data.learningObjectives.forEach( objective => {
             resultLearningObjectives = resultLearningObjectives + '<rdf:li>' +
@@ -452,7 +469,7 @@ export class PopupComponent implements OnInit {
         return resultConcepts;
     }
     getChildren(data :any){
-        const urlChildren = 'https://eo4geo-opt.web.app/#/detail/';
+        const urlChildren = 'https://eo4geo-cdt.web.app/#/detail/';
 
         let children = '';
         let module = '';
@@ -489,9 +506,9 @@ export class PopupComponent implements OnInit {
     }
     headerRDF(data: any) {
         const urlBase = 'https://eo4geo-jot.web.app/#/detail/';
-        const children = 'https://eo4geo-opt.web.app/#/detail/';
-        const linksToBokURL = 'https://eo4geo-opt.web.app/#/detail/linksToBok';
-        const learningObjectsURL = 'https://eo4geo-opt.web.app/#/detail/learningObjects' ;
+        const children = 'https://eo4geo-cdt.web.app/#/detail/';
+        const linksToBokURL = 'https://eo4geo-cdt.web.app/#/detail/linksToBok';
+        const learningObjectsURL = 'https://eo4geo-cdt.web.app/#/detail/learningObjects' ;
         return '<?xml version="1.0"?>' +
             '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"' +
             ' xmlns:children="' + children + '" ' +
