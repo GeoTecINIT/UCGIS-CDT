@@ -17,9 +17,8 @@ export class PopupComponent implements OnInit {
     public studyprogramService: StudyProgramService,
     private route: ActivatedRoute) { }
 
-  public static END_PAGE_LINE = 230;
+  public static END_PAGE_LINE = 232;
   public static URL_BOK = 'https://bok.eo4geo.eu/';
-    public static URL_FIREBASE = 'https://findinbokv2.firebaseapp.com';
 
   @Input() idOP: any;
   selectedSP: StudyProgram;
@@ -61,7 +60,7 @@ export class PopupComponent implements OnInit {
         doc.page = 1;
         doc.addImage(this.base64img.logo, 'PNG', 10, 7, 37, 25);
         doc.addImage(this.base64img.back, 'PNG', 0, 100, 210, 198);
-        doc.link(15, 15, 600, 33, { url: 'http://www.eo4geo.eu' });
+        //doc.link(15, 15, 600, 33, { url: 'http://www.eo4geo.eu' });
         doc.setFontSize(38);
         doc.setFontType('bold');
         doc.setTextColor('#1a80b6');
@@ -69,7 +68,7 @@ export class PopupComponent implements OnInit {
             currentLinePoint = currentLinePoint + 5;
             const titleLines = doc.setFontSize(38).splitTextToSize(this.selectedSP.name, 150);
             doc.text(30, currentLinePoint, titleLines);
-            doc.link(15, currentLinePoint - 5, 600, currentLinePoint - 4, { url: 'https://eo4geo-cdt.web.app/' });
+            doc.link(15, currentLinePoint - 5, 600, currentLinePoint - 4, { url: 'https://eo4geo-cdt.web.app/#/detail/' + this.selectedSP._id });
             currentLinePoint = currentLinePoint + (15 * titleLines.length);
         }
         if (this.selectedSP.affiliation != null && this.selectedSP.affiliation != '') {
@@ -165,7 +164,7 @@ export class PopupComponent implements OnInit {
                     doc.text(35, currentLinePoint, 'Linked BoK concepts: ' );
                     currentLinePoint = currentLinePoint + 5;
                     module.linksToBok.forEach(link => {
-                        const linkId = link.concept_id.split(']', 1)[0].split('[', 2).length > 0 ? PopupComponent.URL_BOK + link.concept_id.split(']', 1)[0].split('[', 2)[1] : PopupComponent.URL_FIREBASE;
+                        const linkId = link.concept_id.split(']', 1)[0].split('[', 2).length > 0 ? PopupComponent.URL_BOK + link.concept_id.split(']', 1)[0].split('[', 2)[1] : PopupComponent.URL_BOK;
                         doc.setTextColor('#E2C319').setFontType('normal');
                         const linePre = doc.setFontSize(9).splitTextToSize(link.name+ '', 140);
                         doc.text(35, currentLinePoint, '- ' + linePre);
@@ -218,10 +217,10 @@ export class PopupComponent implements OnInit {
                     currentLinePoint = currentLinePoint + 4 * coLines.length;
                 }
                 if (  module.children &&  module.children.length > 0 ) {
-                    currentLinePoint = currentLinePoint + 10;
+                    currentLinePoint = currentLinePoint + 15;
                     currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                     doc.setFontSize(12).setTextColor('#1a80b6').setFontType('bold'); // headline
-                    doc.text(35, currentLinePoint, 'Courses ');
+                    doc.text(35, currentLinePoint, 'Courses ( ' + module.name + ' )');
                     doc.setTextColor('#000').setFontType('normal').setFontSize(8); // normal text
                     currentLinePoint = currentLinePoint + 5;
                     module.children.forEach( courses => { //children -> courses
@@ -234,10 +233,10 @@ export class PopupComponent implements OnInit {
                         if (courses.linksToBok != null && courses.linksToBok.length > 0 ) {
                             currentLinePoint = currentLinePoint + 5;
                             doc.setFontSize(9).setTextColor('#E2C319').setFontType('bold'); // headline
-                            doc.text(40, currentLinePoint, 'Links: ' );
+                            doc.text(40, currentLinePoint, 'Linked BoK concepts: ' );
                             currentLinePoint = currentLinePoint + 5;
                             courses.linksToBok.forEach(link => {
-                                const linkId = link.concept_id.split(']', 1)[0].split('[', 2).length > 0 ? PopupComponent.URL_BOK + link.concept_id.split(']', 1)[0].split('[', 2)[1] : PopupComponent.URL_FIREBASE;
+                                const linkId = link.concept_id.split(']', 1)[0].split('[', 2).length > 0 ? PopupComponent.URL_BOK + link.concept_id.split(']', 1)[0].split('[', 2)[1] : PopupComponent.URL_BOK;
                                 doc.setTextColor('#E2C319').setFontType('normal');
                                 const linePre = doc.setFontSize(9).splitTextToSize(link.name+ '', 140);
                                 doc.text(40, currentLinePoint, '- ' + linePre);
@@ -314,7 +313,7 @@ export class PopupComponent implements OnInit {
                             doc.text(40, currentLinePoint, 'Learning Outcomes: ');
                             courses.learningObjectives.forEach(concept => {
                                 currentLinePoint = currentLinePoint + 5;
-                                const conceptId = concept.concept_id.split(']', 1)[0].split('[', 2).length > 1 ?  PopupComponent.URL_BOK + concept.concept_id.split(']', 1)[0].split('[', 2)[1] : PopupComponent.URL_FIREBASE;
+                                const conceptId = concept.concept_id.split(']', 1)[0].split('[', 2).length > 1 ?  PopupComponent.URL_BOK + concept.concept_id.split(']', 1)[0].split('[', 2)[1] : PopupComponent.URL_BOK;
                                 doc.setTextColor('#1a80b6').setFontType('normal');
                                 const lineLearn = doc.setFontSize(10).splitTextToSize(concept.name+ '', 140);
                                 doc.text(40, currentLinePoint, lineLearn,  {maxWidth: 140, align: "justify"});
@@ -342,7 +341,7 @@ export class PopupComponent implements OnInit {
                                     doc.text(45, currentLinePoint, 'Links: ' );
                                     currentLinePoint = currentLinePoint + 5;
                                     lectures.linksToBok.forEach(link => {
-                                        const linkId = link.concept_id.split(']', 1)[0].split('[', 2).length > 0 ? PopupComponent.URL_BOK + link.concept_id.split(']', 1)[0].split('[', 2)[1] : PopupComponent.URL_FIREBASE;
+                                        const linkId = link.concept_id.split(']', 1)[0].split('[', 2).length > 0 ? PopupComponent.URL_BOK + link.concept_id.split(']', 1)[0].split('[', 2)[1] : PopupComponent.URL_BOK;
                                         doc.setTextColor('#E2C319').setFontType('normal');
                                         const linePre = doc.setFontSize(9).splitTextToSize(link.name+ '', 140);
                                         doc.text(45, currentLinePoint, '- ' + linePre);
