@@ -19,6 +19,7 @@ export class PopupComponent implements OnInit {
 
   public static END_PAGE_LINE = 232;
   public static URL_BOK = 'https://bok.eo4geo.eu/';
+  public static URL_CDT = 'https://eo4geo-cdt.web.app/detail/';
 
   @Input() idOP: any;
   selectedSP: StudyProgram;
@@ -55,6 +56,7 @@ export class PopupComponent implements OnInit {
 
     generatePDF() {
         let currentLinePoint = 45;
+        let numerals = {};
         // cabecera , imágenes
         const doc = new jsPDF();
         doc.page = 1;
@@ -68,7 +70,7 @@ export class PopupComponent implements OnInit {
             currentLinePoint = currentLinePoint + 5;
             const titleLines = doc.setFontSize(38).splitTextToSize(this.selectedSP.name, 150);
             doc.text(30, currentLinePoint, titleLines);
-            doc.link(15, currentLinePoint - 5, 600, currentLinePoint - 4, { url: 'https://eo4geo-cdt.web.app/#/detail/' + this.selectedSP._id });
+            doc.link(15, currentLinePoint - 5, 600, currentLinePoint - 4, { url: PopupComponent.URL_CDT + this.selectedSP._id });
             currentLinePoint = currentLinePoint + (15 * titleLines.length);
         }
         if (this.selectedSP.affiliation != null && this.selectedSP.affiliation != '') {
@@ -119,21 +121,24 @@ export class PopupComponent implements OnInit {
         doc.setFontSize(11).setTextColor('#000').setFontType('normal');
         doc.text(30, currentLinePoint, this.selectedSP.name);
         currentLinePoint = currentLinePoint + 5;
+
         this.selectedSP.children.forEach( module => {
           doc.setFontSize(11).setTextColor('#000').setFontType('normal');
           doc.text(35, currentLinePoint,  countM + '. ' +module.name);
           currentLinePoint = currentLinePoint + 5;
+          numerals['m_'+module.name] =  countM + '. ';
           if ( module.children && module.children.length > 0 ) {
             module.children.forEach( course => {
               doc.setFontSize(11).setTextColor('#000').setFontType('normal');
               doc.text(40, currentLinePoint, countM + '.' + countC + '. ' + course.name);
               currentLinePoint = currentLinePoint + 5;
-
+              numerals['c_'+course.name] =  countM + '.' + countC + '. ';
               if ( course.children && course.children.length > 0 ) {
                 course.children.forEach( lecture => {
                   doc.setFontSize(11).setTextColor('#000').setFontType('normal');
                   doc.text(45, currentLinePoint, countM + '.' + countC + '.' + countL + '. ' + lecture.name);
                   currentLinePoint = currentLinePoint + 5;
+                  numerals['l_'+lecture.name] = countM + '.' + countC + '.' + countL + '. ';
                   countL = countL + 1;
                 });
               }
@@ -154,9 +159,9 @@ export class PopupComponent implements OnInit {
             this.selectedSP.children.forEach( module => { //children -> modules
                 currentLinePoint = currentLinePoint + 7;
                 currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
-                const knLines = doc.setFontSize(12).splitTextToSize('\u2022' + '  ' + module.name, 150);
+                const knLines = doc.setFontSize(12).splitTextToSize( numerals['m_' + module.name] +module.name, 150);
                 doc.setFontSize(12).setTextColor('#1a80b6').setFontType('bold');
-                doc.text(30, currentLinePoint, knLines);
+                doc.text(30, currentLinePoint,  knLines);
                 currentLinePoint = currentLinePoint + 1 + (4 * knLines.length);
                 if (module.linksToBok != null && module.linksToBok.length > 0 ) {
                     currentLinePoint = currentLinePoint + 3;
@@ -220,13 +225,13 @@ export class PopupComponent implements OnInit {
                     currentLinePoint = currentLinePoint + 15;
                     currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                     doc.setFontSize(12).setTextColor('#1a80b6').setFontType('bold'); // headline
-                    doc.text(35, currentLinePoint, 'Courses ( ' + module.name + ' )');
+                    doc.text(35, currentLinePoint, 'Courses ( Module: ' + module.name + ' )');
                     doc.setTextColor('#000').setFontType('normal').setFontSize(8); // normal text
                     currentLinePoint = currentLinePoint + 5;
                     module.children.forEach( courses => { //children -> courses
                         currentLinePoint = currentLinePoint + 5;
                         currentLinePoint = this.checkEndOfPage(currentLinePoint , doc);
-                        const knLines = doc.setFontSize(11).splitTextToSize('-  ' + courses.name, 150);
+                        const knLines = doc.setFontSize(11).splitTextToSize( numerals['c_' + courses.name] + courses.name, 150);
                         doc.setFontSize(11).setTextColor('#1a80b6').setFontType('bold');
                         doc.text(35, currentLinePoint, knLines);
                         currentLinePoint = currentLinePoint + 4 * knLines.length;
@@ -313,10 +318,11 @@ export class PopupComponent implements OnInit {
                             doc.text(40, currentLinePoint, 'Learning Outcomes: ');
                             courses.learningObjectives.forEach(concept => {
                                 currentLinePoint = currentLinePoint + 5;
-                                const conceptId = concept.concept_id.split(']', 1)[0].split('[', 2).length > 1 ?  PopupComponent.URL_BOK + concept.concept_id.split(']', 1)[0].split('[', 2)[1] : PopupComponent.URL_BOK;
+                                const conceptId = PopupComponent.URL_BOK + concept.concept_id.split(']', 1)[0].split('[', 2)[1] ;
                                 doc.setTextColor('#1a80b6').setFontType('normal');
                                 const lineLearn = doc.setFontSize(10).splitTextToSize(concept.name+ '', 140);
                                 doc.text(40, currentLinePoint, lineLearn,  {maxWidth: 140, align: "justify"});
+                                if(concept.concept_id.split(']', 1)[0].split('[', 2).length > 1 )
                                 doc.link(40, currentLinePoint - 2 , 140 , 2 + (3 *  lineLearn.length) , { url: conceptId});
                                 currentLinePoint = currentLinePoint + 1 + (3 *  lineLearn.length);
                             });
@@ -331,7 +337,7 @@ export class PopupComponent implements OnInit {
                             courses.children.forEach( lectures => { //children -> courses
                                 currentLinePoint = currentLinePoint + 5;
                                 currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
-                                const knLines = doc.setFontSize(11).splitTextToSize('>  ' + lectures.name, 150);
+                                const knLines = doc.setFontSize(11).splitTextToSize(numerals['l_' + lectures.name] +lectures.name, 150);
                                 doc.setFontSize(11).setTextColor('#1a80b6').setFontType('bold');
                                 doc.text(40, currentLinePoint, knLines);
                                 currentLinePoint = currentLinePoint + 4 * knLines.length;
@@ -426,7 +432,7 @@ export class PopupComponent implements OnInit {
     }
 
     getLinksToBok ( data: any ) {
-        const linksToBok = 'https://eo4geo-cdt.web.app/#/detail/linksToBok';
+        const linksToBok = PopupComponent.URL_CDT + 'linksToBok';
         let resultLinks = '';
         data.linksToBok.forEach( link => {
             const skills = this.getSkills(link);
@@ -446,7 +452,7 @@ export class PopupComponent implements OnInit {
         return resultLinks;
     }
     getLearningObjectives ( data: any ) {
-        const learningObjectives = 'https://eo4geo-cdt.web.app/#/detail/learningObjectives';
+        const learningObjectives = PopupComponent.URL_CDT + 'learningObjectives';
         let resultLearningObjectives = '';
         data.learningObjectives.forEach( objective => {
             resultLearningObjectives = resultLearningObjectives + '<rdf:li>' +
@@ -468,7 +474,7 @@ export class PopupComponent implements OnInit {
         return resultConcepts;
     }
     getChildren(data :any){
-        const urlChildren = 'https://eo4geo-cdt.web.app/#/detail/';
+        const urlChildren = PopupComponent.URL_CDT;
 
         let children = '';
         let module = '';
@@ -504,10 +510,10 @@ export class PopupComponent implements OnInit {
         return children;
     }
     headerRDF(data: any) {
-        const urlBase = 'https://eo4geo-jot.web.app/#/detail/';
-        const children = 'https://eo4geo-cdt.web.app/#/detail/';
-        const linksToBokURL = 'https://eo4geo-cdt.web.app/#/detail/linksToBok';
-        const learningObjectsURL = 'https://eo4geo-cdt.web.app/#/detail/learningObjects' ;
+        const urlBase = PopupComponent.URL_CDT;
+        const children = PopupComponent.URL_CDT;
+        const linksToBokURL = PopupComponent.URL_CDT + 'linksToBok';
+        const learningObjectsURL = PopupComponent.URL_CDT + 'learningObjects' ;
         return '<?xml version="1.0"?>' +
             '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"' +
             ' xmlns:children="' + children + '" ' +
