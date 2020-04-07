@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-sm-12 col-md-12">
       <h1 class="title">
-        Study Programs
+        Learning Content
       </h1>
       <div class="text-center" [hidden]="!isAnonymous">
         <h5>You have limited functionality because you are not logged in. <a href="#" routerLink="/login"> Login </a> to
@@ -113,7 +113,11 @@
                 <div class="col-md-10">
                   <button type="button" class="btn text-justify" routerLink="/detail/{{ sp._id }}">
                     <span>
-                      <h1 style="display: inline;">{{ sp.name }}</h1>
+                      <h1 style="display: inline;">{{ sp.name }}</h1>  
+                      <h6 *ngIf="sp.depth==0" style="display: inline;">Study Program</h6>
+                      <h6 *ngIf="sp.depth==1" style="display: inline;">Module</h6>
+                      <h6 *ngIf="sp.depth==2" style="display: inline;">Course</h6>
+                      <h6 *ngIf="sp.depth==3" style="display: inline;">Lecture</h6>
                       <!-- <h6 *ngIf="sp.levelPublic" style="display: inline;" class="text-level">Public</h6> -->
                       <h6 *ngIf="!sp.levelPublic" style="display: inline;" class="text-level">Private</h6>
                       <h6>{{ sp.affiliation }}</h6>
