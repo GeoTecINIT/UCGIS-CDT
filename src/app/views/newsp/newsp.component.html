@@ -90,7 +90,7 @@
                 <div class="card card-accent-secondary">
                   <div class="card-header">
                     Study Program Information
-                    <span tooltip="" class="badge badge-primary badge-pill">i</span>
+                    <span tooltip="Fill in here your Study Program information. To link BoK concepts to your content click on the link BoK buttons." class="badge badge-primary badge-pill">i</span>
                     <button class="btn btn-link float-right pull-right"
                       (click)="NodeDiv.classList.contains('col-md-12') ? NodeDiv.className = 'col-md-6' : NodeDiv.className = 'col-md-12'">
                       <i class="float-right pull-right fa "
@@ -202,7 +202,7 @@
                 <div class="card card-accent-secondary">
                   <div class="card-header">
                     Module Information
-                    <span tooltip="" class="badge badge-primary badge-pill">i</span>
+                    <span tooltip="Fill in here your Module information. To link BoK concepts to your content click on the link BoK buttons." class="badge badge-primary badge-pill">i</span>
                     <button class="btn btn-link float-right pull-right"
                       (click)="NodeDiv.classList.contains('col-md-12') ? NodeDiv.className = 'col-md-6' : NodeDiv.className = 'col-md-12'">
                       <i class="float-right pull-right fa "
@@ -268,7 +268,7 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label for="ects">ECTS</label>
-                          <span tooltip="" class="badge badge-primary badge-pill">i</span>
+                          <span tooltip="European Credit Transfer and Accumulation System (ECTS) is a standard means for comparing academic credits for higher education. One academic year corresponds to 60 ECTS credits that are normally equivalent to 1500–1800 hours of total workload." class="badge badge-primary badge-pill">i</span>
                           <input type="number" size="1" class="form-control" id="ects" [(ngModel)]="modelModule.ects"
                             name="ects" min="1" max="20" (keyup)="updateTreeStudyProgram()" />
                         </div>
@@ -391,7 +391,7 @@
                 <div class="card card-accent-secondary">
                   <div class="card-header">
                     Course Information
-                    <span tooltip="" class="badge badge-primary badge-pill">i</span>
+                    <span tooltip="Fill in here your Course information. To link BoK concepts to your content click on the link BoK buttons." class="badge badge-primary badge-pill">i</span>
                     <button class="btn btn-link float-right pull-right"
                       (click)="NodeDiv.classList.contains('col-md-12') ? NodeDiv.className = 'col-md-6' : NodeDiv.className = 'col-md-12'">
                       <i class="float-right pull-right fa "
@@ -572,8 +572,8 @@
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label for="ects">ECTS/CP</label>
-                          <span tooltip="" class="badge badge-primary badge-pill">i</span>
+                          <label for="ects">ECTS</label>
+                          <span tooltip="European Credit Transfer and Accumulation System (ECTS) is a standard means for comparing academic credits for higher education. One academic year corresponds to 60 ECTS credits that are normally equivalent to 1500–1800 hours of total workload." class="badge badge-primary badge-pill">i</span>
                           <input type="number" size="3" class="form-control" name="ects" id="ects"
                             [(ngModel)]="modelCourse.ects" name="ects" min="1" max="999"
                             (keyup)="updateTreeStudyProgram()" />
@@ -594,7 +594,7 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <label for="assessment">Assessment</label>
-                          <span tooltip="" class="badge badge-primary badge-pill">i</span>
+                          <span tooltip="Describe how the course will be assessed." class="badge badge-primary badge-pill">i</span>
                           <input type="text" class="form-control" id="assessment" placeholder="Assessment"
                             [(ngModel)]="modelCourse.assessment" name="assessment" (keyup)="updateTreeStudyProgram()" />
                         </div>
@@ -604,7 +604,7 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <label for="bibliography">Bibliography</label>
-                          <span tooltip="" class="badge badge-primary badge-pill">i</span>
+                          <span tooltip="APA style. Example: Walford, N. (2002). Geographical data: Characteristics and sources. Chilchester: Wiley. ISBN: 9780471970859. DOI: https://doi.org/10.1046/j.0031-868X.2003.024_03.x" class="badge badge-primary badge-pill">i</span>
                           <input type="text" class="form-control" id="bibliography" placeholder="Bibliography"
                             [(ngModel)]="modelCourse.bibliography" name="bibliography"
                             (keyup)="updateTreeStudyProgram()" />
@@ -622,7 +622,7 @@
                 <div class="card card-accent-secondary">
                   <div class="card-header">
                     Lecture Information
-                    <span tooltip="" class="badge badge-primary badge-pill">i</span>
+                    <span tooltip="Fill in here your Lecture information. To link BoK concepts to your content click on the link BoK buttons." class="badge badge-primary badge-pill">i</span>
                     <button class="btn btn-link float-right pull-right"
                       (click)="NodeDiv.classList.contains('col-md-12') ? NodeDiv.className = 'col-md-6' : NodeDiv.className = 'col-md-12'">
                       <i class="float-right pull-right fa "
@@ -704,8 +704,8 @@
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label for="ects">ECTS/CP</label>
-                          <span tooltip="" class="badge badge-primary badge-pill">i</span>
+                          <label for="ects">ECTS</label>
+                          <span tooltip="European Credit Transfer and Accumulation System (ECTS) is a standard means for comparing academic credits for higher education. One academic year corresponds to 60 ECTS credits that are normally equivalent to 1500–1800 hours of total workload." class="badge badge-primary badge-pill">i</span>
                           <input type="number" size="3" class="form-control" id="ects" [(ngModel)]="modelLecture.ects"
                             name="ects" min="1" max="999" (keyup)="updateTreeStudyProgram()" />
                         </div>
@@ -728,7 +728,7 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <label for="bibliography">Bibliography</label>
-                          <span tooltip="" class="badge badge-primary badge-pill">i</span>
+                          <span tooltip="APA style. Example: Walford, N. (2002). Geographical data: Characteristics and sources. Chilchester: Wiley. ISBN: 9780471970859. DOI: https://doi.org/10.1046/j.0031-868X.2003.024_03.x" class="badge badge-primary badge-pill">i</span>
                           <input type="text" class="form-control" id="bibliography" placeholder="Bibliography"
                             [(ngModel)]="modelLecture.bibliography" name="bibliography"
                             (keyup)="updateTreeStudyProgram()" />
