@@ -759,11 +759,17 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <div class="text-center">
-                            <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': depthSearching==1}"
+                            <button class="btn btn-pill btn-outline-primary"
+                              [ngClass]="{'active': depthSearching==1}"
+                              [disabled]="currentTreeNode.depth>0"
                               [hidden]="highestItemLevel >= 1" (click)="depthSearching=1">Modules</button>
-                            <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': depthSearching==2}"
+                            <button class="btn btn-pill btn-outline-primary"
+                              [ngClass]="{'active': depthSearching==2}"
+                              [disabled]="currentTreeNode.depth>1"
                               [hidden]="highestItemLevel >= 2" (click)="depthSearching=2">Courses</button>
-                            <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': depthSearching==3}"
+                            <button class="btn btn-pill btn-outline-primary"
+                              [ngClass]="{'active': depthSearching==3}"
+                              [disabled]="currentTreeNode.depth>2"
                               [hidden]="highestItemLevel >= 3" (click)="depthSearching=3">Lectures</button>
                             <button class="btn btn-link pull-right"
                               (click)="isSearchingExisting = !isSearchingExisting"><i class="fa fa-times"></i>
