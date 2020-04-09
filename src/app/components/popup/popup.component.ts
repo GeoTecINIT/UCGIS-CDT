@@ -130,7 +130,7 @@ export class PopupComponent implements OnInit {
                     doc.setTextColor('#000').setFontType('normal');
                     doc.setFontSize(11);
                     doc.text(30, currentLinePoint, linesDesc, { maxWidth: 150, align: 'justify' });
-                    currentLinePoint = currentLinePoint + 9 + (3.8 * linesDesc.length);
+                    currentLinePoint = currentLinePoint + 9 + (4 * linesDesc.length);
                     currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                 } else {
                     const splitedLines1 = linesDesc.slice(0, fittingLines);
@@ -276,7 +276,7 @@ export class PopupComponent implements OnInit {
                             doc.setTextColor('#000').setFontType('normal');
                             doc.setFontSize(11);
                             doc.text(30, currentLinePoint, linesDesc, { maxWidth: 150, align: 'justify' });
-                            currentLinePoint = currentLinePoint + 9 + (3.8 * linesDesc.length);
+                            currentLinePoint = currentLinePoint + 9 + (4 * linesDesc.length);
                             currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                         } else {
                             const splitedLines1 = linesDesc.slice(0, fittingLines);
@@ -330,7 +330,7 @@ export class PopupComponent implements OnInit {
                     doc.setTextColor('#000').setFontType('normal').setFontSize(8); // normal text
                     currentLinePoint = currentLinePoint + 5;
                     module.children.forEach(courses => { //children -> courses
-                        currentLinePoint = currentLinePoint + 5;
+                        currentLinePoint = currentLinePoint + 15;
                         currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                         const knLines = doc.setFontSize(11).splitTextToSize(numerals['c_' + courses.name] + courses.name, 150);
                         doc.setFontSize(11).setTextColor('#1a80b6').setFontType('bold');
@@ -376,7 +376,7 @@ export class PopupComponent implements OnInit {
                                     doc.setTextColor('#000').setFontType('normal');
                                     doc.setFontSize(11);
                                     doc.text(40, currentLinePoint, linesDesc, { maxWidth: 140, align: 'justify' });
-                                    currentLinePoint = currentLinePoint + 9 + (3.8 * linesDesc.length);
+                                    currentLinePoint = currentLinePoint + 9 + (4 * linesDesc.length);
                                     currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                                 } else {
                                     const splitedLines1 = linesDesc.slice(0, fittingLines);
@@ -460,7 +460,7 @@ export class PopupComponent implements OnInit {
                             doc.setTextColor('#000').setFontType('normal').setFontSize(8); // normal text
                             currentLinePoint = currentLinePoint + 5;
                             courses.children.forEach(lectures => { //children -> courses
-                                currentLinePoint = currentLinePoint + 5;
+                                currentLinePoint = currentLinePoint + 15;
                                 currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                                 const knLines = doc.setFontSize(11).splitTextToSize(numerals['l_' + lectures.name] + lectures.name, 150);
                                 doc.setFontSize(11).setTextColor('#1a80b6').setFontType('bold');
@@ -508,7 +508,7 @@ export class PopupComponent implements OnInit {
                                             doc.setTextColor('#000').setFontType('normal');
                                             doc.setFontSize(11);
                                             doc.text(45, currentLinePoint, linesDesc, { maxWidth: 130, align: 'justify' });
-                                            currentLinePoint = currentLinePoint + 9 + (3.8 * linesDesc.length);
+                                            currentLinePoint = currentLinePoint + 9 + (4 * linesDesc.length);
                                             currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                                         } else {
                                             const splitedLines1 = linesDesc.slice(0, fittingLines);

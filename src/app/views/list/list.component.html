@@ -127,6 +127,7 @@
                     <!-- <span
                   *ngFor="let mk of o.knowledge"
                   class="badge badge-pill float-right"
+                  class="badge badge-pill float-right"
                   [ngClass]="'bok-' + (mk | slice: 1:3)"
                 >
                   {{ mk }}
@@ -149,14 +150,14 @@
                       </button>
                     </div>
                     <div class="col-3 col-sm-3 col-md-3 no-padding"
-                      tooltip="{{isAnonymous? 'Login to be able to edit' : sp.userId==afAuth.auth.currentUser?.uid?  'Edit' : 'You can edit only your own study programs'}}">
+                      tooltip="{{isAnonymous? 'Login to be able to edit' : sp.userId==afAuth.auth.currentUser?.uid?  'Edit' : 'You can edit only your own learning content'}}">
                       <button type="button" class="btn btn-block btn-link" routerLink="/newsp/copy/{{ sp._id }}"
                         [disabled]="isAnonymous || sp.userId!=afAuth.auth.currentUser?.uid">
                         <i class="fa fa-edit fa-lg mt-4"></i>
                       </button>
                     </div>
                     <div class="col-3 col-sm-3 col-md-3 no-padding"
-                      tooltip="{{isAnonymous? 'Login to be able to remove' : sp.userId==afAuth.auth.currentUser?.uid?  'Remove' : 'You can remove only your own stydy programs'}}">
+                      tooltip="{{isAnonymous? 'Login to be able to remove' : sp.userId==afAuth.auth.currentUser?.uid?  'Remove' : 'You can remove only your own learning content'}}">
                       <button type="button" class="btn btn-block btn-link" data-toggle="modal"
                         (click)="dangerModal.show()"
                         [disabled]="isAnonymous || sp.userId!=afAuth.auth.currentUser?.uid">
