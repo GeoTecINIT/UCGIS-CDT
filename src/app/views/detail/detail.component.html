@@ -163,8 +163,13 @@
                       <div *ngIf="model.assessment">
                         <p><b>Assessment:</b> {{ model.assessment }}</p>
                       </div>
-                      <div *ngIf="model.bibliography">
-                        <p><b>Bibliography:</b> {{ model.bibliography }}</p>
+                      <div *ngIf="model.bibliography && model.bibliography.length > 0">
+                        <p><b>Bibliography:</b></p>
+                        <ul>
+                          <div *ngFor="let b of model.bibliography; index as i ">
+                            <li>{{b.name}}</li>
+                          </div>
+                        </ul>
                       </div>
                       <div *ngIf="model.sourceDocs">
                         <p><b>Bibliography:</b> {{ model.sourceDocs }}</p>

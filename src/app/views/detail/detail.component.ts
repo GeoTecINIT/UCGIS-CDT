@@ -78,7 +78,9 @@ export class DetailComponent implements OnInit {
   saveBoKCodes(node) {
     node.linksToBok.forEach(l => {
       l.concept_id = l.name.split(']')[0].substring(1);
-      this.allLinksToBok.push(l);
+      if (!this.allLinksToBok.includes(l)) { // does not identify them as equal
+        this.allLinksToBok.push(l);
+      }
     });
     if (node.children) {
       node.children.forEach(child => {

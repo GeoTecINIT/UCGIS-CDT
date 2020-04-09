@@ -39,6 +39,7 @@ export class NewspComponent implements OnInit {
   textByDepthRemove = 'study program';
   linkBoKto = 'name';
   customLO = '';
+  customBib = '';
 
   // public value: string[];
   // public current: string;
@@ -345,7 +346,7 @@ export class NewspComponent implements OnInit {
     const concept = this.textBoK.nativeElement.getElementsByTagName('h4')[0]
       .textContent;
 
-    const newConcept = new BokInput('', concept, concept, '', [], '');
+    const newConcept = new BokInput('', concept, concept, '', [], '', []);
 
     const divs = this.textBoK.nativeElement.getElementsByTagName('div');
     if (divs['bokskills'] != null) {
@@ -353,6 +354,13 @@ export class NewspComponent implements OnInit {
       const as = divs['bokskills'].getElementsByTagName('a');
       for (const skill of as) {
         newConcept.skills.push(skill.innerText);
+      }
+    }
+    if (divs['boksource'] != null) {
+      const shortCode = this.textBoK.nativeElement.getElementsByTagName('h4')[0].innerText.split(' ')[0];
+      const as = divs['boksource'].getElementsByTagName('a');
+      for (const bib of as) {
+        newConcept.bibliography.push(bib.innerText);
       }
     }
 
@@ -393,8 +401,17 @@ export class NewspComponent implements OnInit {
         newConcept.linkedTo = 'learningObjectives';
         if (!modelToUpdate.learningObjectives.includes(newConcept)) {
           newConcept.skills.forEach(sk => {
-            const newSkill = new BokInput('', sk, newConcept.concept_id, '', [], 'learningObjectives');
+            const newSkill = new BokInput('', sk, newConcept.concept_id, '', [], 'learningObjectives', []);
             modelToUpdate.learningObjectives.push(newSkill);
+          });
+        }
+        break;
+      case 'bibliography':
+        newConcept.linkedTo = 'bibliography';
+        if (!modelToUpdate.bibliography.includes(newConcept)) {
+          newConcept.bibliography.forEach(bib => {
+            const newBib = new BokInput('', bib, newConcept.concept_id, '', [], 'bibliography', []);
+            modelToUpdate.bibliography.push(newBib);
           });
         }
         break;
@@ -413,8 +430,13 @@ export class NewspComponent implements OnInit {
   }
 
   addCustomLO() {
-    this.modelCourse.learningObjectives.push(new BokInput('', this.customLO, this.customLO, '', [], ''));
+    this.modelCourse.learningObjectives.push(new BokInput('', this.customLO, this.customLO, '', [], '', []));
     this.customLO = '';
+  }
+
+  addCustomBib(model) {
+    model.bibliography.push(new BokInput('', this.customBib, this.customBib, '', [], '', []));
+    this.customBib = '';
   }
 
   showExistingToStudyProgram(node) {
