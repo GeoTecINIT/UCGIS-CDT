@@ -189,7 +189,21 @@
                         <span><b>Links to BoK:</b></span>
                         <ul>
                           <div *ngFor="let lb of model.linksToBok">
-                            <li>Link in {{ lb.linkedTo }}: <a href="https://bok.eo4geo.eu/{{ lb.concept_id }}">{{ lb.name }}</a> </li>
+                            <li>Link in {{ lb.linkedTo }}: <a
+                                href="https://bok.eo4geo.eu/{{ lb.concept_id }}">{{ lb.name }}</a> </li>
+                          </div>
+                        </ul>
+                      </div>
+
+                      <div *ngIf="allLinksToBok && allLinksToBok.length > 0" style="background-color: #faf9f8; 
+                        margin-right: -20px;
+                        margin-left: -20px;
+                        padding: 20px;">
+                        <span><b>All Links to the Body of Knowledge in this learning content:</b></span>
+                        <ul>
+                          <div *ngFor="let lb of allLinksToBok">
+                            <li>Link in {{ lb.linkedTo }}: <a
+                                href="https://bok.eo4geo.eu/{{ lb.concept_id }}">{{ lb.name }}</a> </li>
                           </div>
                         </ul>
                       </div>
