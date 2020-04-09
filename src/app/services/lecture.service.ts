@@ -11,7 +11,7 @@ export class Lecture extends Object {
   public name: string;
   public description: string;
   public ects: number;
-  public bibliography: String;
+  public bibliography: BokInput[];
   public isPractical: boolean;
   public concepts: string[];
   public linksToBok: BokInput[];
@@ -32,7 +32,7 @@ export class Lecture extends Object {
       this.name = currentNode.data.name ? currentNode.data.name : '';
       this.description = currentNode.data.description ? currentNode.data.description : '';
       this.ects = currentNode.data.ects ? currentNode.data.ects : 0;
-      this.bibliography = currentNode.data.bibliography ? currentNode.data.bibliography : '';
+      this.bibliography = currentNode.data.bibliography ? currentNode.data.bibliography : [];
       this.isPractical = currentNode.data.isPractical ? currentNode.data.isPractical : false;
       this.concepts = currentNode.data.concepts ? currentNode.data.concepts : [];
       this.currentNode = null;
@@ -49,7 +49,7 @@ export class Lecture extends Object {
       this.name = '';
       this.description = '';
       this.ects = 0;
-      this.bibliography = '';
+      this.bibliography = [];
       this.isPractical = false;
       this.concepts = [];
       this.linksToBok = [];

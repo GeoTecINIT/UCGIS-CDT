@@ -17,6 +17,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 export class DetailComponent implements OnInit {
 
   statistics = [];
+  allLinksToBok = [];
 
   currentTreeNode = null;
   model = null;
@@ -77,12 +78,15 @@ export class DetailComponent implements OnInit {
   saveBoKCodes(node) {
     node.linksToBok.forEach(l => {
       l.concept_id = l.name.split(']')[0].substring(1);
-      if (node.children) {
-        node.children.forEach(child => {
-          this.saveBoKCodes(child);
-        });
+      if (!this.allLinksToBok.includes(l)) { // does not identify them as equal
+        this.allLinksToBok.push(l);
       }
     });
+    if (node.children) {
+      node.children.forEach(child => {
+        this.saveBoKCodes(child);
+      });
+    }
   }
 
   refreshTreeSize() {

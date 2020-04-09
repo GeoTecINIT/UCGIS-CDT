@@ -23,6 +23,7 @@ export class StudyProgram extends Object {
   public concepts: string[];
   public linksToBok: BokInput[];
   public depth = 0;
+  public bibliography: BokInput[];
 
   constructor(public currentNode: any = null) {
     super();
@@ -40,6 +41,8 @@ export class StudyProgram extends Object {
       this.currentNode = null;
       this.linksToBok = currentNode.data.linksToBok ? currentNode.data.linksToBok : [];
       this.levelPublic = currentNode.data.levelPublic ? currentNode.data.levelPublic : true;
+      this.bibliography = currentNode.data.bibliography ? currentNode.data.bibliography : [];
+
     } else {
       this._id = '';
       this.name = 'New Study Program';
@@ -53,6 +56,7 @@ export class StudyProgram extends Object {
       this.concepts = [];
       this.linksToBok = [];
       this.levelPublic = true;
+      this.bibliography = [];
     }
   }
 }
