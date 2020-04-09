@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-sm-12 col-md-12">
       <h1 class="title">
-        Study Programs
+        Learning Content
       </h1>
       <div class="text-center" [hidden]="!isAnonymous">
         <h5>You have limited functionality because you are not logged in. <a href="#" routerLink="/login"> Login </a> to
@@ -113,7 +113,11 @@
                 <div class="col-md-10">
                   <button type="button" class="btn text-justify" routerLink="/detail/{{ sp._id }}">
                     <span>
-                      <h1 style="display: inline;">{{ sp.name }}</h1>
+                      <h1 style="display: inline;">{{ sp.name }}</h1>  
+                      <h6 *ngIf="sp.depth==0" style="display: inline;">Study Program</h6>
+                      <h6 *ngIf="sp.depth==1" style="display: inline;">Module</h6>
+                      <h6 *ngIf="sp.depth==2" style="display: inline;">Course</h6>
+                      <h6 *ngIf="sp.depth==3" style="display: inline;">Lecture</h6>
                       <!-- <h6 *ngIf="sp.levelPublic" style="display: inline;" class="text-level">Public</h6> -->
                       <h6 *ngIf="!sp.levelPublic" style="display: inline;" class="text-level">Private</h6>
                       <h6>{{ sp.affiliation }}</h6>
@@ -122,6 +126,7 @@
                     </span>
                     <!-- <span
                   *ngFor="let mk of o.knowledge"
+                  class="badge badge-pill float-right"
                   class="badge badge-pill float-right"
                   [ngClass]="'bok-' + (mk | slice: 1:3)"
                 >
@@ -145,14 +150,14 @@
                       </button>
                     </div>
                     <div class="col-3 col-sm-3 col-md-3 no-padding"
-                      tooltip="{{isAnonymous? 'Login to be able to edit' : sp.userId==afAuth.auth.currentUser?.uid?  'Edit' : 'You can edit only your own study programs'}}">
+                      tooltip="{{isAnonymous? 'Login to be able to edit' : sp.userId==afAuth.auth.currentUser?.uid?  'Edit' : 'You can edit only your own learning content'}}">
                       <button type="button" class="btn btn-block btn-link" routerLink="/newsp/copy/{{ sp._id }}"
                         [disabled]="isAnonymous || sp.userId!=afAuth.auth.currentUser?.uid">
                         <i class="fa fa-edit fa-lg mt-4"></i>
                       </button>
                     </div>
                     <div class="col-3 col-sm-3 col-md-3 no-padding"
-                      tooltip="{{isAnonymous? 'Login to be able to remove' : sp.userId==afAuth.auth.currentUser?.uid?  'Remove' : 'You can remove only your own stydy programs'}}">
+                      tooltip="{{isAnonymous? 'Login to be able to remove' : sp.userId==afAuth.auth.currentUser?.uid?  'Remove' : 'You can remove only your own learning content'}}">
                       <button type="button" class="btn btn-block btn-link" data-toggle="modal"
                         (click)="dangerModal.show()"
                         [disabled]="isAnonymous || sp.userId!=afAuth.auth.currentUser?.uid">

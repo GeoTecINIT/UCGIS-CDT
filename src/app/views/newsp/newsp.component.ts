@@ -273,6 +273,7 @@ export class NewspComponent implements OnInit {
     console.log('refresh currrent node');
     this.isSearchingExisting = false;
     this.currentTreeNode = cv.getCurrentNode();
+    this.depthSearching = this.currentTreeNode.data.depth + 1;
     switch (this.currentTreeNode.data.depth) {
       case 0:
         this.textByDepth = 'module';
