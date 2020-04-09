@@ -41,7 +41,7 @@
                 <i class="fa fa-search"></i> Explore existing {{textByDepth}}s
               </button>
               <button type="submit" class="btn btn-pill btn-danger" (click)="removeNodeInTree()"
-                [hidden]="!currentTreeNode">
+                [hidden]="!currentTreeNode || currentTreeNode.parent == null">
                 <i class="fa fa-minus"></i> Remove {{textByDepthRemove}}
               </button>
             </div>
