@@ -8,9 +8,9 @@
               Detail
             </div>
             <div *ngIf="!selectedProgram.levelPublic" class="col-sm-4 offset-md-2 col-md-6">
-              <label>Private Study Program</label>
+              <label>Private Curricula Item</label>
               <span
-                tooltip="This Study Program will not be listed in the main view for other users. You can only access with the link."
+                tooltip="This Curricula Item will not be listed in the main view for other users. You can only access with the link."
                 class="badge badge-primary badge-pill">i</span>
             </div>
             <div *ngIf="selectedProgram.levelPublic" class="col-sm-4 offset-md-2 col-md-6"></div>
@@ -235,7 +235,7 @@
   <div class="modal-dialog modal-danger" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Are you sure you want to delete this Study Program?</h4>
+        <h4 class="modal-title">Are you sure you want to delete this Curricula Item?</h4>
         <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

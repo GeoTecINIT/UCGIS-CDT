@@ -27,6 +27,7 @@ export class Module extends Object {
   public field: Field;
   public bibliography: BokInput[];
 
+  data: any;
 
   constructor(
     public currentNode: any = null

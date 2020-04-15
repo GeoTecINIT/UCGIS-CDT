@@ -907,7 +907,7 @@
                 <div class="card card-accent-secondary">
                   <div class="card-header">
                     <h5>{{currentStudyProgram.name}}</h5>
-                    <span tooltip="This item has been added by other user, and can be re-used in your study program."
+                    <span tooltip="This item has been added by other user, and can be re-used in your curricula."
                       class="badge badge-primary badge-pill">i</span>
                     <button class="btn btn-link float-right pull-right"
                       (click)="NodeDiv.classList.contains('col-md-12') ? NodeDiv.className = 'col-md-6' : NodeDiv.className = 'col-md-12'">
@@ -992,13 +992,10 @@
             <div class="card-body" style="background-color: #faf9f8">
               <div class="row">
                 <div class="col-md-12">
-                  To start creating your curricula create the highest item. After that, click on any item to add
-                  lower level
-                  items.
-                  <br><br>
+
                   You can create any curriculum item (study program, module, course, lecture). To do so, create the high
-                  level item first,
-                  then add lower level items.
+                  level item first, then click on the desired level to
+                  add lower level items.
                   <br><br>
                   The hierarchy is as follows:
                   <br><br>
@@ -1011,13 +1008,35 @@
                   &emsp; &emsp; &emsp; &emsp; Lecture
                   <br><br>
 
-                  If you only need to create a Course and Lectures, start by creating a Course. If you require many
-                  Courses, you can start with Study Program (and skip Modules) or start with Module.
-                  <br><br>
-                  If you want to define a complete study program, start by creating a Study Program, then add Modules,
-                  Courses and
-                  Lectures as required.
+                  Where:
 
+                  <ul>
+                    <li>A study program is a curriculum of two or more courses that is intended or understood to lead to
+                      a degree, diploma, or certificate.
+                    </li>
+                    <li>A module is a collection of courses over a year or semester
+                    </li>
+                    <li>A course is a unit of teaching that typically lasts one academic term
+                    </li>
+                    <li>A lecture is a presentation intended to display information or teach people about a particular
+                      subject (also known as lessons or classes)
+                    </li>
+                  </ul>
+                  <br><br>
+                  Examples:
+                  <ul>
+                    <li>
+                      If you only need to create a Course and Lectures, start by creating a Course. If you require many
+                      Courses, you can start with Study Program (and skip Modules) or start with Module.
+                    </li>
+                    <li>
+                      If you want to define a complete study program, start by creating a Study Program, then add
+                      Modules,
+                      Courses and
+                      Lectures as required.
+                    </li>
+                  </ul>
+                  <br><br>
                 </div>
               </div>
             </div>
