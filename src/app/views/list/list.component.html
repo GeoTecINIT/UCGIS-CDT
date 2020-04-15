@@ -19,8 +19,8 @@
       <div class="card card-accent-primary">
         <div class="card-header">
           <div class="row">
-            <div class="col-sm-3 col-md-2" tooltip="{{isAnonymous? 'Login to be able to add study programs' : ''}}">
-              <button type="button" class="btn btn-block btn-outline-primary" routerLink="/newsp/empty"
+            <div class="col-sm-3 col-md-2" tooltip="{{isAnonymous? 'Login to be able to add curricula items' : ''}}">
+              <button type="button" class="btn btn-block btn-primary" routerLink="/newsp/empty"
                 [disabled]="isAnonymous">
                 New
               </button>
@@ -60,7 +60,7 @@
             <ng-container *ngIf="advancedSearch">
               <div class="card-body">
                 <div class="row">
-                  <div class="col-md-2 offset-md-4 col-sm-3" style="display: inline-flex">
+                  <div class="col-md-3 col-sm-6" style="display: inline-flex">
                     <span class="input-group-prepend">
                       <label class="switch switch-label switch-pill switch-outline-primary-alt">
                         <input class="switch-input" type="checkbox" value="affiliation" [(ngModel)]="affiliationFilter"
@@ -68,9 +68,11 @@
                         <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
                       </label>
                       <div class="pl-1">Affiliation</div>
+                      <span style="display: inline-table; margin-left: 5px;" tooltip="Turn on this switch and type in the search box to find matches with affiliations."
+                      class="badge badge-primary badge-pill">i</span>
                     </span>
                   </div>
-                  <div class="col-md-2 col-sm-3" style="display: inline-flex">
+                  <div class="col-md-3 col-sm-6" style="display: inline-flex">
                     <span class="input-group-prepend">
                       <label class="switch switch-label switch-pill switch-outline-primary-alt">
                         <input class="switch-input" type="checkbox" value="knowledges" [(ngModel)]="knowledgeFilter"
@@ -78,20 +80,24 @@
                         <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
                       </label>
                       <div class="pl-1">Knowledge linked</div>
+                      <span style="display: inline-table; margin-left: 5px;" tooltip="Turn on this switch and type in the search box to find matches with knowledge linked."
+                      class="badge badge-primary badge-pill">i</span>
                     </span>
                   </div>
 
-                  <div class="col-md-2 col-sm-3" style="display: inline-flex">
+                  <div class="col-md-3 col-sm-6" style="display: inline-flex">
                     <span class="input-group-prepend">
                       <label class="switch switch-label switch-pill switch-outline-primary-alt">
                         <input class="switch-input" type="checkbox" value="skills" [(ngModel)]="skillFilter" checked />
                         <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
                       </label>
                       <div class="pl-1">Learning Outcomes</div>
+                      <span style="display: inline-table; margin-left: 5px;" tooltip="Turn on this switch and type in the search box to find matches with learning outcomes."
+                      class="badge badge-primary badge-pill">i</span>
                     </span>
                   </div>
 
-                  <div class="col-md-2 col-sm-3" style="display: inline-flex">
+                  <div class="col-md-3 col-sm-6" style="display: inline-flex">
                     <span class="input-group-prepend">
                       <label class="switch switch-label switch-pill switch-outline-primary-alt">
                         <input class="switch-input" type="checkbox" value="fieldFilter" [(ngModel)]="fieldFilter"
@@ -99,6 +105,8 @@
                         <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
                       </label>
                       <div class="pl-1">Field of study</div>
+                      <span style="display: inline-table; margin-left: 5px;" tooltip="Turn on this switch and type in the search box to find matches with the field of study."
+                      class="badge badge-primary badge-pill">i</span>
                     </span>
                   </div>
                 </div>
@@ -107,6 +115,16 @@
           </div>
         </div>
         <div class="card-body">
+          <div *ngIf="filteredStudyPrograms && filteredStudyPrograms.length == 0">
+            <div class="text-center">
+              <h5> Your search did not return any result. Try with advanced search to search in more attributes.</h5>
+            </div>
+          </div>
+          <div *ngIf="filteredStudyPrograms && filteredStudyPrograms.length > 0 && searchText!='' && searchText!= null">
+            <div class="text-left">
+              <h5> Results:  {{filteredStudyPrograms.length}}</h5>
+            </div>
+          </div>
           <div *ngFor="let sp of filteredStudyPrograms">
             <div *ngIf="showOnlyDepth === -1 || sp.depth === showOnlyDepth ">
               <div class="row" *ngIf="sp.levelPublic || sp.userId==ownUsrId">
@@ -177,7 +195,7 @@
               <div class="modal-dialog modal-danger" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h4 class="modal-title">Are you sure you want to delete this Study Program?</h4>
+                    <h4 class="modal-title">Are you sure you want to delete this Curricula Item?</h4>
                     <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>

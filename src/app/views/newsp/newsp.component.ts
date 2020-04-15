@@ -232,9 +232,9 @@ export class NewspComponent implements OnInit {
     } else {
       console.log('Display new tree');
       const treeData = {
-        'longName': 'New Study Program',
+        'longName': 'New Curricula Item',
         'type': 'studyProgram',
-        'name': 'New Study Program',
+        'name': 'New Curricula Item',
         'parent': 'null',
         'path': 0,
         'depth': 0,

@@ -23,6 +23,8 @@ export class Lecture extends Object {
   public eqf: number;
   public field: Field;
 
+  data: any;
+
   constructor(
     public currentNode: any = null
   ) {

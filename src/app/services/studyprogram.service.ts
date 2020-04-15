@@ -29,7 +29,7 @@ export class StudyProgram extends Object {
     super();
     if (currentNode) {
       this._id = currentNode.data._id ? currentNode.data._id : '';
-      this.name = currentNode.data.name ? currentNode.data.name : 'New Study Program';
+      this.name = currentNode.data.name ? currentNode.data.name : 'New Curricula Item';
       this.description = currentNode.data.description ? currentNode.data.description : '';
       this.affiliation = currentNode.data.affiliation ? currentNode.data.affiliation : '';
       this.eqf = currentNode.data.eqf ? currentNode.data.eqf : 0;
@@ -45,7 +45,7 @@ export class StudyProgram extends Object {
 
     } else {
       this._id = '';
-      this.name = 'New Study Program';
+      this.name = 'New Curricula Item';
       this.description = '';
       this.affiliation = '';
       this.eqf = 0;
