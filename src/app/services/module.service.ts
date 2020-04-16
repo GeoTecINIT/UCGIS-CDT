@@ -25,6 +25,9 @@ export class Module extends Object {
   public levelPublic: Boolean;
   public eqf: number;
   public field: Field;
+  public bibliography: BokInput[];
+
+  data: any;
 
   constructor(
     public currentNode: any = null
@@ -57,6 +60,7 @@ export class Module extends Object {
       this.levelPublic = currentNode.data.levelPublic ? currentNode.data.levelPublic : true;
       this.eqf = currentNode.data.eqf ? currentNode.data.eqf : 0;
       this.field = currentNode.data.field ? currentNode.data.field : null;
+      this.bibliography = currentNode.data.bibliography ? currentNode.data.bibliography : [];
 
     } else {
       this._id = '';
@@ -75,71 +79,7 @@ export class Module extends Object {
       this.levelPublic = true;
       this.eqf = 0;
       this.field = null;
+      this.bibliography = [];
     }
   }
 }
-
-/* @Injectable({
-  providedIn: 'root'
-})
-
-export class ModuleService {
-  public allModules: Module[] = [];
-  public _allModules: Module[];
-  private db: AngularFirestore;
-
-  constructor(db: AngularFirestore) {
-    this.db = db;
-    this.getAllModules();
-  }
-
-  subscribeToModules(): Observable<Module[]> {
-    return this.db.collection<Module>(collection).valueChanges();
-  }
-
-  getAllModules() {
-    this.subscribeToModules()
-      .subscribe(m => (this.allModules = m, this._allModules = m));
-  }
-
-  filterModulesByNameDescription(txt) {
-   
-    return this.allModules.filter(function(el) {
-         return el.name.toLowerCase().indexOf(txt.toLowerCase()) > -1;
-     });
-    
-  }
-
-  getModuleById(moduleId: string): Observable<Module> {
-    return this.db
-      .collection(collection)
-      .doc<Module>(moduleId)
-      .valueChanges();
-  }
-
-  addNewModule(newMod: Module) {
-    const id = this.db.createId();
-    newMod._id = id;
-    this.db
-      .collection(collection)
-      .doc(id)
-      .set(newMod);
-  }
-
-  removeModule(moduleId: string) {
-    this.db
-      .collection(collection)
-      .doc(moduleId)
-      .delete();
-  }
-
-  updateModule(moduleId: string, updatedMod: Module) {
-    this.db
-      .collection(collection)
-      .doc<Module>(moduleId)
-      .update(updatedMod);
-  }
-
-
-}
- */

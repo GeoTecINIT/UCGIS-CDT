@@ -8,9 +8,9 @@
               Detail
             </div>
             <div *ngIf="!selectedProgram.levelPublic" class="col-sm-4 offset-md-2 col-md-6">
-              <label>Private Study Program</label>
+              <label>Private Curricula Item</label>
               <span
-                tooltip="This Study Program will not be listed in the main view for other users. You can only access with the link."
+                tooltip="This Curricula Item will not be listed in the main view for other users. You can only access with the link."
                 class="badge badge-primary badge-pill">i</span>
             </div>
             <div *ngIf="selectedProgram.levelPublic" class="col-sm-4 offset-md-2 col-md-6"></div>
@@ -31,7 +31,7 @@
                   </button>
                 </div>
                 <div class="col-3 col-sm-3 col-md-3 no-padding"
-                  tooltip="{{isAnonymous? 'Login to be able to edit' : selectedProgram.userId==afAuth.auth.currentUser?.uid?  'Edit' : 'You can edit only your own profiles'}}">
+                  tooltip="{{isAnonymous? 'Login to be able to edit' : selectedProgram.userId==afAuth.auth.currentUser?.uid?  'Edit' : 'You can edit only your own learning content'}}">
                   <button type="button" class="btn btn-block btn-link"
                     routerLink="/newsp/copy/{{ selectedProgram._id }}"
                     [disabled]="isAnonymous || selectedProgram.userId!=afAuth.auth.currentUser?.uid">
@@ -39,7 +39,7 @@
                   </button>
                 </div>
                 <div class="col-3 col-sm-3 col-md-3 no-padding"
-                  tooltip="{{isAnonymous? 'Login to be able to remove' : selectedProgram.userId==afAuth.auth.currentUser?.uid?  'Remove' : 'You can remove only your own profiles'}}">
+                  tooltip="{{isAnonymous? 'Login to be able to remove' : selectedProgram.userId==afAuth.auth.currentUser?.uid?  'Remove' : 'You can remove only your own learning content'}}">
                   <button type="button" class="btn btn-block btn-link" data-toggle="modal" (click)="dangerModal.show()"
                     [disabled]="isAnonymous || selectedProgram.userId!=afAuth.auth.currentUser?.uid">
                     <i class="fa fa-trash-o fa-lg mt-4"></i>
@@ -163,8 +163,13 @@
                       <div *ngIf="model.assessment">
                         <p><b>Assessment:</b> {{ model.assessment }}</p>
                       </div>
-                      <div *ngIf="model.bibliography">
-                        <p><b>Bibliography:</b> {{ model.bibliography }}</p>
+                      <div *ngIf="model.bibliography && model.bibliography.length > 0">
+                        <p><b>Bibliography:</b></p>
+                        <ul>
+                          <div *ngFor="let b of model.bibliography; index as i ">
+                            <li>{{b.name}}</li>
+                          </div>
+                        </ul>
                       </div>
                       <div *ngIf="model.sourceDocs">
                         <p><b>Bibliography:</b> {{ model.sourceDocs }}</p>
@@ -189,7 +194,21 @@
                         <span><b>Links to BoK:</b></span>
                         <ul>
                           <div *ngFor="let lb of model.linksToBok">
-                            <li>Link in {{ lb.linkedTo }}: <a href="https://bok.eo4geo.eu/{{ lb.concept_id }}">{{ lb.name }}</a> </li>
+                            <li>Link in {{ lb.linkedTo }}: <a
+                                href="https://bok.eo4geo.eu/{{ lb.concept_id }}">{{ lb.name }}</a> </li>
+                          </div>
+                        </ul>
+                      </div>
+
+                      <div *ngIf="allLinksToBok && allLinksToBok.length > 0" style="background-color: #faf9f8; 
+                        margin-right: -20px;
+                        margin-left: -20px;
+                        padding: 20px;">
+                        <span><b>All Links to the Body of Knowledge in this learning content:</b></span>
+                        <ul>
+                          <div *ngFor="let lb of allLinksToBok">
+                            <li>Link in {{ lb.linkedTo }}: <a
+                                href="https://bok.eo4geo.eu/{{ lb.concept_id }}">{{ lb.name }}</a> </li>
                           </div>
                         </ul>
                       </div>
@@ -216,7 +235,7 @@
   <div class="modal-dialog modal-danger" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Are you sure you want to delete this Study Program?</h4>
+        <h4 class="modal-title">Are you sure you want to delete this Curricula Item?</h4>
         <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
