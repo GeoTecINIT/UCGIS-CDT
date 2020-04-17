@@ -118,7 +118,7 @@ export class StudyProgramService {
     if (updateNode.children && updateNode.children.length > 0) {
       updateNode.children.forEach((child, i) => {
         this.convertNodeChildren(child);
-        switch (child.depth) {
+        switch (child.data.depth) {
           case 1: // Module
             updateNode.children[i] = new Module(child);
             break;
