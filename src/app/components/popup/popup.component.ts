@@ -58,43 +58,51 @@ export class PopupComponent implements OnInit {
         // <#> dc:hasPart [ dc:extent "2" ; dc:relation eo4geo:someBoKConcept  ] ;
         let subject = '';
         if (this.selectedSP.concepts && this.selectedSP.concepts.length > 0) {
+            subject = subject + '<> dc:hasPart [ dc:title "' + this.selectedSP.name + '"';
             this.selectedSP.concepts.forEach(concept => {
                 // const bokCode = concept.split('] ')[1];
                 const bokCode = concept.split(']', 1)[0].split('[', 2)[1];
                 if (bokCode) {
-                    subject = subject + '<#> dc:hasPart [ dc:relation eo4geo:' + bokCode + '  ]';
+                    subject = subject + ' dc:relation eo4geo:' + bokCode;
                 }
             });
+            subject = subject + '  ]';
         }
 
         this.selectedSP.children.forEach(module => {
             if (module.concepts && module.concepts.length > 0) {
+                subject = subject + '<> dc:hasPart [ dc:title "' + module.name + '"';
                 module.concepts.forEach(concept => {
                     const bokCode = concept.split(']', 1)[0].split('[', 2)[1];
                     if (bokCode) {
-                        subject = subject + '<#> dc:hasPart [ dc:relation eo4geo:' + bokCode + '  ]';
+                        subject = subject + ' dc:relation eo4geo:' + bokCode;
                     }
                 });
+                subject = subject + '  ]';
             }
             if (module.children && module.children.length > 0) {
                 module.children.forEach(course => {
                     if (course.concepts && course.concepts.length > 0) {
+                        subject = subject + '<> dc:hasPart [  dc:title "' + course.name + '"';
                         course.concepts.forEach(concept => {
                             const bokCode = concept.split(']', 1)[0].split('[', 2)[1];
                             if (bokCode) {
-                                subject = subject + '<#> dc:hasPart [ dc:relation eo4geo:' + bokCode + '  ]';
+                                subject = subject + ' dc:relation eo4geo:' + bokCode;
                             }
                         });
+                        subject = subject + '  ]';
                     }
                     if (course.children && course.children.length > 0) {
                         course.children.forEach(lecture => {
                             if (lecture.concepts && lecture.concepts.length > 0) {
+                                subject = subject + '<> dc:hasPart [  dc:title "' + lecture.name + '"';
                                 lecture.concepts.forEach(concept => {
                                     const bokCode = concept.split(']', 1)[0].split('[', 2)[1];
                                     if (bokCode) {
-                                        subject = subject + '<#> dc:hasPart [ dc:relation eo4geo:' + bokCode + '  ]';
+                                        subject = subject + ' dc:relation eo4geo:' + bokCode;
                                     }
                                 });
+                                subject = subject + '  ]';
                             }
                         });
                     }
