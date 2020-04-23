@@ -24,6 +24,8 @@ export class StudyProgram extends Object {
   public linksToBok: BokInput[];
   public depth = 0;
   public bibliography: BokInput[];
+  public orgId: string;
+  public orgName: string;
 
   constructor(public currentNode: any = null) {
     super();
@@ -42,6 +44,9 @@ export class StudyProgram extends Object {
       this.linksToBok = currentNode.data.linksToBok ? currentNode.data.linksToBok : [];
       this.levelPublic = currentNode.data.levelPublic ? currentNode.data.levelPublic : true;
       this.bibliography = currentNode.data.bibliography ? currentNode.data.bibliography : [];
+      this.userId = currentNode.data.userId ? currentNode.data.userId : '';
+      this.orgId = currentNode.data.orgId ? currentNode.data.orgId : '';
+      this.orgName = currentNode.data.orgName ? currentNode.data.orgName : '';
 
     } else {
       this._id = '';
@@ -57,6 +62,8 @@ export class StudyProgram extends Object {
       this.linksToBok = [];
       this.levelPublic = true;
       this.bibliography = [];
+      this.orgId = '';
+      this.orgName = '';
     }
   }
 }
@@ -118,7 +125,8 @@ export class StudyProgramService {
     if (updateNode.children && updateNode.children.length > 0) {
       updateNode.children.forEach((child, i) => {
         this.convertNodeChildren(child);
-        switch (child.data.depth) {
+        const d = child.data ? child.data.depth : child.depth;
+        switch (d) {
           case 1: // Module
             updateNode.children[i] = new Module(child);
             break;

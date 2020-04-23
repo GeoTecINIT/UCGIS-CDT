@@ -15,13 +15,17 @@
     <!-- breaking change 'cui-breadcrumb' -->
     <cui-breadcrumb>
       <!-- Breadcrumb Menu-->
-      <li class="breadcrumb-menu d-md-down-none">
+      <li class="breadcrumb-menu">
         <div
           class="btn-group"
           role="group"
           aria-label="Button group with nested dropdown">
-
-          <a class="btn text-primary" href="#" routerLink="/user"> Hello {{username}}! </a>
+          <a class="btn text-primary" href="#" routerLink="/user" [hidden]="isAnonymous"> Hello {{username}}! </a>
+          <a class="btn text-primary" href="#" routerLink="/organization" [hidden]="isAnonymous">
+            <i class="icon-briefcase"></i> &nbsp;Your organization
+            <span [hidden]="hasOrgs" class="badge badge-pill badge-success">N</span>
+            <span [hidden]="numPending < 1" class="badge badge-pill badge-success">{{numPending}}</span>
+          </a>
           <a class="btn text-primary" href="#" routerLink="/list"><i class="icon-home"></i>&nbsp;Home</a >
           <a class="btn text-primary" href="#" routerLink="/login" (click)="logOut()"><i class="icon-logout"></i> <span [innerText]="isAnonymous ? '&nbsp;Login' : '&nbsp;Log Out'"></span></a>
         </div>

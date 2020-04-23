@@ -5,13 +5,8 @@
       <div class="card card-accent-primary">
         <div class="card-header">
           <div class="row">
-            <div class="col-md-8 text-center">
-              <!--              <button type="submit" class="btn btn-pill btn-primary" (click)="addNodeInTree(1)"
-                [disabled]="currentTreeNode.depth == 3">
-                <i class="fa fa-plus"></i> Create new {{textByDepth}}
-              </button> -->
-
-              <div class="btn-group" dropdown>
+            <div class="col-md-12 text-center mb-3">
+                <div class="btn-group" dropdown>
                 <button id="button-animated" dropdownToggle type="button"
                   class="btn btn-pill btn-primary dropdown-toggle" aria-controls="dropdown-animated">
                   <i class="fa fa-plus"></i> Create new <span class="caret"></span>
@@ -46,6 +41,24 @@
                 <i class="fa fa-minus"></i> Remove {{textByDepthRemove}}
               </button>
             </div>
+          </div>
+
+          <div class="row" [hidden]="!currentTreeNode">
+            <div class="col-md-3">
+              <p *ngIf="userOrgs.length > 0" class="text-primary text-right">Save under organization </p>
+            </div>
+            <div class="col-md-3">
+              <ng-select *ngIf="userOrgs.length > 0 && userOrgs.length == currentUser.organizations.length"
+                [items]="userOrgs" name="userOrgs" bindLabel="name" [multiple]="false" [(ngModel)]="saveOrg">
+                <ng-template ng-optgroup-tmp let-item="item">
+                  {{item.name}}
+                </ng-template>
+              </ng-select>
+              <button *ngIf="userOrgs.length == 0" type="button" class="btn btn-block btn-link text-secondary"
+                routerLink="/organization">
+                &nbsp;You need to join or create an organization before you can save an occupational profile.
+              </button>
+            </div>           
             <div class="col-md-2" style="display: inline-flex" [hidden]="!currentTreeNode">
               <span class="input-group-prepend">
                 <div class="pr-1"> Visibility: Private </div>
@@ -56,14 +69,18 @@
                 </label>
                 <div class="pl-1">Public</div>
               </span>
+              <span style="display:inline-table; margin:2px" tooltip="If visibility is private, users in this organization can still see it. But users not logged in won't be able to see it."
+              class="badge badge-primary badge-pill">i</span>
             </div>
-            <div class="col-md-2 text-right">
+            <div class="col-sm-4 offset-md-2 col-md-2 text-right">
               <button type="submit" class="btn btn-pill btn-primary" (click)="saveStudyProgram()" routerLink="/list"
                 [hidden]="!currentTreeNode">
                 <i class="fa fa-save"></i> Save
               </button>
             </div>
           </div>
+
+
         </div>
         <!-- card body -->
         <div class="card-body">

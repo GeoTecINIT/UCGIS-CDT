@@ -14,6 +14,7 @@ import { NewspComponent } from './views/newsp/newsp.component';
 
 import { AngularFireAuthGuard } from '@angular/fire/auth-guard';
 import { UserComponent } from './views/user/user.component';
+import { OrganizationComponent } from './views/organization/organization.component';
 
 export const routes: Routes = [
   {
@@ -62,6 +63,13 @@ export const routes: Routes = [
           title: 'User Details'
         },
         component: UserComponent
+      },
+      {
+        path: 'organization',
+        data: {
+          title: 'Organization Details'
+        },
+        component: OrganizationComponent
       },
       {
         path: 'detail/:name',
