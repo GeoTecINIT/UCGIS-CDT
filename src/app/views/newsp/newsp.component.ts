@@ -12,6 +12,8 @@ import { BokInput } from '../../model/bokinput';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
+import { Organization, OrganizationService } from '../../services/organization.service';
+import { User, UserService } from '../../services/user.service';
 
 
 @Component({
@@ -82,6 +84,10 @@ export class NewspComponent implements OnInit {
 
   depthSearching = 1;
 
+  userOrgs: Organization[] = [];
+  saveOrg: Organization;
+  currentUser: User;
+
   configFields = {
     displayKey: 'concatName', // if objects array passed which key to be displayed defaults to description
     search: true, // true/false for the search functionlity defaults to false,
@@ -99,6 +105,8 @@ export class NewspComponent implements OnInit {
 
   constructor(
     private studyprogramService: StudyProgramService,
+    private organizationService: OrganizationService,
+    private userService: UserService,
     public fieldsService: FieldsService,
     public escoService: EscoCompetenceService,
     private route: ActivatedRoute,
@@ -111,6 +119,29 @@ export class NewspComponent implements OnInit {
         this.allStudyPrograms = res;
         this.exploreChildrenToAddItems();
       });
+    this.afAuth.auth.onAuthStateChanged(user => {
+      if (user) {
+        this.userService.getUserById(user.uid).subscribe(userDB => {
+          this.currentUser = new User(userDB);
+          if (this.currentUser.organizations && this.currentUser.organizations.length > 0) {
+            this.currentUser.organizations.forEach(orgId => {
+              this.organizationService.getOrganizationById(orgId).subscribe(org => {
+                if (org) {
+                  this.userOrgs.push(org);
+                  this.saveOrg = this.userOrgs[0];
+                } else { // this org has been deleted. remove
+                  const indexToRemove = this.currentUser.organizations.indexOf(orgId);
+                  if (indexToRemove !== -1) {
+                    this.currentUser.organizations.splice(indexToRemove, 1);
+                    this.userService.updateUserWithId(this.currentUser._id, this.currentUser);
+                  }
+                }
+              });
+            });
+          }
+        });
+      }
+    });
   }
 
   ngOnInit() {
@@ -142,6 +173,9 @@ export class NewspComponent implements OnInit {
     console.log(modelToSave);
 
     modelToSave.userId = this.afAuth.auth.currentUser.uid;
+    modelToSave.orgId = this.saveOrg._id;
+    modelToSave.orgName = this.saveOrg.name;
+
     if (this.mode === 'copy') {
       this.studyprogramService.updateStudyProgram(this._id, modelToSave);
     } else {

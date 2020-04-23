@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import * as cv from '@eo4geo/curr-viz';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { UserService, User } from '../../services/user.service';
 
 @Component({
   selector: 'app-detail',
@@ -21,6 +22,7 @@ export class DetailComponent implements OnInit {
 
   currentTreeNode = null;
   model = null;
+  currentUser: User = new User();
 
   selectedProgram: StudyProgram;
   @ViewChild('dangerModal') public dangerModal: ModalDirective;
@@ -32,12 +34,15 @@ export class DetailComponent implements OnInit {
 
   constructor(
     public studyprogramService: StudyProgramService,
+    private userService: UserService,
     private route: ActivatedRoute, public afAuth: AngularFireAuth
   ) {
     this.afAuth.auth.onAuthStateChanged(user => {
-      console.log(user);
       if (user) {
         this.isAnonymous = user.isAnonymous;
+        this.userService.getUserById(user.uid).subscribe(userDB => {
+          this.currentUser = new User(userDB);
+        });
       } else {
         this.isAnonymous = true;
       }

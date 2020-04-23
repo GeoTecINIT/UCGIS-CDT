@@ -34,14 +34,14 @@
                   tooltip="{{isAnonymous? 'Login to be able to edit' : selectedProgram.userId==afAuth.auth.currentUser?.uid?  'Edit' : 'You can edit only your own learning content'}}">
                   <button type="button" class="btn btn-block btn-link"
                     routerLink="/newsp/copy/{{ selectedProgram._id }}"
-                    [disabled]="isAnonymous || selectedProgram.userId!=afAuth.auth.currentUser?.uid">
+                    [disabled]="isAnonymous ||  (currentUser?.organizations?.indexOf(selectedProgram.orgId) == -1)">
                     <i class="fa fa-edit fa-lg mt-4"></i>
                   </button>
                 </div>
                 <div class="col-3 col-sm-3 col-md-3 no-padding"
                   tooltip="{{isAnonymous? 'Login to be able to remove' : selectedProgram.userId==afAuth.auth.currentUser?.uid?  'Remove' : 'You can remove only your own learning content'}}">
                   <button type="button" class="btn btn-block btn-link" data-toggle="modal" (click)="dangerModal.show()"
-                    [disabled]="isAnonymous || selectedProgram.userId!=afAuth.auth.currentUser?.uid">
+                    [disabled]="isAnonymous || (currentUser?.organizations?.indexOf(selectedProgram.orgId) == -1)">
                     <i class="fa fa-trash-o fa-lg mt-4"></i>
                   </button>
                 </div>

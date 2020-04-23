@@ -27,6 +27,8 @@ export class Course extends Object {
   public levelPublic: Boolean;
   public eqf: number;
   public field: Field;
+  public orgId: string;
+  public orgName: string;
 
   data: any;
 
@@ -53,6 +55,8 @@ export class Course extends Object {
       this.levelPublic = currentNode.data.levelPublic ? currentNode.data.levelPublic : true;
       this.eqf = currentNode.data.eqf ? currentNode.data.eqf : 0;
       this.field = currentNode.data.field ? currentNode.data.field : null;
+      this.orgId = currentNode.data.orgId ? currentNode.data.orgId : '';
+      this.orgName = currentNode.data.orgName ? currentNode.data.orgName : '';
 
     } else {
       this._id = '';
@@ -72,6 +76,8 @@ export class Course extends Object {
       this.levelPublic = true;
       this.eqf = 0;
       this.field = null;
+      this.orgId = '';
+      this.orgName = '';
     }
   }
 }

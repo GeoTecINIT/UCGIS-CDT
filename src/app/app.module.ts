@@ -72,6 +72,7 @@ import { AccordionModule } from 'ngx-bootstrap/accordion';
 
 import { Eo4geoFooterComponent } from './components/eo4geo-footer/eo4geo-footer.component';
 import { Eo4geoHeaderComponent } from './components/eo4geo-header/eo4geo-header.component';
+import { OrganizationComponent } from './views/organization/organization.component';
 
 
 @NgModule({
@@ -118,7 +119,8 @@ import { Eo4geoHeaderComponent } from './components/eo4geo-header/eo4geo-header.
     FilterPipe,
     PopupComponent,
     Eo4geoFooterComponent,
-    Eo4geoHeaderComponent
+    Eo4geoHeaderComponent,
+    OrganizationComponent
   ],
   providers: [
     {

@@ -22,6 +22,8 @@ export class Lecture extends Object {
   public children: any[];
   public eqf: number;
   public field: Field;
+  public orgId: string;
+  public orgName: string;
 
   data: any;
 
@@ -45,6 +47,8 @@ export class Lecture extends Object {
       this.children = [];
       this.eqf = currentNode.data.eqf ? currentNode.data.eqf : 0;
       this.field = currentNode.data.field ? currentNode.data.field : null;
+      this.orgId = currentNode.data.orgId ? currentNode.data.orgId : '';
+      this.orgName = currentNode.data.orgName ? currentNode.data.orgName : '';
 
     } else {
       this._id = '';
@@ -61,6 +65,8 @@ export class Lecture extends Object {
       this.children = [];
       this.eqf = 0;
       this.field = null;
+      this.orgId = '';
+      this.orgName = '';
     }
   }
 }

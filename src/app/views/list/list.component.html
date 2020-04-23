@@ -127,7 +127,7 @@
           </div>
           <div *ngFor="let sp of filteredStudyPrograms">
             <div *ngIf="showOnlyDepth === -1 || sp.depth === showOnlyDepth ">
-              <div class="row" *ngIf="sp.levelPublic || sp.userId==ownUsrId">
+              <div class="row" *ngIf="sp.levelPublic || sp.userId==currentUser?._id || (currentUser?.organizations?.indexOf(sp.orgId) > -1)">
                 <div class="col-md-10">
                   <button type="button" class="btn text-justify" routerLink="/detail/{{ sp._id }}">
                     <span>
@@ -138,6 +138,7 @@
                       <h6 *ngIf="sp.depth==3" style="display: inline;">Lecture</h6>
                       <!-- <h6 *ngIf="sp.levelPublic" style="display: inline;" class="text-level">Public</h6> -->
                       <h6 *ngIf="!sp.levelPublic" style="display: inline;" class="text-level">Private</h6>
+                      <h6 style="display: inline;" class="text-level text-secondary">{{ sp.orgName }}</h6>
                       <h6>{{ sp.affiliation }}</h6>
                       <p class="text-muted">{{ sp.description | slice:0:300 }} ... </p>
                       EQF Level: {{ sp.eqf }}
@@ -170,15 +171,15 @@
                     <div class="col-3 col-sm-3 col-md-3 no-padding"
                       tooltip="{{isAnonymous? 'Login to be able to edit' : sp.userId==afAuth.auth.currentUser?.uid?  'Edit' : 'You can edit only your own learning content'}}">
                       <button type="button" class="btn btn-block btn-link" routerLink="/newsp/copy/{{ sp._id }}"
-                        [disabled]="isAnonymous || sp.userId!=afAuth.auth.currentUser?.uid">
-                        <i class="fa fa-edit fa-lg mt-4"></i>
+                      [disabled]="isAnonymous || (currentUser?.organizations?.indexOf(sp.orgId) == -1)">
+                        <i class="fa fa-edit fa-lg mt-4"></i>  <!--    [disabled]="isAnonymous  || sp.userId!=afAuth.auth.currentUser?.uid"> -->
                       </button>
                     </div>
                     <div class="col-3 col-sm-3 col-md-3 no-padding"
                       tooltip="{{isAnonymous? 'Login to be able to remove' : sp.userId==afAuth.auth.currentUser?.uid?  'Remove' : 'You can remove only your own learning content'}}">
                       <button type="button" class="btn btn-block btn-link" data-toggle="modal"
                         (click)="dangerModal.show()"
-                        [disabled]="isAnonymous || sp.userId!=afAuth.auth.currentUser?.uid">
+                        [disabled]="isAnonymous || (currentUser?.organizations?.indexOf(sp.orgId) == -1)">
                         <i class="fa fa-trash-o fa-lg mt-4"></i>
                       </button>
                     </div>
