@@ -162,7 +162,7 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-10">
+                      <div class="col-md-9">
                         <div class="form-group">
                           <label for="field">Field of study</label>
                           <span
@@ -176,12 +176,12 @@
                           </ng-select>
                         </div>
                       </div>
-                      <div class="col-md-2">
+                      <div class="col-md-3">
                         <div class="form-group">
                           <label for="numSemesters">Amount of semesters</label>
                           <span tooltip="Number of semesters in the curricula."
                             class="badge badge-primary badge-pill">i</span>
-                          <input type="number" size="1" class="form-control" id="numSemesters"
+                          <input type="text" size="10" class="form-control" id="numSemesters"
                             [(ngModel)]="model.numSemesters" name="numSemesters" min="1" max="20"
                             (keyup)="updateTreeStudyProgram()" />
                         </div>
@@ -191,7 +191,8 @@
                       <div class="col-md-10">
                         <div class="form-group">
                           <label for="description">Description</label>
-                          <textarea class="form-control" id="description" placeholder="Description" name="description"
+                          <textarea class="form-control" id="description" name="description"
+                          placeholder="Add a short introduction and other information relevant to the study program..."
                             [(ngModel)]="model.description" rows="4" (keyup)="updateTreeStudyProgram()"></textarea>
                           <div *ngIf="model.linksToBok.length > 0" style="display: flex;">
                             <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
@@ -282,7 +283,7 @@
                         <div class="form-group">
                           <label for="numSemester">Number of semester</label>
                           <span tooltip="In which semester is taught." class="badge badge-primary badge-pill">i</span>
-                          <input type="number" size="1" class="form-control" id="numSemester"
+                          <input type="text" size="10" class="form-control" id="numSemester"
                             [(ngModel)]="modelModule.numSemester" name="numSemester" min="1" max="15"
                             (keyup)="updateTreeStudyProgram()" />
                         </div>
@@ -293,8 +294,8 @@
                           <span
                             tooltip="European Credit Transfer and Accumulation System (ECTS) is a standard means for comparing academic credits for higher education. One academic year corresponds to 60 ECTS credits that are normally equivalent to 1500–1800 hours of total workload."
                             class="badge badge-primary badge-pill">i</span>
-                          <input type="number" size="1" class="form-control" id="ects" [(ngModel)]="modelModule.ects"
-                            name="ects" min="1" max="20" (keyup)="updateTreeStudyProgram()" />
+                          <input type="number" class="form-control" id="ects" [(ngModel)]="modelModule.ects"
+                            name="ects" min="0" (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
                     </div>
@@ -302,8 +303,9 @@
                       <div class="col-md-10">
                         <div class="form-group">
                           <label for="description">Description</label>
-                          <textarea class="form-control" id="description" placeholder="Description" name="description"
+                          <textarea class="form-control" id="description" name="description"
                             [(ngModel)]="modelModule.description" rows="4"
+                            placeholder="Add a short introduction and other information relevant to the module..."
                             (keyup)="updateTreeStudyProgram()"></textarea>
                           <div *ngIf="modelModule.linksToBok.length > 0" style="display: flex;">
                             <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
@@ -396,15 +398,6 @@
                         </button>
                       </div>
                     </div>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group">
-                          <label for="assessment">Assessment</label>
-                          <textarea class="form-control" id="assessment" placeholder="Assessment" name="assesment"
-                            [(ngModel)]="modelModule.assessment" rows="4" (keyup)="updateTreeStudyProgram()"></textarea>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
                 <!--   </form> -->
@@ -451,13 +444,26 @@
                       </div>
                     </div>
                     <div class="row" *ngIf="highestItemLevel == 2">
-                      <div class="col-md-10">
+                      <div class="col-md-8">
                         <div class="form-group">
                           <label for="title">Affiliation</label>
                           <input type="text" class="form-control" id="affiliation" placeholder="Affiliation"
                             [(ngModel)]="modelCourse.affiliation" name="affiliation" required
                             (keyup)="updateTreeStudyProgram()" />
                         </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <label for="eqf">Type</label>
+                          <span
+                            tooltip="Specify course type if needed."
+                            class="badge badge-primary badge-pill">i</span>
+                            </div>
+                        <select [(ngModel)]="modelCourse.type">
+                          <option value="Common">Common</option>
+                          <option value="Specialization">Specialization</option>
+                          <option value="Elective">Elective</option>
+                        </select>
                       </div>
                       <div class="col-md-2">
                         <div class="form-group">
@@ -476,7 +482,7 @@
                           <label for="description">Description</label>
                           <textarea class="form-control" id="description" placeholder="Description" name="description"
                             [(ngModel)]="modelCourse.description" (keyup)="updateTreeStudyProgram()"
-                            rows="4"></textarea>
+                            rows="4" placeholder="Add a short introduction and other information relevant to the course..."></textarea>
                           <div *ngIf="modelCourse.linksToBok.length > 0" style="display: flex;">
                             <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of modelCourse.linksToBok; index as i ">
@@ -602,8 +608,8 @@
                           <span
                             tooltip="European Credit Transfer and Accumulation System (ECTS) is a standard means for comparing academic credits for higher education. One academic year corresponds to 60 ECTS credits that are normally equivalent to 1500–1800 hours of total workload."
                             class="badge badge-primary badge-pill">i</span>
-                          <input type="number" size="3" class="form-control" name="ects" id="ects"
-                            [(ngModel)]="modelCourse.ects" name="ects" min="1" max="999"
+                          <input type="number" class="form-control" name="ects" id="ects"
+                            [(ngModel)]="modelCourse.ects" name="ects" min="0"
                             (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
@@ -611,7 +617,7 @@
                         <div class="form-group">
                           <label for="numSemester">Number of semester</label>
                           <span tooltip="In which semester is taught." class="badge badge-primary badge-pill">i</span>
-                          <input type="number" size="3" class="form-control" id="numSemester"
+                          <input type="text" size="10" class="form-control" id="numSemester"
                             [(ngModel)]="modelCourse.numSemester" name="numSemester" min="1" max="999"
                             (keyup)="updateTreeStudyProgram()" />
                         </div>
@@ -753,8 +759,9 @@
                       <div class="col-md-10">
                         <div class="form-group">
                           <label for="description">Description</label>
-                          <textarea class="form-control" id="description" placeholder="Description" name="description"
+                          <textarea class="form-control" id="description" name="description"
                             [(ngModel)]="modelLecture.description" rows="4"
+                            placeholder="Add a short introduction and other information relevant to the lecture..."
                             (keyup)="updateTreeStudyProgram()"></textarea>
                           <div *ngIf="modelLecture.linksToBok.length > 0" style="display: flex;">
                             <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
@@ -782,8 +789,8 @@
                           <span
                             tooltip="European Credit Transfer and Accumulation System (ECTS) is a standard means for comparing academic credits for higher education. One academic year corresponds to 60 ECTS credits that are normally equivalent to 1500–1800 hours of total workload."
                             class="badge badge-primary badge-pill">i</span>
-                          <input type="number" size="3" class="form-control" id="ects" [(ngModel)]="modelLecture.ects"
-                            name="ects" min="1" max="999" (keyup)="updateTreeStudyProgram()" />
+                          <input type="number" class="form-control" id="ects" [(ngModel)]="modelLecture.ects"
+                            name="ects" min="0" (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
                       <div class="col-md-6">

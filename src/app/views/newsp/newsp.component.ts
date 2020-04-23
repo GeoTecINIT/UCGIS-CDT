@@ -129,6 +129,7 @@ export class NewspComponent implements OnInit {
                 if (org) {
                   this.userOrgs.push(org);
                   this.saveOrg = this.userOrgs[0];
+                  this.setOrganization();
                 } else { // this org has been deleted. remove
                   const indexToRemove = this.currentUser.organizations.indexOf(orgId);
                   if (indexToRemove !== -1) {
@@ -230,11 +231,23 @@ export class NewspComponent implements OnInit {
         }
         this.highestItemLevel = this.model.depth;
         this.depthSearching = this.highestItemLevel + 1;
+        this.setOrganization();
         this.displayTree(sp);
         console.log(sp);
         console.log('Highest item level: ' + this.highestItemLevel);
         spObs.unsubscribe();
       });
+  }
+
+  setOrganization() {
+    // iterate orgs to select right one
+    if (this.userOrgs.length > 0 && this.currentUser && this.model) {
+      this.userOrgs.forEach(o => {
+        if (o._id === this.model.orgId) {
+          this.saveOrg = o;
+        }
+      });
+    }
   }
 
   searchInBok(text: string) {

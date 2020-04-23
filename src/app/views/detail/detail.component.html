@@ -146,6 +146,9 @@
                         <!-- Course -->
                         <h4> Course: {{ model.name }} </h4>
                         <p class="text-justify">{{ model.description }}</p>
+                        <div *ngIf="model.type">
+                          <p><b> Type:</b> {{ model.type }}</p>
+                        </div>
                       </div>
                       <div *ngIf="currentTreeNode.data.depth == 3">
                         <!-- Lecture -->
