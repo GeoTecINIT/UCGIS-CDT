@@ -241,7 +241,7 @@ export class NewspComponent implements OnInit {
 
   setOrganization() {
     // iterate orgs to select right one
-    if (this.userOrgs.length > 0 && this.currentUser) {
+    if (this.userOrgs.length > 0 && this.currentUser && this.model) {
       this.userOrgs.forEach(o => {
         if (o._id === this.model.orgId) {
           this.saveOrg = o;
