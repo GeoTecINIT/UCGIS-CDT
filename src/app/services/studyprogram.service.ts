@@ -42,7 +42,7 @@ export class StudyProgram extends Object {
       this.concepts = currentNode.data.concepts ? currentNode.data.concepts : [];
       this.currentNode = null;
       this.linksToBok = currentNode.data.linksToBok ? currentNode.data.linksToBok : [];
-      this.levelPublic = currentNode.data.levelPublic ? currentNode.data.levelPublic : true;
+      this.levelPublic = currentNode.data.levelPublic != null ? currentNode.data.levelPublic : true;
       this.bibliography = currentNode.data.bibliography ? currentNode.data.bibliography : [];
       this.userId = currentNode.data.userId ? currentNode.data.userId : '';
       this.orgId = currentNode.data.orgId ? currentNode.data.orgId : '';

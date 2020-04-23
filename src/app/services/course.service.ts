@@ -29,6 +29,7 @@ export class Course extends Object {
   public field: Field;
   public orgId: string;
   public orgName: string;
+  public type: string;
 
   data: any;
 
@@ -52,11 +53,12 @@ export class Course extends Object {
       this.linksToBok = currentNode.data.linksToBok ? currentNode.data.linksToBok : [];
       this.userId = currentNode.data.userId ? currentNode.data.userId : '';
       this.affiliation = currentNode.data.affiliation ? currentNode.data.affiliation : '';
-      this.levelPublic = currentNode.data.levelPublic ? currentNode.data.levelPublic : true;
+      this.levelPublic = currentNode.data.levelPublic != null ? currentNode.data.levelPublic : true;
       this.eqf = currentNode.data.eqf ? currentNode.data.eqf : 0;
       this.field = currentNode.data.field ? currentNode.data.field : null;
       this.orgId = currentNode.data.orgId ? currentNode.data.orgId : '';
       this.orgName = currentNode.data.orgName ? currentNode.data.orgName : '';
+      this.type = currentNode.data.type ? currentNode.data.type : '';
 
     } else {
       this._id = '';
@@ -77,6 +79,7 @@ export class Course extends Object {
       this.eqf = 0;
       this.field = null;
       this.orgId = '';
+      this.orgName = '';
       this.orgName = '';
     }
   }

@@ -181,7 +181,7 @@
                           <label for="numSemesters">Amount of semesters</label>
                           <span tooltip="Number of semesters in the curricula."
                             class="badge badge-primary badge-pill">i</span>
-                          <input type="number" size="1" class="form-control" id="numSemesters"
+                          <input type="text" size="10" class="form-control" id="numSemesters"
                             [(ngModel)]="model.numSemesters" name="numSemesters" min="1" max="20"
                             (keyup)="updateTreeStudyProgram()" />
                         </div>
@@ -282,7 +282,7 @@
                         <div class="form-group">
                           <label for="numSemester">Number of semester</label>
                           <span tooltip="In which semester is taught." class="badge badge-primary badge-pill">i</span>
-                          <input type="number" size="1" class="form-control" id="numSemester"
+                          <input type="text" size="10" class="form-control" id="numSemester"
                             [(ngModel)]="modelModule.numSemester" name="numSemester" min="1" max="15"
                             (keyup)="updateTreeStudyProgram()" />
                         </div>
@@ -451,13 +451,26 @@
                       </div>
                     </div>
                     <div class="row" *ngIf="highestItemLevel == 2">
-                      <div class="col-md-10">
+                      <div class="col-md-8">
                         <div class="form-group">
                           <label for="title">Affiliation</label>
                           <input type="text" class="form-control" id="affiliation" placeholder="Affiliation"
                             [(ngModel)]="modelCourse.affiliation" name="affiliation" required
                             (keyup)="updateTreeStudyProgram()" />
                         </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="form-group">
+                          <label for="eqf">Type</label>
+                          <span
+                            tooltip="Specify course type if needed."
+                            class="badge badge-primary badge-pill">i</span>
+                            </div>
+                        <select [(ngModel)]="modelCourse.type">
+                          <option value="Common">Common</option>
+                          <option value="Specialization">Specialization</option>
+                          <option value="Elective">Elective</option>
+                        </select>
                       </div>
                       <div class="col-md-2">
                         <div class="form-group">
@@ -611,7 +624,7 @@
                         <div class="form-group">
                           <label for="numSemester">Number of semester</label>
                           <span tooltip="In which semester is taught." class="badge badge-primary badge-pill">i</span>
-                          <input type="number" size="3" class="form-control" id="numSemester"
+                          <input type="text" size="10" class="form-control" id="numSemester"
                             [(ngModel)]="modelCourse.numSemester" name="numSemester" min="1" max="999"
                             (keyup)="updateTreeStudyProgram()" />
                         </div>

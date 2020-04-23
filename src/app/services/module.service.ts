@@ -59,7 +59,7 @@ export class Module extends Object {
       this.linksToBok = currentNode.data.linksToBok ? currentNode.data.linksToBok : [];
       this.userId = currentNode.data.userId ? currentNode.data.userId : '';
       this.affiliation = currentNode.data.affiliation ? currentNode.data.affiliation : '';
-      this.levelPublic = currentNode.data.levelPublic ? currentNode.data.levelPublic : true;
+      this.levelPublic = currentNode.data.levelPublic != null ? currentNode.data.levelPublic : true;
       this.eqf = currentNode.data.eqf ? currentNode.data.eqf : 0;
       this.field = currentNode.data.field ? currentNode.data.field : null;
       this.bibliography = currentNode.data.bibliography ? currentNode.data.bibliography : [];
