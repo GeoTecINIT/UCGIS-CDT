@@ -98,8 +98,14 @@ export class PopupComponent implements OnInit {
         }
         if (this.selectedSP.affiliation != null && this.selectedSP.affiliation !== '') {
             doc.setFontSize(12).setTextColor('#1a80b6').setFontType('bold'); // headline
-            doc.text(30, currentLinePoint, 'Organising entities: ' + this.selectedSP.affiliation);
-            currentLinePoint = currentLinePoint + 8;
+            const linesAff = doc.setFontSize(12).splitTextToSize('Organizing entities :' + this.selectedSP.affiliation, 150);
+            doc.text(30, currentLinePoint, linesAff, { maxWidth: 150, align: 'justify' });
+            currentLinePoint = currentLinePoint + 8 * linesAff.length;
+
+
+          /*   doc.text(30, currentLinePoint, 'Organizing entities:');
+            doc.text(30, currentLinePoint, this.selectedSP.affiliation);
+            currentLinePoint = currentLinePoint + 8; */
         }
         if (this.selectedSP.eqf && this.selectedSP.eqf > 0) {
             doc.setFontSize(12).setTextColor('#1a80b6').setFontType('bold'); // headline
@@ -159,13 +165,21 @@ export class PopupComponent implements OnInit {
             currentLinePoint = currentLinePoint + 5;
             this.selectedSP.bibliography.forEach(concept => {
                 currentLinePoint = currentLinePoint + 5;
-                const conceptId = concept.concept_id.split(']', 1)[0].split('[', 2).length > 0 ? concept.concept_id.split(']', 1)[0].split('[', 2)[1] : '';
-                doc.setTextColor('#000').setFontType('normal');
-                const linePre = doc.setFontSize(9).splitTextToSize(concept.name + '', 150);
-                doc.text(30, currentLinePoint, linePre);
-                doc.link(30, currentLinePoint - 2, 150, linePre.length + 5, { url: PopupComponent.URL_BOK + conceptId });
-                currentLinePoint = currentLinePoint + (4 * linePre.length);
-                currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
+                if (concept.concept_id) { // bib from Bok
+                    const conceptId = concept.concept_id.split(']', 1)[0].split('[', 2).length > 0 ? concept.concept_id.split(']', 1)[0].split('[', 2)[1] : '';
+                    doc.setTextColor('#000').setFontType('normal');
+                    const linePre = doc.setFontSize(9).splitTextToSize(concept.name + '', 150);
+                    doc.text(30, currentLinePoint, linePre);
+                    doc.link(30, currentLinePoint - 2, 150, linePre.length + 5, { url: PopupComponent.URL_BOK + conceptId });
+                    currentLinePoint = currentLinePoint + (4 * linePre.length);
+                    currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
+                } else { //custom bib
+                    doc.setTextColor('#000').setFontType('normal');
+                    const linePreC = doc.setFontSize(9).splitTextToSize(concept + '', 150);
+                    doc.text(30, currentLinePoint, linePreC);
+                    currentLinePoint = currentLinePoint + (4 * linePreC.length);
+                    currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
+                }
             });
         }
         if (this.selectedSP.linksToBok != null && this.selectedSP.linksToBok.length > 0) {
@@ -331,13 +345,21 @@ export class PopupComponent implements OnInit {
                     currentLinePoint = currentLinePoint + 5;
                     module.bibliography.forEach(concept => {
                         currentLinePoint = currentLinePoint + 5;
-                        const conceptId = concept.concept_id.split(']', 1)[0].split('[', 2).length > 0 ? concept.concept_id.split(']', 1)[0].split('[', 2)[1] : '';
-                        doc.setTextColor('#000').setFontType('normal');
-                        const linePre = doc.setFontSize(9).splitTextToSize(concept.name + '', 150);
-                        doc.text(35, currentLinePoint, linePre);
-                        doc.link(35, currentLinePoint - 2, 150, linePre.length + 5, { url: PopupComponent.URL_BOK + conceptId });
-                        currentLinePoint = currentLinePoint + (4 * linePre.length);
-                        currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
+                        if (concept.concept_id) { // bib from Bok
+                            const conceptId = concept.concept_id.split(']', 1)[0].split('[', 2).length > 0 ? concept.concept_id.split(']', 1)[0].split('[', 2)[1] : '';
+                            doc.setTextColor('#000').setFontType('normal');
+                            const linePre = doc.setFontSize(9).splitTextToSize(concept.name + '', 150);
+                            doc.text(35, currentLinePoint, linePre);
+                            doc.link(35, currentLinePoint - 2, 150, linePre.length + 5, { url: PopupComponent.URL_BOK + conceptId });
+                            currentLinePoint = currentLinePoint + (4 * linePre.length);
+                            currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
+                        } else { //custom bib
+                            doc.setTextColor('#000').setFontType('normal');
+                            const linePreC = doc.setFontSize(9).splitTextToSize(concept + '', 150);
+                            doc.text(35, currentLinePoint, linePreC);
+                            currentLinePoint = currentLinePoint + (4 * linePreC.length);
+                            currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
+                        }
                     });
                 }
                 if (module.children && module.children.length > 0) {
@@ -451,13 +473,21 @@ export class PopupComponent implements OnInit {
                             currentLinePoint = currentLinePoint + 5;
                             courses.bibliography.forEach(concept => {
                                 currentLinePoint = currentLinePoint + 5;
-                                const conceptId = concept.concept_id.split(']', 1)[0].split('[', 2).length > 0 ? concept.concept_id.split(']', 1)[0].split('[', 2)[1] : '';
-                                doc.setTextColor('#000').setFontType('normal');
-                                const linePre = doc.setFontSize(9).splitTextToSize(concept.name + '', 140);
-                                doc.text(40, currentLinePoint, linePre);
-                                doc.link(40, currentLinePoint - 2, 140, linePre.length + 5, { url: PopupComponent.URL_BOK + conceptId });
-                                currentLinePoint = currentLinePoint + (4 * linePre.length);
-                                currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
+                                if (concept.concept_id) { // bib from Bok
+                                    const conceptId = concept.concept_id.split(']', 1)[0].split('[', 2).length > 0 ? concept.concept_id.split(']', 1)[0].split('[', 2)[1] : '';
+                                    doc.setTextColor('#000').setFontType('normal');
+                                    const linePre = doc.setFontSize(9).splitTextToSize(concept.name + '', 150);
+                                    doc.text(40, currentLinePoint, linePre);
+                                    doc.link(40, currentLinePoint - 2, 150, linePre.length + 5, { url: PopupComponent.URL_BOK + conceptId });
+                                    currentLinePoint = currentLinePoint + (4 * linePre.length);
+                                    currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
+                                } else { //custom bib
+                                    doc.setTextColor('#000').setFontType('normal');
+                                    const linePreC = doc.setFontSize(9).splitTextToSize(concept + '', 150);
+                                    doc.text(40, currentLinePoint, linePreC);
+                                    currentLinePoint = currentLinePoint + (4 * linePreC.length);
+                                    currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
+                                }
                             });
                         }
                         if (courses.learningObjectives != null && courses.learningObjectives.length > 0) {
@@ -563,13 +593,21 @@ export class PopupComponent implements OnInit {
                                     currentLinePoint = currentLinePoint + 5;
                                     lectures.bibliography.forEach(concept => {
                                         currentLinePoint = currentLinePoint + 5;
-                                        const conceptId = concept.concept_id.split(']', 1)[0].split('[', 2).length > 0 ? concept.concept_id.split(']', 1)[0].split('[', 2)[1] : '';
-                                        doc.setTextColor('#000').setFontType('normal');
-                                        const linePre = doc.setFontSize(9).splitTextToSize(concept.name + '', 130);
-                                        doc.text(45, currentLinePoint, linePre);
-                                        doc.link(45, currentLinePoint - 2, 130, linePre.length + 5, { url: PopupComponent.URL_BOK + conceptId });
-                                        currentLinePoint = currentLinePoint + (4 * linePre.length);
-                                        currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
+                                        if (concept.concept_id) { // bib from Bok
+                                            const conceptId = concept.concept_id.split(']', 1)[0].split('[', 2).length > 0 ? concept.concept_id.split(']', 1)[0].split('[', 2)[1] : '';
+                                            doc.setTextColor('#000').setFontType('normal');
+                                            const linePre = doc.setFontSize(9).splitTextToSize(concept.name + '', 150);
+                                            doc.text(45, currentLinePoint, linePre);
+                                            doc.link(45, currentLinePoint - 2, 150, linePre.length + 5, { url: PopupComponent.URL_BOK + conceptId });
+                                            currentLinePoint = currentLinePoint + (4 * linePre.length);
+                                            currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
+                                        } else { //custom bib
+                                            doc.setTextColor('#000').setFontType('normal');
+                                            const linePreC = doc.setFontSize(9).splitTextToSize(concept + '', 150);
+                                            doc.text(45, currentLinePoint, linePreC);
+                                            currentLinePoint = currentLinePoint + (4 * linePreC.length);
+                                            currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
+                                        }
                                     });
                                 }
                             });
@@ -579,7 +617,11 @@ export class PopupComponent implements OnInit {
             });
         }
         this.footer(doc);
-        doc.save('Study Program.pdf');
+        if (this.selectedSP.name) {
+            doc.save(this.selectedSP.name + '.pdf');
+        } else {
+            doc.save('Study Program.pdf');
+        }
     }
 
     checkEndOfPage(line, doc) {
