@@ -19,6 +19,7 @@ export class Course extends Object {
   public prerequisites: BokInput [];
   public learningObjectives: BokInput [];
   public children: Lecture[];
+  public _children: Lecture[];
   public concepts: string[];
   public linksToBok: BokInput[];
   public depth = 2;
@@ -37,7 +38,7 @@ export class Course extends Object {
     public currentNode: any = null
   ) {
     super();
-    if (currentNode) {
+    if (currentNode && currentNode.data) {
       this._id = currentNode.data._id ? currentNode.data._id : '';
       this.name = currentNode.data.name ? currentNode.data.name : '';
       this.numSemester = currentNode.data.numSemester ? currentNode.data.numSemester : 0;
@@ -48,6 +49,7 @@ export class Course extends Object {
       this.prerequisites = currentNode.data.prerequisites ? currentNode.data.prerequisites : [];
       this.learningObjectives = currentNode.data.learningObjectives ? currentNode.data.learningObjectives : [];
       this.children = currentNode.children ? currentNode.children : [];
+      this._children = currentNode._children ? currentNode._children : [];
       this.concepts = currentNode.data.concepts ? currentNode.data.concepts : [];
       this.currentNode = null;
       this.linksToBok = currentNode.data.linksToBok ? currentNode.data.linksToBok : [];
@@ -71,6 +73,7 @@ export class Course extends Object {
       this.prerequisites = [];
       this.learningObjectives = [];
       this.children = [];
+      this._children = [];
       this.concepts = [];
       this.linksToBok = [];
       this.userId = '';

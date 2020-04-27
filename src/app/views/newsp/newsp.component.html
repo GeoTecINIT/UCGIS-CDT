@@ -6,7 +6,7 @@
         <div class="card-header">
           <div class="row">
             <div class="col-md-12 text-center mb-3">
-                <div class="btn-group" dropdown>
+              <div class="btn-group" dropdown>
                 <button id="button-animated" dropdownToggle type="button"
                   class="btn btn-pill btn-primary dropdown-toggle" aria-controls="dropdown-animated">
                   <i class="fa fa-plus"></i> Create new <span class="caret"></span>
@@ -44,10 +44,10 @@
           </div>
 
           <div class="row" [hidden]="!currentTreeNode">
-            <div class="col-md-3">
+            <div class="col-sm-6 col-md-2">
               <p *ngIf="userOrgs.length > 0" class="text-primary text-right">Save under organization </p>
             </div>
-            <div class="col-md-3">
+            <div class="col-sm-6 col-md-3">
               <ng-select *ngIf="userOrgs.length > 0 && userOrgs.length == currentUser.organizations.length"
                 [items]="userOrgs" name="userOrgs" bindLabel="name" [multiple]="false" [(ngModel)]="saveOrg">
                 <ng-template ng-optgroup-tmp let-item="item">
@@ -58,8 +58,8 @@
                 routerLink="/organization">
                 &nbsp;You need to join or create an organization before you can save an occupational profile.
               </button>
-            </div>           
-            <div class="col-md-2" style="display: inline-flex" [hidden]="!currentTreeNode">
+            </div>
+            <div class="col-sm-6 col-md-3" style="display: inline-flex" [hidden]="!currentTreeNode">
               <span class="input-group-prepend">
                 <div class="pr-1"> Visibility: Private </div>
                 <label class="switch switch-label switch-pill switch-outline-primary-alt">
@@ -69,13 +69,19 @@
                 </label>
                 <div class="pl-1">Public</div>
               </span>
-              <span style="display:inline-table; margin:2px" tooltip="If visibility is private, users in this organization can still see it. But users not logged in won't be able to see it."
-              class="badge badge-primary badge-pill">i</span>
+              <span style="display:inline-table; margin:2px"
+                tooltip="If visibility is private, users in this organization can still see it. But users not logged in won't be able to see it."
+                class="badge badge-primary badge-pill">i</span>
             </div>
-            <div class="col-sm-4 offset-md-2 col-md-2 text-right">
+            <div class="col-sm-6 col-md-4 text-right">
+              <!-- <div>{{textSaved}}</div>-->
+            <!--   <button type="submit" class="btn btn-pill btn-primary" (click)="saveStudyProgram()"
+                [hidden]="!currentTreeNode" [ngClass]="{'success': isSaved}">
+                <i class="fa fa-save"></i> Save
+              </button> -->
               <button type="submit" class="btn btn-pill btn-primary" (click)="saveStudyProgram()" routerLink="/list"
                 [hidden]="!currentTreeNode">
-                <i class="fa fa-save"></i> Save
+                <i class="icon-home"></i> Save and Exit
               </button>
             </div>
           </div>
@@ -192,7 +198,7 @@
                         <div class="form-group">
                           <label for="description">Description</label>
                           <textarea class="form-control" id="description" name="description"
-                          placeholder="Add a short introduction and other information relevant to the study program..."
+                            placeholder="Add a short introduction and other information relevant to the study program..."
                             [(ngModel)]="model.description" rows="4" (keyup)="updateTreeStudyProgram()"></textarea>
                           <div *ngIf="model.linksToBok.length > 0" style="display: flex;">
                             <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
@@ -294,8 +300,8 @@
                           <span
                             tooltip="European Credit Transfer and Accumulation System (ECTS) is a standard means for comparing academic credits for higher education. One academic year corresponds to 60 ECTS credits that are normally equivalent to 1500–1800 hours of total workload."
                             class="badge badge-primary badge-pill">i</span>
-                          <input type="number" class="form-control" id="ects" [(ngModel)]="modelModule.ects"
-                            name="ects" min="0" (keyup)="updateTreeStudyProgram()" />
+                          <input type="number" class="form-control" id="ects" [(ngModel)]="modelModule.ects" name="ects"
+                            min="0" (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
                     </div>
@@ -455,10 +461,8 @@
                       <div class="col-md-2">
                         <div class="form-group">
                           <label for="eqf">Type</label>
-                          <span
-                            tooltip="Specify course type if needed."
-                            class="badge badge-primary badge-pill">i</span>
-                            </div>
+                          <span tooltip="Specify course type if needed." class="badge badge-primary badge-pill">i</span>
+                        </div>
                         <select [(ngModel)]="modelCourse.type">
                           <option value="Common">Common</option>
                           <option value="Specialization">Specialization</option>
@@ -481,8 +485,8 @@
                         <div class="form-group">
                           <label for="description">Description</label>
                           <textarea class="form-control" id="description" placeholder="Description" name="description"
-                            [(ngModel)]="modelCourse.description" (keyup)="updateTreeStudyProgram()"
-                            rows="4" placeholder="Add a short introduction and other information relevant to the course..."></textarea>
+                            [(ngModel)]="modelCourse.description" (keyup)="updateTreeStudyProgram()" rows="4"
+                            placeholder="Add a short introduction and other information relevant to the course..."></textarea>
                           <div *ngIf="modelCourse.linksToBok.length > 0" style="display: flex;">
                             <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of modelCourse.linksToBok; index as i ">
@@ -608,9 +612,8 @@
                           <span
                             tooltip="European Credit Transfer and Accumulation System (ECTS) is a standard means for comparing academic credits for higher education. One academic year corresponds to 60 ECTS credits that are normally equivalent to 1500–1800 hours of total workload."
                             class="badge badge-primary badge-pill">i</span>
-                          <input type="number" class="form-control" name="ects" id="ects"
-                            [(ngModel)]="modelCourse.ects" name="ects" min="0"
-                            (keyup)="updateTreeStudyProgram()" />
+                          <input type="number" class="form-control" name="ects" id="ects" [(ngModel)]="modelCourse.ects"
+                            name="ects" min="0" (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
                       <div class="col-md-6">
