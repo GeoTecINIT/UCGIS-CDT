@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import * as cv from '@eo4geo/curr-viz';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { UserService, User } from '../../services/user.service';
 
 @Component({
   selector: 'app-detail',
@@ -21,6 +22,7 @@ export class DetailComponent implements OnInit {
 
   currentTreeNode = null;
   model = null;
+  currentUser: User = new User();
 
   selectedProgram: StudyProgram;
   @ViewChild('dangerModal') public dangerModal: ModalDirective;
@@ -32,12 +34,15 @@ export class DetailComponent implements OnInit {
 
   constructor(
     public studyprogramService: StudyProgramService,
+    private userService: UserService,
     private route: ActivatedRoute, public afAuth: AngularFireAuth
   ) {
     this.afAuth.auth.onAuthStateChanged(user => {
-      console.log(user);
       if (user) {
         this.isAnonymous = user.isAnonymous;
+        this.userService.getUserById(user.uid).subscribe(userDB => {
+          this.currentUser = new User(userDB);
+        });
       } else {
         this.isAnonymous = true;
       }
@@ -54,13 +59,14 @@ export class DetailComponent implements OnInit {
 
   getStudyProgId(): void {
     const _id = this.route.snapshot.paramMap.get('name');
-    this.studyprogramService
+    const spSub = this.studyprogramService
       .getStudyProgramById(_id)
       .subscribe(program => {
         if (program) {
           this.selectedProgram = program;
           this.saveBoKCodes(this.selectedProgram);
           this.displayTree(program);
+          spSub.unsubscribe();
           //  console.log(this.selectedProgram);
         }
       });
@@ -70,7 +76,8 @@ export class DetailComponent implements OnInit {
     program.parent = null;
     program.proportions = [];
     program.r = 10;
-    cv.displayCurricula('graphTree', program, this.graphTreeDiv.nativeElement.clientWidth - 50, 650);
+    const width = this.graphTreeDiv.nativeElement.clientWidth > 0 ? this.graphTreeDiv.nativeElement.clientWidth : 400;
+    cv.displayCurricula('graphTree', program, width - 50, 650);
     this.refreshCurrentNode();
     // this.refreshTreeSize();
   }
@@ -96,6 +103,9 @@ export class DetailComponent implements OnInit {
 
   refreshCurrentNode() {
     this.currentTreeNode = cv.getCurrentNode();
+    console.log('Current tree node: ');
+    console.log(this.currentTreeNode);
+
     switch (this.currentTreeNode.data.depth) {
       case 0:
         this.model = new StudyProgram(this.currentTreeNode);

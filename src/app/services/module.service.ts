@@ -17,6 +17,7 @@ export class Module extends Object {
   public prerequisites: BokInput[];
   public learningObjectives: BokInput[];
   public children: Course[];
+  public _children: Course[];
   public concepts: string[];
   public linksToBok: BokInput[];
   public depth = 1;
@@ -26,6 +27,8 @@ export class Module extends Object {
   public eqf: number;
   public field: Field;
   public bibliography: BokInput[];
+  public orgId: string;
+  public orgName: string;
 
   data: any;
 
@@ -33,7 +36,7 @@ export class Module extends Object {
     public currentNode: any = null
   ) {
     super();
-    if (currentNode) {
+    if (currentNode && currentNode.data) {
       this._id = currentNode.data._id ? currentNode.data._id : '';
       this.name = currentNode.data.name ? currentNode.data.name : '';
       this.description = currentNode.data.description ? currentNode.data.description : '';
@@ -42,6 +45,7 @@ export class Module extends Object {
       this.assessment = currentNode.data.assessment ? currentNode.data.assessment : '';
       this.prerequisites = currentNode.data.prerequisites ? currentNode.data.prerequisites : [];
       this.children = currentNode.children ? currentNode.children : [];
+      this._children = currentNode._children ? currentNode._children : [];
       this.concepts = currentNode.data.concepts ? currentNode.data.concepts : [];
       this.currentNode = null;
       this.learningObjectives = [];
@@ -57,10 +61,12 @@ export class Module extends Object {
       this.linksToBok = currentNode.data.linksToBok ? currentNode.data.linksToBok : [];
       this.userId = currentNode.data.userId ? currentNode.data.userId : '';
       this.affiliation = currentNode.data.affiliation ? currentNode.data.affiliation : '';
-      this.levelPublic = currentNode.data.levelPublic ? currentNode.data.levelPublic : true;
+      this.levelPublic = currentNode.data.levelPublic != null ? currentNode.data.levelPublic : true;
       this.eqf = currentNode.data.eqf ? currentNode.data.eqf : 0;
       this.field = currentNode.data.field ? currentNode.data.field : null;
       this.bibliography = currentNode.data.bibliography ? currentNode.data.bibliography : [];
+      this.orgId = currentNode.data.orgId ? currentNode.data.orgId : '';
+      this.orgName = currentNode.data.orgName ? currentNode.data.orgName : '';
 
     } else {
       this._id = '';
@@ -72,6 +78,7 @@ export class Module extends Object {
       this.prerequisites = [];
       this.learningObjectives = [];
       this.children = [];
+      this._children = [];
       this.concepts = [];
       this.linksToBok = [];
       this.userId = '';
@@ -80,6 +87,8 @@ export class Module extends Object {
       this.eqf = 0;
       this.field = null;
       this.bibliography = [];
+      this.orgId = '';
+      this.orgName = '';
     }
   }
 }

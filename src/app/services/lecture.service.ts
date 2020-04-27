@@ -20,8 +20,11 @@ export class Lecture extends Object {
   public affiliation: string;
   public levelPublic: Boolean;
   public children: any[];
+  public _children: any[];
   public eqf: number;
   public field: Field;
+  public orgId: string;
+  public orgName: string;
 
   data: any;
 
@@ -29,7 +32,7 @@ export class Lecture extends Object {
     public currentNode: any = null
   ) {
     super();
-    if (currentNode) {
+    if (currentNode && currentNode.data) {
       this._id = currentNode.data._id ? currentNode.data._id : '';
       this.name = currentNode.data.name ? currentNode.data.name : '';
       this.description = currentNode.data.description ? currentNode.data.description : '';
@@ -41,10 +44,13 @@ export class Lecture extends Object {
       this.linksToBok = currentNode.data.linksToBok ? currentNode.data.linksToBok : [];
       this.userId = currentNode.data.userId ? currentNode.data.userId : '';
       this.affiliation = currentNode.data.affiliation ? currentNode.data.affiliation : '';
-      this.levelPublic = currentNode.data.levelPublic ? currentNode.data.levelPublic : true;
+      this.levelPublic = currentNode.data.levelPublic != null ? currentNode.data.levelPublic : true;
       this.children = [];
+      this._children = [];
       this.eqf = currentNode.data.eqf ? currentNode.data.eqf : 0;
       this.field = currentNode.data.field ? currentNode.data.field : null;
+      this.orgId = currentNode.data.orgId ? currentNode.data.orgId : '';
+      this.orgName = currentNode.data.orgName ? currentNode.data.orgName : '';
 
     } else {
       this._id = '';
@@ -59,8 +65,11 @@ export class Lecture extends Object {
       this.affiliation = '';
       this.levelPublic = true;
       this.children = [];
+      this._children = [];
       this.eqf = 0;
       this.field = null;
+      this.orgId = '';
+      this.orgName = '';
     }
   }
 }

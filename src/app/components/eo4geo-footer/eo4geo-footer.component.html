@@ -4,6 +4,89 @@
   <span class="ml-auto">
    <!--  <a href="" target="_blank" class="btn">User Manual </a>  --><!-- assets/manual/OPT-Manual.pdf -->
     <!--  <a href="#">FAQ</a>  -->
+    <a class="btn btn-light-primary" (click)="releaseModal.show()"> Release Notes v0.5</a>
     <a href="mailto:eo4geo@gmail.com?subject=EO4GEO Tools Contact" class="btn btn-light-primary"> Contact</a>
   </span>
+
+  <!-- Modal -->
+<div bsModal #releaseModal="bs-modal" class="modal fade" id="releaseModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-primary" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="releaseModalTitle">Release Notes</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <br>
+        <h4>v0.5 - 27th April 2020</h4>
+        <ul>
+          <li>Add organizations. Add all learning content and creator users to EO4GEO organization</li>
+          <li>Explore and use bibliography from BoK</li>
+          <li>Add missing tooltips and placeholders</li>
+          <li>Add field for course type (Common, Specialization or Elective)</li>
+          <li>Number of semester allows text</li>
+          <li>Fix bug when saving a collapsed node. Now children are saved</li>
+          <li>Change PDF name, and fix large names not appearing</li>
+          <li>Other minor bugs fixed</li>
+        </ul>
+
+        <br>
+        <h4>v0.4 - 9th April 2020</h4>
+        <ul>
+          <li>Fix overlapping in PDF</li>
+          <li>Change graph visualization to avoid overlapping</li>
+          <li>Hide 'Remove' button if not posible to remove content</li>
+          <li>Added explanation before starting to create new content</li>
+          <li>Fix advanced search. Show total results and a message if no results.</li>
+          <li>Bug fixing</li>
+        </ul>
+
+
+        <br>
+        <h4>v0.3 - March 2020</h4>
+        <ul>
+          <li>Add annotated BoK knowledge section</li>
+          <li>Add type of learning content in main list</li>
+          <li>Bug fixing</li>
+        </ul>
+
+        <br>
+        <h4>v0.2 - Feb. 2020</h4>
+        <ul>
+          <li>Improve the search for existing view</li>
+          <li>Export as PDF and XML</li>
+          <li>Bug fixing</li>
+        </ul>
+
+        <br>
+        <h4>v0.1 - Jan. 2020</h4>
+        <ul>
+          <li>Resizing of window redraws graph</li>
+          <li>Advanced search implemented</li>
+          <li>Add private learning content</li>
+          <li>Study program customizable (start with Module, Course or Lecture possible) </li>
+          <li>Add Google Analytics</li>
+        </ul>
+
+        <br>
+        <h4>v0.0 - Nov. 2019</h4>
+        <ul>
+          <li>Look and feel as other EO4GEO Tools</li>
+          <li>Integrate single login</li>
+          <li>BoK content can be explored and reused</li>
+          <li>Existing content can be reused</li>
+        </ul>
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="releaseNotes.hide()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </app-footer>

@@ -12,6 +12,8 @@ import { BokInput } from '../../model/bokinput';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
+import { Organization, OrganizationService } from '../../services/organization.service';
+import { User, UserService } from '../../services/user.service';
 
 
 @Component({
@@ -40,6 +42,7 @@ export class NewspComponent implements OnInit {
   linkBoKto = 'name';
   customLO = '';
   customBib = '';
+  textSaved = '';
 
   // public value: string[];
   // public current: string;
@@ -82,6 +85,12 @@ export class NewspComponent implements OnInit {
 
   depthSearching = 1;
 
+  userOrgs: Organization[] = [];
+  saveOrg: Organization;
+  currentUser: User;
+
+  isSaved = false;
+
   configFields = {
     displayKey: 'concatName', // if objects array passed which key to be displayed defaults to description
     search: true, // true/false for the search functionlity defaults to false,
@@ -99,6 +108,8 @@ export class NewspComponent implements OnInit {
 
   constructor(
     private studyprogramService: StudyProgramService,
+    private organizationService: OrganizationService,
+    private userService: UserService,
     public fieldsService: FieldsService,
     public escoService: EscoCompetenceService,
     private route: ActivatedRoute,
@@ -109,8 +120,33 @@ export class NewspComponent implements OnInit {
       .subscribeToStudyPrograms()
       .subscribe(res => {
         this.allStudyPrograms = res;
+        // this is for the exploring existing
         this.exploreChildrenToAddItems();
       });
+    this.afAuth.auth.onAuthStateChanged(user => {
+      if (user) {
+        this.userService.getUserById(user.uid).subscribe(userDB => {
+          this.currentUser = new User(userDB);
+          if (this.currentUser.organizations && this.currentUser.organizations.length > 0) {
+            this.currentUser.organizations.forEach(orgId => {
+              this.organizationService.getOrganizationById(orgId).subscribe(org => {
+                if (org) {
+                  this.userOrgs.push(org);
+                  this.saveOrg = this.userOrgs[0];
+                  this.setOrganization();
+                } else { // this org has been deleted. remove
+                  const indexToRemove = this.currentUser.organizations.indexOf(orgId);
+                  if (indexToRemove !== -1) {
+                    this.currentUser.organizations.splice(indexToRemove, 1);
+                    this.userService.updateUserWithId(this.currentUser._id, this.currentUser);
+                  }
+                }
+              });
+            });
+          }
+        });
+      }
+    });
   }
 
   ngOnInit() {
@@ -126,27 +162,33 @@ export class NewspComponent implements OnInit {
 
     switch (this.highestItemLevel) {
       case 0:
-        modelToSave = this.model;
+        modelToSave = JSON.parse(JSON.stringify(this.model));
         break;
       case 1:
-        modelToSave = this.modelModule;
+        modelToSave = JSON.parse(JSON.stringify(this.modelModule));
         break;
       case 2:
-        modelToSave = this.modelCourse;
+        modelToSave = Object.assign({}, this.modelCourse); // JSON.parse(JSON.stringify(this.modelCourse));
         break;
       case 3:
-        modelToSave = this.modelLecture;
+        modelToSave = JSON.parse(JSON.stringify(this.modelLecture));
         break;
     }
     console.log('Save model with depth: ' + this.highestItemLevel);
     console.log(modelToSave);
 
     modelToSave.userId = this.afAuth.auth.currentUser.uid;
+    modelToSave.orgId = this.saveOrg._id;
+    modelToSave.orgName = this.saveOrg.name;
+
     if (this.mode === 'copy') {
       this.studyprogramService.updateStudyProgram(this._id, modelToSave);
     } else {
       this.studyprogramService.addNewStudyProgram(modelToSave);
     }
+    // this.textSaved = 'Saved!';
+    this.isSaved = true;
+    this.refreshTreeSize();
   }
 
   getMode(): void {
@@ -179,28 +221,42 @@ export class NewspComponent implements OnInit {
     const spObs = this.studyprogramService
       .getStudyProgramById(this._id)
       .subscribe(sp => {
-        this.model = sp;
-        switch (sp.depth) {
-          case 0:
-            this.model = sp;
-            break;
-          case 1:
-            this.modelModule = sp;
-            break;
-          case 2:
-            this.modelCourse = sp;
-            break;
-          case 3:
-            this.modelLecture = sp;
-            break;
+        if (this.model == null) {
+          this.model = sp;
+          switch (sp.depth) {
+            case 0:
+              this.model = sp;
+              break;
+            case 1:
+              this.modelModule = sp;
+              break;
+            case 2:
+              this.modelCourse = sp;
+              break;
+            case 3:
+              this.modelLecture = sp;
+              break;
+          }
+          this.highestItemLevel = this.model.depth;
+          this.depthSearching = this.highestItemLevel + 1;
+          this.setOrganization();
+          this.displayTree(sp);
+          console.log(sp);
+          console.log('Highest item level: ' + this.highestItemLevel);
         }
-        this.highestItemLevel = this.model.depth;
-        this.depthSearching = this.highestItemLevel + 1;
-        this.displayTree(sp);
-        console.log(sp);
-        console.log('Highest item level: ' + this.highestItemLevel);
-        spObs.unsubscribe();
+        spObs.unsubscribe(); // do not recieve more notifications
       });
+  }
+
+  setOrganization() {
+    // iterate orgs to select right one
+    if (this.userOrgs.length > 0 && this.currentUser && this.model) {
+      this.userOrgs.forEach(o => {
+        if (o._id === this.model.orgId) {
+          this.saveOrg = o;
+        }
+      });
+    }
   }
 
   searchInBok(text: string) {
@@ -221,13 +277,14 @@ export class NewspComponent implements OnInit {
   }
 
   displayTree(program = null) {
+    const width = this.graphTreeDiv.nativeElement.clientWidth > 0 ? this.graphTreeDiv.nativeElement.clientWidth : 400;
     if (program) {
       console.log('Display existing tree : ');
       console.log(program);
       program.parent = null;
       program.proportions = [];
       program.r = 10;
-      cv.displayCurricula('graphTree', program, this.graphTreeDiv.nativeElement.clientWidth - 50, 650);
+      cv.displayCurricula('graphTree', program, width, 650);
       this.refreshCurrentNode();
     } else {
       console.log('Display new tree');
@@ -242,18 +299,19 @@ export class NewspComponent implements OnInit {
         'r': 10,
         'children': []
       };
-      cv.displayCurricula('graphTree', null, this.graphTreeDiv.nativeElement.clientWidth - 50, 650);
+      cv.displayCurricula('graphTree', null, width, 650);
       this.currentTreeNode = cv.getCurrentNode();
     }
   }
 
   onResize() {
+   // this.displayTree(this.model);
     this.refreshTreeSize();
   }
 
   refreshTreeSize() {
     if (this.currentTreeNode && this.currentTreeNode.data) {
-      switch (this.currentTreeNode.data.depth) {
+      switch (this.highestItemLevel) {
         case 0:
           this.displayTree(this.model);
           break;
@@ -324,22 +382,32 @@ export class NewspComponent implements OnInit {
   }
 
   updateTreeStudyProgram() {
+    this.isSaved = false;
     if (this.currentTreeNode && this.currentTreeNode.data) {
       switch (this.currentTreeNode.data.depth) {
         case 0:
+          console.log('Update node in tree' + this.model);
+          console.log(this.model);
           this.updateNodeInTree(this.model);
           break;
         case 1:
+          console.log('Update node in tree' + this.modelModule);
+          console.log(this.modelModule);
           this.updateNodeInTree(this.modelModule);
           break;
         case 2:
+          console.log('Update node in tree' + this.modelCourse);
+          console.log(this.modelCourse);
           this.updateNodeInTree(this.modelCourse);
           break;
         case 3:
+          console.log('Update node in tree' + this.modelLecture);
+          console.log(this.modelLecture);
           this.updateNodeInTree(this.modelLecture);
           break;
       }
     }
+    // this.saveStudyProgram();
   }
 
   addBokKnowledge() {
@@ -477,6 +545,6 @@ export class NewspComponent implements OnInit {
       if (left.name > right.name) { return 1; } else { return 0; }
     });
 
-    console.log(this.allItems);
+    // console.log(this.allItems);
   }
 }

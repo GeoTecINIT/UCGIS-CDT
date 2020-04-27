@@ -17,6 +17,7 @@ export class StudyProgram extends Object {
   public levelPublic: Boolean;
   public eqf: number;
   public children: Module[];
+  public _children: Module[];
   public numSemesters: number;
   public field: Field;
   public userId: string;
@@ -24,24 +25,30 @@ export class StudyProgram extends Object {
   public linksToBok: BokInput[];
   public depth = 0;
   public bibliography: BokInput[];
+  public orgId: string;
+  public orgName: string;
 
   constructor(public currentNode: any = null) {
     super();
-    if (currentNode) {
+    if (currentNode && currentNode.data) {
       this._id = currentNode.data._id ? currentNode.data._id : '';
       this.name = currentNode.data.name ? currentNode.data.name : 'New Curricula Item';
       this.description = currentNode.data.description ? currentNode.data.description : '';
       this.affiliation = currentNode.data.affiliation ? currentNode.data.affiliation : '';
       this.eqf = currentNode.data.eqf ? currentNode.data.eqf : 0;
       this.children = currentNode.children ? currentNode.children : [];
+      this._children = currentNode._children ? currentNode._children : [];
       this.numSemesters = currentNode.data.numSemesters ? currentNode.data.numSemesters : 0;
       this.field = currentNode.data.field ? currentNode.data.field : null;
       this.userId = currentNode.data.userId ? currentNode.data.userId : '';
       this.concepts = currentNode.data.concepts ? currentNode.data.concepts : [];
       this.currentNode = null;
       this.linksToBok = currentNode.data.linksToBok ? currentNode.data.linksToBok : [];
-      this.levelPublic = currentNode.data.levelPublic ? currentNode.data.levelPublic : true;
+      this.levelPublic = currentNode.data.levelPublic != null ? currentNode.data.levelPublic : true;
       this.bibliography = currentNode.data.bibliography ? currentNode.data.bibliography : [];
+      this.userId = currentNode.data.userId ? currentNode.data.userId : '';
+      this.orgId = currentNode.data.orgId ? currentNode.data.orgId : '';
+      this.orgName = currentNode.data.orgName ? currentNode.data.orgName : '';
 
     } else {
       this._id = '';
@@ -50,6 +57,7 @@ export class StudyProgram extends Object {
       this.affiliation = '';
       this.eqf = 0;
       this.children = [];
+      this._children = [];
       this.numSemesters = 0;
       this.field = null;
       this.userId = '';
@@ -57,6 +65,8 @@ export class StudyProgram extends Object {
       this.linksToBok = [];
       this.levelPublic = true;
       this.bibliography = [];
+      this.orgId = '';
+      this.orgName = '';
     }
   }
 }
@@ -115,10 +125,16 @@ export class StudyProgramService {
 
   // This function is to save all child nodes in the tree in a format that firestore likes
   convertNodeChildren(updateNode: any) {
+    // If children are toggled
+    if (updateNode._children && updateNode._children.length > 0) {
+      updateNode.children = updateNode._children;
+      updateNode._children = null;
+    }
     if (updateNode.children && updateNode.children.length > 0) {
       updateNode.children.forEach((child, i) => {
         this.convertNodeChildren(child);
-        switch (child.depth) {
+        const d = child.data ? child.data.depth : child.depth;
+        switch (d) {
           case 1: // Module
             updateNode.children[i] = new Module(child);
             break;

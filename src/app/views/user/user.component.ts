@@ -14,7 +14,6 @@ export class UserComponent implements OnInit {
   public msgPwdRecoverError: string;
 
   public email: string;
-  public affiliation: string;
   public name: string;
 
   public user: User;
