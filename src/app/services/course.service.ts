@@ -84,6 +84,7 @@ export class Course extends Object {
       this.orgId = '';
       this.orgName = '';
       this.orgName = '';
+      this.type = '';
     }
   }
 }
