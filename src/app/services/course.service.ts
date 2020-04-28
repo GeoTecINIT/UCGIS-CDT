@@ -48,8 +48,8 @@ export class Course extends Object {
       this.bibliography  = currentNode.data.bibliography ? currentNode.data.bibliography : [];
       this.prerequisites = currentNode.data.prerequisites ? currentNode.data.prerequisites : [];
       this.learningObjectives = currentNode.data.learningObjectives ? currentNode.data.learningObjectives : [];
-      this.children = currentNode.children ? currentNode.children : [];
-      this._children = currentNode._children ? currentNode._children : [];
+      this.children = currentNode.children && currentNode.children.length > 0  ? currentNode.children : null;
+      this._children = currentNode._children && currentNode._children.length > 0  ? currentNode._children : null;
       this.concepts = currentNode.data.concepts ? currentNode.data.concepts : [];
       this.currentNode = null;
       this.linksToBok = currentNode.data.linksToBok ? currentNode.data.linksToBok : [];
@@ -72,8 +72,8 @@ export class Course extends Object {
       this.bibliography = [];
       this.prerequisites = [];
       this.learningObjectives = [];
-      this.children = [];
-      this._children = [];
+      this.children = null;
+      this._children = null;
       this.concepts = [];
       this.linksToBok = [];
       this.userId = '';

@@ -162,16 +162,20 @@ export class NewspComponent implements OnInit {
 
     switch (this.highestItemLevel) {
       case 0:
-        modelToSave = JSON.parse(JSON.stringify(this.model));
+       // modelToSave = JSON.parse(JSON.stringify(this.model));
+        modelToSave = this.model;
         break;
       case 1:
-        modelToSave = JSON.parse(JSON.stringify(this.modelModule));
+        // modelToSave = JSON.parse(JSON.stringify(this.modelModule));
+        modelToSave = this.modelModule;
         break;
       case 2:
-        modelToSave = Object.assign({}, this.modelCourse); // JSON.parse(JSON.stringify(this.modelCourse));
+       // modelToSave = Object.assign({}, this.modelCourse); // JSON.parse(JSON.stringify(this.modelCourse));
+        modelToSave = this.modelCourse; // JSON.parse(JSON.stringify(this.modelCourse));
         break;
       case 3:
-        modelToSave = JSON.parse(JSON.stringify(this.modelLecture));
+        // modelToSave = JSON.parse(JSON.stringify(this.modelLecture));
+        modelToSave = this.modelLecture;
         break;
     }
     console.log('Save model with depth: ' + this.highestItemLevel);
@@ -288,17 +292,6 @@ export class NewspComponent implements OnInit {
       this.refreshCurrentNode();
     } else {
       console.log('Display new tree');
-      const treeData = {
-        'longName': 'New Curricula Item',
-        'type': 'studyProgram',
-        'name': 'New Curricula Item',
-        'parent': 'null',
-        'path': 0,
-        'depth': 0,
-        'proportions': [],
-        'r': 10,
-        'children': []
-      };
       cv.displayCurricula('graphTree', null, width, 650);
       this.currentTreeNode = cv.getCurrentNode();
     }
@@ -330,8 +323,10 @@ export class NewspComponent implements OnInit {
 
   refreshCurrentNode() {
     console.log('refresh currrent node');
+    console.log(this.currentTreeNode);
     this.isSearchingExisting = false;
     this.currentTreeNode = cv.getCurrentNode();
+    console.log(this.currentTreeNode);
     this.depthSearching = this.currentTreeNode.data.depth + 1;
     switch (this.currentTreeNode.data.depth) {
       case 0:
@@ -352,6 +347,7 @@ export class NewspComponent implements OnInit {
       case 3:
         this.textByDepth = 'lecture';
         this.textByDepthRemove = 'lecture';
+        this.currentTreeNode.children = null;
         this.modelLecture = new Lecture(this.currentTreeNode);
         break;
     }
@@ -374,6 +370,7 @@ export class NewspComponent implements OnInit {
   }
 
   removeNodeInTree() {
+    this.isSaved = false;
     cv.removeSelectedNode();
   }
 

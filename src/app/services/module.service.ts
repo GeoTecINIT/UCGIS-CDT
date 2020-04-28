@@ -44,12 +44,12 @@ export class Module extends Object {
       this.ects = currentNode.data.ects ? currentNode.data.ects : 0;
       this.assessment = currentNode.data.assessment ? currentNode.data.assessment : '';
       this.prerequisites = currentNode.data.prerequisites ? currentNode.data.prerequisites : [];
-      this.children = currentNode.children ? currentNode.children : [];
-      this._children = currentNode._children ? currentNode._children : [];
+      this.children = currentNode.children && currentNode.children.length > 0 ? currentNode.children : null;
+      this._children = currentNode._children && currentNode._children.length > 0  ? currentNode._children : null;
       this.concepts = currentNode.data.concepts ? currentNode.data.concepts : [];
       this.currentNode = null;
       this.learningObjectives = [];
-      if (this.children.length > 0) {
+      if (this.children && this.children.length > 0) {
         this.children.forEach(child => {
           if (child.data && child.data.learningObjectives) {
             child.data.learningObjectives.forEach(lo => {
@@ -77,8 +77,8 @@ export class Module extends Object {
       this.assessment = '';
       this.prerequisites = [];
       this.learningObjectives = [];
-      this.children = [];
-      this._children = [];
+      this.children = null;
+      this._children = null;
       this.concepts = [];
       this.linksToBok = [];
       this.userId = '';

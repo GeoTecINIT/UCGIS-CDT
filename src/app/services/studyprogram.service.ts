@@ -36,8 +36,8 @@ export class StudyProgram extends Object {
       this.description = currentNode.data.description ? currentNode.data.description : '';
       this.affiliation = currentNode.data.affiliation ? currentNode.data.affiliation : '';
       this.eqf = currentNode.data.eqf ? currentNode.data.eqf : 0;
-      this.children = currentNode.children ? currentNode.children : [];
-      this._children = currentNode._children ? currentNode._children : [];
+      this.children = currentNode.children && currentNode.children.length > 0 ? currentNode.children : null;
+      this._children = currentNode._children && currentNode._children.length > 0 ? currentNode._children : null;
       this.numSemesters = currentNode.data.numSemesters ? currentNode.data.numSemesters : 0;
       this.field = currentNode.data.field ? currentNode.data.field : null;
       this.userId = currentNode.data.userId ? currentNode.data.userId : '';
@@ -56,8 +56,8 @@ export class StudyProgram extends Object {
       this.description = '';
       this.affiliation = '';
       this.eqf = 0;
-      this.children = [];
-      this._children = [];
+      this.children = null;
+      this._children = null;
       this.numSemesters = 0;
       this.field = null;
       this.userId = '';
