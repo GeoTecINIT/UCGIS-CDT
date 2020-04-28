@@ -75,7 +75,7 @@
             </div>
             <div class="col-sm-6 col-md-4 text-right">
               <!-- <div>{{textSaved}}</div>-->
-            <!--   <button type="submit" class="btn btn-pill btn-primary" (click)="saveStudyProgram()"
+              <!--   <button type="submit" class="btn btn-pill btn-primary" (click)="saveStudyProgram()"
                 [hidden]="!currentTreeNode" [ngClass]="{'success': isSaved}">
                 <i class="fa fa-save"></i> Save
               </button> -->
@@ -450,7 +450,7 @@
                       </div>
                     </div>
                     <div class="row" *ngIf="highestItemLevel == 2">
-                      <div class="col-md-8">
+                      <div class="col-md-10">
                         <div class="form-group">
                           <label for="title">Affiliation</label>
                           <input type="text" class="form-control" id="affiliation" placeholder="Affiliation"
@@ -460,23 +460,26 @@
                       </div>
                       <div class="col-md-2">
                         <div class="form-group">
-                          <label for="eqf">Type</label>
-                          <span tooltip="Specify course type if needed." class="badge badge-primary badge-pill">i</span>
-                        </div>
-                        <select [(ngModel)]="modelCourse.type">
-                          <option value="Common">Common</option>
-                          <option value="Specialization">Specialization</option>
-                          <option value="Elective">Elective</option>
-                        </select>
-                      </div>
-                      <div class="col-md-2">
-                        <div class="form-group">
                           <label for="eqf">EQF</label>
                           <span
                             tooltip="The core of the EQF concerns eight reference levels describing what a learner knows, understands and is able to do – 'learning outcomes', ranging from basic (Level 1) to advanced (Level 8)."
                             class="badge badge-primary badge-pill">i</span>
                           <input type="number" size="1" class="form-control" id="eqf" [(ngModel)]="modelCourse.eqf"
                             name="eqf" min="1" max="8" (keyup)="updateTreeStudyProgram()" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="eqf">Type</label>
+                          <span tooltip="Specify course type if needed." class="badge badge-primary badge-pill">i</span>
+                          <select [(ngModel)]="modelCourse.type">
+                            <option value=""></option>
+                            <option value="Common">Common</option>
+                            <option value="Specialization">Specialization</option>
+                            <option value="Elective">Elective</option>
+                          </select>
                         </div>
                       </div>
                     </div>

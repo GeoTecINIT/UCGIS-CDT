@@ -1,15 +1,16 @@
-import { Component, OnInit, OnDestroy, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewChild, TemplateRef } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { NgForOf } from '@angular/common';
 import { Observable, Subscription } from 'rxjs';
 
 import { StudyProgramService, StudyProgram } from '../../services/studyprogram.service';
 import { FormControl } from '@angular/forms';
-import { ModalDirective } from 'ngx-bootstrap/modal';
+import { ModalDirective, ModalOptions } from 'ngx-bootstrap/modal';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { SlicePipe } from '@angular/common';
 import { User, UserService } from '../../services/user.service';
 import { OrganizationService } from '../../services/organization.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-list',
@@ -31,10 +32,12 @@ export class ListComponent implements OnInit {
   currentUser: User;
 
   @ViewChild('dangerModal') public dangerModal: ModalDirective;
+  @ViewChild('releaseNotesModal') public releaseNotesModal: any;
 
   constructor(private studyprogramService: StudyProgramService,
     private userService: UserService,
     public organizationService: OrganizationService,
+    private route: ActivatedRoute,
     public afAuth: AngularFireAuth) {
     this.afAuth.auth.onAuthStateChanged(user => {
       console.log(user);
@@ -58,6 +61,12 @@ export class ListComponent implements OnInit {
         this.studyPrograms = studyPrograms;
         this.filteredStudyPrograms = studyPrograms;
       });
+
+    if (this.route.snapshot.url[0].path === 'release-notes') {
+      const config: ModalOptions = { backdrop: true, keyboard: true };
+      this.releaseNotesModal.basicModal.config = config;
+      this.releaseNotesModal.basicModal.show({});
+    }
   }
 
   removeStudyProgram(id: string) {

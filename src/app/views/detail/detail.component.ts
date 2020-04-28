@@ -19,6 +19,7 @@ export class DetailComponent implements OnInit {
 
   statistics = [];
   allLinksToBok = [];
+  allIdLinksToBok = [];
 
   currentTreeNode = null;
   model = null;
@@ -85,8 +86,9 @@ export class DetailComponent implements OnInit {
   saveBoKCodes(node) {
     node.linksToBok.forEach(l => {
       l.concept_id = l.name.split(']')[0].substring(1);
-      if (!this.allLinksToBok.includes(l)) { // does not identify them as equal
+      if (!this.allIdLinksToBok.includes(l.concept_id)) {
         this.allLinksToBok.push(l);
+        this.allIdLinksToBok.push(l.concept_id);
       }
     });
     if (node.children) {
