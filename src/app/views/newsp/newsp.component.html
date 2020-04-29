@@ -63,14 +63,14 @@
               <span class="input-group-prepend">
                 <div class="pr-1"> Visibility: Private </div>
                 <label class="switch switch-label switch-pill switch-outline-primary-alt">
-                  <input class="switch-input" type="checkbox" value="knowledges"
-                    [(ngModel)]="model && model.levelPublic" (change)= "isSaved = false"/>
+                  <input *ngIf="model" class="switch-input" type="checkbox"
+                    [(ngModel)]="model.levelPublic" (change)= "isSaved = false" name="levelPublic"/>
                   <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
                 </label>
                 <div class="pl-1">Public</div>
               </span>
               <span style="display:inline-table; margin:2px"
-                tooltip="If visibility is private, users in this organization can still see it. But users not logged in won't be able to see it."
+                tooltip="If visibility is private, users in this organization can still see it. But users not logged in won't be able to see it. Visibility by default is public."
                 class="badge badge-primary badge-pill">i</span>
             </div>
             <div class="col-sm-6 col-md-4 text-right">

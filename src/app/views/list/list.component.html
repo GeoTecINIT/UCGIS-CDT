@@ -18,14 +18,14 @@
       </div>
       <div class="card card-accent-primary">
         <div class="card-header">
-          <div class="row">
-            <div class="col-sm-3 col-md-2" tooltip="{{isAnonymous? 'Login to be able to add curricula items' : ''}}">
+          <div class="row mb-2">
+            <div class="col-sm-4 col-md-3" tooltip="{{isAnonymous? 'Login to be able to add curricula items' : ''}}">
               <button type="button" class="btn btn-block btn-primary" routerLink="/newsp/empty"
                 [disabled]="isAnonymous">
                 New
               </button>
             </div>
-            <div class="col-sm-3 col-md-4">
+            <div class="col-sm-4 col-md-6">
               <!-- offset-md-2  -->
               <div class="input-group">
                 <span class="input-group-prepend">
@@ -37,21 +37,7 @@
                   autocomplete="search" [(ngModel)]="searchText" (keyup)="filter()" />
               </div>
             </div>
-            <div class="col-sm-3 col-md-4">
-              <div class="text-center">
-                <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyDepth==-1}"
-                  (click)="showOnlyDepth=-1">All</button>
-                <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyDepth==0}"
-                  (click)="showOnlyDepth=0">Study Programs</button>
-                <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyDepth==1}"
-                  (click)="showOnlyDepth=1">Modules</button>
-                <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyDepth==2}"
-                  (click)="showOnlyDepth=2">Courses</button>
-                <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyDepth==3}"
-                  (click)="showOnlyDepth=3">Lectures</button>
-              </div>
-            </div>
-            <div class="col-sm-3 col-md-2">
+            <div class="col-sm-4 col-md-3">
               <button type="button" class="btn btn-block btn-link" (click)="advancedSearch = !advancedSearch">
                 Advanced Search
               </button>
@@ -68,8 +54,9 @@
                         <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
                       </label>
                       <div class="pl-1">Affiliation</div>
-                      <span style="display: inline-table; margin-left: 5px;" tooltip="Turn on this switch and type in the search box to find matches with affiliations."
-                      class="badge badge-primary badge-pill">i</span>
+                      <span style="display: inline-table; margin-left: 5px;"
+                        tooltip="Turn on this switch and type in the search box to find matches with affiliations."
+                        class="badge badge-primary badge-pill">i</span>
                     </span>
                   </div>
                   <div class="col-md-3 col-sm-6" style="display: inline-flex">
@@ -79,9 +66,10 @@
                           checked />
                         <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
                       </label>
-                      <div class="pl-1">Knowledge linked</div>
-                      <span style="display: inline-table; margin-left: 5px;" tooltip="Turn on this switch and type in the search box to find matches with knowledge linked."
-                      class="badge badge-primary badge-pill">i</span>
+                      <div class="pl-1">Knowledge annotated</div>
+                      <span style="display: inline-table; margin-left: 5px;"
+                        tooltip="Turn on this switch and type in the search box to find matches with knowledge linked."
+                        class="badge badge-primary badge-pill">i</span>
                     </span>
                   </div>
 
@@ -92,8 +80,9 @@
                         <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
                       </label>
                       <div class="pl-1">Learning Outcomes</div>
-                      <span style="display: inline-table; margin-left: 5px;" tooltip="Turn on this switch and type in the search box to find matches with learning outcomes."
-                      class="badge badge-primary badge-pill">i</span>
+                      <span style="display: inline-table; margin-left: 5px;"
+                        tooltip="Turn on this switch and type in the search box to find matches with learning outcomes."
+                        class="badge badge-primary badge-pill">i</span>
                     </span>
                   </div>
 
@@ -105,13 +94,41 @@
                         <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
                       </label>
                       <div class="pl-1">Field of study</div>
-                      <span style="display: inline-table; margin-left: 5px;" tooltip="Turn on this switch and type in the search box to find matches with the field of study."
-                      class="badge badge-primary badge-pill">i</span>
+                      <span style="display: inline-table; margin-left: 5px;"
+                        tooltip="Turn on this switch and type in the search box to find matches with the field of study."
+                        class="badge badge-primary badge-pill">i</span>
                     </span>
                   </div>
                 </div>
               </div>
             </ng-container>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 col-md-6">
+              <div class="text-center">
+                <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyDepth==-1}"
+                  (click)="showOnlyDepth=-1">All</button>
+                <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyDepth==0}"
+                  (click)="showOnlyDepth=0">Study Programs</button>
+                <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyDepth==1}"
+                  (click)="showOnlyDepth=1">Modules</button>
+                <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyDepth==2}"
+                  (click)="showOnlyDepth=2">Courses</button>
+                <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyDepth==3}"
+                  (click)="showOnlyDepth=3">Lectures</button>
+              </div>
+            </div>
+
+            <div class="col-sm-6 col-md-6">
+              <div class="text-center">
+                <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyAuthor==-1}"
+                  (click)="showOnlyAuthor=-1" [disabled]="isAnonymous">All</button>
+                <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyAuthor==0}"
+                  (click)="showOnlyAuthor=0" [disabled]="isAnonymous">My content</button>
+                <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyAuthor==1}"
+                  (click)="showOnlyAuthor=1" [disabled]="isAnonymous">My organization's content</button>
+              </div>
+            </div>
           </div>
         </div>
         <div class="card-body">
@@ -122,28 +139,31 @@
           </div>
           <div *ngIf="filteredStudyPrograms && filteredStudyPrograms.length > 0 && searchText!='' && searchText!= null">
             <div class="text-left">
-              <h5> Results:  {{filteredStudyPrograms.length}}</h5>
+              <h5> Results: {{filteredStudyPrograms.length}}</h5>
             </div>
           </div>
           <div *ngFor="let sp of filteredStudyPrograms">
-            <div *ngIf="showOnlyDepth === -1 || sp.depth === showOnlyDepth ">
-              <div class="row" *ngIf="sp.levelPublic || sp.userId==currentUser?._id || (currentUser?.organizations?.indexOf(sp.orgId) > -1)">
-                <div class="col-md-10">
-                  <button type="button" class="btn text-justify" routerLink="/detail/{{ sp._id }}">
-                    <span>
-                      <h1 style="display: inline;">{{ sp.name }}</h1>  
-                      <h6 *ngIf="sp.depth==0" style="display: inline;">Study Program</h6>
-                      <h6 *ngIf="sp.depth==1" style="display: inline;">Module</h6>
-                      <h6 *ngIf="sp.depth==2" style="display: inline;">Course</h6>
-                      <h6 *ngIf="sp.depth==3" style="display: inline;">Lecture</h6>
-                      <!-- <h6 *ngIf="sp.levelPublic" style="display: inline;" class="text-level">Public</h6> -->
-                      <h6 *ngIf="!sp.levelPublic" style="display: inline;" class="text-level">Private</h6>
-                      <h6 style="display: inline;" class="text-level text-secondary">{{ sp.orgName }}</h6>
-                      <h6>{{ sp.affiliation }}</h6>
-                      <p class="text-muted">{{ sp.description | slice:0:300 }} ... </p>
-                      EQF Level: {{ sp.eqf }}
-                    </span>
-                    <!-- <span
+            <div *ngIf="(showOnlyDepth === -1 || sp.depth === showOnlyDepth) "> <!-- Filter by depth -->
+              <div
+                *ngIf=" (showOnlyAuthor === -1 || (showOnlyAuthor === 0 && sp.userId===currentUser?._id) || (showOnlyAuthor === 1 && currentUser?.organizations.indexOf(sp.orgId) > -1)) "> <!-- Filter by author -->
+                <div class="row"
+                  *ngIf="sp.levelPublic || currentUser != null && (sp.userId==currentUser?._id || (currentUser?.organizations?.indexOf(sp.orgId) > -1))">
+                  <div class="col-md-10">
+                    <button type="button" class="btn text-justify" routerLink="/detail/{{ sp._id }}">
+                      <span>
+                        <h1 style="display: inline;">{{ sp.name }}</h1>
+                        <h6 *ngIf="sp.depth==0" style="display: inline;">Study Program</h6>
+                        <h6 *ngIf="sp.depth==1" style="display: inline;">Module</h6>
+                        <h6 *ngIf="sp.depth==2" style="display: inline;">Course</h6>
+                        <h6 *ngIf="sp.depth==3" style="display: inline;">Lecture</h6>
+                        <!-- <h6 *ngIf="sp.levelPublic" style="display: inline;" class="text-level">Public</h6> -->
+                        <h6 *ngIf="!sp.levelPublic" style="display: inline;" class="text-level">Private</h6>
+                        <h6 style="display: inline;" class="text-level text-secondary">{{ sp.orgName }}</h6>
+                        <h6>{{ sp.affiliation }}</h6>
+                        <p class="text-muted">{{ sp.description | slice:0:300 }} ... </p>
+                        EQF Level: {{ sp.eqf }}
+                      </span>
+                      <!-- <span
                   *ngFor="let mk of o.knowledge"
                   class="badge badge-pill float-right"
                   class="badge badge-pill float-right"
@@ -151,37 +171,39 @@
                 >
                   {{ mk }}
                 </span> -->
-                  </button>
-                </div>
-                <div class="col-md-2">
-                  <div class="row">
-                    <div class="col-3 col-sm-3 col-md-3 no-padding">
-                      <button type="button" class="btn btn-block btn-link" [popover]="popTemplateList" tooltip="Share"
-                        popoverTitle="Copy link, export to PDF or XML" placement="top" [outsideClick]="true">
-                        <i class="fa fa-share-alt fa-lg mt-4"></i>
-                      </button>
-                    </div>
-                    <div class="col-3 col-sm-3 col-md-3 no-padding"
-                      tooltip="{{isAnonymous? 'Login to be able to duplicate' : 'Duplicate'}}">
-                      <button type="button" class="btn btn-block btn-link" routerLink="/newsp/duplicate/{{ sp._id }}"
-                        [disabled]="isAnonymous">
-                        <i class="fa fa-copy fa-lg mt-4"></i>
-                      </button>
-                    </div>
-                    <div class="col-3 col-sm-3 col-md-3 no-padding"
-                      tooltip="{{isAnonymous? 'Login to be able to edit' : sp.userId==afAuth.auth.currentUser?.uid?  'Edit' : 'You can edit only your own learning content'}}">
-                      <button type="button" class="btn btn-block btn-link" routerLink="/newsp/copy/{{ sp._id }}"
-                      [disabled]="isAnonymous || (currentUser?.organizations?.indexOf(sp.orgId) == -1)">
-                        <i class="fa fa-edit fa-lg mt-4"></i>  <!--    [disabled]="isAnonymous  || sp.userId!=afAuth.auth.currentUser?.uid"> -->
-                      </button>
-                    </div>
-                    <div class="col-3 col-sm-3 col-md-3 no-padding"
-                      tooltip="{{isAnonymous? 'Login to be able to remove' : sp.userId==afAuth.auth.currentUser?.uid?  'Remove' : 'You can remove only your own learning content'}}">
-                      <button type="button" class="btn btn-block btn-link" data-toggle="modal"
-                        (click)="dangerModal.show()"
-                        [disabled]="isAnonymous || (currentUser?.organizations?.indexOf(sp.orgId) == -1)">
-                        <i class="fa fa-trash-o fa-lg mt-4"></i>
-                      </button>
+                    </button>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="row">
+                      <div class="col-3 col-sm-3 col-md-3 no-padding">
+                        <button type="button" class="btn btn-block btn-link" [popover]="popTemplateList" tooltip="Share"
+                          popoverTitle="Copy link, export to PDF or XML" placement="top" [outsideClick]="true">
+                          <i class="fa fa-share-alt fa-lg mt-4"></i>
+                        </button>
+                      </div>
+                      <div class="col-3 col-sm-3 col-md-3 no-padding"
+                        tooltip="{{isAnonymous? 'Login to be able to duplicate' : 'Duplicate'}}">
+                        <button type="button" class="btn btn-block btn-link" routerLink="/newsp/duplicate/{{ sp._id }}"
+                          [disabled]="isAnonymous">
+                          <i class="fa fa-copy fa-lg mt-4"></i>
+                        </button>
+                      </div>
+                      <div class="col-3 col-sm-3 col-md-3 no-padding"
+                        tooltip="{{isAnonymous? 'Login to be able to edit' : sp.userId==afAuth.auth.currentUser?.uid?  'Edit' : 'You can edit only your own learning content'}}">
+                        <button type="button" class="btn btn-block btn-link" routerLink="/newsp/copy/{{ sp._id }}"
+                          [disabled]="isAnonymous || (currentUser?.organizations?.indexOf(sp.orgId) == -1)">
+                          <i class="fa fa-edit fa-lg mt-4"></i>
+                          <!--    [disabled]="isAnonymous  || sp.userId!=afAuth.auth.currentUser?.uid"> -->
+                        </button>
+                      </div>
+                      <div class="col-3 col-sm-3 col-md-3 no-padding"
+                        tooltip="{{isAnonymous? 'Login to be able to remove' : sp.userId==afAuth.auth.currentUser?.uid?  'Remove' : 'You can remove only your own learning content'}}">
+                        <button type="button" class="btn btn-block btn-link" data-toggle="modal"
+                          (click)="dangerModal.show()"
+                          [disabled]="isAnonymous || (currentUser?.organizations?.indexOf(sp.orgId) == -1)">
+                          <i class="fa fa-trash-o fa-lg mt-4"></i>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -221,4 +243,3 @@
 </div>
 <!--/.row-->
 <app-release-notes #releaseNotesModal></app-release-notes>
-
