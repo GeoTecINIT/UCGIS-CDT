@@ -192,6 +192,9 @@ export class NewspComponent implements OnInit {
     }
     // this.textSaved = 'Saved!';
     this.isSaved = true;
+    this.isSaved = true;
+    this.mode = 'copy'; // if it's second time editing change to
+    this._id = modelToSave._id;
     this.refreshTreeSize();
   }
 
