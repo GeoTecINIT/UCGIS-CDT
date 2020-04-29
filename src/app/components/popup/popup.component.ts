@@ -4,7 +4,6 @@ import { StudyProgramService, StudyProgram } from '../../services/studyprogram.s
 import { Base64img } from './base64img';
 import { ActivatedRoute } from '@angular/router';
 
-
 @Component({
     selector: 'app-popup',
     templateUrl: './popup.component.html',
@@ -103,9 +102,9 @@ export class PopupComponent implements OnInit {
             currentLinePoint = currentLinePoint + 8 * linesAff.length;
 
 
-          /*   doc.text(30, currentLinePoint, 'Organizing entities:');
-            doc.text(30, currentLinePoint, this.selectedSP.affiliation);
-            currentLinePoint = currentLinePoint + 8; */
+            /*   doc.text(30, currentLinePoint, 'Organizing entities:');
+              doc.text(30, currentLinePoint, this.selectedSP.affiliation);
+              currentLinePoint = currentLinePoint + 8; */
         }
         if (this.selectedSP.eqf && this.selectedSP.eqf > 0) {
             doc.setFontSize(12).setTextColor('#1a80b6').setFontType('bold'); // headline
