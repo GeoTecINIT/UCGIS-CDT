@@ -91,6 +91,8 @@ export class NewspComponent implements OnInit {
 
   isSaved = false;
 
+  otherUserEditingWarningText = '';
+
   configFields = {
     displayKey: 'concatName', // if objects array passed which key to be displayed defaults to description
     search: true, // true/false for the search functionlity defaults to false,
@@ -162,7 +164,7 @@ export class NewspComponent implements OnInit {
 
     switch (this.highestItemLevel) {
       case 0:
-       // modelToSave = JSON.parse(JSON.stringify(this.model));
+        // modelToSave = JSON.parse(JSON.stringify(this.model));
         modelToSave = this.model;
         break;
       case 1:
@@ -170,7 +172,7 @@ export class NewspComponent implements OnInit {
         modelToSave = this.modelModule;
         break;
       case 2:
-       // modelToSave = Object.assign({}, this.modelCourse); // JSON.parse(JSON.stringify(this.modelCourse));
+        // modelToSave = Object.assign({}, this.modelCourse); // JSON.parse(JSON.stringify(this.modelCourse));
         modelToSave = this.modelCourse; // JSON.parse(JSON.stringify(this.modelCourse));
         break;
       case 3:
@@ -192,6 +194,8 @@ export class NewspComponent implements OnInit {
     }
     // this.textSaved = 'Saved!';
     this.isSaved = true;
+    this.mode = 'copy'; // if it's second time editing change to
+    this._id = modelToSave._id;
     this.refreshTreeSize();
   }
 
@@ -225,6 +229,7 @@ export class NewspComponent implements OnInit {
     const spObs = this.studyprogramService
       .getStudyProgramById(this._id)
       .subscribe(sp => {
+        this.isSaved = true;
         if (this.model == null) {
           this.model = sp;
           switch (sp.depth) {
@@ -247,8 +252,34 @@ export class NewspComponent implements OnInit {
           this.displayTree(sp);
           console.log(sp);
           console.log('Highest item level: ' + this.highestItemLevel);
+        } else {
+          if (this.currentUser._id !== sp.userId) {
+            // warn of other user editing it
+            this.otherUserEditingWarningText = 'It looks like other user is editing this content. Despite the fact that automatic save is done frequently, some content may be lost.';
+          }
+          this.model = sp;
+          switch (sp.depth) {
+            case 0:
+              this.model = sp;
+              break;
+            case 1:
+              this.modelModule = sp;
+              break;
+            case 2:
+              this.modelCourse = sp;
+              break;
+            case 3:
+              this.modelLecture = sp;
+              break;
+          }
+          this.highestItemLevel = this.model.depth;
+          this.depthSearching = this.highestItemLevel + 1;
+          this.setOrganization();
+          this.displayTree(sp);
+          console.log(sp);
+          console.log('Highest item level: ' + this.highestItemLevel);
         }
-        spObs.unsubscribe(); // do not recieve more notifications
+        // spObs.unsubscribe(); // do not recieve more notifications
       });
   }
 
@@ -298,7 +329,7 @@ export class NewspComponent implements OnInit {
   }
 
   onResize() {
-   // this.displayTree(this.model);
+    // this.displayTree(this.model);
     this.refreshTreeSize();
   }
 

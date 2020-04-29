@@ -85,8 +85,11 @@
               </button>
             </div>
           </div>
-
-
+          <div class="row">
+            <div class="col-md-12">
+             <p class="text-center text-danger"> {{otherUserEditingWarningText}} </p>
+            </div>
+          </div>
         </div>
         <!-- card body -->
         <div class="card-body">
@@ -129,7 +132,7 @@
                         <div class="form-group">
                           <label for="title">Title</label>
                           <input type="text" class="form-control" id="title" placeholder="Title"
-                            [(ngModel)]="model.name" name="title" required (keyup)="updateTreeStudyProgram()" />
+                            [(ngModel)]="model.name" name="title" required (keyup)="updateTreeStudyProgram()" (keyup.Space)="saveStudyProgram()" />
                           <div *ngIf="model.linksToBok.length > 0" style="display: flex;">
                             <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of model.linksToBok; index as i ">
@@ -153,7 +156,7 @@
                           <label for="title">Affiliation</label>
                           <input type="text" class="form-control" id="affiliation" placeholder="Affiliation"
                             [(ngModel)]="model.affiliation" name="affiliation" required
-                            (keyup)="updateTreeStudyProgram()" />
+                            (keyup)="updateTreeStudyProgram()" (keyup.Space)="saveStudyProgram()" />
                         </div>
                       </div>
                       <div class="col-md-2">
@@ -163,7 +166,7 @@
                             tooltip="The core of the EQF concerns eight reference levels describing what a learner knows, understands and is able to do – 'learning outcomes', ranging from basic (Level 1) to advanced (Level 8)."
                             class="badge badge-primary badge-pill">i</span>
                           <input type="number" size="1" class="form-control" id="eqf" [(ngModel)]="model.eqf" name="eqf"
-                            min="1" max="8" (keyup)="updateTreeStudyProgram()" />
+                            min="1" max="8" (keyup)="updateTreeStudyProgram()" (keyup.Space)="saveStudyProgram()" />
                         </div>
                       </div>
                     </div>
@@ -189,7 +192,7 @@
                             class="badge badge-primary badge-pill">i</span>
                           <input type="text" size="10" class="form-control" id="numSemesters"
                             [(ngModel)]="model.numSemesters" name="numSemesters" min="1" max="20"
-                            (keyup)="updateTreeStudyProgram()" />
+                            (keyup)="updateTreeStudyProgram()" (keyup.Space)="saveStudyProgram()" />
                         </div>
                       </div>
                     </div>
@@ -199,7 +202,7 @@
                           <label for="description">Description</label>
                           <textarea class="form-control" id="description" name="description"
                             placeholder="Add a short introduction and other information relevant to the study program..."
-                            [(ngModel)]="model.description" rows="4" (keyup)="updateTreeStudyProgram()"></textarea>
+                            [(ngModel)]="model.description" rows="4" (keyup)="updateTreeStudyProgram()" (keyup.Space)="saveStudyProgram()"> </textarea>
                           <div *ngIf="model.linksToBok.length > 0" style="display: flex;">
                             <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of model.linksToBok; index as i ">
@@ -244,7 +247,7 @@
                         <div class="form-group">
                           <label for="title">Title</label>
                           <input type="text" class="form-control" id="title" placeholder="Title"
-                            [(ngModel)]="modelModule.name" name="title" required (keyup)="updateTreeStudyProgram()" />
+                            [(ngModel)]="modelModule.name" name="title" required (keyup)="updateTreeStudyProgram()" (keyup.Space)="saveStudyProgram()" />
                           <div *ngIf="modelModule.linksToBok.length > 0" style="display: flex;">
                             <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of modelModule.linksToBok; index as i ">
@@ -270,7 +273,7 @@
                           <label for="title">Affiliation</label>
                           <input type="text" class="form-control" id="affiliation" placeholder="Affiliation"
                             [(ngModel)]="modelModule.affiliation" name="affiliation" required
-                            (keyup)="updateTreeStudyProgram()" />
+                            (keyup)="updateTreeStudyProgram()" (keyup.Space)="saveStudyProgram()" />
                         </div>
                       </div>
                       <div class="col-md-2">
@@ -280,7 +283,7 @@
                             tooltip="The core of the EQF concerns eight reference levels describing what a learner knows, understands and is able to do – 'learning outcomes', ranging from basic (Level 1) to advanced (Level 8)."
                             class="badge badge-primary badge-pill">i</span>
                           <input type="number" size="1" class="form-control" id="eqf" [(ngModel)]="modelModule.eqf"
-                            name="eqf" min="1" max="8" (keyup)="updateTreeStudyProgram()" />
+                            name="eqf" min="1" max="8" (keyup)="updateTreeStudyProgram()" (keyup.Space)="saveStudyProgram()" />
                         </div>
                       </div>
                     </div>
@@ -291,7 +294,7 @@
                           <span tooltip="In which semester is taught." class="badge badge-primary badge-pill">i</span>
                           <input type="text" size="10" class="form-control" id="numSemester"
                             [(ngModel)]="modelModule.numSemester" name="numSemester" min="1" max="15"
-                            (keyup)="updateTreeStudyProgram()" />
+                            (keyup)="updateTreeStudyProgram()" (keyup.Space)="saveStudyProgram()" />
                         </div>
                       </div>
                       <div class="col-md-6">
@@ -301,7 +304,7 @@
                             tooltip="European Credit Transfer and Accumulation System (ECTS) is a standard means for comparing academic credits for higher education. One academic year corresponds to 60 ECTS credits that are normally equivalent to 1500–1800 hours of total workload."
                             class="badge badge-primary badge-pill">i</span>
                           <input type="number" class="form-control" id="ects" [(ngModel)]="modelModule.ects" name="ects"
-                            min="0" (keyup)="updateTreeStudyProgram()" />
+                            min="0" (keyup)="updateTreeStudyProgram()" (keyup.Space)="saveStudyProgram()" />
                         </div>
                       </div>
                     </div>
@@ -312,7 +315,7 @@
                           <textarea class="form-control" id="description" name="description"
                             [(ngModel)]="modelModule.description" rows="4"
                             placeholder="Add a short introduction and other information relevant to the module..."
-                            (keyup)="updateTreeStudyProgram()"></textarea>
+                            (keyup)="updateTreeStudyProgram()" (keyup.Space)="saveStudyProgram()"> </textarea>
                           <div *ngIf="modelModule.linksToBok.length > 0" style="display: flex;">
                             <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of modelModule.linksToBok; index as i ">
@@ -429,7 +432,7 @@
                         <div class="form-group">
                           <label for="title">Title</label>
                           <input type="text" class="form-control" id="title" placeholder="Title"
-                            [(ngModel)]="modelCourse.name" name="title" required (keyup)="updateTreeStudyProgram()" />
+                            [(ngModel)]="modelCourse.name" name="title" required (keyup)="updateTreeStudyProgram()" (keyup.Space)="saveStudyProgram()" />
                           <div *ngIf="modelCourse.linksToBok.length > 0" style="display: flex;">
                             <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of modelCourse.linksToBok; index as i ">
@@ -455,7 +458,7 @@
                           <label for="title">Affiliation</label>
                           <input type="text" class="form-control" id="affiliation" placeholder="Affiliation"
                             [(ngModel)]="modelCourse.affiliation" name="affiliation" required
-                            (keyup)="updateTreeStudyProgram()" />
+                            (keyup)="updateTreeStudyProgram()" (keyup.Space)="saveStudyProgram()" />
                         </div>
                       </div>
                       <div class="col-md-2">
@@ -465,7 +468,7 @@
                             tooltip="The core of the EQF concerns eight reference levels describing what a learner knows, understands and is able to do – 'learning outcomes', ranging from basic (Level 1) to advanced (Level 8)."
                             class="badge badge-primary badge-pill">i</span>
                           <input type="number" size="1" class="form-control" id="eqf" [(ngModel)]="modelCourse.eqf"
-                            name="eqf" min="1" max="8" (keyup)="updateTreeStudyProgram()" />
+                            name="eqf" min="1" max="8" (keyup)="updateTreeStudyProgram()" (keyup.Space)="saveStudyProgram()" />
                         </div>
                       </div>
                     </div>
@@ -488,7 +491,7 @@
                         <div class="form-group">
                           <label for="description">Description</label>
                           <textarea class="form-control" id="description" placeholder="Description" name="description"
-                            [(ngModel)]="modelCourse.description" (keyup)="updateTreeStudyProgram()" rows="4"
+                            [(ngModel)]="modelCourse.description" (keyup)="updateTreeStudyProgram()" (keyup.Space)="saveStudyProgram()" rows="4"
                             placeholder="Add a short introduction and other information relevant to the course..."></textarea>
                           <div *ngIf="modelCourse.linksToBok.length > 0" style="display: flex;">
                             <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
@@ -616,7 +619,7 @@
                             tooltip="European Credit Transfer and Accumulation System (ECTS) is a standard means for comparing academic credits for higher education. One academic year corresponds to 60 ECTS credits that are normally equivalent to 1500–1800 hours of total workload."
                             class="badge badge-primary badge-pill">i</span>
                           <input type="number" class="form-control" name="ects" id="ects" [(ngModel)]="modelCourse.ects"
-                            name="ects" min="0" (keyup)="updateTreeStudyProgram()" />
+                            name="ects" min="0" (keyup)="updateTreeStudyProgram()" (keyup.Space)="saveStudyProgram()" />
                         </div>
                       </div>
                       <div class="col-md-6">
@@ -625,7 +628,7 @@
                           <span tooltip="In which semester is taught." class="badge badge-primary badge-pill">i</span>
                           <input type="text" size="10" class="form-control" id="numSemester"
                             [(ngModel)]="modelCourse.numSemester" name="numSemester" min="1" max="999"
-                            (keyup)="updateTreeStudyProgram()" />
+                            (keyup)="updateTreeStudyProgram()" (keyup.Space)="saveStudyProgram()" />
                         </div>
                       </div>
                     </div>
@@ -637,7 +640,7 @@
                           <span tooltip="Describe how the course will be assessed."
                             class="badge badge-primary badge-pill">i</span>
                           <input type="text" class="form-control" id="assessment" placeholder="Assessment"
-                            [(ngModel)]="modelCourse.assessment" name="assessment" (keyup)="updateTreeStudyProgram()" />
+                            [(ngModel)]="modelCourse.assessment" name="assessment" (keyup)="updateTreeStudyProgram()" (keyup.Space)="saveStudyProgram()" />
                         </div>
                       </div>
                     </div>
@@ -721,7 +724,7 @@
                         <div class="form-group">
                           <label for="title">Title</label>
                           <input type="text" class="form-control" id="title" placeholder="Title"
-                            [(ngModel)]="modelLecture.name" name="title" required (keyup)="updateTreeStudyProgram()" />
+                            [(ngModel)]="modelLecture.name" name="title" required (keyup)="updateTreeStudyProgram()" (keyup.Space)="saveStudyProgram()" />
                           <div *ngIf="modelLecture.linksToBok.length > 0" style="display: flex;">
                             <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of modelLecture.linksToBok; index as i ">
@@ -747,7 +750,7 @@
                           <label for="title">Affiliation</label>
                           <input type="text" class="form-control" id="affiliation" placeholder="Affiliation"
                             [(ngModel)]="modelLecture.affiliation" name="affiliation" required
-                            (keyup)="updateTreeStudyProgram()" />
+                            (keyup)="updateTreeStudyProgram()" (keyup.Space)="saveStudyProgram()" />
                         </div>
                       </div>
                       <div class="col-md-2">
@@ -757,7 +760,7 @@
                             tooltip="The core of the EQF concerns eight reference levels describing what a learner knows, understands and is able to do – 'learning outcomes', ranging from basic (Level 1) to advanced (Level 8)."
                             class="badge badge-primary badge-pill">i</span>
                           <input type="number" size="1" class="form-control" id="eqf" [(ngModel)]="modelLecture.eqf"
-                            name="eqf" min="1" max="8" (keyup)="updateTreeStudyProgram()" />
+                            name="eqf" min="1" max="8" (keyup)="updateTreeStudyProgram()" (keyup.Space)="saveStudyProgram()" />
                         </div>
                       </div>
                     </div>
@@ -768,7 +771,7 @@
                           <textarea class="form-control" id="description" name="description"
                             [(ngModel)]="modelLecture.description" rows="4"
                             placeholder="Add a short introduction and other information relevant to the lecture..."
-                            (keyup)="updateTreeStudyProgram()"></textarea>
+                            (keyup)="updateTreeStudyProgram()" (keyup.Space)="saveStudyProgram()"> </textarea>
                           <div *ngIf="modelLecture.linksToBok.length > 0" style="display: flex;">
                             <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of modelLecture.linksToBok; index as i ">
@@ -796,7 +799,7 @@
                             tooltip="European Credit Transfer and Accumulation System (ECTS) is a standard means for comparing academic credits for higher education. One academic year corresponds to 60 ECTS credits that are normally equivalent to 1500–1800 hours of total workload."
                             class="badge badge-primary badge-pill">i</span>
                           <input type="number" class="form-control" id="ects" [(ngModel)]="modelLecture.ects"
-                            name="ects" min="0" (keyup)="updateTreeStudyProgram()" />
+                            name="ects" min="0" (keyup)="updateTreeStudyProgram()" (keyup.Space)="saveStudyProgram()" />
                         </div>
                       </div>
                       <div class="col-md-6">
