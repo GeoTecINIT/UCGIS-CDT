@@ -162,19 +162,15 @@ export class NewspComponent implements OnInit {
 
     switch (this.highestItemLevel) {
       case 0:
-       // modelToSave = JSON.parse(JSON.stringify(this.model));
         modelToSave = this.model;
         break;
       case 1:
-        // modelToSave = JSON.parse(JSON.stringify(this.modelModule));
         modelToSave = this.modelModule;
         break;
       case 2:
-       // modelToSave = Object.assign({}, this.modelCourse); // JSON.parse(JSON.stringify(this.modelCourse));
         modelToSave = this.modelCourse; // JSON.parse(JSON.stringify(this.modelCourse));
         break;
       case 3:
-        // modelToSave = JSON.parse(JSON.stringify(this.modelLecture));
         modelToSave = this.modelLecture;
         break;
     }
@@ -184,13 +180,13 @@ export class NewspComponent implements OnInit {
     modelToSave.userId = this.afAuth.auth.currentUser.uid;
     modelToSave.orgId = this.saveOrg._id;
     modelToSave.orgName = this.saveOrg.name;
+    modelToSave.levelPublic = this.model.levelPublic;
 
     if (this.mode === 'copy') {
       this.studyprogramService.updateStudyProgram(this._id, modelToSave);
     } else {
       this.studyprogramService.addNewStudyProgram(modelToSave);
     }
-    // this.textSaved = 'Saved!';
     this.isSaved = true;
     this.isSaved = true;
     this.mode = 'copy'; // if it's second time editing change to
@@ -386,28 +382,19 @@ export class NewspComponent implements OnInit {
     if (this.currentTreeNode && this.currentTreeNode.data) {
       switch (this.currentTreeNode.data.depth) {
         case 0:
-          console.log('Update node in tree' + this.model);
-          console.log(this.model);
           this.updateNodeInTree(this.model);
           break;
         case 1:
-          console.log('Update node in tree' + this.modelModule);
-          console.log(this.modelModule);
           this.updateNodeInTree(this.modelModule);
           break;
         case 2:
-          console.log('Update node in tree' + this.modelCourse);
-          console.log(this.modelCourse);
           this.updateNodeInTree(this.modelCourse);
           break;
         case 3:
-          console.log('Update node in tree' + this.modelLecture);
-          console.log(this.modelLecture);
           this.updateNodeInTree(this.modelLecture);
           break;
       }
     }
-    // this.saveStudyProgram();
   }
 
   addBokKnowledge() {
