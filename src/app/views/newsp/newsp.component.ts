@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, HostListener } from '@angular/core';
 import * as bok from '@eo4geo/bok-dataviz';
 import { StudyProgram, StudyProgramService } from '../../services/studyprogram.service';
 import { FieldsService } from '../../services/fields.service';
@@ -21,7 +21,7 @@ import { User, UserService } from '../../services/user.service';
   templateUrl: './newsp.component.html',
   styleUrls: ['./newsp.component.scss']
 })
-export class NewspComponent implements OnInit {
+export class NewspComponent implements OnInit, OnDestroy {
 
   competences = [];
   filteredCompetences = [];
@@ -91,6 +91,8 @@ export class NewspComponent implements OnInit {
 
   isSaved = false;
 
+  otherUserEditingWarningText = '';
+
   configFields = {
     displayKey: 'concatName', // if objects array passed which key to be displayed defaults to description
     search: true, // true/false for the search functionlity defaults to false,
@@ -105,6 +107,11 @@ export class NewspComponent implements OnInit {
   @ViewChild('textBoK') textBoK: ElementRef;
   @ViewChild('graphTreeDiv') public graphTreeDiv: ElementRef;
   @ViewChild('bokModal') public bokModal: ModalDirective;
+
+  @HostListener('window:beforeunload', ['$event'])
+  beforeUnloadHandler(event) {
+    this.setEditing(false);
+  }
 
   constructor(
     private studyprogramService: StudyProgramService,
@@ -157,9 +164,17 @@ export class NewspComponent implements OnInit {
     this.analytics.logEvent('NewSP', { 'mode': this.mode });
   }
 
+  ngOnDestroy(): void {
+    console.log('*******OnDestroy');
+    this.setEditing(false);
+  }
+
+  setEditing(bool) {
+    this.studyprogramService.updateStudyProgramIsEdited(this._id, bool);
+  }
+
   saveStudyProgram() {
     let modelToSave = null;
-
     switch (this.highestItemLevel) {
       case 0:
         modelToSave = this.model;
@@ -187,7 +202,6 @@ export class NewspComponent implements OnInit {
     } else {
       this.studyprogramService.addNewStudyProgram(modelToSave);
     }
-    this.isSaved = true;
     this.isSaved = true;
     this.mode = 'copy'; // if it's second time editing change to
     this._id = modelToSave._id;
@@ -221,9 +235,13 @@ export class NewspComponent implements OnInit {
 
   fillForm(): void {
     this._id = this.route.snapshot.paramMap.get('name');
+    if (this.mode === 'copy') {
+      this.setEditing(true);
+    }
     const spObs = this.studyprogramService
       .getStudyProgramById(this._id)
       .subscribe(sp => {
+        this.isSaved = true;
         if (this.model == null) {
           this.model = sp;
           switch (sp.depth) {
@@ -246,8 +264,13 @@ export class NewspComponent implements OnInit {
           this.displayTree(sp);
           console.log(sp);
           console.log('Highest item level: ' + this.highestItemLevel);
+        } else {
+          if (this.currentUser._id !== sp.userId) {
+            // warn of other user editing it
+            this.otherUserEditingWarningText = 'It looks like other user is editing this content. Despite the fact that automatic save is done frequently, some content may be lost.';
+          }
         }
-        spObs.unsubscribe(); // do not recieve more notifications
+        // spObs.unsubscribe(); // do not recieve more notifications
       });
   }
 
@@ -297,7 +320,7 @@ export class NewspComponent implements OnInit {
   }
 
   onResize() {
-   // this.displayTree(this.model);
+    // this.displayTree(this.model);
     this.refreshTreeSize();
   }
 

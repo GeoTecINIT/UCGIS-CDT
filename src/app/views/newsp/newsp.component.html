@@ -86,8 +86,11 @@
               </button>
             </div>
           </div>
-
-
+          <div class="row">
+            <div class="col-md-12">
+              <p class="text-center text-danger"> {{otherUserEditingWarningText}} </p>
+            </div>
+          </div>
         </div>
         <!-- card body -->
         <div class="card-body">
@@ -200,7 +203,7 @@
                           <label for="description">Description</label>
                           <textarea class="form-control" id="description" name="description"
                             placeholder="Add a short introduction and other information relevant to the study program..."
-                            [(ngModel)]="model.description" rows="4" (keyup)="updateTreeStudyProgram()"></textarea>
+                            [(ngModel)]="model.description" rows="4" (keyup)="updateTreeStudyProgram()"> </textarea>
                           <div *ngIf="model.linksToBok.length > 0" style="display: flex;">
                             <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of model.linksToBok; index as i ">
@@ -313,7 +316,7 @@
                           <textarea class="form-control" id="description" name="description"
                             [(ngModel)]="modelModule.description" rows="4"
                             placeholder="Add a short introduction and other information relevant to the module..."
-                            (keyup)="updateTreeStudyProgram()"></textarea>
+                            (keyup)="updateTreeStudyProgram()"> </textarea>
                           <div *ngIf="modelModule.linksToBok.length > 0" style="display: flex;">
                             <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of modelModule.linksToBok; index as i ">
@@ -769,7 +772,7 @@
                           <textarea class="form-control" id="description" name="description"
                             [(ngModel)]="modelLecture.description" rows="4"
                             placeholder="Add a short introduction and other information relevant to the lecture..."
-                            (keyup)="updateTreeStudyProgram()"></textarea>
+                            (keyup)="updateTreeStudyProgram()"> </textarea>
                           <div *ngIf="modelLecture.linksToBok.length > 0" style="display: flex;">
                             <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of modelLecture.linksToBok; index as i ">

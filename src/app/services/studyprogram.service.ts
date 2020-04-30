@@ -27,6 +27,7 @@ export class StudyProgram extends Object {
   public bibliography: BokInput[];
   public orgId: string;
   public orgName: string;
+  public isEdited: Boolean;
 
   constructor(public currentNode: any = null) {
     super();
@@ -49,6 +50,7 @@ export class StudyProgram extends Object {
       this.userId = currentNode.data.userId ? currentNode.data.userId : '';
       this.orgId = currentNode.data.orgId ? currentNode.data.orgId : '';
       this.orgName = currentNode.data.orgName ? currentNode.data.orgName : '';
+      this.isEdited = currentNode.data.isEdited != null ? currentNode.data.isEdited : true;
 
     } else {
       this._id = '';
@@ -67,6 +69,7 @@ export class StudyProgram extends Object {
       this.bibliography = [];
       this.orgId = '';
       this.orgName = '';
+      this.isEdited = true;
     }
   }
 }
@@ -121,6 +124,13 @@ export class StudyProgramService {
       .collection(collection)
       .doc<StudyProgram>(studyProgId)
       .update(updatedSP);
+  }
+
+  updateStudyProgramIsEdited(studyProgId: string, isEditedVal: Boolean) {
+    this.db
+      .collection(collection)
+      .doc<StudyProgram>(studyProgId)
+      .update({isEdited : isEditedVal});
   }
 
   // This function is to save all child nodes in the tree in a format that firestore likes
