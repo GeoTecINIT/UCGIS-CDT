@@ -23,6 +23,7 @@ export class Lecture extends Object {
   public _children: null;
   public eqf: number;
   public field: Field;
+  public fields: Field[];
   public orgId: string;
   public orgName: string;
 
@@ -49,6 +50,10 @@ export class Lecture extends Object {
       this._children = null;
       this.eqf = currentNode.data.eqf ? currentNode.data.eqf : 0;
       this.field = currentNode.data.field ? currentNode.data.field : null;
+      this.fields = currentNode.data.fields ? currentNode.data.fields : [];
+      if (this.field !== null && this.fields.length === 0) {
+        this.fields.push(this.field);
+      }
       this.orgId = currentNode.data.orgId ? currentNode.data.orgId : '';
       this.orgName = currentNode.data.orgName ? currentNode.data.orgName : '';
 
@@ -68,6 +73,7 @@ export class Lecture extends Object {
       this._children = null;
       this.eqf = 0;
       this.field = null;
+      this.fields = [];
       this.orgId = '';
       this.orgName = '';
     }

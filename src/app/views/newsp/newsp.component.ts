@@ -90,6 +90,7 @@ export class NewspComponent implements OnInit, OnDestroy {
   currentUser: User;
 
   isSaved = false;
+  levelPublic = true;
 
   otherUserEditingWarningText = '';
 
@@ -165,12 +166,13 @@ export class NewspComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('*******OnDestroy');
     this.setEditing(false);
   }
 
   setEditing(bool) {
-    this.studyprogramService.updateStudyProgramIsEdited(this._id, bool);
+    if (this._id != null && this._id !== '') {
+      this.studyprogramService.updateStudyProgramIsEdited(this._id, bool);
+    }
   }
 
   saveStudyProgram() {
@@ -195,7 +197,7 @@ export class NewspComponent implements OnInit, OnDestroy {
     modelToSave.userId = this.afAuth.auth.currentUser.uid;
     modelToSave.orgId = this.saveOrg._id;
     modelToSave.orgName = this.saveOrg.name;
-    modelToSave.levelPublic = this.model.levelPublic;
+    modelToSave.levelPublic = this.levelPublic;
 
     if (this.mode === 'copy') {
       this.studyprogramService.updateStudyProgram(this._id, modelToSave);
@@ -524,6 +526,10 @@ export class NewspComponent implements OnInit, OnDestroy {
   exploreChildrenToAddItems() {
     this.allItems = [];
     this.allStudyPrograms.forEach(s => {
+      if (s.fields == null && s.field != null) {
+        s.fields = [];
+        s.fields.push(s.field);
+      }
       this.allItems.push(s);
       if (s.children) {
         s.children.forEach(m => {

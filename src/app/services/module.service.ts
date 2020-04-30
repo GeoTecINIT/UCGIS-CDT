@@ -26,6 +26,7 @@ export class Module extends Object {
   public levelPublic: Boolean;
   public eqf: number;
   public field: Field;
+  public fields: Field[];
   public bibliography: BokInput[];
   public orgId: string;
   public orgName: string;
@@ -64,6 +65,10 @@ export class Module extends Object {
       this.levelPublic = currentNode.data.levelPublic != null ? currentNode.data.levelPublic : true;
       this.eqf = currentNode.data.eqf ? currentNode.data.eqf : 0;
       this.field = currentNode.data.field ? currentNode.data.field : null;
+      this.fields = currentNode.data.fields ? currentNode.data.fields : [];
+      if (this.field !== null && this.fields.length === 0) {
+        this.fields.push(this.field);
+      }
       this.bibliography = currentNode.data.bibliography ? currentNode.data.bibliography : [];
       this.orgId = currentNode.data.orgId ? currentNode.data.orgId : '';
       this.orgName = currentNode.data.orgName ? currentNode.data.orgName : '';
