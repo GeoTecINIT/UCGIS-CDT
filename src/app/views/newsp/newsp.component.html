@@ -64,7 +64,7 @@
               <span class="input-group-prepend">
                 <div class="pr-1"> Visibility: Private </div>
                 <label class="switch switch-label switch-pill switch-outline-primary-alt">
-                  <input *ngIf="model" class="switch-input" type="checkbox" [(ngModel)]="model.levelPublic"
+                  <input class="switch-input" type="checkbox" [(ngModel)]="levelPublic"
                     (change)="isSaved = false" name="levelPublic" />
                   <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
                 </label>
@@ -174,12 +174,12 @@
                     <div class="row">
                       <div class="col-md-9">
                         <div class="form-group">
-                          <label for="field">Field of study</label>
+                          <label for="field">Study areas</label>
                           <span
                             tooltip="The term relates directly to a specific area of study. The International Standard Classification of Education: Fields of Education and Training 2013 (ISCED-F). Maintained by the UNESCO Institute for Statistics."
                             class="badge badge-primary badge-pill">i</span>
-                          <ng-select [items]="fieldsService.allfields" name="field" bindLabel="name"
-                            groupBy="grandparent" [multiple]="false" [(ngModel)]="model.field">
+                          <ng-select [items]="fieldsService.allfields" name="fields" bindLabel="name"
+                            groupBy="grandparent" [multiple]="true" [(ngModel)]="model.fields">
                             <ng-template ng-optgroup-tmp let-item="item">
                               {{item.grandparent || 'Unnamed group'}}
                             </ng-template>
@@ -197,8 +197,23 @@
                         </div>
                       </div>
                     </div>
+                    <div class="row" *ngIf="model.fields.length > 0">
+                      <div class="col-md-12">
+                        <label for="numSemesters">Study areas ({{model.fields.length}})</label>
+                        <ul>
+                          <div *ngFor="let f of model.fields; index as i ">
+                            <li>
+                              <p>{{f.name}} ({{f.grandparent}}) <button type="button" class="btn btn-link btn-xs"
+                                  (click)="model.fields.splice(i, 1)">
+                                  <i class="fa fa-remove"></i>
+                                </button></p>
+                            </li>
+                          </div>
+                        </ul>
+                      </div>
+                    </div>
                     <div class="row">
-                      <div class="col-md-10">
+                      <div class="col-md-9">
                         <div class="form-group">
                           <label for="description">Description</label>
                           <textarea class="form-control" id="description" name="description"
@@ -216,7 +231,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-2 align-middle m-auto">
+                      <div class="col-md-3 align-middle m-auto">
                         <button type="button" class="btn btn-primary btn-sm"
                           (click)="bokModal.show(); linkBoKto='description'">
                           Link BoK description
@@ -287,6 +302,33 @@
                             name="eqf" min="1" max="8" (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="field">Study areas</label>
+                          <span
+                            tooltip="The term relates directly to a specific area of study. The International Standard Classification of Education: Fields of Education and Training 2013 (ISCED-F). Maintained by the UNESCO Institute for Statistics."
+                            class="badge badge-primary badge-pill">i</span>
+                          <ng-select [items]="fieldsService.allfields" name="fields" bindLabel="name"
+                            groupBy="grandparent" [multiple]="true" [(ngModel)]="modelModule.fields">
+                            <ng-template ng-optgroup-tmp let-item="item">
+                              {{item.grandparent || 'Unnamed group'}}
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                      </div>
+                      <div class="col-md-12" *ngIf="modelModule.fields.length > 0">
+                        <label for="numSemesters">Selected study areas ({{modelModule.fields.length}})</label>
+                        <ul>
+                          <div *ngFor="let f of modelModule.fields; index as i ">
+                            <li>
+                              <p>{{f.name}} ({{f.grandparent}}) <button type="button" class="btn btn-link btn-xs"
+                                  (click)="modelModule.fields.splice(i, 1)">
+                                  <i class="fa fa-remove"></i>
+                                </button></p>
+                            </li>
+                          </div>
+                        </ul>
+                      </div>
                     </div>
                     <div class="row">
                       <div class="col-md-6">
@@ -310,7 +352,7 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-10">
+                      <div class="col-md-9">
                         <div class="form-group">
                           <label for="description">Description</label>
                           <textarea class="form-control" id="description" name="description"
@@ -329,7 +371,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-2 align-middle m-auto">
+                      <div class="col-md-3 align-middle m-auto">
                         <button type="button" class="btn btn-primary btn-sm"
                           (click)="bokModal.show(); linkBoKto='description'">
                           Link BoK description
@@ -337,7 +379,7 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-10">
+                      <div class="col-md-9">
                         <div class="form-group">
                           <label for="prerequisites">Prerequisites</label>
                           <div class="col-md-12">
@@ -358,7 +400,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-2 align-middle m-auto">
+                      <div class="col-md-3 align-middle m-auto">
                         <button type="button" class="btn btn-primary btn-sm"
                           (click)="bokModal.show(); linkBoKto='prerequisites'">
                           Link BoK prerequisite
@@ -377,7 +419,7 @@
                       </div> -->
                     </div>
                     <div class="row">
-                      <div class="col-md-10">
+                      <div class="col-md-9">
                         <div class="form-group">
                           <label for="title">Learning Outcomes</label>
                           <div class="row">
@@ -402,7 +444,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-2 align-middle m-auto">
+                      <div class="col-md-3 align-middle m-auto">
                         <button type="button" class="btn btn-primary btn-sm" disabled>
                           Inherited from child courses
                         </button>
@@ -472,6 +514,33 @@
                             name="eqf" min="1" max="8" (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="field">Study areas </label>
+                          <span
+                            tooltip="The term relates directly to a specific area of study. The International Standard Classification of Education: Fields of Education and Training 2013 (ISCED-F). Maintained by the UNESCO Institute for Statistics."
+                            class="badge badge-primary badge-pill">i</span>
+                          <ng-select [items]="fieldsService.allfields" name="fields" bindLabel="name"
+                            groupBy="grandparent" [multiple]="true" [(ngModel)]="modelCourse.fields">
+                            <ng-template ng-optgroup-tmp let-item="item">
+                              {{item.grandparent || 'Unnamed group'}}
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                      </div>
+                      <div class="col-md-12" *ngIf="modelCourse.fields.length > 0">
+                        <label for="numSemesters">Selected study areas ({{modelCourse.fields.length}})</label>
+                        <ul>
+                          <div *ngFor="let f of modelCourse.fields; index as i ">
+                            <li>
+                              <p>{{f.name}} ({{f.grandparent}}) <button type="button" class="btn btn-link btn-xs"
+                                  (click)="modelCourse.fields.splice(i, 1)">
+                                  <i class="fa fa-remove"></i>
+                                </button></p>
+                            </li>
+                          </div>
+                        </ul>
+                      </div>
                     </div>
                     <div class="row">
                       <div class="col-md-12">
@@ -488,7 +557,7 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-10">
+                      <div class="col-md-9">
                         <div class="form-group">
                           <label for="description">Description</label>
                           <textarea class="form-control" id="description" placeholder="Description" name="description"
@@ -506,7 +575,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-2 align-middle m-auto">
+                      <div class="col-md-3 align-middle m-auto">
                         <button type="button" class="btn btn-primary btn-sm"
                           (click)="bokModal.show(); linkBoKto='description'">
                           Link BoK description
@@ -514,7 +583,7 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-10">
+                      <div class="col-md-9">
                         <div class="form-group">
                           <label for="title">Prerequisites</label>
                           <div class="row">
@@ -537,7 +606,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-2 align-middle m-auto">
+                      <div class="col-md-3 align-middle m-auto">
                         <button type="button" class="btn btn-primary btn-sm"
                           (click)="bokModal.show(); linkBoKto='prerequisites'">
                           Link BoK prerequisite
@@ -552,7 +621,7 @@
                       </div> -->
                     </div>
                     <div class="row">
-                      <div class="col-md-10">
+                      <div class="col-md-9">
                         <div class="form-group">
                           <label for="title">Learning Outcomes</label>
                           <div class="row">
@@ -598,7 +667,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-2 align-middle m-auto">
+                      <div class="col-md-3 align-middle m-auto">
                         <button type="button" class="btn btn-primary btn-sm"
                           (click)="bokModal.show(); linkBoKto='learningObjectives'">
                           Link BoK learning outcomes
@@ -646,7 +715,7 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-10">
+                      <div class="col-md-9">
                         <div class="form-group">
                           <label for="bibliography">Bibliography</label>
                           <span
@@ -691,7 +760,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-2 align-middle m-auto">
+                      <div class="col-md-3 align-middle m-auto">
                         <button type="button" class="btn btn-primary btn-sm"
                           (click)="bokModal.show(); linkBoKto='bibliography'">
                           Link BoK bibliography
@@ -764,9 +833,36 @@
                             name="eqf" min="1" max="8" (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="field">Study areas </label>
+                          <span
+                            tooltip="The term relates directly to a specific area of study. The International Standard Classification of Education: Fields of Education and Training 2013 (ISCED-F). Maintained by the UNESCO Institute for Statistics."
+                            class="badge badge-primary badge-pill">i</span>
+                          <ng-select [items]="fieldsService.allfields" name="fields" bindLabel="name"
+                            groupBy="grandparent" [multiple]="true" [(ngModel)]="modelLecture.fields">
+                            <ng-template ng-optgroup-tmp let-item="item">
+                              {{item.grandparent || 'Unnamed group'}}
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                      </div>
+                      <div class="col-md-12" *ngIf="modelLecture.fields.length > 0">
+                        <label for="numSemesters">Selected study areas ({{modelLecture.fields.length}})</label>
+                        <ul>
+                          <div *ngFor="let f of modelLecture.fields; index as i ">
+                            <li>
+                              <p>{{f.name}} ({{f.grandparent}}) <button type="button" class="btn btn-link btn-xs"
+                                  (click)="modelLecture.fields.splice(i, 1)">
+                                  <i class="fa fa-remove"></i>
+                                </button></p>
+                            </li>
+                          </div>
+                        </ul>
+                      </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-10">
+                      <div class="col-md-9">
                         <div class="form-group">
                           <label for="description">Description</label>
                           <textarea class="form-control" id="description" name="description"
@@ -785,7 +881,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-2 align-middle m-auto">
+                      <div class="col-md-3 align-middle m-auto">
                         <button type="button" class="btn btn-primary btn-sm"
                           (click)="bokModal.show(); linkBoKto='description'">
                           Link BoK description
@@ -818,7 +914,7 @@
                     </div>
 
                     <div class="row">
-                      <div class="col-md-10">
+                      <div class="col-md-9">
                         <div class="form-group">
                           <label for="bibliography">Bibliography</label>
                           <span
@@ -863,7 +959,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-2 align-middle m-auto">
+                      <div class="col-md-3 align-middle m-auto">
                         <button type="button" class="btn btn-primary btn-sm"
                           (click)="bokModal.show(); linkBoKto='bibliography'">
                           Link BoK bibliography
@@ -926,7 +1022,6 @@
                       <div *ngFor="let i of (allItems| filter:filterText); index as in">
                         <li *ngIf="i.depth==depthSearching"><a class="card-title"
                             (click)="showExistingToStudyProgram(i); isSearchingSpecific = !isSearchingSpecific; isSearchingExisting = !isSearchingExisting">{{ i.name }}</a>
-                          <h6 *ngIf="i.field" class="text-muted inline"> - Field of study: {{ i.field.name }}</h6>
                           <h6 *ngIf="i.affiliation != ''" class="text-muted inline"> - {{ i.affiliation }}</h6>
                           <h6 *ngIf="i.eqf != 0" class="text-muted inline"> - EQF: {{ i.eqf }}</h6>
                         </li>
@@ -960,8 +1055,17 @@
                           <h4 *ngIf="depthSearching==1"> Module: {{ currentStudyProgram.name }} </h4>
                           <h4 *ngIf="depthSearching==2"> Course: {{ currentStudyProgram.name }} </h4>
                           <h4 *ngIf="depthSearching==3"> Lecture: {{ currentStudyProgram.name }} </h4>
+                          <div *ngIf="currentStudyProgram.fields && currentStudyProgram.fields.length > 0">
+                            <p><b> Study areas ({{currentStudyProgram.fields.length}}) </b> </p>
+                          </div>
+                          <ul>
+                            <div *ngFor="let f of currentStudyProgram.fields; index as i ">
+                              <li>
+                                <p>{{f.name}} ({{f.grandparent}})</p>
+                              </li>
+                            </div>
+                          </ul>
                           <p class="text-justify">{{ currentStudyProgram.description }}</p>
-
                           <div *ngIf="currentStudyProgram.numSemester">
                             <p><b> In semester:</b> {{ currentStudyProgram.numSemester }}</p>
                           </div>
@@ -1027,7 +1131,8 @@
               <div class="row">
                 <div class="col-md-12">
 
-                  You can create any curriculum item (study program, module, course, lecture). To do so, create the high
+                  You can create any curriculum item (study program, module, course, lecture). To do so, create the
+                  high
                   level item first, then click on the desired level to
                   add lower level items.
                   <br><br>
@@ -1045,7 +1150,8 @@
                   Where:
 
                   <ul>
-                    <li>A study program is a curriculum of two or more courses that is intended or understood to lead to
+                    <li>A study program is a curriculum of two or more courses that is intended or understood to lead
+                      to
                       a degree, diploma, or certificate.
                     </li>
                     <li>A module is a collection of courses over a year or semester
@@ -1060,7 +1166,8 @@
                   Examples:
                   <ul>
                     <li>
-                      If you only need to create a Course and Lectures, start by creating a Course. If you require many
+                      If you only need to create a Course and Lectures, start by creating a Course. If you require
+                      many
                       Courses, you can start with Study Program (and skip Modules) or start with Module.
                     </li>
                     <li>

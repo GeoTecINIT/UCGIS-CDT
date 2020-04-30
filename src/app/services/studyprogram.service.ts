@@ -20,6 +20,7 @@ export class StudyProgram extends Object {
   public _children: Module[];
   public numSemesters: number;
   public field: Field;
+  public fields: Field[];
   public userId: string;
   public concepts: string[];
   public linksToBok: BokInput[];
@@ -41,6 +42,10 @@ export class StudyProgram extends Object {
       this._children = currentNode._children && currentNode._children.length > 0 ? currentNode._children : null;
       this.numSemesters = currentNode.data.numSemesters ? currentNode.data.numSemesters : 0;
       this.field = currentNode.data.field ? currentNode.data.field : null;
+      this.fields = currentNode.data.fields ? currentNode.data.fields : [];
+      if (this.field !== null && this.fields.length === 0) {
+        this.fields.push(this.field);
+      }
       this.userId = currentNode.data.userId ? currentNode.data.userId : '';
       this.concepts = currentNode.data.concepts ? currentNode.data.concepts : [];
       this.currentNode = null;
@@ -62,6 +67,7 @@ export class StudyProgram extends Object {
       this._children = null;
       this.numSemesters = 0;
       this.field = null;
+      this.fields = [];
       this.userId = '';
       this.concepts = [];
       this.linksToBok = [];
