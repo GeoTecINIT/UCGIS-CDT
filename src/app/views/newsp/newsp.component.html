@@ -49,7 +49,8 @@
             </div>
             <div class="col-sm-6 col-md-3">
               <ng-select *ngIf="userOrgs.length > 0 && userOrgs.length == currentUser.organizations.length"
-                [items]="userOrgs" name="userOrgs" bindLabel="name" [multiple]="false" [(ngModel)]="saveOrg" (change)= "isSaved = false">
+                [items]="userOrgs" name="userOrgs" bindLabel="name" [multiple]="false" [(ngModel)]="saveOrg"
+                (change)="isSaved = false">
                 <ng-template ng-optgroup-tmp let-item="item">
                   {{item.name}}
                 </ng-template>
@@ -63,14 +64,14 @@
               <span class="input-group-prepend">
                 <div class="pr-1"> Visibility: Private </div>
                 <label class="switch switch-label switch-pill switch-outline-primary-alt">
-                  <input class="switch-input" type="checkbox" value="knowledges"
-                    [(ngModel)]="model && model.levelPublic" (change)= "isSaved = false"/>
+                  <input *ngIf="model" class="switch-input" type="checkbox" [(ngModel)]="model.levelPublic"
+                    (change)="isSaved = false" name="levelPublic" />
                   <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
                 </label>
                 <div class="pl-1">Public</div>
               </span>
               <span style="display:inline-table; margin:2px"
-                tooltip="If visibility is private, users in this organization can still see it. But users not logged in won't be able to see it."
+                tooltip="If visibility is private, users in this organization can still see it. But users not logged in won't be able to see it. Visibility by default is public."
                 class="badge badge-primary badge-pill">i</span>
             </div>
             <div class="col-sm-6 col-md-4 text-right">
@@ -477,7 +478,7 @@
                         <div class="form-group">
                           <label for="eqf">Type</label>
                           <span tooltip="Specify course type if needed." class="badge badge-primary badge-pill">i</span>
-                          <select [(ngModel)]="modelCourse.type" (change)= "isSaved = false">
+                          <select [(ngModel)]="modelCourse.type" (change)="isSaved = false">
                             <option value=""></option>
                             <option value="Common">Common</option>
                             <option value="Specialization">Specialization</option>
@@ -1103,6 +1104,7 @@
               tooltip="Browse in the BoK for knowledge required for your new occupational profile. Once in the required knowledge, press the button 'Add' it will link the concept and the learning outcomes dependent on it."
               class="badge badge-primary badge-pill">i</span>
           </div>
+
           <div class="card-body" style="background-color: #faf9f8">
             <div class="row text-center">
               <div class="col-lg-4 col-sm-6">
@@ -1123,79 +1125,42 @@
                 </div>
               </div>
               <div class="col-lg-8 col-sm-6 text-justify">
-                <!--     <div class="row text-center">
-                  <div class="col-sm-3">
-                    Select attributes to link:
-                  </div>
-                  <div class="col-md-6" style="display: inline-flex">
-                    <span class="input-group-prepend">
-                      <label class="switch switch-label switch-pill switch-outline-primary-alt">
-                        <input class="switch-input" type="checkbox" value="title" (checked)="switchTitle"
-                          [(ngModel)]="switchTitle" />
-                        <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
-                      </label>
-                      <div class="pl-1 pr-2">Title</div>
-                    </span>
-                    <span class="input-group-prepend">
-                      <label class="switch switch-label switch-pill switch-outline-primary-alt">
-                        <input class="switch-input" type="checkbox" value="description" (checked)="switchDescription"
-                          [(ngModel)]="switchDescription" />
-                        <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
-                      </label>
-                      <div class="pl-1 pr-2">Description</div>
-                    </span>
-                    <span class="input-group-prepend">
-                      <label class="switch switch-label switch-pill switch-outline-primary-alt">
-                        <input class="switch-input" type="checkbox" value="prerequisites" (checked)="switchPre"
-                          [disabled]="currentTreeNode.depth!=2" [(ngModel)]="switchPre" />
-                        <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
-                      </label>
-                      <div class="pl-1 pr-2">Prerequisites</div>
-                    </span>
-                    <span class="input-group-prepend">
-                      <label class="switch switch-label switch-pill switch-outline-primary-alt">
-                        <input class="switch-input" type="checkbox" value="learningObjectives" (checked)="switchLO"
-                          [disabled]="currentTreeNode.depth!=3" [(ngModel)]="switchLO" />
-                        <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
-                      </label>
-                      <div class="pl-1 pr-2">Learning Outcomes</div>
-                    </span>
-                  </div>
-                  <div class="col-sm-3">
-                    <button type="submit" class="btn btn-primary"
-                      tooltip="Search or navigate in the graph to add knowledge." (click)="addBokKnowledge()">
-                      Link this concept <i class="fa fa-arrow-up"></i>
-                    </button>
-                  </div>
-                </div> -->
-                <a [hidden]="currentConcept != ''" (click)="navigateToConcept('GIST')">
-                  < Back </a>
-                    <div #textBoK id="textBoK" [hidden]="currentConcept == '' && currentConcept != 'GIST'">
-                    </div>
-                    <div class="col" *ngIf="hasResults">
-                      <h3 class="center">
-                        {{ selectedNodes.length }} result(s) for
-                        {{ searchInput.value }}
-                      </h3>
-                      <div *ngFor="let item of selectedNodes; index as i">
-                        <div *ngIf="i < limitSearch">
-                          <div class="inline">{{ item.nameShort }}</div>
-                          <div class="inline" [innerHTML]="
-                                      item.name | truncate: 100:searchInput.value
-                                    "></div>
-                          <a class="inline" (click)="navigateToConcept(item.nameShort)">
-                            Details
-                          </a>
-                          <div class="small" [innerHTML]="item.description | truncate: 100:searchInput.value"></div>
+
+                <a (click)="navigateToConcept('GIST')" *ngIf="!(!hasResults && currentConcept != 'GIST')">
+                  < To full BoK </a>
+                    <a (click)="hasResults = !hasResults; currentConcept=''"
+                      *ngIf="!hasResults && currentConcept != 'GIST'">
+                      < Back to results </a> <br>
+                        <h5 [hidden]="currentConcept == '' && currentConcept != 'GIST'">Knowledge</h5>
+                        <div #textBoK id="textBoK" [hidden]="currentConcept == '' && currentConcept != 'GIST'">
                         </div>
-                      </div>
-                      <div>
-                        <br />
-                        <a *ngIf="limitSearch < selectedNodes.length" (click)="incrementLimit()">
-                          Show more ...
-                        </a>
-                      </div>
-                    </div>
+                        <div class="col" *ngIf="hasResults">
+                          <h3 class="center">
+                            {{ selectedNodes.length }} result(s) for
+                            {{ searchInput.value }}
+                          </h3>
+                          <div *ngFor="let item of selectedNodes; index as i">
+                            <div *ngIf="i < limitSearch">
+                              <div class="inline">{{ item.nameShort }}</div>
+                              <div class="inline" [innerHTML]="
+                            item.name | truncate: 100:searchInput.value
+                          "></div>
+                              <a class="inline" (click)="navigateToConcept(item.nameShort)">
+                                Details
+                              </a>
+                              <div class="small" [innerHTML]="
+                            item.description | truncate: 100:searchInput.value
+                          "></div>
+                            </div>
+                          </div>
+                          <div>
+                            <br />
+                            <a *ngIf="limitSearch < selectedNodes.length" (click)="incrementLimit()">
+                              Show more ...
+                            </a>
+                          </div>
+                        </div>
+
               </div>
             </div>
           </div>
