@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, HostListener } from '@angular/core';
 import * as bok from '@eo4geo/bok-dataviz';
 import { StudyProgram, StudyProgramService } from '../../services/studyprogram.service';
 import { FieldsService } from '../../services/fields.service';
@@ -21,7 +21,7 @@ import { User, UserService } from '../../services/user.service';
   templateUrl: './newsp.component.html',
   styleUrls: ['./newsp.component.scss']
 })
-export class NewspComponent implements OnInit {
+export class NewspComponent implements OnInit, OnDestroy {
 
   competences = [];
   filteredCompetences = [];
@@ -108,6 +108,11 @@ export class NewspComponent implements OnInit {
   @ViewChild('graphTreeDiv') public graphTreeDiv: ElementRef;
   @ViewChild('bokModal') public bokModal: ModalDirective;
 
+  @HostListener('window:beforeunload', ['$event'])
+  beforeUnloadHandler(event) {
+    this.setEditing(false);
+  }
+
   constructor(
     private studyprogramService: StudyProgramService,
     private organizationService: OrganizationService,
@@ -159,9 +164,17 @@ export class NewspComponent implements OnInit {
     this.analytics.logEvent('NewSP', { 'mode': this.mode });
   }
 
+  ngOnDestroy(): void {
+    console.log('*******OnDestroy');
+    this.setEditing(false);
+  }
+
+  setEditing(bool) {
+    this.studyprogramService.updateStudyProgramIsEdited(this._id, bool);
+  }
+
   saveStudyProgram() {
     let modelToSave = null;
-
     switch (this.highestItemLevel) {
       case 0:
         modelToSave = this.model;
@@ -222,6 +235,9 @@ export class NewspComponent implements OnInit {
 
   fillForm(): void {
     this._id = this.route.snapshot.paramMap.get('name');
+    if (this.mode === 'copy') {
+      this.setEditing(true);
+    }
     const spObs = this.studyprogramService
       .getStudyProgramById(this._id)
       .subscribe(sp => {
@@ -253,27 +269,6 @@ export class NewspComponent implements OnInit {
             // warn of other user editing it
             this.otherUserEditingWarningText = 'It looks like other user is editing this content. Despite the fact that automatic save is done frequently, some content may be lost.';
           }
-          this.model = sp;
-          switch (sp.depth) {
-            case 0:
-              this.model = sp;
-              break;
-            case 1:
-              this.modelModule = sp;
-              break;
-            case 2:
-              this.modelCourse = sp;
-              break;
-            case 3:
-              this.modelLecture = sp;
-              break;
-          }
-          this.highestItemLevel = this.model.depth;
-          this.depthSearching = this.highestItemLevel + 1;
-          this.setOrganization();
-          this.displayTree(sp);
-          console.log(sp);
-          console.log('Highest item level: ' + this.highestItemLevel);
         }
         // spObs.unsubscribe(); // do not recieve more notifications
       });
