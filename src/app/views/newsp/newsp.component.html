@@ -5,7 +5,13 @@
       <div class="card card-accent-primary">
         <div class="card-header">
           <div class="row">
-            <div class="col-md-12 text-center mb-3">
+            <div *ngIf="userOrgs.length == 0" class="col-sm-12 col-md-12" >
+              <button type="button" class="btn btn-block btn-link text-secondary"
+                routerLink="/organization">
+                &nbsp;You need to join or create an organization before you can save an occupational profile.
+              </button>
+            </div>
+            <div *ngIf="userOrgs.length > 0" class="col-md-12 text-center mb-3">
               <div class="btn-group" dropdown>
                 <button id="button-animated" dropdownToggle type="button"
                   class="btn btn-pill btn-primary dropdown-toggle" aria-controls="dropdown-animated">
@@ -55,12 +61,14 @@
                   {{item.name}}
                 </ng-template>
               </ng-select>
-              <button *ngIf="userOrgs.length == 0" type="button" class="btn btn-block btn-link text-secondary"
+            </div>
+            <div *ngIf="userOrgs.length == 0" class="col-sm-12 col-md-12" >
+              <button type="button" class="btn btn-block btn-link text-secondary"
                 routerLink="/organization">
                 &nbsp;You need to join or create an organization before you can save an occupational profile.
               </button>
             </div>
-            <div class="col-sm-6 col-md-3" style="display: inline-flex" [hidden]="!currentTreeNode">
+            <div *ngIf="userOrgs.length > 0" class="col-sm-6 col-md-3" style="display: inline-flex" [hidden]="!currentTreeNode">
               <span class="input-group-prepend">
                 <div class="pr-1"> Visibility: Private </div>
                 <label class="switch switch-label switch-pill switch-outline-primary-alt">
@@ -74,7 +82,7 @@
                 tooltip="If visibility is private, users in this organization can still see it. But users not logged in won't be able to see it. Visibility by default is public."
                 class="badge badge-primary badge-pill">i</span>
             </div>
-            <div class="col-sm-6 col-md-4 text-right">
+            <div *ngIf="userOrgs.length > 0" class="col-sm-6 col-md-4 text-right">
               <!-- <div>{{textSaved}}</div>-->
               <button type="submit" class="btn btn-pill btn-primary" (click)="saveStudyProgram()"
                 [hidden]="!currentTreeNode" [ngClass]="{'success': isSaved}">
