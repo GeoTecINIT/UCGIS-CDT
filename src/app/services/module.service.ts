@@ -16,6 +16,7 @@ export class Module extends Object {
   public assessment: string;
   public prerequisites: BokInput[];
   public learningObjectives: BokInput[];
+  public inheritedLearningObjectives: BokInput[];
   public children: Course[];
   public _children: Course[];
   public concepts: string[];
@@ -46,15 +47,27 @@ export class Module extends Object {
       this.assessment = currentNode.data.assessment ? currentNode.data.assessment : '';
       this.prerequisites = currentNode.data.prerequisites ? currentNode.data.prerequisites : [];
       this.children = currentNode.children && currentNode.children.length > 0 ? currentNode.children : null;
-      this._children = currentNode._children && currentNode._children.length > 0  ? currentNode._children : null;
+      this._children = currentNode._children && currentNode._children.length > 0 ? currentNode._children : null;
       this.concepts = currentNode.data.concepts ? currentNode.data.concepts : [];
       this.currentNode = null;
-      this.learningObjectives = [];
+      this.learningObjectives = currentNode.data.learningObjectives ? currentNode.data.learningObjectives : [];
+      this.inheritedLearningObjectives = [];
       if (this.children && this.children.length > 0) {
         this.children.forEach(child => {
+          // Courses
           if (child.data && child.data.learningObjectives) {
             child.data.learningObjectives.forEach(lo => {
-              this.learningObjectives.push(lo);
+              this.inheritedLearningObjectives.push(lo);
+            });
+          }
+          // Lectures
+          if (child.children && child.children.length > 0) {
+            child.children.forEach(childL => {
+              if (childL.data && childL.data.learningObjectives) {
+                childL.data.learningObjectives.forEach(lo => {
+                  this.inheritedLearningObjectives.push(lo);
+                });
+              }
             });
           }
         });
@@ -82,6 +95,7 @@ export class Module extends Object {
       this.assessment = '';
       this.prerequisites = [];
       this.learningObjectives = [];
+      this.inheritedLearningObjectives = [];
       this.children = null;
       this._children = null;
       this.concepts = [];

@@ -35,14 +35,14 @@
                   <button type="button" class="btn btn-block btn-link"
                     routerLink="/newsp/copy/{{ selectedProgram._id }}"
                     [disabled]="isAnonymous ||  (currentUser?.organizations?.indexOf(selectedProgram.orgId) == -1) || selectedProgram.isEdited">
-                    <i class="fa fa-edit fa-lg mt-4"></i>
+                    <i class="fa fa-edit fa-lg mt-4" [ngClass]="selectedProgram.isEdited? 'icon-editing' : '' "></i>
                   </button>
                 </div>
                 <div class="col-3 col-sm-3 col-md-3 no-padding"
                   tooltip="{{isAnonymous? 'Login to be able to remove' : selectedProgram.isEdited? 'Another user is editing this content. To avoid content loss, removing has been disabled' : selectedProgram.userId==afAuth.auth.currentUser?.uid? 'Remove' : 'You can remove only your own learning content' }}">
                   <button type="button" class="btn btn-block btn-link" data-toggle="modal" (click)="dangerModal.show()"
                     [disabled]="isAnonymous || (currentUser?.organizations?.indexOf(selectedProgram.orgId) == -1) || selectedProgram.isEdited">
-                    <i class="fa fa-trash-o fa-lg mt-4"></i>
+                    <i class="fa fa-trash-o fa-lg mt-4" [ngClass]="selectedProgram.isEdited? 'icon-editing' : '' "></i>
                   </button>
                 </div>
 
@@ -190,9 +190,27 @@
                           </div>
                         </ul>
                       </div>
+                      <div *ngIf="model.inheritedLearningObjectives && model.inheritedLearningObjectives.length > 0">
+                        <span>  <button type="button" class="btn btn-link btn-xs"
+                          (click)="showILO.classList.contains('hidden') ? showILO.className = '' : showILO.className = 'hidden' ">
+                          <i [tooltip]="showILO.classList.contains('hidden')? 'Show' : 'Hide'"
+                            [ngClass]="showILO.classList.contains('hidden')? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
+                        </button>
+                        <b>Inherited Learning Outcomes ({{model.inheritedLearningObjectives.length}}):</b></span>
+                        <ul #showILO>
+                          <div *ngFor="let l of model.inheritedLearningObjectives">
+                            <li>{{ l.name }}</li>
+                          </div>
+                        </ul>
+                      </div>
                       <div *ngIf="model.learningObjectives && model.learningObjectives.length > 0">
-                        <span><b>Learning Outcomes:</b></span>
-                        <ul>
+                        <span><button type="button" class="btn btn-link btn-xs"
+                          (click)="showLO.classList.contains('hidden') ? showLO.className = '' : showLO.className = 'hidden' ">
+                          <i [tooltip]="showLO.classList.contains('hidden')? 'Show' : 'Hide'"
+                            [ngClass]="showLO.classList.contains('hidden')? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
+                        </button>
+                        <b>Learning Outcomes ({{model.learningObjectives.length}}):</b></span>
+                        <ul #showLO>
                           <div *ngFor="let l of model.learningObjectives">
                             <li>{{ l.name }}</li>
                           </div>

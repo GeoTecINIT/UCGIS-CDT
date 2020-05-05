@@ -26,6 +26,7 @@ export class Lecture extends Object {
   public fields: Field[];
   public orgId: string;
   public orgName: string;
+  public learningObjectives: BokInput[];
 
   data: any;
 
@@ -56,6 +57,7 @@ export class Lecture extends Object {
       }
       this.orgId = currentNode.data.orgId ? currentNode.data.orgId : '';
       this.orgName = currentNode.data.orgName ? currentNode.data.orgName : '';
+      this.learningObjectives = currentNode.data.learningObjectives ? currentNode.data.learningObjectives : [];
 
     } else {
       this._id = '';
@@ -76,6 +78,7 @@ export class Lecture extends Object {
       this.fields = [];
       this.orgId = '';
       this.orgName = '';
+      this.learningObjectives = [];
     }
   }
 }
