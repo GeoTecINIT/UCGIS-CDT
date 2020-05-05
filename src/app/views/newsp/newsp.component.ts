@@ -509,8 +509,8 @@ export class NewspComponent implements OnInit, OnDestroy {
     this.updateTreeStudyProgram();
   }
 
-  addCustomLO() {
-    this.modelCourse.learningObjectives.push(new BokInput('', this.customLO, this.customLO, '', [], '', []));
+  addCustomLO(model) {
+    model.learningObjectives.push(new BokInput('', this.customLO, this.customLO, '', [], '', []));
     this.customLO = '';
   }
 

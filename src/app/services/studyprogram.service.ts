@@ -29,6 +29,8 @@ export class StudyProgram extends Object {
   public orgId: string;
   public orgName: string;
   public isEdited: Boolean;
+  public learningObjectives: BokInput[];
+  public inheritedLearningObjectives: BokInput[];
 
   constructor(public currentNode: any = null) {
     super();
@@ -56,6 +58,38 @@ export class StudyProgram extends Object {
       this.orgId = currentNode.data.orgId ? currentNode.data.orgId : '';
       this.orgName = currentNode.data.orgName ? currentNode.data.orgName : '';
       this.isEdited = currentNode.data.isEdited != null ? currentNode.data.isEdited : true;
+      this.learningObjectives = currentNode.data.learningObjectives ? currentNode.data.learningObjectives : [];
+      this.inheritedLearningObjectives = [];
+      // Modules
+      if (this.children && this.children.length > 0) {
+        this.children.forEach(childM => {
+          if (childM.data && childM.data.learningObjectives) {
+            childM.data.learningObjectives.forEach(lo => {
+              this.inheritedLearningObjectives.push(lo);
+            });
+          }
+          // Courses
+          if (childM.children && childM.children.length > 0) {
+            childM.children.forEach(childC => {
+              if (childC.data && childC.data.learningObjectives) {
+                childC.data.learningObjectives.forEach(lo => {
+                  this.inheritedLearningObjectives.push(lo);
+                });
+              }
+              // Lectures
+              if (childC.children && childC.children.length > 0) {
+                childC.children.forEach(childL => {
+                  if (childL.data && childL.data.learningObjectives) {
+                    childL.data.learningObjectives.forEach(lo => {
+                      this.inheritedLearningObjectives.push(lo);
+                    });
+                  }
+                });
+              }
+            });
+          }
+        });
+      }
 
     } else {
       this._id = '';
@@ -76,6 +110,8 @@ export class StudyProgram extends Object {
       this.orgId = '';
       this.orgName = '';
       this.isEdited = true;
+      this.learningObjectives = [];
+      this.inheritedLearningObjectives = [];
     }
   }
 }
@@ -136,7 +172,7 @@ export class StudyProgramService {
     this.db
       .collection(collection)
       .doc<StudyProgram>(studyProgId)
-      .update({isEdited : isEditedVal});
+      .update({ isEdited: isEditedVal });
   }
 
   // This function is to save all child nodes in the tree in a format that firestore likes
