@@ -4,7 +4,6 @@ import { StudyProgramService, StudyProgram } from '../../services/studyprogram.s
 import { Base64img } from './base64img';
 import { ActivatedRoute } from '@angular/router';
 
-
 @Component({
     selector: 'app-popup',
     templateUrl: './popup.component.html',
@@ -170,9 +169,9 @@ export class PopupComponent implements OnInit {
             currentLinePoint = currentLinePoint + 8 * linesAff.length;
 
 
-          /*   doc.text(30, currentLinePoint, 'Organizing entities:');
-            doc.text(30, currentLinePoint, this.selectedSP.affiliation);
-            currentLinePoint = currentLinePoint + 8; */
+            /*   doc.text(30, currentLinePoint, 'Organizing entities:');
+              doc.text(30, currentLinePoint, this.selectedSP.affiliation);
+              currentLinePoint = currentLinePoint + 8; */
         }
         if (this.selectedSP.eqf && this.selectedSP.eqf > 0) {
             doc.setFontSize(12).setTextColor('#1a80b6').setFontType('bold'); // headline
@@ -184,11 +183,22 @@ export class PopupComponent implements OnInit {
             doc.text(30, currentLinePoint, 'Semesters: ' + this.selectedSP.numSemesters);
             currentLinePoint = currentLinePoint + 7;
         }
-        if (this.selectedSP.field != null) {
-            doc.setTextColor('#000').setFontType('normal').setFontSize(10);
-            doc.text(30, currentLinePoint, 'Study area: ' + this.selectedSP.field.name + ' (' + this.selectedSP.field.grandparent + ')');
-            currentLinePoint = currentLinePoint + 8;
+        if (this.selectedSP.fields == null && this.selectedSP.field != null) {
+            this.selectedSP.fields = [];
+            this.selectedSP.fields.push(this.selectedSP.field);
         }
+        if (this.selectedSP.fields && this.selectedSP.fields.length > 0) {
+            this.selectedSP.fields.forEach(f => {
+                doc.setTextColor('#000').setFontType('normal').setFontSize(10);
+                doc.text(30, currentLinePoint, 'Study area: ' + f.name + ' (' + f.grandparent + ')');
+                currentLinePoint = currentLinePoint + 8;
+            });
+        }
+        /*    if (this.selectedSP.field != null) {
+               doc.setTextColor('#000').setFontType('normal').setFontSize(10);
+               doc.text(30, currentLinePoint, 'Study area: ' + this.selectedSP.field.name + ' (' + this.selectedSP.field.grandparent + ')');
+               currentLinePoint = currentLinePoint + 8;
+           } */
         if (this.selectedSP.description != null && this.selectedSP.description !== '') {
             currentLinePoint = currentLinePoint + 5;
             doc.setTextColor('#000').setFontType('normal');

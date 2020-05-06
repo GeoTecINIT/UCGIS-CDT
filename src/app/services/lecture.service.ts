@@ -19,12 +19,14 @@ export class Lecture extends Object {
   public userId: string;
   public affiliation: string;
   public levelPublic: Boolean;
-  public children: any[];
-  public _children: any[];
+  public children: null;
+  public _children: null;
   public eqf: number;
   public field: Field;
+  public fields: Field[];
   public orgId: string;
   public orgName: string;
+  public learningObjectives: BokInput[];
 
   data: any;
 
@@ -45,12 +47,17 @@ export class Lecture extends Object {
       this.userId = currentNode.data.userId ? currentNode.data.userId : '';
       this.affiliation = currentNode.data.affiliation ? currentNode.data.affiliation : '';
       this.levelPublic = currentNode.data.levelPublic != null ? currentNode.data.levelPublic : true;
-      this.children = [];
-      this._children = [];
+      this.children = null;
+      this._children = null;
       this.eqf = currentNode.data.eqf ? currentNode.data.eqf : 0;
       this.field = currentNode.data.field ? currentNode.data.field : null;
+      this.fields = currentNode.data.fields ? currentNode.data.fields : [];
+      if (this.field !== null && this.fields.length === 0) {
+        this.fields.push(this.field);
+      }
       this.orgId = currentNode.data.orgId ? currentNode.data.orgId : '';
       this.orgName = currentNode.data.orgName ? currentNode.data.orgName : '';
+      this.learningObjectives = currentNode.data.learningObjectives ? currentNode.data.learningObjectives : [];
 
     } else {
       this._id = '';
@@ -64,12 +71,14 @@ export class Lecture extends Object {
       this.userId = '';
       this.affiliation = '';
       this.levelPublic = true;
-      this.children = [];
-      this._children = [];
+      this.children = null;
+      this._children = null;
       this.eqf = 0;
       this.field = null;
+      this.fields = [];
       this.orgId = '';
       this.orgName = '';
+      this.learningObjectives = [];
     }
   }
 }

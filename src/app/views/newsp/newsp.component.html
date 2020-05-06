@@ -5,7 +5,12 @@
       <div class="card card-accent-primary">
         <div class="card-header">
           <div class="row">
-            <div class="col-md-12 text-center mb-3">
+            <div *ngIf="userOrgs.length == 0" class="col-sm-12 col-md-12">
+              <button type="button" class="btn btn-block btn-link text-secondary" routerLink="/organization">
+                &nbsp;You need to join or create an organization before you can save an occupational profile.
+              </button>
+            </div>
+            <div *ngIf="userOrgs.length > 0" class="col-md-12 text-center mb-3">
               <div class="btn-group" dropdown>
                 <button id="button-animated" dropdownToggle type="button"
                   class="btn btn-pill btn-primary dropdown-toggle" aria-controls="dropdown-animated">
@@ -49,44 +54,50 @@
             </div>
             <div class="col-sm-6 col-md-3">
               <ng-select *ngIf="userOrgs.length > 0 && userOrgs.length == currentUser.organizations.length"
-                [items]="userOrgs" name="userOrgs" bindLabel="name" [multiple]="false" [(ngModel)]="saveOrg">
+                [items]="userOrgs" name="userOrgs" bindLabel="name" [multiple]="false" [(ngModel)]="saveOrg"
+                (change)="isSaved = false">
                 <ng-template ng-optgroup-tmp let-item="item">
                   {{item.name}}
                 </ng-template>
               </ng-select>
-              <button *ngIf="userOrgs.length == 0" type="button" class="btn btn-block btn-link text-secondary"
-                routerLink="/organization">
+            </div>
+            <div *ngIf="userOrgs.length == 0" class="col-sm-12 col-md-12">
+              <button type="button" class="btn btn-block btn-link text-secondary" routerLink="/organization">
                 &nbsp;You need to join or create an organization before you can save an occupational profile.
               </button>
             </div>
-            <div class="col-sm-6 col-md-3" style="display: inline-flex" [hidden]="!currentTreeNode">
+            <div *ngIf="userOrgs.length > 0" class="col-sm-6 col-md-3" style="display: inline-flex"
+              [hidden]="!currentTreeNode">
               <span class="input-group-prepend">
                 <div class="pr-1"> Visibility: Private </div>
                 <label class="switch switch-label switch-pill switch-outline-primary-alt">
-                  <input class="switch-input" type="checkbox" value="knowledges"
-                    [(ngModel)]="model && model.levelPublic" />
+                  <input class="switch-input" type="checkbox" [(ngModel)]="levelPublic" (change)="isSaved = false"
+                    name="levelPublic" />
                   <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
                 </label>
                 <div class="pl-1">Public</div>
               </span>
               <span style="display:inline-table; margin:2px"
-                tooltip="If visibility is private, users in this organization can still see it. But users not logged in won't be able to see it."
+                tooltip="If visibility is private, users in this organization can still see it. But users not logged in won't be able to see it. Visibility by default is public."
                 class="badge badge-primary badge-pill">i</span>
             </div>
-            <div class="col-sm-6 col-md-4 text-right">
+            <div *ngIf="userOrgs.length > 0" class="col-sm-6 col-md-4 text-right">
               <!-- <div>{{textSaved}}</div>-->
-            <!--   <button type="submit" class="btn btn-pill btn-primary" (click)="saveStudyProgram()"
+              <button type="submit" class="btn btn-pill btn-primary" (click)="saveStudyProgram()"
                 [hidden]="!currentTreeNode" [ngClass]="{'success': isSaved}">
                 <i class="fa fa-save"></i> Save
-              </button> -->
+              </button>
               <button type="submit" class="btn btn-pill btn-primary" (click)="saveStudyProgram()" routerLink="/list"
                 [hidden]="!currentTreeNode">
                 <i class="icon-home"></i> Save and Exit
               </button>
             </div>
           </div>
-
-
+          <div class="row">
+            <div class="col-md-12">
+              <p class="text-center text-danger"> {{otherUserEditingWarningText}} </p>
+            </div>
+          </div>
         </div>
         <!-- card body -->
         <div class="card-body">
@@ -134,7 +145,8 @@
                             <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of model.linksToBok; index as i ">
                               <p class="text-small" *ngIf="l.linkedTo=='name'">{{l.concept_id }} <button type="button"
-                                  class="btn btn-link btn-xs" (click)="removeBokKnowledge(model, i, 'linksToBok')">
+                                  class="btn btn-link btn-xs" tooltip="Click to remove"
+                                  (click)="removeBokKnowledge(model, i, 'linksToBok')">
                                   <i class="fa fa-remove"></i>
                                 </button></p>
                             </div>
@@ -170,12 +182,12 @@
                     <div class="row">
                       <div class="col-md-9">
                         <div class="form-group">
-                          <label for="field">Field of study</label>
+                          <label for="field">Study areas</label>
                           <span
                             tooltip="The term relates directly to a specific area of study. The International Standard Classification of Education: Fields of Education and Training 2013 (ISCED-F). Maintained by the UNESCO Institute for Statistics."
                             class="badge badge-primary badge-pill">i</span>
-                          <ng-select [items]="fieldsService.allfields" name="field" bindLabel="name"
-                            groupBy="grandparent" [multiple]="false" [(ngModel)]="model.field">
+                          <ng-select [items]="fieldsService.allfields" name="fields" bindLabel="name"
+                            groupBy="grandparent" [multiple]="true" [(ngModel)]="model.fields">
                             <ng-template ng-optgroup-tmp let-item="item">
                               {{item.grandparent || 'Unnamed group'}}
                             </ng-template>
@@ -193,18 +205,33 @@
                         </div>
                       </div>
                     </div>
+                    <div class="row" *ngIf="model.fields.length > 0">
+                      <div class="col-md-12">
+                        <label for="numSemesters">Study areas ({{model.fields.length}})</label>
+                        <ul>
+                          <div *ngFor="let f of model.fields; index as i ">
+                            <li>
+                              <p>{{f.name}} ({{f.grandparent}}) <button type="button" class="btn btn-link btn-xs"
+                                  (click)="model.fields.splice(i, 1)">
+                                  <i class="fa fa-remove"></i>
+                                </button></p>
+                            </li>
+                          </div>
+                        </ul>
+                      </div>
+                    </div>
                     <div class="row">
-                      <div class="col-md-10">
+                      <div class="col-md-9">
                         <div class="form-group">
                           <label for="description">Description</label>
                           <textarea class="form-control" id="description" name="description"
                             placeholder="Add a short introduction and other information relevant to the study program..."
-                            [(ngModel)]="model.description" rows="4" (keyup)="updateTreeStudyProgram()"></textarea>
+                            [(ngModel)]="model.description" rows="4" (keyup)="updateTreeStudyProgram()"> </textarea>
                           <div *ngIf="model.linksToBok.length > 0" style="display: flex;">
                             <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of model.linksToBok; index as i ">
                               <p class="text-small" *ngIf="l.linkedTo=='description'">{{l.concept_id }} <button
-                                  type="button" class="btn btn-link btn-xs"
+                                  type="button" class="btn btn-link btn-xs" tooltip="Click to remove"
                                   (click)="removeBokKnowledge(model, i, 'linksToBok')">
                                   <i class="fa fa-remove"></i>
                                 </button></p>
@@ -212,13 +239,110 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-2 align-middle m-auto">
+                      <div class="col-md-3 align-middle m-auto">
                         <button type="button" class="btn btn-primary btn-sm"
                           (click)="bokModal.show(); linkBoKto='description'">
                           Link BoK description
                         </button>
                       </div>
                     </div>
+
+                    <div class="row">
+                      <div class="col-md-9">
+                        <div class="form-group">
+                          <label for="title">
+                            <button type="button" class="btn btn-link btn-xs"
+                              (click)="showStudyILO.classList.contains('hidden') ? showStudyILO.className = 'row' : showStudyILO.className = 'row hidden' ">
+                              <i [tooltip]="showStudyILO.classList.contains('hidden')? 'Show' : 'Hide'"
+                                [ngClass]="showStudyILO.classList.contains('hidden')? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
+                            </button>
+                            Inherited Learning Outcomes ({{model.inheritedLearningObjectives.length}})</label>
+                          <div class="row" #showStudyILO>
+                            <div class="col-md-12">
+                              <div *ngIf="model && model.inheritedLearningObjectives">
+                                <ul>
+                                  <div *ngFor="let p of model.inheritedLearningObjectives; index as i ">
+                                    <li>{{p.name}}
+                                    </li>
+                                  </div>
+                                </ul>
+                              </div>
+                              <div
+                                *ngIf="!model.inheritedLearningObjectives || model.inheritedLearningObjectives.length == 0"
+                                class="text-placeholder">
+                                Add some courses and explore BoK to add some.
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3 align-middle m-auto">
+                        <button type="button" class="btn btn-primary btn-sm" disabled>
+                          Inherited from children learning content
+                        </button>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-9">
+                        <div class="form-group">
+                          <label for="title">
+                            <button type="button" class="btn btn-link btn-xs"
+                              (click)="showStudyLO.classList.contains('hidden') ? showStudyLO.className = 'row' : showStudyLO.className = 'row hidden' ">
+                              <i [tooltip]="showStudyLO.classList.contains('hidden')? 'Show' : 'Hide'"
+                                [ngClass]="showStudyLO.classList.contains('hidden')? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
+                            </button>
+                            Learning Outcomes ({{model.learningObjectives.length}})</label>
+                          <div class="row" #showStudyLO>
+                            <div class="col-md-12">
+                              <div *ngIf="model && model.learningObjectives">
+                                <ul>
+                                  <div *ngFor="let p of model.learningObjectives; index as i ">
+                                    <li>{{p.name}} <button type="button" class="btn btn-link" tooltip="Click to remove"
+                                        (click)="removeBokKnowledge(model, i, 'learningObjectives')">
+                                        <i class="fa fa-remove"></i>
+                                      </button></li>
+                                  </div>
+                                </ul>
+                              </div>
+                              <div *ngIf="!model.learningObjectives || model.learningObjectives.length == 0"
+                                class="text-placeholder">
+                                Explore the Body of Knowledge to add some or add custom learning outcomes.
+                              </div>
+                              <div *ngIf="model.linksToBok.length > 0" style="display: flex;">
+                                <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
+                                <div *ngFor="let l of model.linksToBok; index as i ">
+                                  <p class="text-small" *ngIf="l.linkedTo=='learningObjectives'">{{l.concept_id }}
+                                    <button type="button" class="btn btn-link btn-xs" tooltip="Click to remove"
+                                      (click)="removeBokKnowledge(model, i, 'linksToBok')">
+                                      <i class="fa fa-remove"></i>
+                                    </button></p>
+                                </div>
+                              </div>
+                              <br>
+                              <div class="row">
+                                <div class="col-md-2"></div>
+                                <div class="col-md-6">
+                                  <input type="text" class="form-control" id="customLO"
+                                    placeholder="Add custom learning outcome" [(ngModel)]="customLO" name="customLO" />
+                                </div>
+                                <div class="col-md-4">
+                                  <button type="button" class="btn btn-primary btn-sm" (click)="addCustomLO(model)">
+                                    Add custom LO
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3 align-middle m-auto">
+                        <button type="button" class="btn btn-primary btn-sm"
+                          (click)="bokModal.show(); linkBoKto='learningObjectives'">
+                          Link BoK learning outcomes
+                        </button>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
               </div>
@@ -249,7 +373,7 @@
                             <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of modelModule.linksToBok; index as i ">
                               <p class="text-small" *ngIf="l.linkedTo=='name'">{{l.concept_id }} <button type="button"
-                                  class="btn btn-link btn-xs"
+                                  class="btn btn-link btn-xs" tooltip="Click to remove"
                                   (click)="removeBokKnowledge(modelModule, i, 'linksToBok')">
                                   <i class="fa fa-remove"></i>
                                 </button></p>
@@ -283,6 +407,33 @@
                             name="eqf" min="1" max="8" (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="field">Study areas</label>
+                          <span
+                            tooltip="The term relates directly to a specific area of study. The International Standard Classification of Education: Fields of Education and Training 2013 (ISCED-F). Maintained by the UNESCO Institute for Statistics."
+                            class="badge badge-primary badge-pill">i</span>
+                          <ng-select [items]="fieldsService.allfields" name="fields" bindLabel="name"
+                            groupBy="grandparent" [multiple]="true" [(ngModel)]="modelModule.fields">
+                            <ng-template ng-optgroup-tmp let-item="item">
+                              {{item.grandparent || 'Unnamed group'}}
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                      </div>
+                      <div class="col-md-12" *ngIf="modelModule.fields.length > 0">
+                        <label for="numSemesters">Selected study areas ({{modelModule.fields.length}})</label>
+                        <ul>
+                          <div *ngFor="let f of modelModule.fields; index as i ">
+                            <li>
+                              <p>{{f.name}} ({{f.grandparent}}) <button type="button" class="btn btn-link btn-xs"
+                                  (click)="modelModule.fields.splice(i, 1)">
+                                  <i class="fa fa-remove"></i>
+                                </button></p>
+                            </li>
+                          </div>
+                        </ul>
+                      </div>
                     </div>
                     <div class="row">
                       <div class="col-md-6">
@@ -306,18 +457,18 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-10">
+                      <div class="col-md-9">
                         <div class="form-group">
                           <label for="description">Description</label>
                           <textarea class="form-control" id="description" name="description"
                             [(ngModel)]="modelModule.description" rows="4"
                             placeholder="Add a short introduction and other information relevant to the module..."
-                            (keyup)="updateTreeStudyProgram()"></textarea>
+                            (keyup)="updateTreeStudyProgram()"> </textarea>
                           <div *ngIf="modelModule.linksToBok.length > 0" style="display: flex;">
                             <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of modelModule.linksToBok; index as i ">
                               <p class="text-small" *ngIf="l.linkedTo=='description'">{{l.concept_id }} <button
-                                  type="button" class="btn btn-link btn-xs"
+                                  type="button" class="btn btn-link btn-xs" tooltip="Click to remove"
                                   (click)="removeBokKnowledge(modelModule, i, 'linksToBok')">
                                   <i class="fa fa-remove"></i>
                                 </button></p>
@@ -325,7 +476,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-2 align-middle m-auto">
+                      <div class="col-md-3 align-middle m-auto">
                         <button type="button" class="btn btn-primary btn-sm"
                           (click)="bokModal.show(); linkBoKto='description'">
                           Link BoK description
@@ -333,7 +484,7 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-10">
+                      <div class="col-md-9">
                         <div class="form-group">
                           <label for="prerequisites">Prerequisites</label>
                           <div class="col-md-12">
@@ -341,6 +492,7 @@
                               <ul>
                                 <div *ngFor="let p of modelModule.prerequisites; index as i ">
                                   <li>{{p.concept_id}} <button type="button" class="btn btn-link"
+                                      tooltip="Click to remove"
                                       (click)="removeBokKnowledge(modelModule, i, 'prerequisites')">
                                       <i class="fa fa-remove"></i>
                                     </button></li>
@@ -354,43 +506,35 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-2 align-middle m-auto">
+                      <div class="col-md-3 align-middle m-auto">
                         <button type="button" class="btn btn-primary btn-sm"
                           (click)="bokModal.show(); linkBoKto='prerequisites'">
                           Link BoK prerequisite
                         </button>
                       </div>
-                      <!--     <div class="col-md-12 align-middle m-auto">
-                        <div *ngIf="modelModule.linksToBok.length" style="display: flex;">
-                          <div *ngFor="let l of modelModule.linksToBok; index as i ">
-                            <p class="text-small" *ngIf="l.linkedTo=='prerequisites'">{{l.concept_id }} <button
-                                type="button" class="btn btn-link btn-sm"
-                                (click)="removeBokKnowledge(modelModule, i, 'linksToBok')">
-                                <i class="fa fa-remove"></i>
-                              </button></p>
-                          </div>
-                        </div>
-                      </div> -->
                     </div>
                     <div class="row">
-                      <div class="col-md-10">
+                      <div class="col-md-9">
                         <div class="form-group">
-                          <label for="title">Learning Outcomes</label>
-                          <div class="row">
+                          <label for="title">
+                            <button type="button" class="btn btn-link btn-xs"
+                              (click)="showModuleILO.classList.contains('hidden') ? showModuleILO.className = 'row' : showModuleILO.className = 'row hidden' ">
+                              <i [tooltip]="showModuleILO.classList.contains('hidden')? 'Show' : 'Hide'"
+                                [ngClass]="showModuleILO.classList.contains('hidden')? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
+                            </button>
+                            Inherited Learning Outcomes ({{modelModule.inheritedLearningObjectives.length}})</label>
+                          <div class="row" #showModuleILO>
                             <div class="col-md-12">
-                              <div *ngIf="modelModule && modelModule.learningObjectives">
+                              <div *ngIf="modelModule && modelModule.inheritedLearningObjectives">
                                 <ul>
-                                  <div *ngFor="let p of modelModule.learningObjectives; index as i ">
+                                  <div *ngFor="let p of modelModule.inheritedLearningObjectives; index as i ">
                                     <li>{{p.name}}
-                                      <!-- <button type="button" class="btn btn-link"
-                                        (click)="removeBokKnowledge(modelModule, i, 'learningObjectives')">
-                                        <i class="fa fa-remove"></i>
-                                      </button> -->
                                     </li>
                                   </div>
                                 </ul>
                               </div>
-                              <div *ngIf="!modelModule.learningObjectives || modelModule.learningObjectives.length == 0"
+                              <div
+                                *ngIf="!modelModule.inheritedLearningObjectives || modelModule.inheritedLearningObjectives.length == 0"
                                 class="text-placeholder">
                                 Add some courses and explore BoK to add some.
                               </div>
@@ -398,9 +542,70 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-2 align-middle m-auto">
+                      <div class="col-md-3 align-middle m-auto">
                         <button type="button" class="btn btn-primary btn-sm" disabled>
-                          Inherited from child courses
+                          Inherited from children learning content
+                        </button>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-9">
+                        <div class="form-group">
+                          <label for="title">
+                            <button type="button" class="btn btn-link btn-xs"
+                              (click)="showModuleLO.classList.contains('hidden') ? showModuleLO.className = 'row' : showModuleLO.className = 'row hidden' ">
+                              <i [tooltip]="showModuleLO.classList.contains('hidden')? 'Show' : 'Hide'"
+                                [ngClass]="showModuleLO.classList.contains('hidden')? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
+                            </button>
+                            Learning Outcomes ({{modelModule.learningObjectives.length}})</label>
+                          <div class="row" #showModuleLO>
+                            <div class="col-md-12">
+                              <div *ngIf="modelModule && modelModule.learningObjectives">
+                                <ul>
+                                  <div *ngFor="let p of modelModule.learningObjectives; index as i ">
+                                    <li>{{p.name}} <button type="button" class="btn btn-link" tooltip="Click to remove"
+                                        (click)="removeBokKnowledge(modelModule, i, 'learningObjectives')">
+                                        <i class="fa fa-remove"></i>
+                                      </button></li>
+                                  </div>
+                                </ul>
+                              </div>
+                              <div *ngIf="!modelModule.learningObjectives || modelModule.learningObjectives.length == 0"
+                                class="text-placeholder">
+                                Explore the Body of Knowledge to add some or add custom learning outcomes.
+                              </div>
+                              <div *ngIf="modelModule.linksToBok.length > 0" style="display: flex;">
+                                <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
+                                <div *ngFor="let l of modelModule.linksToBok; index as i ">
+                                  <p class="text-small" *ngIf="l.linkedTo=='learningObjectives'">{{l.concept_id }}
+                                    <button type="button" class="btn btn-link btn-xs" tooltip="Click to remove"
+                                      (click)="removeBokKnowledge(modelModule, i, 'linksToBok')">
+                                      <i class="fa fa-remove"></i>
+                                    </button></p>
+                                </div>
+                              </div>
+                              <br>
+                              <div class="row">
+                                <div class="col-md-2"></div>
+                                <div class="col-md-6">
+                                  <input type="text" class="form-control" id="customLO"
+                                    placeholder="Add custom learning outcome" [(ngModel)]="customLO" name="customLO" />
+                                </div>
+                                <div class="col-md-4">
+                                  <button type="button" class="btn btn-primary btn-sm"
+                                    (click)="addCustomLO(modelModule)">
+                                    Add custom LO
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3 align-middle m-auto">
+                        <button type="button" class="btn btn-primary btn-sm"
+                          (click)="bokModal.show(); linkBoKto='learningObjectives'">
+                          Link BoK learning outcomes
                         </button>
                       </div>
                     </div>
@@ -434,7 +639,7 @@
                             <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of modelCourse.linksToBok; index as i ">
                               <p class="text-small" *ngIf="l.linkedTo=='name'">{{l.concept_id }} <button type="button"
-                                  class="btn btn-link btn-xs"
+                                  class="btn btn-link btn-xs" tooltip="Click to remove"
                                   (click)="removeBokKnowledge(modelCourse, i, 'linksToBok')">
                                   <i class="fa fa-remove"></i>
                                 </button></p>
@@ -450,24 +655,13 @@
                       </div>
                     </div>
                     <div class="row" *ngIf="highestItemLevel == 2">
-                      <div class="col-md-8">
+                      <div class="col-md-10">
                         <div class="form-group">
                           <label for="title">Affiliation</label>
                           <input type="text" class="form-control" id="affiliation" placeholder="Affiliation"
                             [(ngModel)]="modelCourse.affiliation" name="affiliation" required
                             (keyup)="updateTreeStudyProgram()" />
                         </div>
-                      </div>
-                      <div class="col-md-2">
-                        <div class="form-group">
-                          <label for="eqf">Type</label>
-                          <span tooltip="Specify course type if needed." class="badge badge-primary badge-pill">i</span>
-                        </div>
-                        <select [(ngModel)]="modelCourse.type">
-                          <option value="Common">Common</option>
-                          <option value="Specialization">Specialization</option>
-                          <option value="Elective">Elective</option>
-                        </select>
                       </div>
                       <div class="col-md-2">
                         <div class="form-group">
@@ -479,9 +673,50 @@
                             name="eqf" min="1" max="8" (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="field">Study areas </label>
+                          <span
+                            tooltip="The term relates directly to a specific area of study. The International Standard Classification of Education: Fields of Education and Training 2013 (ISCED-F). Maintained by the UNESCO Institute for Statistics."
+                            class="badge badge-primary badge-pill">i</span>
+                          <ng-select [items]="fieldsService.allfields" name="fields" bindLabel="name"
+                            groupBy="grandparent" [multiple]="true" [(ngModel)]="modelCourse.fields">
+                            <ng-template ng-optgroup-tmp let-item="item">
+                              {{item.grandparent || 'Unnamed group'}}
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                      </div>
+                      <div class="col-md-12" *ngIf="modelCourse.fields.length > 0">
+                        <label for="numSemesters">Selected study areas ({{modelCourse.fields.length}})</label>
+                        <ul>
+                          <div *ngFor="let f of modelCourse.fields; index as i ">
+                            <li>
+                              <p>{{f.name}} ({{f.grandparent}}) <button type="button" class="btn btn-link btn-xs"
+                                  (click)="modelCourse.fields.splice(i, 1)">
+                                  <i class="fa fa-remove"></i>
+                                </button></p>
+                            </li>
+                          </div>
+                        </ul>
+                      </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-10">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="eqf">Type</label>
+                          <span tooltip="Specify course type if needed." class="badge badge-primary badge-pill">i</span>
+                          <select [(ngModel)]="modelCourse.type" (change)="isSaved = false">
+                            <option value=""></option>
+                            <option value="Common">Common</option>
+                            <option value="Specialization">Specialization</option>
+                            <option value="Elective">Elective</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-9">
                         <div class="form-group">
                           <label for="description">Description</label>
                           <textarea class="form-control" id="description" placeholder="Description" name="description"
@@ -491,7 +726,7 @@
                             <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of modelCourse.linksToBok; index as i ">
                               <p class="text-small" *ngIf="l.linkedTo=='description'">{{l.concept_id }} <button
-                                  type="button" class="btn btn-link btn-xs"
+                                  type="button" class="btn btn-link btn-xs" tooltip="Click to remove"
                                   (click)="removeBokKnowledge(modelCourse, i, 'linksToBok')">
                                   <i class="fa fa-remove"></i>
                                 </button></p>
@@ -499,7 +734,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-2 align-middle m-auto">
+                      <div class="col-md-3 align-middle m-auto">
                         <button type="button" class="btn btn-primary btn-sm"
                           (click)="bokModal.show(); linkBoKto='description'">
                           Link BoK description
@@ -507,7 +742,7 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-10">
+                      <div class="col-md-9">
                         <div class="form-group">
                           <label for="title">Prerequisites</label>
                           <div class="row">
@@ -516,6 +751,7 @@
                                 <ul>
                                   <div *ngFor="let p of modelCourse.prerequisites; index as i ">
                                     <li>{{p.concept_id}} <button type="button" class="btn btn-link"
+                                        tooltip="Click to remove"
                                         (click)="removeBokKnowledge(modelCourse, i, 'prerequisites')">
                                         <i class="fa fa-remove"></i>
                                       </button></li>
@@ -530,7 +766,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-2 align-middle m-auto">
+                      <div class="col-md-3 align-middle m-auto">
                         <button type="button" class="btn btn-primary btn-sm"
                           (click)="bokModal.show(); linkBoKto='prerequisites'">
                           Link BoK prerequisite
@@ -538,67 +774,6 @@
                       </div>
                       <!-- <div *ngFor="let l of modelCourse.linksToBok; index as i ">
                         <p class="text-small" *ngIf="l.linkedTo=='prerequisites'">{{l.concept_id }} <button
-                            type="button" class="btn btn-link btn-sm"
-                            (click)="removeBokKnowledge(modelCourse, i, 'linksToBok')">
-                            <i class="fa fa-remove"></i>
-                          </button></p>
-                      </div> -->
-                    </div>
-                    <div class="row">
-                      <div class="col-md-10">
-                        <div class="form-group">
-                          <label for="title">Learning Outcomes</label>
-                          <div class="row">
-                            <div class="col-md-12">
-                              <div *ngIf="modelCourse && modelCourse.learningObjectives">
-                                <ul>
-                                  <div *ngFor="let p of modelCourse.learningObjectives; index as i ">
-                                    <li>{{p.name}} <button type="button" class="btn btn-link"
-                                        (click)="removeBokKnowledge(modelCourse, i, 'learningObjectives')">
-                                        <i class="fa fa-remove"></i>
-                                      </button></li>
-                                  </div>
-                                </ul>
-                              </div>
-                              <div *ngIf="!modelCourse.learningObjectives || modelCourse.learningObjectives.length == 0"
-                                class="text-placeholder">
-                                Explore the Body of Knowledge to add some or add custom learning outcomes.
-                              </div>
-                              <div *ngIf="modelCourse.linksToBok.length > 0" style="display: flex;">
-                                <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
-                                <div *ngFor="let l of modelCourse.linksToBok; index as i ">
-                                  <p class="text-small" *ngIf="l.linkedTo=='learningObjectives'">{{l.concept_id }}
-                                    <button type="button" class="btn btn-link btn-xs"
-                                      (click)="removeBokKnowledge(modelCourse, i, 'linksToBok')">
-                                      <i class="fa fa-remove"></i>
-                                    </button></p>
-                                </div>
-                              </div>
-                              <br>
-                              <div class="row">
-                                <div class="col-md-2"></div>
-                                <div class="col-md-6">
-                                  <input type="text" class="form-control" id="customLO"
-                                    placeholder="Add custom learning outcome" [(ngModel)]="customLO" name="customLO" />
-                                </div>
-                                <div class="col-md-4">
-                                  <button type="button" class="btn btn-primary btn-sm" (click)="addCustomLO()">
-                                    Add custom LO
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-2 align-middle m-auto">
-                        <button type="button" class="btn btn-primary btn-sm"
-                          (click)="bokModal.show(); linkBoKto='learningObjectives'">
-                          Link BoK learning outcomes
-                        </button>
-                      </div>
-                      <!--      <div *ngFor="let l of modelCourse.linksToBok; index as i ">
-                        <p class="text-small" *ngIf="l.linkedTo=='learningObjectives'">{{l.concept_id }} <button
                             type="button" class="btn btn-link btn-sm"
                             (click)="removeBokKnowledge(modelCourse, i, 'linksToBok')">
                             <i class="fa fa-remove"></i>
@@ -639,7 +814,103 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-10">
+                      <div class="col-md-9">
+                        <div class="form-group">
+                          <label for="title">
+                            <button type="button" class="btn btn-link btn-xs"
+                              (click)="showCourseILO.classList.contains('hidden') ? showCourseILO.className = 'row' : showCourseILO.className = 'row hidden' ">
+                              <i [tooltip]="showCourseILO.classList.contains('hidden')? 'Show' : 'Hide'"
+                                [ngClass]="showCourseILO.classList.contains('hidden')? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
+                            </button>
+                            Inherited Learning Outcomes ({{modelCourse.inheritedLearningObjectives.length}})</label>
+                          <div class="row" #showCourseILO>
+                            <div class="col-md-12">
+                              <div *ngIf="modelCourse && modelCourse.inheritedLearningObjectives">
+                                <ul>
+                                  <div *ngFor="let p of modelCourse.inheritedLearningObjectives; index as i ">
+                                    <li>{{p.name}}
+                                    </li>
+                                  </div>
+                                </ul>
+                              </div>
+                              <div
+                                *ngIf="!modelCourse.inheritedLearningObjectives || modelCourse.inheritedLearningObjectives.length == 0"
+                                class="text-placeholder">
+                                Add some courses and explore BoK to add some.
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3 align-middle m-auto">
+                        <button type="button" class="btn btn-primary btn-sm" disabled>
+                          Inherited from children learning content
+                        </button>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-9">
+                        <div class="form-group">
+                          <label for="title">
+                            <button type="button" class="btn btn-link btn-xs"
+                              (click)="showCourseLO.classList.contains('hidden') ? showCourseLO.className = 'row' : showCourseLO.className = 'row hidden' ">
+                              <i [tooltip]="showCourseLO.classList.contains('hidden')? 'Show' : 'Hide'"
+                                [ngClass]="showCourseLO.classList.contains('hidden')? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
+                            </button>
+                            Learning Outcomes ({{modelCourse.learningObjectives.length}})</label>
+                          <div class="row" #showCourseLO>
+                            <div class="col-md-12">
+                              <div *ngIf="modelCourse && modelCourse.learningObjectives">
+                                <ul>
+                                  <div *ngFor="let p of modelCourse.learningObjectives; index as i ">
+                                    <li>{{p.name}} <button type="button" class="btn btn-link" tooltip="Click to remove"
+                                        (click)="removeBokKnowledge(modelCourse, i, 'learningObjectives')">
+                                        <i class="fa fa-remove"></i>
+                                      </button></li>
+                                  </div>
+                                </ul>
+                              </div>
+                              <div *ngIf="!modelCourse.learningObjectives || modelCourse.learningObjectives.length == 0"
+                                class="text-placeholder">
+                                Explore the Body of Knowledge to add some or add custom learning outcomes.
+                              </div>
+                              <div *ngIf="modelCourse.linksToBok.length > 0" style="display: flex;">
+                                <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
+                                <div *ngFor="let l of modelCourse.linksToBok; index as i ">
+                                  <p class="text-small" *ngIf="l.linkedTo=='learningObjectives'">{{l.concept_id }}
+                                    <button type="button" class="btn btn-link btn-xs" tooltip="Click to remove"
+                                      (click)="removeBokKnowledge(modelCourse, i, 'linksToBok')">
+                                      <i class="fa fa-remove"></i>
+                                    </button></p>
+                                </div>
+                              </div>
+                              <br>
+                              <div class="row">
+                                <div class="col-md-2"></div>
+                                <div class="col-md-6">
+                                  <input type="text" class="form-control" id="customLO"
+                                    placeholder="Add custom learning outcome" [(ngModel)]="customLO" name="customLO" />
+                                </div>
+                                <div class="col-md-4">
+                                  <button type="button" class="btn btn-primary btn-sm"
+                                    (click)="addCustomLO(modelCourse)">
+                                    Add custom LO
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3 align-middle m-auto">
+                        <button type="button" class="btn btn-primary btn-sm"
+                          (click)="bokModal.show(); linkBoKto='learningObjectives'">
+                          Link BoK learning outcomes
+                        </button>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-9">
                         <div class="form-group">
                           <label for="bibliography">Bibliography</label>
                           <span
@@ -650,7 +921,7 @@
                               <div *ngIf="modelCourse && modelCourse.bibliography">
                                 <ul>
                                   <div *ngFor="let b of modelCourse.bibliography; index as i ">
-                                    <li>{{b.name}} <button type="button" class="btn btn-link"
+                                    <li>{{b.name}} <button type="button" class="btn btn-link" tooltip="Click to remove"
                                         (click)="removeBokKnowledge(modelCourse, i, 'bibliography')">
                                         <i class="fa fa-remove"></i>
                                       </button></li>
@@ -665,7 +936,7 @@
                                 <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                                 <div *ngFor="let l of modelCourse.linksToBok; index as i ">
                                   <p class="text-small" *ngIf="l.linkedTo=='bibliography'">{{l.concept_id }}
-                                    <button type="button" class="btn btn-link btn-xs"
+                                    <button type="button" class="btn btn-link btn-xs" tooltip="Click to remove"
                                       (click)="removeBokKnowledge(modelCourse, i, 'bibliography')">
                                       <i class="fa fa-remove"></i>
                                     </button></p>
@@ -684,7 +955,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-2 align-middle m-auto">
+                      <div class="col-md-3 align-middle m-auto">
                         <button type="button" class="btn btn-primary btn-sm"
                           (click)="bokModal.show(); linkBoKto='bibliography'">
                           Link BoK bibliography
@@ -723,7 +994,7 @@
                             <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of modelLecture.linksToBok; index as i ">
                               <p class="text-small" *ngIf="l.linkedTo=='name'">{{l.concept_id }} <button type="button"
-                                  class="btn btn-link btn-xs"
+                                  class="btn btn-link btn-xs" tooltip="Click to remove"
                                   (click)="removeBokKnowledge(modelLecture, i, 'linksToBok')">
                                   <i class="fa fa-remove"></i>
                                 </button></p>
@@ -757,20 +1028,47 @@
                             name="eqf" min="1" max="8" (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="field">Study areas </label>
+                          <span
+                            tooltip="The term relates directly to a specific area of study. The International Standard Classification of Education: Fields of Education and Training 2013 (ISCED-F). Maintained by the UNESCO Institute for Statistics."
+                            class="badge badge-primary badge-pill">i</span>
+                          <ng-select [items]="fieldsService.allfields" name="fields" bindLabel="name"
+                            groupBy="grandparent" [multiple]="true" [(ngModel)]="modelLecture.fields">
+                            <ng-template ng-optgroup-tmp let-item="item">
+                              {{item.grandparent || 'Unnamed group'}}
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                      </div>
+                      <div class="col-md-12" *ngIf="modelLecture.fields.length > 0">
+                        <label for="numSemesters">Selected study areas ({{modelLecture.fields.length}})</label>
+                        <ul>
+                          <div *ngFor="let f of modelLecture.fields; index as i ">
+                            <li>
+                              <p>{{f.name}} ({{f.grandparent}}) <button type="button" class="btn btn-link btn-xs"
+                                  (click)="modelLecture.fields.splice(i, 1)">
+                                  <i class="fa fa-remove"></i>
+                                </button></p>
+                            </li>
+                          </div>
+                        </ul>
+                      </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-10">
+                      <div class="col-md-9">
                         <div class="form-group">
                           <label for="description">Description</label>
                           <textarea class="form-control" id="description" name="description"
                             [(ngModel)]="modelLecture.description" rows="4"
                             placeholder="Add a short introduction and other information relevant to the lecture..."
-                            (keyup)="updateTreeStudyProgram()"></textarea>
+                            (keyup)="updateTreeStudyProgram()"> </textarea>
                           <div *ngIf="modelLecture.linksToBok.length > 0" style="display: flex;">
                             <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                             <div *ngFor="let l of modelLecture.linksToBok; index as i ">
                               <p class="text-small" *ngIf="l.linkedTo=='description'">{{l.concept_id }} <button
-                                  type="button" class="btn btn-link btn-xs"
+                                  type="button" class="btn btn-link btn-xs" tooltip="Click to remove"
                                   (click)="removeBokKnowledge(modelLecture, i, 'linksToBok')">
                                   <i class="fa fa-remove"></i>
                                 </button></p>
@@ -778,7 +1076,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-2 align-middle m-auto">
+                      <div class="col-md-3 align-middle m-auto">
                         <button type="button" class="btn btn-primary btn-sm"
                           (click)="bokModal.show(); linkBoKto='description'">
                           Link BoK description
@@ -809,9 +1107,70 @@
                         </div>
                       </div>
                     </div>
-
                     <div class="row">
-                      <div class="col-md-10">
+                      <div class="col-md-9">
+                        <div class="form-group">
+                          <label for="title">
+                            <button type="button" class="btn btn-link btn-xs"
+                              (click)="showLectureLO.classList.contains('hidden') ? showLectureLO.className = 'row' : showLectureLO.className = 'row hidden' ">
+                              <i [tooltip]="showLectureLO.classList.contains('hidden')? 'Show' : 'Hide'"
+                                [ngClass]="showLectureLO.classList.contains('hidden')? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
+                            </button>
+                            Learning Outcomes ({{modelLecture.learningObjectives.length}})</label>
+                          <div class="row" #showLectureLO>
+                            <div class="col-md-12">
+                              <div *ngIf="modelLecture && modelLecture.learningObjectives">
+                                <ul>
+                                  <div *ngFor="let p of modelLecture.learningObjectives; index as i ">
+                                    <li>{{p.name}} <button type="button" class="btn btn-link" tooltip="Click to remove"
+                                        (click)="removeBokKnowledge(modelLecture, i, 'learningObjectives')">
+                                        <i class="fa fa-remove"></i>
+                                      </button></li>
+                                  </div>
+                                </ul>
+                              </div>
+                              <div
+                                *ngIf="!modelLecture.learningObjectives || modelLecture.learningObjectives.length == 0"
+                                class="text-placeholder">
+                                Explore the Body of Knowledge to add some or add custom learning outcomes.
+                              </div>
+                              <div *ngIf="modelLecture.linksToBok.length > 0" style="display: flex;">
+                                <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
+                                <div *ngFor="let l of modelLecture.linksToBok; index as i ">
+                                  <p class="text-small" *ngIf="l.linkedTo=='learningObjectives'">{{l.concept_id }}
+                                    <button type="button" class="btn btn-link btn-xs" tooltip="Click to remove"
+                                      (click)="removeBokKnowledge(modelLecture, i, 'linksToBok')">
+                                      <i class="fa fa-remove"></i>
+                                    </button></p>
+                                </div>
+                              </div>
+                              <br>
+                              <div class="row">
+                                <div class="col-md-2"></div>
+                                <div class="col-md-6">
+                                  <input type="text" class="form-control" id="customLO"
+                                    placeholder="Add custom learning outcome" [(ngModel)]="customLO" name="customLO" />
+                                </div>
+                                <div class="col-md-4">
+                                  <button type="button" class="btn btn-primary btn-sm"
+                                    (click)="addCustomLO(modelLecture)">
+                                    Add custom LO
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3 align-middle m-auto">
+                        <button type="button" class="btn btn-primary btn-sm"
+                          (click)="bokModal.show(); linkBoKto='learningObjectives'">
+                          Link BoK learning outcomes
+                        </button>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-9">
                         <div class="form-group">
                           <label for="bibliography">Bibliography</label>
                           <span
@@ -822,7 +1181,7 @@
                               <div *ngIf="modelLecture && modelLecture.bibliography">
                                 <ul>
                                   <div *ngFor="let b of modelLecture.bibliography; index as i ">
-                                    <li>{{b.name}} <button type="button" class="btn btn-link"
+                                    <li>{{b.name}} <button type="button" class="btn btn-link" tooltip="Click to remove"
                                         (click)="removeBokKnowledge(modelLecture, i, 'bibliography')">
                                         <i class="fa fa-remove"></i>
                                       </button></li>
@@ -837,7 +1196,7 @@
                                 <p class="text-small"> Linked BOK concept(s): &nbsp; </p>
                                 <div *ngFor="let l of modelLecture.linksToBok; index as i ">
                                   <p class="text-small" *ngIf="l.linkedTo=='bibliography'">{{l.concept_id }}
-                                    <button type="button" class="btn btn-link btn-xs"
+                                    <button type="button" class="btn btn-link btn-xs" tooltip="Click to remove"
                                       (click)="removeBokKnowledge(modelLecture, i, 'bibliography')">
                                       <i class="fa fa-remove"></i>
                                     </button></p>
@@ -856,7 +1215,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-2 align-middle m-auto">
+                      <div class="col-md-3 align-middle m-auto">
                         <button type="button" class="btn btn-primary btn-sm"
                           (click)="bokModal.show(); linkBoKto='bibliography'">
                           Link BoK bibliography
@@ -907,19 +1266,11 @@
                             [(ngModel)]="filterText" name="filterText" />
                         </div>
                       </div>
-                      <!-- <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="title">Filter {{textByDepth}} by affiliation</label>
-                        <input type="text" class="form-control" id="filterTextAff" placeholder="Type to filter"
-                          [(ngModel)]="filterTextAff" name="filterTextAff" />
-                      </div>
-                    </div> -->
                     </div>
                     <ul>
                       <div *ngFor="let i of (allItems| filter:filterText); index as in">
                         <li *ngIf="i.depth==depthSearching"><a class="card-title"
                             (click)="showExistingToStudyProgram(i); isSearchingSpecific = !isSearchingSpecific; isSearchingExisting = !isSearchingExisting">{{ i.name }}</a>
-                          <h6 *ngIf="i.field" class="text-muted inline"> - Field of study: {{ i.field.name }}</h6>
                           <h6 *ngIf="i.affiliation != ''" class="text-muted inline"> - {{ i.affiliation }}</h6>
                           <h6 *ngIf="i.eqf != 0" class="text-muted inline"> - EQF: {{ i.eqf }}</h6>
                         </li>
@@ -953,8 +1304,17 @@
                           <h4 *ngIf="depthSearching==1"> Module: {{ currentStudyProgram.name }} </h4>
                           <h4 *ngIf="depthSearching==2"> Course: {{ currentStudyProgram.name }} </h4>
                           <h4 *ngIf="depthSearching==3"> Lecture: {{ currentStudyProgram.name }} </h4>
+                          <div *ngIf="currentStudyProgram.fields && currentStudyProgram.fields.length > 0">
+                            <p><b> Study areas ({{currentStudyProgram.fields.length}}) </b> </p>
+                          </div>
+                          <ul>
+                            <div *ngFor="let f of currentStudyProgram.fields; index as i ">
+                              <li>
+                                <p>{{f.name}} ({{f.grandparent}})</p>
+                              </li>
+                            </div>
+                          </ul>
                           <p class="text-justify">{{ currentStudyProgram.description }}</p>
-
                           <div *ngIf="currentStudyProgram.numSemester">
                             <p><b> In semester:</b> {{ currentStudyProgram.numSemester }}</p>
                           </div>
@@ -1020,7 +1380,8 @@
               <div class="row">
                 <div class="col-md-12">
 
-                  You can create any curriculum item (study program, module, course, lecture). To do so, create the high
+                  You can create any curriculum item (study program, module, course, lecture). To do so, create the
+                  high
                   level item first, then click on the desired level to
                   add lower level items.
                   <br><br>
@@ -1038,7 +1399,8 @@
                   Where:
 
                   <ul>
-                    <li>A study program is a curriculum of two or more courses that is intended or understood to lead to
+                    <li>A study program is a curriculum of two or more courses that is intended or understood to lead
+                      to
                       a degree, diploma, or certificate.
                     </li>
                     <li>A module is a collection of courses over a year or semester
@@ -1053,7 +1415,8 @@
                   Examples:
                   <ul>
                     <li>
-                      If you only need to create a Course and Lectures, start by creating a Course. If you require many
+                      If you only need to create a Course and Lectures, start by creating a Course. If you require
+                      many
                       Courses, you can start with Study Program (and skip Modules) or start with Module.
                     </li>
                     <li>
@@ -1097,6 +1460,7 @@
               tooltip="Browse in the BoK for knowledge required for your new occupational profile. Once in the required knowledge, press the button 'Add' it will link the concept and the learning outcomes dependent on it."
               class="badge badge-primary badge-pill">i</span>
           </div>
+
           <div class="card-body" style="background-color: #faf9f8">
             <div class="row text-center">
               <div class="col-lg-4 col-sm-6">
@@ -1117,79 +1481,42 @@
                 </div>
               </div>
               <div class="col-lg-8 col-sm-6 text-justify">
-                <!--     <div class="row text-center">
-                  <div class="col-sm-3">
-                    Select attributes to link:
-                  </div>
-                  <div class="col-md-6" style="display: inline-flex">
-                    <span class="input-group-prepend">
-                      <label class="switch switch-label switch-pill switch-outline-primary-alt">
-                        <input class="switch-input" type="checkbox" value="title" (checked)="switchTitle"
-                          [(ngModel)]="switchTitle" />
-                        <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
-                      </label>
-                      <div class="pl-1 pr-2">Title</div>
-                    </span>
-                    <span class="input-group-prepend">
-                      <label class="switch switch-label switch-pill switch-outline-primary-alt">
-                        <input class="switch-input" type="checkbox" value="description" (checked)="switchDescription"
-                          [(ngModel)]="switchDescription" />
-                        <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
-                      </label>
-                      <div class="pl-1 pr-2">Description</div>
-                    </span>
-                    <span class="input-group-prepend">
-                      <label class="switch switch-label switch-pill switch-outline-primary-alt">
-                        <input class="switch-input" type="checkbox" value="prerequisites" (checked)="switchPre"
-                          [disabled]="currentTreeNode.depth!=2" [(ngModel)]="switchPre" />
-                        <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
-                      </label>
-                      <div class="pl-1 pr-2">Prerequisites</div>
-                    </span>
-                    <span class="input-group-prepend">
-                      <label class="switch switch-label switch-pill switch-outline-primary-alt">
-                        <input class="switch-input" type="checkbox" value="learningObjectives" (checked)="switchLO"
-                          [disabled]="currentTreeNode.depth!=3" [(ngModel)]="switchLO" />
-                        <span class="switch-slider" data-checked="✓" data-unchecked="X"></span>
-                      </label>
-                      <div class="pl-1 pr-2">Learning Outcomes</div>
-                    </span>
-                  </div>
-                  <div class="col-sm-3">
-                    <button type="submit" class="btn btn-primary"
-                      tooltip="Search or navigate in the graph to add knowledge." (click)="addBokKnowledge()">
-                      Link this concept <i class="fa fa-arrow-up"></i>
-                    </button>
-                  </div>
-                </div> -->
-                <a [hidden]="currentConcept != ''" (click)="navigateToConcept('GIST')">
-                  < Back </a>
-                    <div #textBoK id="textBoK" [hidden]="currentConcept == '' && currentConcept != 'GIST'">
-                    </div>
-                    <div class="col" *ngIf="hasResults">
-                      <h3 class="center">
-                        {{ selectedNodes.length }} result(s) for
-                        {{ searchInput.value }}
-                      </h3>
-                      <div *ngFor="let item of selectedNodes; index as i">
-                        <div *ngIf="i < limitSearch">
-                          <div class="inline">{{ item.nameShort }}</div>
-                          <div class="inline" [innerHTML]="
-                                      item.name | truncate: 100:searchInput.value
-                                    "></div>
-                          <a class="inline" (click)="navigateToConcept(item.nameShort)">
-                            Details
-                          </a>
-                          <div class="small" [innerHTML]="item.description | truncate: 100:searchInput.value"></div>
+
+                <a (click)="navigateToConcept('GIST')" *ngIf="!(!hasResults && currentConcept != 'GIST')">
+                  < To full BoK </a>
+                    <a (click)="hasResults = !hasResults; currentConcept=''"
+                      *ngIf="!hasResults && currentConcept != 'GIST'">
+                      < Back to results </a> <br>
+                        <h5 [hidden]="currentConcept == '' && currentConcept != 'GIST'">Knowledge</h5>
+                        <div #textBoK id="textBoK" [hidden]="currentConcept == '' && currentConcept != 'GIST'">
                         </div>
-                      </div>
-                      <div>
-                        <br />
-                        <a *ngIf="limitSearch < selectedNodes.length" (click)="incrementLimit()">
-                          Show more ...
-                        </a>
-                      </div>
-                    </div>
+                        <div class="col" *ngIf="hasResults">
+                          <h3 class="center">
+                            {{ selectedNodes.length }} result(s) for
+                            {{ searchInput.value }}
+                          </h3>
+                          <div *ngFor="let item of selectedNodes; index as i">
+                            <div *ngIf="i < limitSearch">
+                              <div class="inline">{{ item.nameShort }}</div>
+                              <div class="inline" [innerHTML]="
+                            item.name | truncate: 100:searchInput.value
+                          "></div>
+                              <a class="inline" (click)="navigateToConcept(item.nameShort)">
+                                Details
+                              </a>
+                              <div class="small" [innerHTML]="
+                            item.description | truncate: 100:searchInput.value
+                          "></div>
+                            </div>
+                          </div>
+                          <div>
+                            <br />
+                            <a *ngIf="limitSearch < selectedNodes.length" (click)="incrementLimit()">
+                              Show more ...
+                            </a>
+                          </div>
+                        </div>
+
               </div>
             </div>
           </div>

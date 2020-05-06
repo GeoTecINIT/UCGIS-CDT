@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, HostListener } from '@angular/core';
 import * as bok from '@eo4geo/bok-dataviz';
 import { StudyProgram, StudyProgramService } from '../../services/studyprogram.service';
 import { FieldsService } from '../../services/fields.service';
@@ -21,7 +21,7 @@ import { User, UserService } from '../../services/user.service';
   templateUrl: './newsp.component.html',
   styleUrls: ['./newsp.component.scss']
 })
-export class NewspComponent implements OnInit {
+export class NewspComponent implements OnInit, OnDestroy {
 
   competences = [];
   filteredCompetences = [];
@@ -90,6 +90,9 @@ export class NewspComponent implements OnInit {
   currentUser: User;
 
   isSaved = false;
+  levelPublic = true;
+
+  otherUserEditingWarningText = '';
 
   configFields = {
     displayKey: 'concatName', // if objects array passed which key to be displayed defaults to description
@@ -105,6 +108,11 @@ export class NewspComponent implements OnInit {
   @ViewChild('textBoK') textBoK: ElementRef;
   @ViewChild('graphTreeDiv') public graphTreeDiv: ElementRef;
   @ViewChild('bokModal') public bokModal: ModalDirective;
+
+  @HostListener('window:beforeunload', ['$event'])
+  beforeUnloadHandler(event) {
+    this.setEditing(false);
+  }
 
   constructor(
     private studyprogramService: StudyProgramService,
@@ -157,21 +165,30 @@ export class NewspComponent implements OnInit {
     this.analytics.logEvent('NewSP', { 'mode': this.mode });
   }
 
+  ngOnDestroy(): void {
+    this.setEditing(false);
+  }
+
+  setEditing(bool) {
+    if (this._id != null && this._id !== '') {
+      this.studyprogramService.updateStudyProgramIsEdited(this._id, bool);
+    }
+  }
+
   saveStudyProgram() {
     let modelToSave = null;
-
     switch (this.highestItemLevel) {
       case 0:
-        modelToSave = JSON.parse(JSON.stringify(this.model));
+        modelToSave = this.model;
         break;
       case 1:
-        modelToSave = JSON.parse(JSON.stringify(this.modelModule));
+        modelToSave = this.modelModule;
         break;
       case 2:
-        modelToSave = Object.assign({}, this.modelCourse); // JSON.parse(JSON.stringify(this.modelCourse));
+        modelToSave = this.modelCourse; // JSON.parse(JSON.stringify(this.modelCourse));
         break;
       case 3:
-        modelToSave = JSON.parse(JSON.stringify(this.modelLecture));
+        modelToSave = this.modelLecture;
         break;
     }
     console.log('Save model with depth: ' + this.highestItemLevel);
@@ -180,14 +197,16 @@ export class NewspComponent implements OnInit {
     modelToSave.userId = this.afAuth.auth.currentUser.uid;
     modelToSave.orgId = this.saveOrg._id;
     modelToSave.orgName = this.saveOrg.name;
+    modelToSave.levelPublic = this.levelPublic;
 
     if (this.mode === 'copy') {
       this.studyprogramService.updateStudyProgram(this._id, modelToSave);
     } else {
       this.studyprogramService.addNewStudyProgram(modelToSave);
     }
-    // this.textSaved = 'Saved!';
     this.isSaved = true;
+    this.mode = 'copy'; // if it's second time editing change to
+    this._id = modelToSave._id;
     this.refreshTreeSize();
   }
 
@@ -218,9 +237,13 @@ export class NewspComponent implements OnInit {
 
   fillForm(): void {
     this._id = this.route.snapshot.paramMap.get('name');
+    if (this.mode === 'copy') {
+      this.setEditing(true);
+    }
     const spObs = this.studyprogramService
       .getStudyProgramById(this._id)
       .subscribe(sp => {
+        this.isSaved = true;
         if (this.model == null) {
           this.model = sp;
           switch (sp.depth) {
@@ -243,8 +266,13 @@ export class NewspComponent implements OnInit {
           this.displayTree(sp);
           console.log(sp);
           console.log('Highest item level: ' + this.highestItemLevel);
+        } else {
+          if (this.currentUser._id !== sp.userId) {
+            // warn of other user editing it
+            this.otherUserEditingWarningText = 'It looks like other user is editing this content. Despite the fact that automatic save is done frequently, some content may be lost.';
+          }
         }
-        spObs.unsubscribe(); // do not recieve more notifications
+        // spObs.unsubscribe(); // do not recieve more notifications
       });
   }
 
@@ -288,24 +316,13 @@ export class NewspComponent implements OnInit {
       this.refreshCurrentNode();
     } else {
       console.log('Display new tree');
-      const treeData = {
-        'longName': 'New Curricula Item',
-        'type': 'studyProgram',
-        'name': 'New Curricula Item',
-        'parent': 'null',
-        'path': 0,
-        'depth': 0,
-        'proportions': [],
-        'r': 10,
-        'children': []
-      };
       cv.displayCurricula('graphTree', null, width, 650);
       this.currentTreeNode = cv.getCurrentNode();
     }
   }
 
   onResize() {
-   // this.displayTree(this.model);
+    // this.displayTree(this.model);
     this.refreshTreeSize();
   }
 
@@ -330,8 +347,10 @@ export class NewspComponent implements OnInit {
 
   refreshCurrentNode() {
     console.log('refresh currrent node');
+    console.log(this.currentTreeNode);
     this.isSearchingExisting = false;
     this.currentTreeNode = cv.getCurrentNode();
+    console.log(this.currentTreeNode);
     this.depthSearching = this.currentTreeNode.data.depth + 1;
     switch (this.currentTreeNode.data.depth) {
       case 0:
@@ -352,6 +371,7 @@ export class NewspComponent implements OnInit {
       case 3:
         this.textByDepth = 'lecture';
         this.textByDepthRemove = 'lecture';
+        this.currentTreeNode.children = null;
         this.modelLecture = new Lecture(this.currentTreeNode);
         break;
     }
@@ -374,6 +394,7 @@ export class NewspComponent implements OnInit {
   }
 
   removeNodeInTree() {
+    this.isSaved = false;
     cv.removeSelectedNode();
   }
 
@@ -386,28 +407,19 @@ export class NewspComponent implements OnInit {
     if (this.currentTreeNode && this.currentTreeNode.data) {
       switch (this.currentTreeNode.data.depth) {
         case 0:
-          console.log('Update node in tree' + this.model);
-          console.log(this.model);
           this.updateNodeInTree(this.model);
           break;
         case 1:
-          console.log('Update node in tree' + this.modelModule);
-          console.log(this.modelModule);
           this.updateNodeInTree(this.modelModule);
           break;
         case 2:
-          console.log('Update node in tree' + this.modelCourse);
-          console.log(this.modelCourse);
           this.updateNodeInTree(this.modelCourse);
           break;
         case 3:
-          console.log('Update node in tree' + this.modelLecture);
-          console.log(this.modelLecture);
           this.updateNodeInTree(this.modelLecture);
           break;
       }
     }
-    // this.saveStudyProgram();
   }
 
   addBokKnowledge() {
@@ -497,8 +509,8 @@ export class NewspComponent implements OnInit {
     this.updateTreeStudyProgram();
   }
 
-  addCustomLO() {
-    this.modelCourse.learningObjectives.push(new BokInput('', this.customLO, this.customLO, '', [], '', []));
+  addCustomLO(model) {
+    model.learningObjectives.push(new BokInput('', this.customLO, this.customLO, '', [], '', []));
     this.customLO = '';
   }
 
@@ -514,6 +526,10 @@ export class NewspComponent implements OnInit {
   exploreChildrenToAddItems() {
     this.allItems = [];
     this.allStudyPrograms.forEach(s => {
+      if (s.fields == null && s.field != null) {
+        s.fields = [];
+        s.fields.push(s.field);
+      }
       this.allItems.push(s);
       if (s.children) {
         s.children.forEach(m => {

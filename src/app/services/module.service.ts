@@ -16,6 +16,7 @@ export class Module extends Object {
   public assessment: string;
   public prerequisites: BokInput[];
   public learningObjectives: BokInput[];
+  public inheritedLearningObjectives: BokInput[];
   public children: Course[];
   public _children: Course[];
   public concepts: string[];
@@ -26,6 +27,7 @@ export class Module extends Object {
   public levelPublic: Boolean;
   public eqf: number;
   public field: Field;
+  public fields: Field[];
   public bibliography: BokInput[];
   public orgId: string;
   public orgName: string;
@@ -44,16 +46,28 @@ export class Module extends Object {
       this.ects = currentNode.data.ects ? currentNode.data.ects : 0;
       this.assessment = currentNode.data.assessment ? currentNode.data.assessment : '';
       this.prerequisites = currentNode.data.prerequisites ? currentNode.data.prerequisites : [];
-      this.children = currentNode.children ? currentNode.children : [];
-      this._children = currentNode._children ? currentNode._children : [];
+      this.children = currentNode.children && currentNode.children.length > 0 ? currentNode.children : null;
+      this._children = currentNode._children && currentNode._children.length > 0 ? currentNode._children : null;
       this.concepts = currentNode.data.concepts ? currentNode.data.concepts : [];
       this.currentNode = null;
-      this.learningObjectives = [];
-      if (this.children.length > 0) {
+      this.learningObjectives = currentNode.data.learningObjectives ? currentNode.data.learningObjectives : [];
+      this.inheritedLearningObjectives = [];
+      if (this.children && this.children.length > 0) {
         this.children.forEach(child => {
+          // Courses
           if (child.data && child.data.learningObjectives) {
             child.data.learningObjectives.forEach(lo => {
-              this.learningObjectives.push(lo);
+              this.inheritedLearningObjectives.push(lo);
+            });
+          }
+          // Lectures
+          if (child.children && child.children.length > 0) {
+            child.children.forEach(childL => {
+              if (childL.data && childL.data.learningObjectives) {
+                childL.data.learningObjectives.forEach(lo => {
+                  this.inheritedLearningObjectives.push(lo);
+                });
+              }
             });
           }
         });
@@ -64,6 +78,10 @@ export class Module extends Object {
       this.levelPublic = currentNode.data.levelPublic != null ? currentNode.data.levelPublic : true;
       this.eqf = currentNode.data.eqf ? currentNode.data.eqf : 0;
       this.field = currentNode.data.field ? currentNode.data.field : null;
+      this.fields = currentNode.data.fields ? currentNode.data.fields : [];
+      if (this.field !== null && this.fields.length === 0) {
+        this.fields.push(this.field);
+      }
       this.bibliography = currentNode.data.bibliography ? currentNode.data.bibliography : [];
       this.orgId = currentNode.data.orgId ? currentNode.data.orgId : '';
       this.orgName = currentNode.data.orgName ? currentNode.data.orgName : '';
@@ -77,8 +95,9 @@ export class Module extends Object {
       this.assessment = '';
       this.prerequisites = [];
       this.learningObjectives = [];
-      this.children = [];
-      this._children = [];
+      this.inheritedLearningObjectives = [];
+      this.children = null;
+      this._children = null;
       this.concepts = [];
       this.linksToBok = [];
       this.userId = '';
