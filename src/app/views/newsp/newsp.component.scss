@@ -62,6 +62,15 @@ button.success {
   background-color: green;
 }
 
-div.row.hidden {
+div.row.hidden, div.hidden {
   display: none;
+}
+
+.sortable-list-item {
+  padding: 10px;
+}
+
+.sortable-list{
+  width: 100% !important;
+  height: fit-content !important;
 }

@@ -563,4 +563,10 @@ export class NewspComponent implements OnInit, OnDestroy {
 
     // console.log(this.allItems);
   }
+
+  listSorted(result) {
+    this.currentTreeNode.children = result;
+    this.updateTreeStudyProgram();
+   // this.refreshTreeSize();
+  }
 }

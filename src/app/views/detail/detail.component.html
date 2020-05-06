@@ -226,6 +226,15 @@
                         </ul>
                       </div>
 
+                      <div *ngIf="model.children && model.children.length > 0">
+                        <span><b>Children learning content:</b></span>
+                        <ul>
+                          <div *ngFor="let ch of model.children">
+                            <li>{{ ch.data.name }}</li>
+                          </div>
+                        </ul>
+                      </div>
+
                       <div *ngIf="allLinksToBok && allLinksToBok.length > 0" style="background-color: #faf9f8; 
                         margin-right: -20px;
                         margin-left: -20px;

@@ -342,7 +342,30 @@
                         </button>
                       </div>
                     </div>
-
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div *ngIf="model.children.length > 0">
+                          <label for="children">
+                            <button type="button" class="btn btn-link btn-xs"
+                              (click)="sortableChildren.classList.contains('hidden') ? sortableChildren.className = '' : sortableChildren.className = 'hidden' ">
+                              <i [tooltip]="sortableChildren.classList.contains('hidden')? 'Show' : 'Hide'"
+                                [ngClass]="sortableChildren.classList.contains('hidden')? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
+                            </button>
+                            Child learning content ({{model.children.length}})  
+                            <span tooltip="Select and drag item to reorder children. Or use arrows to move them up and down."
+                            class="badge badge-primary badge-pill">i</span></label>
+                          <div #sortableChildren>
+                            <ngx-sortable [items]="model.children" [name]="''" (listSorted)="listSorted($event)">
+                              <ng-template let-item>
+                                <div class="sortable-list-item">
+                                  {{item.data.name}}
+                                </div>
+                              </ng-template>
+                            </ngx-sortable>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -607,6 +630,30 @@
                           (click)="bokModal.show(); linkBoKto='learningObjectives'">
                           Link BoK learning outcomes
                         </button>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div *ngIf="modelModule.children.length > 0">
+                          <label for="children">
+                            <button type="button" class="btn btn-link btn-xs"
+                              (click)="sortableChildren.classList.contains('hidden') ? sortableChildren.className = '' : sortableChildren.className = 'hidden' ">
+                              <i [tooltip]="sortableChildren.classList.contains('hidden')? 'Show' : 'Hide'"
+                                [ngClass]="sortableChildren.classList.contains('hidden')? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
+                            </button>
+                            Child learning content ({{modelModule.children.length}})  
+                            <span tooltip="Select and drag item to reorder children. Or use arrows to move them up and down."
+                            class="badge badge-primary badge-pill">i</span></label>
+                          <div #sortableChildren>
+                            <ngx-sortable [items]="modelModule.children" [name]="''" (listSorted)="listSorted($event)">
+                              <ng-template let-item>
+                                <div class="sortable-list-item">
+                                  {{item.data.name}}
+                                </div>
+                              </ng-template>
+                            </ngx-sortable>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -962,6 +1009,30 @@
                         </button>
                       </div>
 
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div *ngIf="modelCourse.children.length > 0">
+                          <label for="children">
+                            <button type="button" class="btn btn-link btn-xs"
+                              (click)="sortableChildren.classList.contains('hidden') ? sortableChildren.className = '' : sortableChildren.className = 'hidden' ">
+                              <i [tooltip]="sortableChildren.classList.contains('hidden')? 'Show' : 'Hide'"
+                                [ngClass]="sortableChildren.classList.contains('hidden')? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
+                            </button>
+                            Child learning content ({{modelCourse.children.length}})  
+                            <span tooltip="Select and drag item to reorder children. Or use arrows to move them up and down."
+                            class="badge badge-primary badge-pill">i</span></label>
+                          <div #sortableChildren>
+                            <ngx-sortable [items]="modelCourse.children" [name]="''" (listSorted)="listSorted($event)">
+                              <ng-template let-item>
+                                <div class="sortable-list-item">
+                                  {{item.data.name}}
+                                </div>
+                              </ng-template>
+                            </ngx-sortable>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
