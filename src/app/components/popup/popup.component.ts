@@ -54,27 +54,33 @@ export class PopupComponent implements OnInit {
     }
 
     getSubjectMetadata() {
-        // <#> dc:hasPart [ dc:extent "2" ; dc:relation eo4geo:someBoKConcept  ] ;
-        let subject = '';
+        // @prefix dc: <http://purl.org/dc/terms/> .
+        // @prefix eo4geo: <http://bok.eo4geo.eu/> .
+        // <> dc:hasPart [ dc:type "Module";
+        // dc:title "Mathematics";
+        // dc:relation eo4geo:AM;
+        // dc:relation eo4geo:GC] .
+
+        let subject = '@prefix dc: <http://purl.org/dc/terms/> . @prefix eo4geo: <http://bok.eo4geo.eu/> . ';
         if (this.selectedSP.concepts && this.selectedSP.concepts.length > 0) {
-            subject = subject + '<> dc:hasPart [ dc:title "' + this.selectedSP.name + '"';
+            subject = subject + '<> dc:hasPart [ dc:type "Study Program"; dc:title "' + this.selectedSP.name + '"';
             this.selectedSP.concepts.forEach(concept => {
                 // const bokCode = concept.split('] ')[1];
                 const bokCode = concept.split(']', 1)[0].split('[', 2)[1];
                 if (bokCode) {
-                    subject = subject + ' dc:relation eo4geo:' + bokCode;
+                    subject = subject + '; dc:relation eo4geo:' + bokCode;
                 }
             });
-            subject = subject + '  ]';
+            subject = subject + '  ] .';
         }
 
         this.selectedSP.children.forEach(module => {
             if (module.concepts && module.concepts.length > 0) {
-                subject = subject + '<> dc:hasPart [ dc:title "' + module.name + '"';
+                subject = subject + '<> dc:hasPart [ dc:type "Module"; dc:title "' + module.name + '"';
                 module.concepts.forEach(concept => {
                     const bokCode = concept.split(']', 1)[0].split('[', 2)[1];
                     if (bokCode) {
-                        subject = subject + ' dc:relation eo4geo:' + bokCode;
+                        subject = subject + '; dc:relation eo4geo:' + bokCode;
                     }
                 });
                 subject = subject + '  ]';
@@ -82,11 +88,11 @@ export class PopupComponent implements OnInit {
             if (module.children && module.children.length > 0) {
                 module.children.forEach(course => {
                     if (course.concepts && course.concepts.length > 0) {
-                        subject = subject + '<> dc:hasPart [  dc:title "' + course.name + '"';
+                        subject = subject + '<> dc:hasPart [  dc:type "Course"; dc:title "' + course.name + '"';
                         course.concepts.forEach(concept => {
                             const bokCode = concept.split(']', 1)[0].split('[', 2)[1];
                             if (bokCode) {
-                                subject = subject + ' dc:relation eo4geo:' + bokCode;
+                                subject = subject + '; dc:relation eo4geo:' + bokCode;
                             }
                         });
                         subject = subject + '  ]';
@@ -94,11 +100,11 @@ export class PopupComponent implements OnInit {
                     if (course.children && course.children.length > 0) {
                         course.children.forEach(lecture => {
                             if (lecture.concepts && lecture.concepts.length > 0) {
-                                subject = subject + '<> dc:hasPart [  dc:title "' + lecture.name + '"';
+                                subject = subject + '<> dc:hasPart [  dc:type "Lecture"; dc:title "' + lecture.name + '"';
                                 lecture.concepts.forEach(concept => {
                                     const bokCode = concept.split(']', 1)[0].split('[', 2)[1];
                                     if (bokCode) {
-                                        subject = subject + ' dc:relation eo4geo:' + bokCode;
+                                        subject = subject + '; dc:relation eo4geo:' + bokCode;
                                     }
                                 });
                                 subject = subject + '  ]';
@@ -798,10 +804,10 @@ export class PopupComponent implements OnInit {
             children = (typeof child.eqf !== 'undefined') ? children + '<children:eqf>' + child.eqf + '</children:eqf>' : children + '<children:ects>' + child.ects + '</children:ects>';
             module = (child.depth === 1) ? module = 'course' : module = 'lecture';
             if (typeof child.assesment !== 'undefined' && child.assesment !== '') {
-                children = children + '<children:assesment>' + child.assesment + '</children:assesment>'; 
+                children = children + '<children:assesment>' + child.assesment + '</children:assesment>';
             }
             if (typeof child.bibliography !== 'undefined' && child.bibliography !== '') {
-                children = children + '<children:bibliography>' + child.bibliography + '</children:bibliography>'; 
+                children = children + '<children:bibliography>' + child.bibliography + '</children:bibliography>';
             }
             if (child.children.length > 0) {
                 children = children + '<children:children> <rdf:Bag rdf:ID="' + module + '"> ' + this.getChildren(child) +
