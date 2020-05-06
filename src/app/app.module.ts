@@ -75,6 +75,8 @@ import { Eo4geoHeaderComponent } from './components/eo4geo-header/eo4geo-header.
 import { OrganizationComponent } from './views/organization/organization.component';
 import { ReleaseNotesComponent } from './components/release-notes/release-notes.component';
 
+import { NgxSortableModule } from 'ngx-sortable';
+
 
 @NgModule({
   imports: [
@@ -102,7 +104,8 @@ import { ReleaseNotesComponent } from './components/release-notes/release-notes.
     ModalModule.forRoot(),
     BrowserAnimationsModule,
     CollapseModule.forRoot(),
-    AccordionModule.forRoot()
+    AccordionModule.forRoot(),
+    NgxSortableModule
   ],
   declarations: [
     AppComponent,
