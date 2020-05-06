@@ -53,6 +53,71 @@ export class PopupComponent implements OnInit {
         document.body.removeChild(selBox);
     }
 
+    getSubjectMetadata() {
+        // @prefix dc: <http://purl.org/dc/terms/> .
+        // @prefix eo4geo: <http://bok.eo4geo.eu/> .
+        // <> dc:hasPart [ dc:type "Module";
+        // dc:title "Mathematics";
+        // dc:relation eo4geo:AM;
+        // dc:relation eo4geo:GC] .
+
+        let subject = '@prefix dc: <http://purl.org/dc/terms/> . @prefix eo4geo: <http://bok.eo4geo.eu/> . ';
+        if (this.selectedSP.concepts && this.selectedSP.concepts.length > 0) {
+            subject = subject + '<> dc:hasPart [ dc:type "Study Program"; dc:title "' + this.selectedSP.name + '"';
+            this.selectedSP.concepts.forEach(concept => {
+                // const bokCode = concept.split('] ')[1];
+                const bokCode = concept.split(']', 1)[0].split('[', 2)[1];
+                if (bokCode) {
+                    subject = subject + '; dc:relation eo4geo:' + bokCode;
+                }
+            });
+            subject = subject + '  ] .';
+        }
+
+        this.selectedSP.children.forEach(module => {
+            if (module.concepts && module.concepts.length > 0) {
+                subject = subject + '<> dc:hasPart [ dc:type "Module"; dc:title "' + module.name + '"';
+                module.concepts.forEach(concept => {
+                    const bokCode = concept.split(']', 1)[0].split('[', 2)[1];
+                    if (bokCode) {
+                        subject = subject + '; dc:relation eo4geo:' + bokCode;
+                    }
+                });
+                subject = subject + '  ]';
+            }
+            if (module.children && module.children.length > 0) {
+                module.children.forEach(course => {
+                    if (course.concepts && course.concepts.length > 0) {
+                        subject = subject + '<> dc:hasPart [  dc:type "Course"; dc:title "' + course.name + '"';
+                        course.concepts.forEach(concept => {
+                            const bokCode = concept.split(']', 1)[0].split('[', 2)[1];
+                            if (bokCode) {
+                                subject = subject + '; dc:relation eo4geo:' + bokCode;
+                            }
+                        });
+                        subject = subject + '  ]';
+                    }
+                    if (course.children && course.children.length > 0) {
+                        course.children.forEach(lecture => {
+                            if (lecture.concepts && lecture.concepts.length > 0) {
+                                subject = subject + '<> dc:hasPart [  dc:type "Lecture"; dc:title "' + lecture.name + '"';
+                                lecture.concepts.forEach(concept => {
+                                    const bokCode = concept.split(']', 1)[0].split('[', 2)[1];
+                                    if (bokCode) {
+                                        subject = subject + '; dc:relation eo4geo:' + bokCode;
+                                    }
+                                });
+                                subject = subject + '  ]';
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
+        return subject;
+    }
+
     generatePDF() {
         console.log('pdf');
         let currentLinePoint = 45;
@@ -60,6 +125,14 @@ export class PopupComponent implements OnInit {
         // cabecera , imágenes
         const doc = new jsPDF();
         doc.page = 1;
+
+        doc.setProperties({
+            title: this.selectedSP.name,
+            subject: this.getSubjectMetadata(),
+            author: 'EO4GEO',
+            keywords: 'eo4geo, curriculum design tool',
+            creator: 'Curriculum Design Tool'
+        });
         doc.addImage(this.base64img.logo, 'PNG', 10, 7, 37, 25);
         doc.addImage(this.base64img.back, 'PNG', 0, 100, 210, 198);
         // doc.link(15, 15, 600, 33, { url: 'http://www.eo4geo.eu' });
@@ -328,7 +401,7 @@ export class PopupComponent implements OnInit {
                     doc.text(40, currentLinePoint, 'Prerequisites: ');
                     currentLinePoint = currentLinePoint + 5;
                     module.prerequisites.forEach(concept => {
-                        //const conceptId = concept.concept_id.split(']', 1)[0].split('[', 2).length > 0 ?   concept.concept_id.split(']', 1)[0].split('[', 2)[1] : '';
+                        // const conceptId = concept.concept_id.split(']', 1)[0].split('[', 2).length > 0 ?   concept.concept_id.split(']', 1)[0].split('[', 2)[1] : '';
                         doc.setTextColor('#000').setFontType('normal');
                         const linePre = doc.setFontSize(11).splitTextToSize(concept.name + '', 100);
                         doc.text(40, currentLinePoint, '- ' + linePre);
@@ -651,7 +724,7 @@ export class PopupComponent implements OnInit {
         doc.setFontSize(10).setTextColor('#768187').setFontType('bold');
         doc.text(165, 280, 'Page ' + doc.page);
         doc.page++;
-    };
+    }
 
     getFields(data: any) {
         let resultFields = '';
@@ -730,8 +803,12 @@ export class PopupComponent implements OnInit {
                 '<children:numSemester>' + child.numSemester + '</children:numSemester>';
             children = (typeof child.eqf !== 'undefined') ? children + '<children:eqf>' + child.eqf + '</children:eqf>' : children + '<children:ects>' + child.ects + '</children:ects>';
             module = (child.depth === 1) ? module = 'course' : module = 'lecture';
-            if (typeof child.assesment !== 'undefined' && child.assesment !== '') children = children + '<children:assesment>' + child.assesment + '</children:assesment>';
-            if (typeof child.bibliography !== 'undefined' && child.bibliography !== '') children = children + '<children:bibliography>' + child.bibliography + '</children:bibliography>';
+            if (typeof child.assesment !== 'undefined' && child.assesment !== '') {
+                children = children + '<children:assesment>' + child.assesment + '</children:assesment>';
+            }
+            if (typeof child.bibliography !== 'undefined' && child.bibliography !== '') {
+                children = children + '<children:bibliography>' + child.bibliography + '</children:bibliography>';
+            }
             if (child.children.length > 0) {
                 children = children + '<children:children> <rdf:Bag rdf:ID="' + module + '"> ' + this.getChildren(child) +
                     '</rdf:Bag> </children:children>';
