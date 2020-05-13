@@ -344,7 +344,7 @@
                     </div>
                     <div class="row">
                       <div class="col-md-12">
-                        <div *ngIf="model.children.length > 0">
+                        <div *ngIf="model.children && model.children.length > 0">
                           <label for="children">
                             <button type="button" class="btn btn-link btn-xs"
                               (click)="sortableChildren.classList.contains('hidden') ? sortableChildren.className = '' : sortableChildren.className = 'hidden' ">
@@ -634,7 +634,7 @@
                     </div>
                     <div class="row">
                       <div class="col-md-12">
-                        <div *ngIf="modelModule.children.length > 0">
+                        <div *ngIf="modelModule.children && modelModule.children.length > 0">
                           <label for="children">
                             <button type="button" class="btn btn-link btn-xs"
                               (click)="sortableChildren.classList.contains('hidden') ? sortableChildren.className = '' : sortableChildren.className = 'hidden' ">
@@ -1012,7 +1012,7 @@
                     </div>
                     <div class="row">
                       <div class="col-md-12">
-                        <div *ngIf="modelCourse.children.length > 0">
+                        <div *ngIf="modelCourse.children && modelCourse.children.length > 0">
                           <label for="children">
                             <button type="button" class="btn btn-link btn-xs"
                               (click)="sortableChildren.classList.contains('hidden') ? sortableChildren.className = '' : sortableChildren.className = 'hidden' ">

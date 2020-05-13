@@ -60,6 +60,7 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { HighlightPipe } from './pipes/highlight.pipe';
 import { FilterPipe } from './pipes/filter.pipe';
+import { ReplacePipe } from './pipes/replace.pipe';
 
 import { PopupComponent } from './components/popup/popup.component';
 import { Base64img } from './components/popup/base64img';
@@ -121,6 +122,7 @@ import { NgxSortableModule } from 'ngx-sortable';
     TruncatePipe,
     HighlightPipe,
     FilterPipe,
+    ReplacePipe,
     PopupComponent,
     ReleaseNotesComponent,
     Eo4geoFooterComponent,

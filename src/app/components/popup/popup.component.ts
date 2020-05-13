@@ -16,7 +16,7 @@ export class PopupComponent implements OnInit {
         public studyprogramService: StudyProgramService,
         private route: ActivatedRoute) { }
 
-    public static END_PAGE_LINE = 230;
+    public static END_PAGE_LINE = 255;
     public static URL_BOK = 'https://bok.eo4geo.eu/';
     public static URL_CDT = 'https://eo4geo-cdt.web.app/detail/';
 
@@ -196,51 +196,12 @@ export class PopupComponent implements OnInit {
         if (this.selectedSP.fields && this.selectedSP.fields.length > 0) {
             this.selectedSP.fields.forEach(f => {
                 doc.setTextColor('#000').setFontType('normal').setFontSize(10);
-                doc.text(30, currentLinePoint, 'Study area: ' + f.name + ' (' + f.grandparent + ')');
+                const lineName = doc.setFontSize(9).splitTextToSize('Study area: ' + f.name + ' (' + f.grandparent + ')', 150);
+                doc.text(30, currentLinePoint, lineName);
                 currentLinePoint = currentLinePoint + 8;
             });
         }
-        /*    if (this.selectedSP.field != null) {
-               doc.setTextColor('#000').setFontType('normal').setFontSize(10);
-               doc.text(30, currentLinePoint, 'Study area: ' + this.selectedSP.field.name + ' (' + this.selectedSP.field.grandparent + ')');
-               currentLinePoint = currentLinePoint + 8;
-           } */
-        if (this.selectedSP.description != null && this.selectedSP.description !== '') {
-            currentLinePoint = currentLinePoint + 5;
-            doc.setTextColor('#000').setFontType('normal');
-            const linesDesc = doc.setFontSize(11).splitTextToSize(this.selectedSP.description, 150);
-            const expectedLine = currentLinePoint + 9 + (4 * linesDesc.length);
-            if (expectedLine > PopupComponent.END_PAGE_LINE) {
-                doc.setTextColor('#000').setFontType('normal');
-                doc.setFontSize(11);
-                const fittingLines = Math.round((PopupComponent.END_PAGE_LINE - currentLinePoint) / 4);
-                if (fittingLines <= 0) {
-                    currentLinePoint = this.newPage(doc);
-                    doc.setTextColor('#000').setFontType('normal');
-                    doc.setFontSize(11);
-                    doc.text(30, currentLinePoint, linesDesc, { maxWidth: 150, align: 'justify' });
-                    currentLinePoint = currentLinePoint + 9 + (4 * linesDesc.length);
-                    currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
-                } else {
-                    const splitedLines1 = linesDesc.slice(0, fittingLines);
-                    doc.text(30, currentLinePoint, splitedLines1, { maxWidth: 150, align: 'justify' });
-                    currentLinePoint = currentLinePoint + 9 + (3.8 * splitedLines1.length);
-                    currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
-                    const splitedLines2 = linesDesc.slice(fittingLines);
-                    doc.setTextColor('#000').setFontType('normal');
-                    doc.setFontSize(11);
-                    doc.text(30, currentLinePoint, splitedLines2, { maxWidth: 150, align: 'justify' });
-                    currentLinePoint = currentLinePoint + 9 + (3.8 * splitedLines2.length);
-                    currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
-                }
-            } else {
-                doc.setTextColor('#000').setFontType('normal');
-                doc.setFontSize(11);
-                doc.text(30, currentLinePoint, linesDesc, { maxWidth: 150, align: 'justify' });
-                currentLinePoint = currentLinePoint + 9 + (3.8 * linesDesc.length);
-                currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
-            }
-        }
+        currentLinePoint = this.printCleanText(doc, currentLinePoint, 30, 150, this.selectedSP.description, 11);
         if (this.selectedSP.bibliography && this.selectedSP.bibliography.length > 0) {
             currentLinePoint = currentLinePoint + 5;
             doc.setFontSize(11).setTextColor('#1a80b6').setFontType('bold'); // headline
@@ -252,19 +213,21 @@ export class PopupComponent implements OnInit {
                     const conceptId = concept.concept_id.split(']', 1)[0].split('[', 2).length > 0 ? concept.concept_id.split(']', 1)[0].split('[', 2)[1] : '';
                     doc.setTextColor('#000').setFontType('normal');
                     const linePre = doc.setFontSize(9).splitTextToSize(concept.name + '', 150);
-                    doc.text(30, currentLinePoint, linePre);
+                    doc.text(30, currentLinePoint, linePre, { maxWidth: 150, align: 'justify' });
                     doc.link(30, currentLinePoint - 2, 150, linePre.length + 5, { url: PopupComponent.URL_BOK + conceptId });
                     currentLinePoint = currentLinePoint + (4 * linePre.length);
                     currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                 } else { //custom bib
                     doc.setTextColor('#000').setFontType('normal');
                     const linePreC = doc.setFontSize(9).splitTextToSize(concept + '', 150);
-                    doc.text(30, currentLinePoint, linePreC);
+                    doc.text(30, currentLinePoint, linePreC, { maxWidth: 150, align: 'justify' });
                     currentLinePoint = currentLinePoint + (4 * linePreC.length);
                     currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                 }
             });
         }
+        currentLinePoint = this.printLO(doc, currentLinePoint, 30, 150, this.selectedSP.learningObjectives);
+
         if (this.selectedSP.linksToBok != null && this.selectedSP.linksToBok.length > 0) {
             currentLinePoint = currentLinePoint + 3;
             doc.setFontSize(9).setTextColor('#E2C319').setFontType('bold'); // headline
@@ -289,25 +252,32 @@ export class PopupComponent implements OnInit {
             let countC = 1;
             let countL = 1;
             doc.setFontSize(11).setTextColor('#000').setFontType('normal');
-            doc.text(30, currentLinePoint, this.selectedSP.name);
-            currentLinePoint = currentLinePoint + 5;
-
+            const linesTitle = doc.setFontSize(11).splitTextToSize(this.selectedSP.name + '', 150);
+            doc.text(30, currentLinePoint, linesTitle, { maxWidth: 150, align: 'justify' });
+            currentLinePoint = currentLinePoint + (5 * linesTitle.length);
+            currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
             this.selectedSP.children.forEach(module => {
                 doc.setFontSize(11).setTextColor('#000').setFontType('normal');
-                doc.text(35, currentLinePoint, countM + '. ' + module.name);
-                currentLinePoint = currentLinePoint + 5;
+                const linesTitleM = doc.setFontSize(11).splitTextToSize(countM + '. ' + module.name, 145);
+                doc.text(35, currentLinePoint, linesTitleM, { maxWidth: 145, align: 'justify' });
+                currentLinePoint = currentLinePoint + (5 * linesTitleM.length);
+                currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                 numerals['m_' + module.name] = countM + '. ';
                 if (module.children && module.children.length > 0) {
                     module.children.forEach(course => {
                         doc.setFontSize(11).setTextColor('#000').setFontType('normal');
-                        doc.text(40, currentLinePoint, countM + '.' + countC + '. ' + course.name);
-                        currentLinePoint = currentLinePoint + 5;
+                        const linesTitleC = doc.setFontSize(11).splitTextToSize(countM + '.' + countC + '. ' + course.name, 140);
+                        doc.text(40, currentLinePoint, linesTitleC, { maxWidth: 140, align: 'justify' });
+                        currentLinePoint = currentLinePoint + (5 * linesTitleC.length);
+                        currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                         numerals['c_' + course.name] = countM + '.' + countC + '. ';
                         if (course.children && course.children.length > 0) {
                             course.children.forEach(lecture => {
                                 doc.setFontSize(11).setTextColor('#000').setFontType('normal');
-                                doc.text(45, currentLinePoint, countM + '.' + countC + '.' + countL + '. ' + lecture.name);
-                                currentLinePoint = currentLinePoint + 5;
+                                const linesTitleL = doc.setFontSize(11).splitTextToSize(countM + '.' + countC + '.' + countL + '. ' + lecture.name, 135);
+                                doc.text(45, currentLinePoint, linesTitleL, { maxWidth: 135, align: 'justify' });
+                                currentLinePoint = currentLinePoint + (5 * linesTitleL.length);
+                                currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                                 numerals['l_' + lecture.name] = countM + '.' + countC + '.' + countL + '. ';
                                 countL = countL + 1;
                             });
@@ -329,7 +299,7 @@ export class PopupComponent implements OnInit {
             this.selectedSP.children.forEach(module => { //children -> modules
                 currentLinePoint = currentLinePoint + 7;
                 currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
-                const knLines = doc.setFontSize(12).splitTextToSize(numerals['m_' + module.name] + module.name, 150);
+                const knLines = doc.setFontSize(12).setFontType('bold').splitTextToSize(numerals['m_' + module.name] + module.name, 150);
                 doc.setFontSize(12).setTextColor('#1a80b6').setFontType('bold');
                 doc.text(30, currentLinePoint, knLines);
                 currentLinePoint = currentLinePoint + 1 + (4 * knLines.length);
@@ -341,9 +311,9 @@ export class PopupComponent implements OnInit {
                     module.linksToBok.forEach(link => {
                         const linkId = link.concept_id.split(']', 1)[0].split('[', 2).length > 0 ? PopupComponent.URL_BOK + link.concept_id.split(']', 1)[0].split('[', 2)[1] : PopupComponent.URL_BOK;
                         doc.setTextColor('#E2C319').setFontType('normal');
-                        const linePre = doc.setFontSize(9).splitTextToSize(link.name + '', 140);
+                        const linePre = doc.setFontSize(9).splitTextToSize(link.name + '', 145);
                         doc.text(35, currentLinePoint, '- ' + linePre);
-                        doc.link(35, currentLinePoint - 2, 140, linePre.length + 5, { url: linkId });
+                        doc.link(35, currentLinePoint - 2, 145, linePre.length + 5, { url: linkId });
                         currentLinePoint = currentLinePoint + 1 + (3 * linePre.length);
                         currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                     });
@@ -359,43 +329,7 @@ export class PopupComponent implements OnInit {
                     doc.text(35, currentLinePoint, 'Semester: ' + module.numSemester);
                     currentLinePoint = currentLinePoint + 5;
                 }
-                if (module.description != null && module.description !== '') {
-                    currentLinePoint = currentLinePoint + 5;
-                    currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
-                    doc.setTextColor('#000').setFontType('normal');
-                    const linesDesc = doc.setFontSize(11).splitTextToSize(module.description, 150);
-                    const expectedLine = currentLinePoint + 9 + (4 * linesDesc.length);
-                    if (expectedLine > PopupComponent.END_PAGE_LINE) {
-                        doc.setTextColor('#000').setFontType('normal');
-                        doc.setFontSize(11);
-                        const fittingLines = Math.round((PopupComponent.END_PAGE_LINE - currentLinePoint) / 4);
-                        if (fittingLines <= 0) {
-                            currentLinePoint = this.newPage(doc);
-                            doc.setTextColor('#000').setFontType('normal');
-                            doc.setFontSize(11);
-                            doc.text(30, currentLinePoint, linesDesc, { maxWidth: 150, align: 'justify' });
-                            currentLinePoint = currentLinePoint + 9 + (4 * linesDesc.length);
-                            currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
-                        } else {
-                            const splitedLines1 = linesDesc.slice(0, fittingLines);
-                            doc.text(35, currentLinePoint, splitedLines1, { maxWidth: 150, align: 'justify' });
-                            currentLinePoint = currentLinePoint + 9 + (3.8 * splitedLines1.length);
-                            currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
-                            const splitedLines2 = linesDesc.slice(fittingLines);
-                            doc.setTextColor('#000').setFontType('normal');
-                            doc.setFontSize(11);
-                            doc.text(35, currentLinePoint, splitedLines2, { maxWidth: 150, align: 'justify' });
-                            currentLinePoint = currentLinePoint + 9 + (3.8 * splitedLines2.length);
-                            currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
-                        }
-                    } else {
-                        doc.setTextColor('#000').setFontType('normal');
-                        doc.setFontSize(11);
-                        doc.text(35, currentLinePoint, linesDesc, { maxWidth: 150, align: 'justify' });
-                        currentLinePoint = currentLinePoint + 9 + (3.8 * linesDesc.length);
-                        currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
-                    }
-                }
+                currentLinePoint = this.printCleanText(doc, currentLinePoint, 35, 145, module.description, 11);
                 if (module.prerequisites && module.prerequisites.length > 0) {
                     doc.setFontSize(11).setTextColor('#1a80b6').setFontType('bold'); // headline
                     doc.text(40, currentLinePoint, 'Prerequisites: ');
@@ -403,24 +337,15 @@ export class PopupComponent implements OnInit {
                     module.prerequisites.forEach(concept => {
                         // const conceptId = concept.concept_id.split(']', 1)[0].split('[', 2).length > 0 ?   concept.concept_id.split(']', 1)[0].split('[', 2)[1] : '';
                         doc.setTextColor('#000').setFontType('normal');
-                        const linePre = doc.setFontSize(11).splitTextToSize(concept.name + '', 100);
+                        const linePre = doc.setFontSize(11).splitTextToSize(concept.name + '', 140);
                         doc.text(40, currentLinePoint, '- ' + linePre);
                         //doc.link(40, currentLinePoint - 2, 600, linePre.length + 5, { url: PopupComponent.URL_BOK + conceptId});
                         currentLinePoint = currentLinePoint + 5 + (4 * linePre.length);
                         currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                     });
                 }
-                if (module.assessment != null && module.assessment !== '') {
-                    currentLinePoint = currentLinePoint + 5;
-                    currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
-                    doc.setFontSize(11).setTextColor('#1a80b6').setFontType('bold'); // headline
-                    doc.text(35, currentLinePoint, 'Assessments');
-                    currentLinePoint = currentLinePoint + 5;
-                    doc.setTextColor('#000').setFontType('normal').setFontSize(11); // normal text
-                    const coLines = doc.setFontSize(11).splitTextToSize(module.assessment + '', 150);
-                    doc.text(35, currentLinePoint, coLines, { maxWidth: 150, align: 'justify' });
-                    currentLinePoint = currentLinePoint + 4 * coLines.length;
-                }
+                currentLinePoint = this.printCleanText(doc, currentLinePoint, 35, 145, module.assessment, 11);
+
                 if (module.bibliography && module.bibliography.length > 0) {
                     currentLinePoint = currentLinePoint + 5;
                     doc.setFontSize(11).setTextColor('#1a80b6').setFontType('bold'); // headline
@@ -431,25 +356,28 @@ export class PopupComponent implements OnInit {
                         if (concept.concept_id) { // bib from Bok
                             const conceptId = concept.concept_id.split(']', 1)[0].split('[', 2).length > 0 ? concept.concept_id.split(']', 1)[0].split('[', 2)[1] : '';
                             doc.setTextColor('#000').setFontType('normal');
-                            const linePre = doc.setFontSize(9).splitTextToSize(concept.name + '', 150);
-                            doc.text(35, currentLinePoint, linePre);
-                            doc.link(35, currentLinePoint - 2, 150, linePre.length + 5, { url: PopupComponent.URL_BOK + conceptId });
+                            const linePre = doc.setFontSize(9).splitTextToSize(concept.name + '', 145);
+                            doc.text(35, currentLinePoint, linePre, { maxWidth: 150, align: 'justify' });
+                            doc.link(35, currentLinePoint - 2, 145, linePre.length + 5, { url: PopupComponent.URL_BOK + conceptId });
                             currentLinePoint = currentLinePoint + (4 * linePre.length);
                             currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                         } else { //custom bib
                             doc.setTextColor('#000').setFontType('normal');
-                            const linePreC = doc.setFontSize(9).splitTextToSize(concept + '', 150);
-                            doc.text(35, currentLinePoint, linePreC);
+                            const linePreC = doc.setFontSize(9).splitTextToSize(concept + '', 145);
+                            doc.text(35, currentLinePoint, linePreC, { maxWidth: 150, align: 'justify' });
                             currentLinePoint = currentLinePoint + (4 * linePreC.length);
                             currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                         }
                     });
                 }
+                currentLinePoint = this.printLO(doc, currentLinePoint, 35, 145, module.learningObjectives);
+
                 if (module.children && module.children.length > 0) {
                     currentLinePoint = currentLinePoint + 15;
                     currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                     doc.setFontSize(12).setTextColor('#1a80b6').setFontType('bold'); // headline
-                    doc.text(35, currentLinePoint, 'Courses ( Module: ' + module.name + ' )');
+                    const lineName = doc.setFontSize(11).splitTextToSize('Courses ( Module: ' + module.name + ' )', 145);
+                    doc.text(35, currentLinePoint, lineName);
                     doc.setTextColor('#000').setFontType('normal').setFontSize(8); // normal text
                     currentLinePoint = currentLinePoint + 5;
                     module.children.forEach(courses => { //children -> courses
@@ -486,42 +414,7 @@ export class PopupComponent implements OnInit {
                             doc.text(40, currentLinePoint, 'Semester: ' + courses.numSemester);
                             currentLinePoint = currentLinePoint + 5;
                         }
-                        if (courses.description != null && courses.description !== '') {
-                            currentLinePoint = currentLinePoint + 5;
-                            // const linesDesc = doc.setFontSize(11).splitTextToSize(courses.description, 140);
-                            const linesDesc = doc.setFontSize(11).splitTextToSize(courses.description.replace(/(\r\n|\n|\r)/gm, ''), 140);
-                            const expectedLine = currentLinePoint + 9 + (4 * linesDesc.length);
-                            if (expectedLine > PopupComponent.END_PAGE_LINE) {
-                                doc.setTextColor('#000').setFontType('normal');
-                                doc.setFontSize(11);
-                                const fittingLines = Math.round((PopupComponent.END_PAGE_LINE - currentLinePoint) / 4);
-                                if (fittingLines <= 0) {
-                                    currentLinePoint = this.newPage(doc);
-                                    doc.setTextColor('#000').setFontType('normal');
-                                    doc.setFontSize(11);
-                                    doc.text(40, currentLinePoint, linesDesc, { maxWidth: 140, align: 'justify' });
-                                    currentLinePoint = currentLinePoint + 9 + (4 * linesDesc.length);
-                                    currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
-                                } else {
-                                    const splitedLines1 = linesDesc.slice(0, fittingLines);
-                                    doc.text(40, currentLinePoint, splitedLines1, { maxWidth: 140, align: 'justify' });
-                                    currentLinePoint = currentLinePoint + 9 + (3.8 * splitedLines1.length);
-                                    currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
-                                    const splitedLines2 = linesDesc.slice(fittingLines);
-                                    doc.setTextColor('#000').setFontType('normal');
-                                    doc.setFontSize(11);
-                                    doc.text(40, currentLinePoint, splitedLines2, { maxWidth: 140, align: 'justify' });
-                                    currentLinePoint = currentLinePoint + 9 + (3.8 * splitedLines2.length);
-                                    currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
-                                }
-                            } else {
-                                doc.setTextColor('#000').setFontType('normal');
-                                doc.setFontSize(11);
-                                doc.text(40, currentLinePoint, linesDesc, { maxWidth: 140, align: 'justify' });
-                                currentLinePoint = currentLinePoint + 9 + (3.8 * linesDesc.length);
-                                currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
-                            }
-                        }
+                        currentLinePoint = this.printCleanText(doc, currentLinePoint, 40, 140, courses.description, 11);
                         if (courses.prerequisites && courses.prerequisites.length > 0) {
                             currentLinePoint = currentLinePoint + 5;
                             doc.setFontSize(11).setTextColor('#1a80b6').setFontType('bold'); // headline
@@ -538,17 +431,9 @@ export class PopupComponent implements OnInit {
                                 currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                             });
                         }
-                        if (courses.assessment != null && courses.assessment !== '') {
-                            currentLinePoint = currentLinePoint + 7;
-                            currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
-                            doc.setFontSize(11).setTextColor('#1a80b6').setFontType('bold'); // headline
-                            doc.text(40, currentLinePoint, 'Assessments');
-                            currentLinePoint = currentLinePoint + 5;
-                            doc.setTextColor('#000').setFontType('normal').setFontSize(11); // normal text
-                            const coLines = doc.setFontSize(11).splitTextToSize(courses.assessment + '', 150);
-                            doc.text(40, currentLinePoint, coLines, { maxWidth: 140, align: 'justify' });
-                            currentLinePoint = currentLinePoint + 1 + (4 * coLines.length);
-                        }
+
+                        currentLinePoint = this.printCleanText(doc, currentLinePoint, 40, 140, courses.assessment, 11);
+
                         if (courses.bibliography && courses.bibliography.length > 0) {
                             currentLinePoint = currentLinePoint + 5;
                             doc.setFontSize(11).setTextColor('#1a80b6').setFontType('bold'); // headline
@@ -559,37 +444,22 @@ export class PopupComponent implements OnInit {
                                 if (concept.concept_id) { // bib from Bok
                                     const conceptId = concept.concept_id.split(']', 1)[0].split('[', 2).length > 0 ? concept.concept_id.split(']', 1)[0].split('[', 2)[1] : '';
                                     doc.setTextColor('#000').setFontType('normal');
-                                    const linePre = doc.setFontSize(9).splitTextToSize(concept.name + '', 150);
-                                    doc.text(40, currentLinePoint, linePre);
-                                    doc.link(40, currentLinePoint - 2, 150, linePre.length + 5, { url: PopupComponent.URL_BOK + conceptId });
+                                    const linePre = doc.setFontSize(9).splitTextToSize(concept.name + '', 140);
+                                    doc.text(40, currentLinePoint, linePre, { maxWidth: 140, align: 'justify' });
+                                    doc.link(40, currentLinePoint - 2, 140, linePre.length + 5, { url: PopupComponent.URL_BOK + conceptId });
                                     currentLinePoint = currentLinePoint + (4 * linePre.length);
                                     currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                                 } else { //custom bib
                                     doc.setTextColor('#000').setFontType('normal');
-                                    const linePreC = doc.setFontSize(9).splitTextToSize(concept + '', 150);
-                                    doc.text(40, currentLinePoint, linePreC);
+                                    const linePreC = doc.setFontSize(9).splitTextToSize(concept + '', 140);
+                                    doc.text(40, currentLinePoint, linePreC, { maxWidth: 140, align: 'justify' });
                                     currentLinePoint = currentLinePoint + (4 * linePreC.length);
                                     currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                                 }
                             });
                         }
-                        if (courses.learningObjectives != null && courses.learningObjectives.length > 0) {
-                            currentLinePoint = currentLinePoint + 6;
-                            currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
-                            doc.setFontSize(11).setTextColor('#1a80b6').setFontType('bold'); // headline
-                            doc.text(40, currentLinePoint, 'Learning Outcomes: ');
-                            courses.learningObjectives.forEach(concept => {
-                                currentLinePoint = currentLinePoint + 5;
-                                const conceptId = PopupComponent.URL_BOK + concept.concept_id.split(']', 1)[0].split('[', 2)[1];
-                                doc.setTextColor('#1a80b6').setFontType('normal');
-                                const lineLearn = doc.setFontSize(10).splitTextToSize(concept.name + '', 140);
-                                doc.text(40, currentLinePoint, lineLearn, { maxWidth: 140, align: 'justify' });
-                                if (concept.concept_id.split(']', 1)[0].split('[', 2).length > 1) {
-                                    doc.link(40, currentLinePoint - 2, 140, 2 + (3 * lineLearn.length), { url: conceptId });
-                                }
-                                currentLinePoint = currentLinePoint + 1 + (3 * lineLearn.length);
-                            });
-                        }
+                        currentLinePoint = this.printLO(doc, currentLinePoint, 40, 140, courses.learningObjectives);
+
                         if (courses.children && courses.children.length > 0) { // Children -> lectures
                             currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                             currentLinePoint = currentLinePoint + 5;
@@ -631,44 +501,7 @@ export class PopupComponent implements OnInit {
                                     doc.text(45, currentLinePoint, 'ECTS: ' + lectures.ects.toString());
                                     currentLinePoint = currentLinePoint + 8;
                                 }
-                                if (lectures.description != null && lectures.description !== '') {
-                                    currentLinePoint = currentLinePoint + 5;
-                                    currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
-                                    doc.setTextColor('#000').setFontType('normal');
-                                    const linesDesc = doc.setFontSize(11).splitTextToSize(lectures.description, 130);
-
-                                    const expectedLine = currentLinePoint + 9 + (4 * linesDesc.length);
-                                    if (expectedLine > PopupComponent.END_PAGE_LINE) {
-                                        doc.setTextColor('#000').setFontType('normal');
-                                        doc.setFontSize(11);
-                                        const fittingLines = Math.round((PopupComponent.END_PAGE_LINE - currentLinePoint) / 4);
-                                        if (fittingLines <= 0) {
-                                            currentLinePoint = this.newPage(doc);
-                                            doc.setTextColor('#000').setFontType('normal');
-                                            doc.setFontSize(11);
-                                            doc.text(45, currentLinePoint, linesDesc, { maxWidth: 130, align: 'justify' });
-                                            currentLinePoint = currentLinePoint + 9 + (4 * linesDesc.length);
-                                            currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
-                                        } else {
-                                            const splitedLines1 = linesDesc.slice(0, fittingLines);
-                                            doc.text(45, currentLinePoint, splitedLines1, { maxWidth: 130, align: 'justify' });
-                                            currentLinePoint = currentLinePoint + 9 + (3.8 * splitedLines1.length);
-                                            currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
-                                            const splitedLines2 = linesDesc.slice(fittingLines);
-                                            doc.setTextColor('#000').setFontType('normal');
-                                            doc.setFontSize(11);
-                                            doc.text(45, currentLinePoint, splitedLines2, { maxWidth: 130, align: 'justify' });
-                                            currentLinePoint = currentLinePoint + 9 + (3.8 * splitedLines2.length);
-                                            currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
-                                        }
-                                    } else {
-                                        doc.setTextColor('#000').setFontType('normal');
-                                        doc.setFontSize(11);
-                                        doc.text(45, currentLinePoint, linesDesc, { maxWidth: 130, align: 'justify' });
-                                        currentLinePoint = currentLinePoint + 9 + (3.8 * linesDesc.length);
-                                        currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
-                                    }
-                                }
+                                currentLinePoint = this.printCleanText(doc, currentLinePoint, 45, 140, lectures.description, 11);
                                 if (lectures.bibliography && lectures.bibliography.length > 0) {
                                     currentLinePoint = currentLinePoint + 5;
                                     doc.setFontSize(11).setTextColor('#1a80b6').setFontType('bold'); // headline
@@ -679,20 +512,22 @@ export class PopupComponent implements OnInit {
                                         if (concept.concept_id) { // bib from Bok
                                             const conceptId = concept.concept_id.split(']', 1)[0].split('[', 2).length > 0 ? concept.concept_id.split(']', 1)[0].split('[', 2)[1] : '';
                                             doc.setTextColor('#000').setFontType('normal');
-                                            const linePre = doc.setFontSize(9).splitTextToSize(concept.name + '', 150);
-                                            doc.text(45, currentLinePoint, linePre);
-                                            doc.link(45, currentLinePoint - 2, 150, linePre.length + 5, { url: PopupComponent.URL_BOK + conceptId });
+                                            const linePre = doc.setFontSize(9).splitTextToSize(concept.name + '', 135);
+                                            doc.text(45, currentLinePoint, linePre, { maxWidth: 135, align: 'justify' });
+                                            doc.link(45, currentLinePoint - 2, 135, linePre.length + 5, { url: PopupComponent.URL_BOK + conceptId });
                                             currentLinePoint = currentLinePoint + (4 * linePre.length);
                                             currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                                         } else { //custom bib
                                             doc.setTextColor('#000').setFontType('normal');
-                                            const linePreC = doc.setFontSize(9).splitTextToSize(concept + '', 150);
-                                            doc.text(45, currentLinePoint, linePreC);
+                                            const linePreC = doc.setFontSize(9).splitTextToSize(concept + '', 135);
+                                            doc.text(45, currentLinePoint, linePreC, { maxWidth: 135, align: 'justify' });
                                             currentLinePoint = currentLinePoint + (4 * linePreC.length);
                                             currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                                         }
                                     });
                                 }
+                                currentLinePoint = this.printLO(doc, currentLinePoint, 45, 135, lectures.learningObjectives);
+
                             });
                         }
                     });
@@ -724,6 +559,77 @@ export class PopupComponent implements OnInit {
         doc.setFontSize(10).setTextColor('#768187').setFontType('bold');
         doc.text(165, 280, 'Page ' + doc.page);
         doc.page++;
+    }
+
+    printCleanText(doc, currentLinePoint, x, xEnd, text, size) {
+        if (text != null && text !== '') {
+            currentLinePoint = currentLinePoint + 5;
+            doc.setTextColor('#000').setFontType('normal');
+            const arrayLines = text.split('\n');
+            arrayLines.forEach(l => {
+
+                const cleanLine = l.replace(/[^a-zA-Z ;:.,-_()*+-/0-9='"!¡?¿]/g, '');
+                const linesDesc = doc.setFontSize(size).splitTextToSize(cleanLine, xEnd);
+
+                const expectedLine = currentLinePoint + 4 + (4 * linesDesc.length);
+                if (expectedLine > PopupComponent.END_PAGE_LINE) {
+                    doc.setTextColor('#000').setFontType('normal');
+                    doc.setFontSize(size);
+                    const fittingLines = Math.round((PopupComponent.END_PAGE_LINE - currentLinePoint) / 4);
+                    if (fittingLines <= 0) {
+                        currentLinePoint = this.newPage(doc);
+                        doc.setTextColor('#000').setFontType('normal');
+                        doc.setFontSize(size);
+                        doc.text(x, currentLinePoint, linesDesc, { maxWidth: xEnd, align: 'justify' });
+                        currentLinePoint = currentLinePoint + 4 + (4 * linesDesc.length);
+                        currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
+                    } else {
+                        const splitedLines1 = linesDesc.slice(0, fittingLines);
+                        doc.text(x, currentLinePoint, splitedLines1, { maxWidth: xEnd, align: 'justify' });
+                        currentLinePoint = currentLinePoint + 4 + (4 * splitedLines1.length);
+                        currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
+                        const splitedLines2 = linesDesc.slice(fittingLines);
+                        doc.setTextColor('#000').setFontType('normal');
+                        doc.setFontSize(size);
+                        doc.text(x, currentLinePoint, splitedLines2, { maxWidth: xEnd, align: 'justify' });
+                        currentLinePoint = currentLinePoint + 4 + (4 * splitedLines2.length);
+                        currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
+                    }
+                } else {
+                    doc.setTextColor('#000').setFontType('normal');
+                    doc.setFontSize(size);
+                    doc.text(x, currentLinePoint, linesDesc, { maxWidth: xEnd, align: 'justify' });
+                    currentLinePoint = currentLinePoint + 4 + (4 * linesDesc.length);
+                    currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
+                }
+            });
+        }
+
+        return currentLinePoint;
+    }
+
+    printLO(doc, currentLinePoint, x, xEnd, los) {
+
+        if (los != null && los.length > 0) {
+            currentLinePoint = currentLinePoint + 6;
+            currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
+            doc.setFontSize(11).setTextColor('#1a80b6').setFontType('bold'); // headline
+            doc.text(x, currentLinePoint, 'Learning Outcomes: ');
+            los.forEach(concept => {
+                currentLinePoint = currentLinePoint + 9;
+                const conceptId = PopupComponent.URL_BOK + concept.concept_id.split(']', 1)[0].split('[', 2)[1];
+                doc.setTextColor('#1a80b6').setFontType('normal');
+                const lineLearn = doc.setFontSize(10).splitTextToSize(concept.name + '', xEnd);
+                doc.text(x, currentLinePoint, lineLearn, { maxWidth: xEnd, align: 'justify' });
+                if (concept.concept_id.split(']', 1)[0].split('[', 2).length > 1) {
+                    doc.link(x, currentLinePoint - 2, xEnd, 2 + (3 * lineLearn.length), { url: conceptId });
+                }
+                currentLinePoint = currentLinePoint + (3 * lineLearn.length);
+                currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
+            });
+        }
+        return currentLinePoint;
+
     }
 
     getFields(data: any) {
