@@ -161,7 +161,7 @@ export class NewspComponent implements OnInit, OnDestroy {
     this.getMode();
     this.currentTreeNode = cv.getCurrentNode();
     console.log('Display existing tree : ');
-    bok.visualizeBOKData('#bubbles', 'assets/saved-bok.xml', '#textBoK');
+    bok.visualizeBOKData('#bubbles', '#textBoK');
     this.analytics.logEvent('NewSP', { 'mode': this.mode });
   }
 
