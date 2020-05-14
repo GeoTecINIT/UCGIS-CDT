@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { BokInput } from '../model/bokinput';
 import { Course } from './course.service';
 import { Field } from './fields.service';
+import { Competence } from './esco-competence.service';
 
 const collection = 'modules';
 
@@ -31,6 +32,8 @@ export class Module extends Object {
   public bibliography: BokInput[];
   public orgId: string;
   public orgName: string;
+  public customCompetences: string[];
+  public competences: Competence[];
 
   data: any;
 
@@ -85,6 +88,8 @@ export class Module extends Object {
       this.bibliography = currentNode.data.bibliography ? currentNode.data.bibliography : [];
       this.orgId = currentNode.data.orgId ? currentNode.data.orgId : '';
       this.orgName = currentNode.data.orgName ? currentNode.data.orgName : '';
+      this.competences = currentNode.data.competences ? currentNode.data.competences : [];
+      this.customCompetences = currentNode.data.customCompetences ? currentNode.data.customCompetences : [];
 
     } else {
       this._id = '';
@@ -108,6 +113,8 @@ export class Module extends Object {
       this.bibliography = [];
       this.orgId = '';
       this.orgName = '';
+      this.competences = [];
+      this.customCompetences = [];
     }
   }
 }

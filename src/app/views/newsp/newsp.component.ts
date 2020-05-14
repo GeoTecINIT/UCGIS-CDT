@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, OnDestroy, HostListener } fro
 import * as bok from '@eo4geo/bok-dataviz';
 import { StudyProgram, StudyProgramService } from '../../services/studyprogram.service';
 import { FieldsService } from '../../services/fields.service';
-import { EscoCompetenceService } from '../../services/esco-competence.service';
+import { EscoCompetenceService, Competence } from '../../services/esco-competence.service';
 import { ActivatedRoute } from '@angular/router';
 import * as cv from '@eo4geo/curr-viz';
 import { Module } from '../../services/module.service';
@@ -105,6 +105,30 @@ export class NewspComponent implements OnInit, OnDestroy {
     searchOnKey: 'concatName' // key on which search should be performed. if undefined this will be extensive search on all keys
   };
 
+  configCompetences = {
+    displayKey: 'preferredLabel', // if objects array passed which key to be displayed defaults to description
+    search: true, // true/false for the search functionlity defaults to false,
+    height: '200px', // height of the list so that if there are more no of items it can show a scroll defaults to auto.
+    placeholder: 'Select transversal skill', // text to be displayed when no item is selected defaults to Select,
+    customComparator: () => { }, // a custom function to sort the items. default is undefined and Array.sort() will be used
+    moreText: 'transversal skills more', // text to be displayed whenmore than one items are selected like Option 1 + 5 more
+    noResultsFound: 'No results found!', // text to be displayed when no items are found while searching
+    searchPlaceholder: 'Search transversal skills', // label thats displayed in search input,
+    searchOnKey: 'preferredLabel' // key on which search should be performed. if undefined this will be extensive search on all keys
+  };
+
+  configfullCompetences = {
+    displayKey: 'preferredLabel', // if objects array passed which key to be displayed defaults to description
+    search: true, // true/false for the search functionlity defaults to false,
+    height: '200px', // height of the list so that if there are more no of items it can show a scroll defaults to auto.
+    placeholder: 'Select transversal skill', // text to be displayed when no item is selected defaults to Select,
+    customComparator: () => { }, // a custom function to sort the items. default is undefined and Array.sort() will be used
+    moreText: 'transversal skills more', // text to be displayed whenmore than one items are selected like Option 1 + 5 more
+    noResultsFound: 'No results found!', // text to be displayed when no items are found while searching
+    searchPlaceholder: 'Search transversal skills', // label thats displayed in search input,
+    searchOnKey: 'preferredLabel' // key on which search should be performed. if undefined this will be extensive search on all keys
+  };
+
   @ViewChild('textBoK') textBoK: ElementRef;
   @ViewChild('graphTreeDiv') public graphTreeDiv: ElementRef;
   @ViewChild('bokModal') public bokModal: ModalDirective;
@@ -124,6 +148,8 @@ export class NewspComponent implements OnInit, OnDestroy {
     private afAuth: AngularFireAuth,
     public analytics: AngularFireAnalytics
   ) {
+    this.competences = this.escoService.basicCompetences;
+    this.filteredCompetences = this.competences;
     this.studyprogramService
       .subscribeToStudyPrograms()
       .subscribe(res => {
@@ -567,6 +593,48 @@ export class NewspComponent implements OnInit, OnDestroy {
   listSorted(result) {
     this.currentTreeNode.children = result;
     this.updateTreeStudyProgram();
-   // this.refreshTreeSize();
+    // this.refreshTreeSize();
+  }
+
+  // Add custom competence to model to force updating component, and to competences lists to find it again if removed
+  addExtraCompetence(comp, modelToAdd) {
+    modelToAdd.competences = [...modelToAdd.competences, { preferredLabel: comp }];
+    modelToAdd.customCompetences.push(comp);
+    this.escoService.allcompetences = [...this.escoService.allcompetences, { preferredLabel: comp }];
+    this.escoService.basicCompetences = [...this.escoService.basicCompetences, { preferredLabel: comp }];
+    console.log('add competence: ' + comp + ' model' + modelToAdd.name);
+    this.updateTreeStudyProgram();
+  }
+
+  removeCompetence(name: string, array: string[]) {
+    array.forEach((item, index) => {
+      if (item === name) {
+        //  console.log('removing concept' + name);
+        array.splice(index, 1);
+      }
+    });
+  }
+
+  fullListESCO() {
+    this.isfullESCOcompetences = !this.isfullESCOcompetences;
+  }
+
+  // custom search to match term also in altLabels
+  customSearchFn(term: string, item: Competence) {
+    let found = false;
+    if (term) {
+      term = term.toLocaleLowerCase();
+      if (item.preferredLabel.toLocaleLowerCase().indexOf(term) > -1) {
+        found = true;
+      }
+      if (item.altLabels && item.altLabels.length > 0) {
+        item.altLabels.forEach((alt) => {
+          if (alt.toLocaleLowerCase().indexOf(term) > -1) {
+            found = true;
+          }
+        });
+      }
+    }
+    return found;
   }
 }

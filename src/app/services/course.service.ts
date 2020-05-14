@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { BokInput } from '../model/bokinput';
 import { Lecture } from './lecture.service';
 import { Field } from './fields.service';
+import { Competence } from './esco-competence.service';
 
 const collection = 'courses';
 
@@ -33,6 +34,8 @@ export class Course extends Object {
   public orgId: string;
   public orgName: string;
   public type: string;
+  public customCompetences: string[];
+  public competences: Competence[];
 
   data: any;
 
@@ -78,6 +81,8 @@ export class Course extends Object {
           }
         });
       }
+      this.competences = currentNode.data.competences ? currentNode.data.competences : [];
+      this.customCompetences = currentNode.data.customCompetences ? currentNode.data.customCompetences : [];
 
     } else {
       this._id = '';
@@ -103,6 +108,8 @@ export class Course extends Object {
       this.orgName = '';
       this.orgName = '';
       this.type = '';
+      this.competences = [];
+      this.customCompetences = [];
     }
   }
 }

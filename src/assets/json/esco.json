@@ -23283,7 +23283,7 @@
         "uri": "http://data.europa.eu/esco/skill/79c96922-6032-40d6-b391-0f4a0d85e620",
         "skillType": "skill/competence",
         "description": "Use ingredients, mixes and instruments to create artistic food preparations e.g. cakes. Be imaginative and resourceful, and combine colours and shapes to good effect. Turn designs into reality, caring for aesthetic and presentation.",
-        "reuseLevel ": "cross-sector",
+        "reuseLevel": "cross-sector",
         "preferredLabel": "make artistic food creations",
         "altLabels": [
             "making artistic food creations",

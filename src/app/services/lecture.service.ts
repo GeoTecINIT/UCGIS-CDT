@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { BokInput } from '../model/bokinput';
 import { Field } from './fields.service';
+import { Competence } from './esco-competence.service';
 
 const collection = 'lectures';
 
@@ -27,6 +28,8 @@ export class Lecture extends Object {
   public orgId: string;
   public orgName: string;
   public learningObjectives: BokInput[];
+  public customCompetences: string[];
+  public competences: Competence[];
 
   data: any;
 
@@ -58,6 +61,8 @@ export class Lecture extends Object {
       this.orgId = currentNode.data.orgId ? currentNode.data.orgId : '';
       this.orgName = currentNode.data.orgName ? currentNode.data.orgName : '';
       this.learningObjectives = currentNode.data.learningObjectives ? currentNode.data.learningObjectives : [];
+      this.competences = currentNode.data.competences ? currentNode.data.competences : [];
+      this.customCompetences = currentNode.data.customCompetences ? currentNode.data.customCompetences : [];
 
     } else {
       this._id = '';
@@ -79,6 +84,8 @@ export class Lecture extends Object {
       this.orgId = '';
       this.orgName = '';
       this.learningObjectives = [];
+      this.competences = [];
+      this.customCompetences = [];
     }
   }
 }
