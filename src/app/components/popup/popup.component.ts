@@ -214,7 +214,7 @@ export class PopupComponent implements OnInit {
                     doc.setTextColor('#000').setFontType('normal');
                     const linePre = doc.setFontSize(9).splitTextToSize(concept.name + '', 150);
                     doc.text(30, currentLinePoint, linePre, { maxWidth: 150, align: 'justify' });
-                    doc.link(30, currentLinePoint - 2, 150, linePre.length + 5, { url: PopupComponent.URL_BOK + conceptId });
+                   // doc.link(30, currentLinePoint - 2, 150, linePre.length + 5, { url: PopupComponent.URL_BOK + conceptId });
                     currentLinePoint = currentLinePoint + (4 * linePre.length);
                     currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                 } else { //custom bib
@@ -359,7 +359,7 @@ export class PopupComponent implements OnInit {
                             doc.setTextColor('#000').setFontType('normal');
                             const linePre = doc.setFontSize(9).splitTextToSize(concept.name + '', 145);
                             doc.text(35, currentLinePoint, linePre, { maxWidth: 150, align: 'justify' });
-                            doc.link(35, currentLinePoint - 2, 145, linePre.length + 5, { url: PopupComponent.URL_BOK + conceptId });
+                          //  doc.link(35, currentLinePoint - 2, 145, linePre.length + 5, { url: PopupComponent.URL_BOK + conceptId });
                             currentLinePoint = currentLinePoint + (4 * linePre.length);
                             currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                         } else { //custom bib
@@ -449,7 +449,7 @@ export class PopupComponent implements OnInit {
                                     doc.setTextColor('#000').setFontType('normal');
                                     const linePre = doc.setFontSize(9).splitTextToSize(concept.name + '', 140);
                                     doc.text(40, currentLinePoint, linePre, { maxWidth: 140, align: 'justify' });
-                                    doc.link(40, currentLinePoint - 2, 140, linePre.length + 5, { url: PopupComponent.URL_BOK + conceptId });
+                                  //  doc.link(40, currentLinePoint - 2, 140, linePre.length + 5, { url: PopupComponent.URL_BOK + conceptId });
                                     currentLinePoint = currentLinePoint + (4 * linePre.length);
                                     currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                                 } else { //custom bib
@@ -519,7 +519,7 @@ export class PopupComponent implements OnInit {
                                             doc.setTextColor('#000').setFontType('normal');
                                             const linePre = doc.setFontSize(9).splitTextToSize(concept.name + '', 135);
                                             doc.text(45, currentLinePoint, linePre, { maxWidth: 135, align: 'justify' });
-                                            doc.link(45, currentLinePoint - 2, 135, linePre.length + 5, { url: PopupComponent.URL_BOK + conceptId });
+                                         //   doc.link(45, currentLinePoint - 2, 135, linePre.length + 5, { url: PopupComponent.URL_BOK + conceptId });
                                             currentLinePoint = currentLinePoint + (4 * linePre.length);
                                             currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
                                         } else { //custom bib
