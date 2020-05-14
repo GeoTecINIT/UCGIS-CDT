@@ -6,6 +6,8 @@ import { Course } from './course.service';
 import { Lecture } from './lecture.service';
 import { Field } from './fields.service';
 import { BokInput } from '../model/bokinput';
+import { Competence } from './esco-competence.service';
+
 
 const collection = 'StudyPrograms';
 
@@ -31,6 +33,8 @@ export class StudyProgram extends Object {
   public isEdited: Boolean;
   public learningObjectives: BokInput[];
   public inheritedLearningObjectives: BokInput[];
+  public customCompetences: string[];
+  public competences: Competence[];
 
   constructor(public currentNode: any = null) {
     super();
@@ -90,7 +94,8 @@ export class StudyProgram extends Object {
           }
         });
       }
-
+      this.competences = currentNode.data.competences ? currentNode.data.competences : [];
+      this.customCompetences = currentNode.data.customCompetences ? currentNode.data.customCompetences : [];
     } else {
       this._id = '';
       this.name = 'New Curricula Item';
@@ -112,6 +117,8 @@ export class StudyProgram extends Object {
       this.isEdited = true;
       this.learningObjectives = [];
       this.inheritedLearningObjectives = [];
+      this.competences = [];
+      this.customCompetences = [];
     }
   }
 }

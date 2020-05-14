@@ -217,6 +217,19 @@
                           </div>
                         </ul>
                       </div>
+                      <div *ngIf="model.competences && model.competences.length > 0">
+                        <span><button type="button" class="btn btn-link btn-xs"
+                          (click)="showCom.classList.contains('hidden') ? showCom.className = '' : showCom.className = 'hidden' ">
+                          <i [tooltip]="showCom.classList.contains('hidden')? 'Show' : 'Hide'"
+                            [ngClass]="showCom.classList.contains('hidden')? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
+                        </button>
+                        <b>Transversal Skills ({{model.competences.length}}):</b></span>
+                        <ul #showCom>
+                          <div *ngFor="let c of model.competences">
+                            <li>{{ c.preferredLabel }}</li>
+                          </div>
+                        </ul>
+                      </div>
                       <div *ngIf="model.linksToBok && model.linksToBok.length > 0">
                         <span><b>BoK annotations:</b></span>
                         <ul>

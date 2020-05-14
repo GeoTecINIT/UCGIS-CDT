@@ -344,6 +344,83 @@
                     </div>
                     <div class="row">
                       <div class="col-md-12">
+                        <label for="description">Transversal skills</label>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="input-group">
+                          <ng-select *ngIf="isfullESCOcompetences" [items]="escoService.allcompetences"
+                            name="competences" bindLabel="preferredLabel" groupBy="reuseLevel" [multiple]="true"
+                            [searchFn]="customSearchFn" placeholder="Search..." [clearSearchOnAdd]="true"
+                            [(ngModel)]="model.competences" [clearable]="false" (change)="updateTreeStudyProgram()">
+                            <ng-template ng-optgroup-tmp let-item="item">
+                              {{item.reuseLevel || 'Unnamed group'}}
+                            </ng-template>
+                          </ng-select>
+                          <ng-select *ngIf="!isfullESCOcompetences" [items]="competences" name="competences"
+                            bindLabel="preferredLabel" groupBy="reuseLevel" [multiple]="true"
+                            [searchFn]="customSearchFn" placeholder="Search..." [clearSearchOnAdd]="true"
+                            [(ngModel)]="model.competences" [clearable]="false" (change)="updateTreeStudyProgram()">
+                            <ng-template ng-optgroup-tmp let-item="item">
+                              {{item.reuseLevel || 'Unnamed group'}}
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <span class="input-group-prepend">
+                          <label class="switch switch-label switch-pill switch-outline-primary-alt">
+                            <input class="switch-input" type="checkbox" value="isfullESCOcompetences"
+                              [(ngModel)]="isfullESCOcompetences" checked />
+                            <span class="switch-slider"
+                              tooltip="Click here to add to the dropdown full list of ESCO skills." data-checked="✓"
+                              data-unchecked="X"></span>
+                          </label>
+                          <div class="pl-1">Search full <a href="https://ec.europa.eu/esco/portal/skill">ESCO</a>
+                            skills
+                          </div>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <ul>
+                          <div *ngFor="let mc of model.competences; index as i ">
+                            <li>{{ mc.preferredLabel }} <button type="button" class="btn btn-link"
+                                tooltip="Click to remove" (click)="removeCompetence(mc, model.competences)">
+                                <i class="fa fa-remove"></i>
+                              </button></li>
+                          </div>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="row pt-1">
+                      <div class="col-md-12">
+
+                        This service uses the <a href="http://ec.europa.eu/esco"> ESCO </a> classification of the
+                        European Commission. <br> If you cannot find the specified transversal skill, you can also add
+                        your own here:
+
+                      </div>
+                    </div>
+                    <div class="row pt-1 form-group">
+                      <div class="col-md-6">
+                        <input #competenceExtra type="text" class="form-control" id="competenceExtra"
+                          placeholder="Custom transversal skill" name="competenceExtra"
+                          (keyup)="competenceExtraAdd.disabled = false"
+                          (keydown.enter)="addExtraCompetence(competenceExtra.value, model); competenceExtra.value= ''; competenceExtraAdd.disabled = true" />
+                      </div>
+                      <div class="col-md-6">
+                        <button #competenceExtraAdd type="submit" class="btn btn-primary btn-sm"
+                          tooltip="Add your custom transversal skill."
+                          (click)="addExtraCompetence(competenceExtra.value, model); competenceExtra.value= ''; competenceExtraAdd.disabled = true"
+                          disabled>
+                          Add custom transversal skill
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-12">
                         <div *ngIf="model.children && model.children.length > 0">
                           <label for="children">
                             <button type="button" class="btn btn-link btn-xs"
@@ -351,9 +428,10 @@
                               <i [tooltip]="sortableChildren.classList.contains('hidden')? 'Show' : 'Hide'"
                                 [ngClass]="sortableChildren.classList.contains('hidden')? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
                             </button>
-                            Child learning content ({{model.children.length}})  
-                            <span tooltip="Select and drag item to reorder children. Or use arrows to move them up and down."
-                            class="badge badge-primary badge-pill">i</span></label>
+                            Child learning content ({{model.children.length}})
+                            <span
+                              tooltip="Select and drag item to reorder children. Or use arrows to move them up and down."
+                              class="badge badge-primary badge-pill">i</span></label>
                           <div #sortableChildren>
                             <ngx-sortable [items]="model.children" [name]="''" (listSorted)="listSorted($event)">
                               <ng-template let-item>
@@ -634,6 +712,82 @@
                     </div>
                     <div class="row">
                       <div class="col-md-12">
+                        <label for="description">Transversal skills</label>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="input-group">
+                          <ng-select *ngIf="isfullESCOcompetences" [items]="escoService.allcompetences"
+                            name="competences" bindLabel="preferredLabel" groupBy="reuseLevel" [multiple]="true"
+                            [searchFn]="customSearchFn" placeholder="Search..." [clearSearchOnAdd]="true"
+                            [(ngModel)]="modelModule.competences" [clearable]="false" (change)="updateTreeStudyProgram()">
+                            <ng-template ng-optgroup-tmp let-item="item">
+                              {{item.reuseLevel || 'Unnamed group'}}
+                            </ng-template>
+                          </ng-select>
+                          <ng-select *ngIf="!isfullESCOcompetences" [items]="competences" name="competences"
+                            bindLabel="preferredLabel" groupBy="reuseLevel" [multiple]="true"
+                            [searchFn]="customSearchFn" placeholder="Search..." [clearSearchOnAdd]="true"
+                            [(ngModel)]="modelModule.competences" [clearable]="false" (change)="updateTreeStudyProgram()">
+                            <ng-template ng-optgroup-tmp let-item="item">
+                              {{item.reuseLevel || 'Unnamed group'}}
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <span class="input-group-prepend">
+                          <label class="switch switch-label switch-pill switch-outline-primary-alt">
+                            <input class="switch-input" type="checkbox" value="isfullESCOcompetences"
+                              [(ngModel)]="isfullESCOcompetences" checked />
+                            <span class="switch-slider"
+                              tooltip="Click here to add to the dropdown full list of ESCO skills." data-checked="✓"
+                              data-unchecked="X"></span>
+                          </label>
+                          <div class="pl-1">Search full <a href="https://ec.europa.eu/esco/portal/skill">ESCO</a>
+                            skills
+                          </div>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <ul>
+                          <div *ngFor="let mc of modelModule.competences; index as i ">
+                            <li>{{ mc.preferredLabel }} <button type="button" class="btn btn-link"
+                                tooltip="Click to remove" (click)="removeCompetence(mc, modelModule.competences)">
+                                <i class="fa fa-remove"></i>
+                              </button></li>
+                          </div>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="row pt-1">
+                      <div class="col-md-12">
+
+                        This service uses the <a href="http://ec.europa.eu/esco"> ESCO </a> classification of the
+                        European Commission. <br> If you cannot find the specified transversal skill, you can also add
+                        your own here:
+
+                      </div>
+                    </div>
+                    <div class="row pt-1 form-group">
+                      <div class="col-md-6">
+                        <input #competenceExtra type="text" class="form-control" id="competenceExtra"
+                          placeholder="Custom transversal skill" name="competenceExtra"
+                          (keyup)="competenceExtraAdd.disabled = false"
+                          (keydown.enter)="addExtraCompetence(competenceExtra.value, modelModule); competenceExtra.value= ''; competenceExtraAdd.disabled = true" />
+                      </div>
+                      <div class="col-md-6">
+                        <button #competenceExtraAdd type="submit" class="btn btn-primary btn-sm"
+                          tooltip="Add your custom transversal skill."
+                          (click)="addExtraCompetence(competenceExtra.value, modelModule); competenceExtra.value= ''; competenceExtraAdd.disabled = true"
+                          disabled>
+                          Add custom transversal skill
+                        </button>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
                         <div *ngIf="modelModule.children && modelModule.children.length > 0">
                           <label for="children">
                             <button type="button" class="btn btn-link btn-xs"
@@ -641,9 +795,10 @@
                               <i [tooltip]="sortableChildren.classList.contains('hidden')? 'Show' : 'Hide'"
                                 [ngClass]="sortableChildren.classList.contains('hidden')? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
                             </button>
-                            Child learning content ({{modelModule.children.length}})  
-                            <span tooltip="Select and drag item to reorder children. Or use arrows to move them up and down."
-                            class="badge badge-primary badge-pill">i</span></label>
+                            Child learning content ({{modelModule.children.length}})
+                            <span
+                              tooltip="Select and drag item to reorder children. Or use arrows to move them up and down."
+                              class="badge badge-primary badge-pill">i</span></label>
                           <div #sortableChildren>
                             <ngx-sortable [items]="modelModule.children" [name]="''" (listSorted)="listSorted($event)">
                               <ng-template let-item>
@@ -957,6 +1112,82 @@
                       </div>
                     </div>
                     <div class="row">
+                      <div class="col-md-12">
+                        <label for="description">Transversal skills</label>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="input-group">
+                          <ng-select *ngIf="isfullESCOcompetences" [items]="escoService.allcompetences"
+                            name="competences" bindLabel="preferredLabel" groupBy="reuseLevel" [multiple]="true"
+                            [searchFn]="customSearchFn" placeholder="Search..." [clearSearchOnAdd]="true"
+                            [(ngModel)]="modelCourse.competences" [clearable]="false" (change)="updateTreeStudyProgram()">
+                            <ng-template ng-optgroup-tmp let-item="item">
+                              {{item.reuseLevel || 'Unnamed group'}}
+                            </ng-template>
+                          </ng-select>
+                          <ng-select *ngIf="!isfullESCOcompetences" [items]="competences" name="competences"
+                            bindLabel="preferredLabel" groupBy="reuseLevel" [multiple]="true"
+                            [searchFn]="customSearchFn" placeholder="Search..." [clearSearchOnAdd]="true"
+                            [(ngModel)]="modelCourse.competences" [clearable]="false" (change)="updateTreeStudyProgram()">
+                            <ng-template ng-optgroup-tmp let-item="item">
+                              {{item.reuseLevel || 'Unnamed group'}}
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <span class="input-group-prepend">
+                          <label class="switch switch-label switch-pill switch-outline-primary-alt">
+                            <input class="switch-input" type="checkbox" value="isfullESCOcompetences"
+                              [(ngModel)]="isfullESCOcompetences" checked />
+                            <span class="switch-slider"
+                              tooltip="Click here to add to the dropdown full list of ESCO skills." data-checked="✓"
+                              data-unchecked="X"></span>
+                          </label>
+                          <div class="pl-1">Search full <a href="https://ec.europa.eu/esco/portal/skill">ESCO</a>
+                            skills
+                          </div>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <ul>
+                          <div *ngFor="let mc of modelCourse.competences; index as i ">
+                            <li>{{ mc.preferredLabel }} <button type="button" class="btn btn-link"
+                                tooltip="Click to remove" (click)="removeCompetence(mc, modelCourse.competences)">
+                                <i class="fa fa-remove"></i>
+                              </button></li>
+                          </div>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="row pt-1">
+                      <div class="col-md-12">
+
+                        This service uses the <a href="http://ec.europa.eu/esco"> ESCO </a> classification of the
+                        European Commission. <br> If you cannot find the specified transversal skill, you can also add
+                        your own here:
+
+                      </div>
+                    </div>
+                    <div class="row pt-1 form-group">
+                      <div class="col-md-6">
+                        <input #competenceExtra type="text" class="form-control" id="competenceExtra"
+                          placeholder="Custom transversal skill" name="competenceExtra"
+                          (keyup)="competenceExtraAdd.disabled = false"
+                          (keydown.enter)="addExtraCompetence(competenceExtra.value, modelCourse); competenceExtra.value= ''; competenceExtraAdd.disabled = true" />
+                      </div>
+                      <div class="col-md-6">
+                        <button #competenceExtraAdd type="submit" class="btn btn-primary btn-sm"
+                          tooltip="Add your custom transversal skill."
+                          (click)="addExtraCompetence(competenceExtra.value, modelCourse); competenceExtra.value= ''; competenceExtraAdd.disabled = true"
+                          disabled>
+                          Add custom transversal skill
+                        </button>
+                      </div>
+                    </div>
+                    <div class="row">
                       <div class="col-md-9">
                         <div class="form-group">
                           <label for="bibliography">Bibliography</label>
@@ -1019,9 +1250,10 @@
                               <i [tooltip]="sortableChildren.classList.contains('hidden')? 'Show' : 'Hide'"
                                 [ngClass]="sortableChildren.classList.contains('hidden')? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
                             </button>
-                            Child learning content ({{modelCourse.children.length}})  
-                            <span tooltip="Select and drag item to reorder children. Or use arrows to move them up and down."
-                            class="badge badge-primary badge-pill">i</span></label>
+                            Child learning content ({{modelCourse.children.length}})
+                            <span
+                              tooltip="Select and drag item to reorder children. Or use arrows to move them up and down."
+                              class="badge badge-primary badge-pill">i</span></label>
                           <div #sortableChildren>
                             <ngx-sortable [items]="modelCourse.children" [name]="''" (listSorted)="listSorted($event)">
                               <ng-template let-item>
@@ -1237,6 +1469,82 @@
                         <button type="button" class="btn btn-primary btn-sm"
                           (click)="bokModal.show(); linkBoKto='learningObjectives'">
                           Link BoK learning outcomes
+                        </button>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <label for="description">Transversal skills</label>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="input-group">
+                          <ng-select *ngIf="isfullESCOcompetences" [items]="escoService.allcompetences"
+                            name="competences" bindLabel="preferredLabel" groupBy="reuseLevel" [multiple]="true"
+                            [searchFn]="customSearchFn" placeholder="Search..." [clearSearchOnAdd]="true"
+                            [(ngModel)]="modelLecture.competences" [clearable]="false" (change)="updateTreeStudyProgram()">
+                            <ng-template ng-optgroup-tmp let-item="item">
+                              {{item.reuseLevel || 'Unnamed group'}}
+                            </ng-template>
+                          </ng-select>
+                          <ng-select *ngIf="!isfullESCOcompetences" [items]="competences" name="competences"
+                            bindLabel="preferredLabel" groupBy="reuseLevel" [multiple]="true"
+                            [searchFn]="customSearchFn" placeholder="Search..." [clearSearchOnAdd]="true"
+                            [(ngModel)]="modelLecture.competences" [clearable]="false" (change)="updateTreeStudyProgram()">
+                            <ng-template ng-optgroup-tmp let-item="item">
+                              {{item.reuseLevel || 'Unnamed group'}}
+                            </ng-template>
+                          </ng-select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <span class="input-group-prepend">
+                          <label class="switch switch-label switch-pill switch-outline-primary-alt">
+                            <input class="switch-input" type="checkbox" value="isfullESCOcompetences"
+                              [(ngModel)]="isfullESCOcompetences" checked />
+                            <span class="switch-slider"
+                              tooltip="Click here to add to the dropdown full list of ESCO skills." data-checked="✓"
+                              data-unchecked="X"></span>
+                          </label>
+                          <div class="pl-1">Search full <a href="https://ec.europa.eu/esco/portal/skill">ESCO</a>
+                            skills
+                          </div>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <ul>
+                          <div *ngFor="let mc of modelLecture.competences; index as i ">
+                            <li>{{ mc.preferredLabel }} <button type="button" class="btn btn-link"
+                                tooltip="Click to remove" (click)="removeCompetence(mc, modelLecture.competences)">
+                                <i class="fa fa-remove"></i>
+                              </button></li>
+                          </div>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="row pt-1">
+                      <div class="col-md-12">
+
+                        This service uses the <a href="http://ec.europa.eu/esco"> ESCO </a> classification of the
+                        European Commission. <br> If you cannot find the specified transversal skill, you can also add
+                        your own here:
+
+                      </div>
+                    </div>
+                    <div class="row pt-1 form-group">
+                      <div class="col-md-6">
+                        <input #competenceExtra type="text" class="form-control" id="competenceExtra"
+                          placeholder="Custom transversal skill" name="competenceExtra"
+                          (keyup)="competenceExtraAdd.disabled = false"
+                          (keydown.enter)="addExtraCompetence(competenceExtra.value, modelLecture); competenceExtra.value= ''; competenceExtraAdd.disabled = true" />
+                      </div>
+                      <div class="col-md-6">
+                        <button #competenceExtraAdd type="submit" class="btn btn-primary btn-sm"
+                          tooltip="Add your custom transversal skill."
+                          (click)="addExtraCompetence(competenceExtra.value, modelLecture); competenceExtra.value= ''; competenceExtraAdd.disabled = true"
+                          disabled>
+                          Add custom transversal skill
                         </button>
                       </div>
                     </div>
