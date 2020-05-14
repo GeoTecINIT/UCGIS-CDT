@@ -227,6 +227,7 @@ export class PopupComponent implements OnInit {
             });
         }
         currentLinePoint = this.printLO(doc, currentLinePoint, 30, 150, this.selectedSP.learningObjectives);
+        currentLinePoint = this.printTS(doc, currentLinePoint, 30, 150, this.selectedSP.competences);
 
         if (this.selectedSP.linksToBok != null && this.selectedSP.linksToBok.length > 0) {
             currentLinePoint = currentLinePoint + 3;
@@ -371,6 +372,8 @@ export class PopupComponent implements OnInit {
                     });
                 }
                 currentLinePoint = this.printLO(doc, currentLinePoint, 35, 145, module.learningObjectives);
+                currentLinePoint = this.printTS(doc, currentLinePoint, 35, 145, module.competences);
+
 
                 if (module.children && module.children.length > 0) {
                     currentLinePoint = currentLinePoint + 15;
@@ -459,6 +462,8 @@ export class PopupComponent implements OnInit {
                             });
                         }
                         currentLinePoint = this.printLO(doc, currentLinePoint, 40, 140, courses.learningObjectives);
+                        currentLinePoint = this.printTS(doc, currentLinePoint, 40, 140, courses.competences);
+
 
                         if (courses.children && courses.children.length > 0) { // Children -> lectures
                             currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
@@ -527,6 +532,7 @@ export class PopupComponent implements OnInit {
                                     });
                                 }
                                 currentLinePoint = this.printLO(doc, currentLinePoint, 45, 135, lectures.learningObjectives);
+                                currentLinePoint = this.printTS(doc, currentLinePoint, 45, 135, lectures.competences);
 
                             });
                         }
@@ -630,6 +636,25 @@ export class PopupComponent implements OnInit {
         }
         return currentLinePoint;
 
+    }
+
+    printTS(doc, currentLinePoint, x, xEnd, trs) {
+
+        if (trs != null && trs.length > 0) {
+            currentLinePoint = currentLinePoint + 6;
+            currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
+            doc.setFontSize(11).setTextColor('#1a80b6').setFontType('bold'); // headline
+            doc.text(x, currentLinePoint, 'Transversal skills: ');
+            currentLinePoint = currentLinePoint + 9;
+            trs.forEach(skill => {
+                doc.setTextColor('#000').setFontType('normal');
+                const lineSkill = doc.setFontSize(10).splitTextToSize(skill.preferredLabel + '', xEnd);
+                doc.text(x, currentLinePoint, lineSkill, { maxWidth: xEnd, align: 'justify' });
+                currentLinePoint = currentLinePoint + (4 * lineSkill.length);
+                currentLinePoint = this.checkEndOfPage(currentLinePoint, doc);
+            });
+        }
+        return currentLinePoint;
     }
 
     getFields(data: any) {
