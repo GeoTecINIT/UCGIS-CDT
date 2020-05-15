@@ -37,6 +37,11 @@ export class ListComponent implements OnInit {
   sortUpdAsc = true;
   sortedBy = 'lastUpdated';
 
+  public paginationLimitFrom = 0;
+  public paginationLimitTo = 6;
+  public LIMIT_PER_PAGE = 6;
+  public currentPage = 0;
+
   @ViewChild('dangerModal') public dangerModal: ModalDirective;
   @ViewChild('releaseNotesModal') public releaseNotesModal: any;
 
@@ -81,16 +86,28 @@ export class ListComponent implements OnInit {
   }
 
   sortSPby(attr) {
+    this.paginationLimitFrom = 0;
+    this.paginationLimitTo = 6;
+    this.currentPage = 0;
     switch (attr) {
       case 'name':
+        console.log('Sort by: ' + attr + ' asc: ' + this.sortNameAsc);
+
+        this.sortNameAsc = !this.sortNameAsc;
         this.sortedBy = 'name';
         this.filteredStudyPrograms.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? this.sortNameAsc ? 1 : -1 : this.sortNameAsc ? -1 : 1);
         break;
       case 'lastUpdated':
+        console.log('Sort by: ' + attr + ' asc: ' + this.sortUpdAsc);
+
+        this.sortUpdAsc = !this.sortUpdAsc;
         this.sortedBy = 'lastUpdated';
         this.filteredStudyPrograms.sort((a, b) => (a.updatedAt > b.updatedAt) ? this.sortUpdAsc ? 1 : -1 : this.sortUpdAsc ? -1 : 1);
         break;
       case 'organization':
+        console.log('Sort by: ' + attr + ' asc: ' + this.sortOrgAsc);
+
+        this.sortOrgAsc = !this.sortOrgAsc;
         this.sortedBy = 'organization';
         this.filteredStudyPrograms.sort((a, b) => (a.orgName.toLowerCase() > b.orgName.toLowerCase()) ? this.sortOrgAsc ? 1 : -1 : this.sortOrgAsc ? -1 : 1);
         break;
@@ -98,23 +115,25 @@ export class ListComponent implements OnInit {
   }
 
   filter() {
+    this.paginationLimitFrom = 0;
+    this.paginationLimitTo = 6;
+    this.currentPage = 0;
     const search = this.searchText.toLowerCase();
     this.filteredStudyPrograms = [];
     if (this.advancedSearch) {
       this.applyFilters();
-    } else {
-      this.filteredStudyPrograms = this.studyPrograms.filter(
-        it =>
-          it.name.toLowerCase().includes(search) ||
-          it.description.toLowerCase().includes(search)
-      );
     }
+    this.filteredStudyPrograms = this.studyPrograms.filter(
+      it =>
+        it.name.toLowerCase().includes(search) ||
+        it.description.toLowerCase().includes(search)
+    );
   }
 
   applyFilters() {
     this.studyPrograms.forEach(sp => {
       console.log(sp);
-      if (!this.affiliationFilter && !this.knowledgeFilter && !this.skillFilter && !this.fieldFilter && this.searchText === '') {
+      if (!this.affiliationFilter && !this.knowledgeFilter && !this.skillFilter && !this.fieldFilter || this.searchText === '') {
         // if no filters checked, return all
         this.filteredStudyPrograms.push(sp);
       } else {
@@ -222,5 +241,72 @@ export class ListComponent implements OnInit {
         }
       }
     });
+  }
+
+  filterByDepth(depth) {
+    this.filteredStudyPrograms = [];
+    this.paginationLimitFrom = 0;
+    this.paginationLimitTo = 6;
+    this.currentPage = 0;
+    if (this.advancedSearch) {
+      this.applyFilters();
+    }
+    if (depth === -1) {
+      this.filteredStudyPrograms = this.studyPrograms;
+    } else {
+      this.filteredStudyPrograms = this.studyPrograms.filter(
+        it =>
+          it.depth === depth
+      );
+    }
+  }
+
+  filterByAuthor(author) {
+    this.filteredStudyPrograms = [];
+    this.paginationLimitFrom = 0;
+    this.paginationLimitTo = 6;
+    this.currentPage = 0;
+    if (this.advancedSearch) {
+      this.applyFilters();
+    }
+    if (author === -1) { // all
+      this.filteredStudyPrograms = this.studyPrograms;
+    } else if (author === 0) { // mine
+      this.filteredStudyPrograms = this.studyPrograms.filter(
+        it =>
+          it.userId === this.currentUser._id
+      );
+    } else if (author === 1) { // my orgs
+      this.filteredStudyPrograms = this.studyPrograms.filter(
+        it =>
+          this.currentUser.organizations.includes(it.orgId)
+      );
+    }
+  }
+
+  range(size, startAt = 0) {
+    size = Math.ceil(size);
+    if (size === 0) {
+      size = 1;
+    }
+    return [...Array(size).keys()].map(i => i + startAt);
+  }
+
+  nextPage() {
+    if (this.currentPage + 1 < this.filteredStudyPrograms.length / this.LIMIT_PER_PAGE) {
+      this.paginationLimitFrom = this.paginationLimitFrom + this.LIMIT_PER_PAGE;
+      this.paginationLimitTo = this.paginationLimitTo + this.LIMIT_PER_PAGE;
+      this.currentPage++;
+    }
+    console.log('Next Page: ' + this.paginationLimitFrom + ' to ' + this.paginationLimitTo + ' Current Page : ' + this.currentPage);
+  }
+
+  previousPage() {
+    if (this.currentPage > 0) {
+      this.paginationLimitFrom = this.paginationLimitFrom - this.LIMIT_PER_PAGE;
+      this.paginationLimitTo = this.paginationLimitTo - this.LIMIT_PER_PAGE;
+      this.currentPage--;
+    }
+    console.log('Previous Page: ' + this.paginationLimitFrom + ' to ' + this.paginationLimitTo + ' Current Page : ' + this.currentPage);
   }
 }
