@@ -103,32 +103,61 @@
               </div>
             </ng-container>
           </div>
-          <div class="row">
+          <div class="row mb-2">
             <div class="col-sm-6 col-md-6">
               <div class="text-center">
                 <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyDepth==-1}"
-                  (click)="showOnlyDepth=-1">All</button>
+                  (click)="showOnlyDepth=-1; filterByDepth(-1)">All</button>
                 <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyDepth==0}"
-                  (click)="showOnlyDepth=0">Study Programs</button>
+                  (click)="showOnlyDepth=0; filterByDepth(0)">Study Programs</button>
                 <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyDepth==1}"
-                  (click)="showOnlyDepth=1">Modules</button>
+                  (click)="showOnlyDepth=1; filterByDepth(1)">Modules</button>
                 <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyDepth==2}"
-                  (click)="showOnlyDepth=2">Courses</button>
+                  (click)="showOnlyDepth=2; filterByDepth(2)">Courses</button>
                 <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyDepth==3}"
-                  (click)="showOnlyDepth=3">Lectures</button>
+                  (click)="showOnlyDepth=3; filterByDepth(3)">Lectures</button>
               </div>
             </div>
 
             <div class="col-sm-6 col-md-6">
               <div class="text-center">
                 <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyAuthor==-1}"
-                  (click)="showOnlyAuthor=-1" [disabled]="isAnonymous">All</button>
+                  (click)="showOnlyAuthor=-1; filterByAuthor(-1)" [disabled]="isAnonymous">All</button>
                 <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyAuthor==0}"
-                  (click)="showOnlyAuthor=0" [disabled]="isAnonymous">My content</button>
+                  (click)="showOnlyAuthor=0; filterByAuthor(0)" [disabled]="isAnonymous">My content</button>
                 <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyAuthor==1}"
-                  (click)="showOnlyAuthor=1" [disabled]="isAnonymous">My organization's content</button>
+                  (click)="showOnlyAuthor=1; filterByAuthor(1)" [disabled]="isAnonymous">My organization's
+                  content</button>
               </div>
             </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-0 col-md-2"></div>
+            <div class="col-sm-3 col-md-2 text-center">
+              Sort by:
+            </div>
+
+            <!-- sortedBy -->
+            <div class="col-sm-3 col-md-2 text-center">
+              <button type="button" class="btn btn-block btn-link" (click)="sortSPby('lastUpdated');">
+                <i [ngClass]="sortUpdAsc? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+                <span [ngClass]="sortedBy == 'lastUpdated'? 'bolder' : ''">Last updated</span>
+              </button>
+            </div>
+            <div class="col-sm-3 col-md-2 text-center">
+              <button type="button" class="btn btn-block btn-link" (click)="sortSPby('name');">
+                <i [ngClass]="sortNameAsc? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+                <span [ngClass]="sortedBy == 'name'? 'bolder' : ''"> Name</span>
+              </button>
+            </div>
+            <div class="col-sm-3 col-md-2 text-center">
+              <button type="button" class="btn btn-block btn-link" (click)="sortSPby('organization');">
+                <i [ngClass]="sortOrgAsc? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+                <span [ngClass]="sortedBy == 'organization'? 'bolder' : ''">Organization</span>
+              </button>
+            </div>
+
+            <div class="col-sm-0 col-md-2"></div>
           </div>
         </div>
         <div class="card-body">
@@ -142,10 +171,12 @@
               <h5> Results: {{filteredStudyPrograms.length}}</h5>
             </div>
           </div>
-          <div *ngFor="let sp of filteredStudyPrograms">
-            <div *ngIf="(showOnlyDepth === -1 || sp.depth === showOnlyDepth) "> <!-- Filter by depth -->
+          <div *ngFor="let sp of filteredStudyPrograms | slice:paginationLimitFrom:paginationLimitTo; let i=index">
+            <div *ngIf="(showOnlyDepth === -1 || sp.depth === showOnlyDepth) ">
+              <!-- Filter by depth -->
               <div
-                *ngIf=" (showOnlyAuthor === -1 || (showOnlyAuthor === 0 && sp.userId===currentUser?._id) || (showOnlyAuthor === 1 && currentUser?.organizations.indexOf(sp.orgId) > -1)) "> <!-- Filter by author -->
+                *ngIf=" (showOnlyAuthor === -1 || (showOnlyAuthor === 0 && sp.userId===currentUser?._id) || (showOnlyAuthor === 1 && currentUser?.organizations.indexOf(sp.orgId) > -1)) ">
+                <!-- Filter by author -->
                 <div class="row"
                   *ngIf="sp.levelPublic || currentUser != null && (sp.userId==currentUser?._id || (currentUser?.organizations?.indexOf(sp.orgId) > -1))">
                   <div class="col-md-10">
@@ -161,8 +192,13 @@
                         <h6 style="display: inline;" class="text-level text-secondary">{{ sp.orgName }}</h6>
                         <h6>{{ sp.affiliation }}</h6>
                         <p class="text-muted">{{ sp.description | slice:0:300 }} ... </p>
-                        EQF Level: {{ sp.eqf }}
+                        EQF Level: {{ sp.eqf }} <span *ngIf="sp.updatedAt" class="text-lastupdated ">| Last updated:
+                          {{sp.updatedAt.toDate() | date:'dd-MMM-yyyy'}}
+                        </span>
                       </span>
+                      <!--  <span *ngIf="sp.createdAt" class="text-lastupdated ">| Created:
+                          {{sp.createdAt.toDate() | date:'dd-MMM-yyyy'}} </span> -->
+
                       <!-- <span
                   *ngFor="let mk of o.knowledge"
                   class="badge badge-pill float-right"
@@ -235,6 +271,30 @@
               </div><!-- /.modal-dialog -->
             </div><!-- /.modal -->
           </div>
+
+          <div *ngIf="this.filteredStudyPrograms" class="row">
+            <div class="col-md-6 ml-auto mr-auto">
+              <nav aria-label="pagination">
+                <ul class="pagination justify-content-center">
+                  <li class="page-item">
+                    <a class="page-link" href="javascript:;" (click)="previousPage()">Previous</a>
+                  </li>
+                  <li *ngFor="let page of range(this.filteredStudyPrograms.length/LIMIT_PER_PAGE, 0)" class="page-item"
+                    [ngClass]="currentPage == page? 'active': ''">
+                    <a class="page-link" href="javascript:;"
+                      (click)="currentPage=page; paginationLimitFrom=page*LIMIT_PER_PAGE; paginationLimitTo=page*LIMIT_PER_PAGE+LIMIT_PER_PAGE ">{{page+1}}
+                      <span *ngIf="currentPage == page" class="sr-only">(current)</span>
+                    </a></li>
+
+                  <li class="page-item">
+                    <a class="page-link" href="javascript:;" (click)="nextPage()">Next</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+
         </div>
       </div>
     </div>
