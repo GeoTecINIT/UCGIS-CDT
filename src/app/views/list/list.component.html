@@ -103,7 +103,7 @@
               </div>
             </ng-container>
           </div>
-          <div class="row">
+          <div class="row mb-2">
             <div class="col-sm-6 col-md-6">
               <div class="text-center">
                 <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyDepth==-1}"
@@ -130,6 +130,36 @@
               </div>
             </div>
           </div>
+          <div class="row">
+            <div class="col-sm-0 col-md-2"></div>
+            <div class="col-sm-3 col-md-2 text-center">
+              Sort by:
+            </div>
+
+            <!-- sortedBy -->
+            <div class="col-sm-3 col-md-2 text-center">
+              <button type="button" class="btn btn-block btn-link"
+                (click)="sortSPby('lastUpdated'); sortUpdAsc=!sortUpdAsc">
+                <i [ngClass]="sortUpdAsc? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+                <span [ngClass]="sortedBy == 'lastUpdated'? 'bolder' : ''">Last updated</span>
+              </button>
+            </div>
+            <div class="col-sm-3 col-md-2 text-center">
+              <button type="button" class="btn btn-block btn-link" (click)="sortSPby('name'); sortNameAsc=!sortNameAsc">
+                <i [ngClass]="sortNameAsc? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+                <span [ngClass]="sortedBy == 'name'? 'bolder' : ''"> Name</span>
+              </button>
+            </div>
+            <div class="col-sm-3 col-md-2 text-center">
+              <button type="button" class="btn btn-block btn-link"
+                (click)="sortSPby('organization'); sortOrgAsc=!sortOrgAsc">
+                <i [ngClass]="sortOrgAsc? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i> 
+                <span [ngClass]="sortedBy == 'organization'? 'bolder' : ''">Organization</span>
+              </button>
+            </div>
+
+            <div class="col-sm-0 col-md-2"></div>
+          </div>
         </div>
         <div class="card-body">
           <div *ngIf="filteredStudyPrograms && filteredStudyPrograms.length == 0">
@@ -143,9 +173,11 @@
             </div>
           </div>
           <div *ngFor="let sp of filteredStudyPrograms">
-            <div *ngIf="(showOnlyDepth === -1 || sp.depth === showOnlyDepth) "> <!-- Filter by depth -->
+            <div *ngIf="(showOnlyDepth === -1 || sp.depth === showOnlyDepth) ">
+              <!-- Filter by depth -->
               <div
-                *ngIf=" (showOnlyAuthor === -1 || (showOnlyAuthor === 0 && sp.userId===currentUser?._id) || (showOnlyAuthor === 1 && currentUser?.organizations.indexOf(sp.orgId) > -1)) "> <!-- Filter by author -->
+                *ngIf=" (showOnlyAuthor === -1 || (showOnlyAuthor === 0 && sp.userId===currentUser?._id) || (showOnlyAuthor === 1 && currentUser?.organizations.indexOf(sp.orgId) > -1)) ">
+                <!-- Filter by author -->
                 <div class="row"
                   *ngIf="sp.levelPublic || currentUser != null && (sp.userId==currentUser?._id || (currentUser?.organizations?.indexOf(sp.orgId) > -1))">
                   <div class="col-md-10">
@@ -161,7 +193,10 @@
                         <h6 style="display: inline;" class="text-level text-secondary">{{ sp.orgName }}</h6>
                         <h6>{{ sp.affiliation }}</h6>
                         <p class="text-muted">{{ sp.description | slice:0:300 }} ... </p>
-                        EQF Level: {{ sp.eqf }}
+                        EQF Level: {{ sp.eqf }} <span *ngIf="sp.createdAt" class="text-lastupdated ">| Created:
+                          {{sp.createdAt.toDate() | date:'dd-MMM-yyyy'}} </span> <span *ngIf="sp.updatedAt"
+                          class="text-lastupdated ">| Last updated: {{sp.updatedAt.toDate() | date:'dd-MMM-yyyy'}}
+                        </span>
                       </span>
                       <!-- <span
                   *ngFor="let mk of o.knowledge"

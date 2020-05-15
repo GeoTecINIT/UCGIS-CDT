@@ -32,6 +32,11 @@ export class ListComponent implements OnInit {
   showOnlyAuthor = -1;
   currentUser: User;
 
+  sortNameAsc = true;
+  sortOrgAsc = true;
+  sortUpdAsc = true;
+  sortedBy = 'lastUpdated';
+
   @ViewChild('dangerModal') public dangerModal: ModalDirective;
   @ViewChild('releaseNotesModal') public releaseNotesModal: any;
 
@@ -61,6 +66,7 @@ export class ListComponent implements OnInit {
       .subscribe(studyPrograms => {
         this.studyPrograms = studyPrograms;
         this.filteredStudyPrograms = studyPrograms;
+        this.sortSPby(this.sortedBy);
       });
 
     if (this.route.snapshot.url[0].path === 'release-notes') {
@@ -72,6 +78,23 @@ export class ListComponent implements OnInit {
 
   removeStudyProgram(id: string) {
     this.studyprogramService.removeStudyProgram(id);
+  }
+
+  sortSPby(attr) {
+    switch (attr) {
+      case 'name':
+        this.sortedBy = 'name';
+        this.filteredStudyPrograms.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? this.sortNameAsc ? 1 : -1 : this.sortNameAsc ? -1 : 1);
+        break;
+      case 'lastUpdated':
+        this.sortedBy = 'lastUpdated';
+        this.filteredStudyPrograms.sort((a, b) => (a.updatedAt > b.updatedAt) ? this.sortUpdAsc ? 1 : -1 : this.sortUpdAsc ? -1 : 1);
+        break;
+      case 'organization':
+        this.sortedBy = 'organization';
+        this.filteredStudyPrograms.sort((a, b) => (a.orgName.toLowerCase() > b.orgName.toLowerCase()) ? this.sortOrgAsc ? 1 : -1 : this.sortOrgAsc ? -1 : 1);
+        break;
+    }
   }
 
   filter() {

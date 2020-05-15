@@ -7,6 +7,8 @@ import { Lecture } from './lecture.service';
 import { Field } from './fields.service';
 import { BokInput } from '../model/bokinput';
 import { Competence } from './esco-competence.service';
+import * as firebase from 'firebase';
+
 
 
 const collection = 'StudyPrograms';
@@ -35,6 +37,8 @@ export class StudyProgram extends Object {
   public inheritedLearningObjectives: BokInput[];
   public customCompetences: string[];
   public competences: Competence[];
+  public updatedAt: any;
+  public createdAt: any;
 
   constructor(public currentNode: any = null) {
     super();
@@ -96,6 +100,9 @@ export class StudyProgram extends Object {
       }
       this.competences = currentNode.data.competences ? currentNode.data.competences : [];
       this.customCompetences = currentNode.data.customCompetences ? currentNode.data.customCompetences : [];
+      this.updatedAt = currentNode.data.updatedAt ? currentNode.data.updatedAt : new Date();
+      this.createdAt = currentNode.data.createdAt ? currentNode.data.createdAt : new Date();
+
     } else {
       this._id = '';
       this.name = 'New Curricula Item';
@@ -119,6 +126,8 @@ export class StudyProgram extends Object {
       this.inheritedLearningObjectives = [];
       this.competences = [];
       this.customCompetences = [];
+      this.updatedAt = new Date();
+      this.createdAt = new Date();
     }
   }
 }
@@ -154,6 +163,9 @@ export class StudyProgramService {
     const id = this.db.createId();
     newSP._id = id;
     newSP = this.convertNodeChildren(newSP);
+    const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+    newSP.updatedAt = timestamp;
+    newSP.createdAt = timestamp;
     this.db
       .collection(collection)
       .doc(id)
@@ -169,6 +181,8 @@ export class StudyProgramService {
 
   updateStudyProgram(studyProgId: string, updatedSP: StudyProgram) {
     updatedSP = this.convertNodeChildren(updatedSP);
+    const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+    updatedSP.updatedAt = timestamp;
     this.db
       .collection(collection)
       .doc<StudyProgram>(studyProgId)
@@ -176,10 +190,11 @@ export class StudyProgramService {
   }
 
   updateStudyProgramIsEdited(studyProgId: string, isEditedVal: Boolean) {
+    const timestamp = firebase.firestore.FieldValue.serverTimestamp();
     this.db
       .collection(collection)
       .doc<StudyProgram>(studyProgId)
-      .update({ isEdited: isEditedVal });
+      .update({ isEdited: isEditedVal, updatedAt: timestamp });
   }
 
   // This function is to save all child nodes in the tree in a format that firestore likes

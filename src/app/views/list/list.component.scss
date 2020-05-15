@@ -1,7 +1,7 @@
 .no-padding {
-    padding-left: 0;
-    padding-right: 0;
-  }
+  padding-left: 0;
+  padding-right: 0;
+}
 
 .text-level {
   color: #1a80b6;
@@ -13,4 +13,14 @@
 
 .icon-editing {
   color: #ef9a3c !important;
+}
+
+.text-lastupdated {
+  font-size: small;
+  font-weight: bolder;
+  color: #73818f !important;
+}
+
+.bolder {
+  font-weight: bolder;
 }
