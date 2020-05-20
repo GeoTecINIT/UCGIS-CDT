@@ -38,7 +38,7 @@
               <button type="submit" class="btn btn-pill btn-primary"
                 (click)="isSearchingExisting = !isSearchingExisting; isSearchingSpecific = false"
                 [hidden]="!currentTreeNode || currentTreeNode.data.depth == 3">
-                <i class="fa fa-search"></i> Explore existing learning content
+                <i class="fa fa-search"></i> Explore existing educational offers
                 <!-- {{textByDepth}}s -->
               </button>
               <button type="submit" class="btn btn-pill btn-danger" (click)="removeNodeInTree()"
@@ -197,7 +197,7 @@
                       <div class="col-md-3">
                         <div class="form-group">
                           <label for="numSemesters">Amount of semesters</label>
-                          <span tooltip="Number of semesters in the curricula."
+                          <span tooltip="Number of semesters in the educational offer."
                             class="badge badge-primary badge-pill">i</span>
                           <input type="text" size="10" class="form-control" id="numSemesters"
                             [(ngModel)]="model.numSemesters" name="numSemesters" min="1" max="20"
@@ -278,7 +278,7 @@
                       </div>
                       <div class="col-md-3 align-middle m-auto">
                         <button type="button" class="btn btn-primary btn-sm" disabled>
-                          Inherited from children learning content
+                          Inherited from children educational offer
                         </button>
                       </div>
                     </div>
@@ -428,7 +428,7 @@
                               <i [tooltip]="sortableChildren.classList.contains('hidden')? 'Show' : 'Hide'"
                                 [ngClass]="sortableChildren.classList.contains('hidden')? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
                             </button>
-                            Child learning content ({{model.children.length}})
+                            Child educational offers ({{model.children.length}})
                             <span
                               tooltip="Select and drag item to reorder children. Or use arrows to move them up and down."
                               class="badge badge-primary badge-pill">i</span></label>
@@ -645,7 +645,7 @@
                       </div>
                       <div class="col-md-3 align-middle m-auto">
                         <button type="button" class="btn btn-primary btn-sm" disabled>
-                          Inherited from children learning content
+                          Inherited from children educational offer
                         </button>
                       </div>
                     </div>
@@ -719,7 +719,8 @@
                           <ng-select *ngIf="isfullESCOcompetences" [items]="escoService.allcompetences"
                             name="competences" bindLabel="preferredLabel" groupBy="reuseLevel" [multiple]="true"
                             [searchFn]="customSearchFn" placeholder="Search..." [clearSearchOnAdd]="true"
-                            [(ngModel)]="modelModule.competences" [clearable]="false" (change)="updateTreeStudyProgram()">
+                            [(ngModel)]="modelModule.competences" [clearable]="false"
+                            (change)="updateTreeStudyProgram()">
                             <ng-template ng-optgroup-tmp let-item="item">
                               {{item.reuseLevel || 'Unnamed group'}}
                             </ng-template>
@@ -727,7 +728,8 @@
                           <ng-select *ngIf="!isfullESCOcompetences" [items]="competences" name="competences"
                             bindLabel="preferredLabel" groupBy="reuseLevel" [multiple]="true"
                             [searchFn]="customSearchFn" placeholder="Search..." [clearSearchOnAdd]="true"
-                            [(ngModel)]="modelModule.competences" [clearable]="false" (change)="updateTreeStudyProgram()">
+                            [(ngModel)]="modelModule.competences" [clearable]="false"
+                            (change)="updateTreeStudyProgram()">
                             <ng-template ng-optgroup-tmp let-item="item">
                               {{item.reuseLevel || 'Unnamed group'}}
                             </ng-template>
@@ -795,7 +797,7 @@
                               <i [tooltip]="sortableChildren.classList.contains('hidden')? 'Show' : 'Hide'"
                                 [ngClass]="sortableChildren.classList.contains('hidden')? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
                             </button>
-                            Child learning content ({{modelModule.children.length}})
+                            Child educational offer ({{modelModule.children.length}})
                             <span
                               tooltip="Select and drag item to reorder children. Or use arrows to move them up and down."
                               class="badge badge-primary badge-pill">i</span></label>
@@ -1046,7 +1048,7 @@
                       </div>
                       <div class="col-md-3 align-middle m-auto">
                         <button type="button" class="btn btn-primary btn-sm" disabled>
-                          Inherited from children learning content
+                          Inherited from children educational offers
                         </button>
                       </div>
                     </div>
@@ -1120,7 +1122,8 @@
                           <ng-select *ngIf="isfullESCOcompetences" [items]="escoService.allcompetences"
                             name="competences" bindLabel="preferredLabel" groupBy="reuseLevel" [multiple]="true"
                             [searchFn]="customSearchFn" placeholder="Search..." [clearSearchOnAdd]="true"
-                            [(ngModel)]="modelCourse.competences" [clearable]="false" (change)="updateTreeStudyProgram()">
+                            [(ngModel)]="modelCourse.competences" [clearable]="false"
+                            (change)="updateTreeStudyProgram()">
                             <ng-template ng-optgroup-tmp let-item="item">
                               {{item.reuseLevel || 'Unnamed group'}}
                             </ng-template>
@@ -1128,7 +1131,8 @@
                           <ng-select *ngIf="!isfullESCOcompetences" [items]="competences" name="competences"
                             bindLabel="preferredLabel" groupBy="reuseLevel" [multiple]="true"
                             [searchFn]="customSearchFn" placeholder="Search..." [clearSearchOnAdd]="true"
-                            [(ngModel)]="modelCourse.competences" [clearable]="false" (change)="updateTreeStudyProgram()">
+                            [(ngModel)]="modelCourse.competences" [clearable]="false"
+                            (change)="updateTreeStudyProgram()">
                             <ng-template ng-optgroup-tmp let-item="item">
                               {{item.reuseLevel || 'Unnamed group'}}
                             </ng-template>
@@ -1250,7 +1254,7 @@
                               <i [tooltip]="sortableChildren.classList.contains('hidden')? 'Show' : 'Hide'"
                                 [ngClass]="sortableChildren.classList.contains('hidden')? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
                             </button>
-                            Child learning content ({{modelCourse.children.length}})
+                            Child educational offers ({{modelCourse.children.length}})
                             <span
                               tooltip="Select and drag item to reorder children. Or use arrows to move them up and down."
                               class="badge badge-primary badge-pill">i</span></label>
@@ -1481,7 +1485,8 @@
                           <ng-select *ngIf="isfullESCOcompetences" [items]="escoService.allcompetences"
                             name="competences" bindLabel="preferredLabel" groupBy="reuseLevel" [multiple]="true"
                             [searchFn]="customSearchFn" placeholder="Search..." [clearSearchOnAdd]="true"
-                            [(ngModel)]="modelLecture.competences" [clearable]="false" (change)="updateTreeStudyProgram()">
+                            [(ngModel)]="modelLecture.competences" [clearable]="false"
+                            (change)="updateTreeStudyProgram()">
                             <ng-template ng-optgroup-tmp let-item="item">
                               {{item.reuseLevel || 'Unnamed group'}}
                             </ng-template>
@@ -1489,7 +1494,8 @@
                           <ng-select *ngIf="!isfullESCOcompetences" [items]="competences" name="competences"
                             bindLabel="preferredLabel" groupBy="reuseLevel" [multiple]="true"
                             [searchFn]="customSearchFn" placeholder="Search..." [clearSearchOnAdd]="true"
-                            [(ngModel)]="modelLecture.competences" [clearable]="false" (change)="updateTreeStudyProgram()">
+                            [(ngModel)]="modelLecture.competences" [clearable]="false"
+                            (change)="updateTreeStudyProgram()">
                             <ng-template ng-optgroup-tmp let-item="item">
                               {{item.reuseLevel || 'Unnamed group'}}
                             </ng-template>
@@ -1611,9 +1617,9 @@
               <div *ngIf="isSearchingExisting && !isSearchingSpecific">
                 <div class="card card-accent-secondary">
                   <div class="card-header">
-                    Explore existing learning content
+                    Explore existing educational offers
                     <!--  {{textByDepth}}s -->
-                    <span tooltip="These items have been added by other user, and can be re-used in your curricula."
+                    <span tooltip="These items have been added by other user, and can be re-used in your educational offer."
                       class="badge badge-primary badge-pill">i</span>
                     <button class="btn btn-link float-right pull-right"
                       (click)="NodeDiv.classList.contains('col-md-12') ? NodeDiv.className = 'col-md-6' : NodeDiv.className = 'col-md-12'">
@@ -1664,7 +1670,7 @@
                 <div class="card card-accent-secondary">
                   <div class="card-header">
                     <h5>{{currentStudyProgram.name}}</h5>
-                    <span tooltip="This item has been added by other user, and can be re-used in your curricula."
+                    <span tooltip="This item has been added by other user, and can be re-used in your educational offer."
                       class="badge badge-primary badge-pill">i</span>
                     <button class="btn btn-link float-right pull-right"
                       (click)="NodeDiv.classList.contains('col-md-12') ? NodeDiv.className = 'col-md-6' : NodeDiv.className = 'col-md-12'">
@@ -1735,7 +1741,7 @@
                           </div>
                           <button type="submit" class="btn btn-pill btn-primary pull-right"
                             (click)="addExistingToStudyProgram(currentStudyProgram)">
-                            <i class="fa fa-plus"></i> Add to my curricula
+                            <i class="fa fa-plus"></i> Add to my educational offer
                           </button>
 
                         </div>
@@ -1751,61 +1757,10 @@
 
         <div *ngIf="!currentTreeNode" class="col-md-12">
           <div class="card card-accent-secondary">
-            <div class="card-header">
-              <b>How to get started</b>
-
-            </div>
             <div class="card-body" style="background-color: #faf9f8">
               <div class="row">
                 <div class="col-md-12">
-
-                  You can create any curriculum item (study program, module, course, lecture). To do so, create the
-                  high
-                  level item first, then click on the desired level to
-                  add lower level items.
-                  <br><br>
-                  The hierarchy is as follows:
-                  <br><br>
-                  &emsp; Study Program
-                  <br>
-                  &emsp; &emsp; Module
-                  <br>
-                  &emsp; &emsp; &emsp; Course
-                  <br>
-                  &emsp; &emsp; &emsp; &emsp; Lecture
-                  <br><br>
-
-                  Where:
-
-                  <ul>
-                    <li>A study program is a curriculum of two or more courses that is intended or understood to lead
-                      to
-                      a degree, diploma, or certificate.
-                    </li>
-                    <li>A module is a collection of courses over a year or semester
-                    </li>
-                    <li>A course is a unit of teaching that typically lasts one academic term
-                    </li>
-                    <li>A lecture is a presentation intended to display information or teach people about a particular
-                      subject (also known as lessons or classes)
-                    </li>
-                  </ul>
-                  <br><br>
-                  Examples:
-                  <ul>
-                    <li>
-                      If you only need to create a Course and Lectures, start by creating a Course. If you require
-                      many
-                      Courses, you can start with Study Program (and skip Modules) or start with Module.
-                    </li>
-                    <li>
-                      If you want to define a complete study program, start by creating a Study Program, then add
-                      Modules,
-                      Courses and
-                      Lectures as required.
-                    </li>
-                  </ul>
-                  <br><br>
+                  <app-how></app-how>
                 </div>
               </div>
             </div>

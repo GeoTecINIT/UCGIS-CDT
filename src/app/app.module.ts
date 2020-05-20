@@ -77,6 +77,8 @@ import { OrganizationComponent } from './views/organization/organization.compone
 import { ReleaseNotesComponent } from './components/release-notes/release-notes.component';
 
 import { NgxSortableModule } from 'ngx-sortable';
+import { FaqComponent } from './components/faq/faq.component';
+import { HowComponent } from './components/how/how.component';
 
 
 @NgModule({
@@ -127,7 +129,9 @@ import { NgxSortableModule } from 'ngx-sortable';
     ReleaseNotesComponent,
     Eo4geoFooterComponent,
     Eo4geoHeaderComponent,
-    OrganizationComponent
+    OrganizationComponent,
+    FaqComponent,
+    HowComponent
   ],
   providers: [
     {

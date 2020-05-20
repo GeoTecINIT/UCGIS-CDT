@@ -8,9 +8,9 @@
               Detail
             </div>
             <div *ngIf="!selectedProgram.levelPublic" class="col-sm-4 offset-md-2 col-md-6">
-              <label>Private Curricula Item</label>
+              <label>Private Educational Offer</label>
               <span
-                tooltip="This Curricula Item will not be listed in the main view for other users. You can only access with the link."
+                tooltip="This Educational Offer will not be listed in the main view for other users. You can only access with the link."
                 class="badge badge-primary badge-pill">i</span>
             </div>
             <div *ngIf="selectedProgram.levelPublic" class="col-sm-4 offset-md-2 col-md-6"></div>
@@ -31,7 +31,7 @@
                   </button>
                 </div>
                 <div class="col-3 col-sm-3 col-md-3 no-padding"
-                  tooltip="{{isAnonymous? 'Login to be able to edit' : selectedProgram.isEdited? 'Another user is editing this content. To avoid content loss, editing has been disabled' : selectedProgram.userId==afAuth.auth.currentUser?.uid? 'Edit' : 'You can edit only your own learning content' }}">
+                  tooltip="{{isAnonymous? 'Login to be able to edit' : selectedProgram.isEdited? 'Another user is editing this content. To avoid content loss, editing has been disabled' : selectedProgram.userId==afAuth.auth.currentUser?.uid? 'Edit' : 'You can edit only your own educational offers' }}">
                   <button type="button" class="btn btn-block btn-link"
                     routerLink="/newsp/copy/{{ selectedProgram._id }}"
                     [disabled]="isAnonymous ||  (currentUser?.organizations?.indexOf(selectedProgram.orgId) == -1) || selectedProgram.isEdited">
@@ -39,7 +39,7 @@
                   </button>
                 </div>
                 <div class="col-3 col-sm-3 col-md-3 no-padding"
-                  tooltip="{{isAnonymous? 'Login to be able to remove' : selectedProgram.isEdited? 'Another user is editing this content. To avoid content loss, removing has been disabled' : selectedProgram.userId==afAuth.auth.currentUser?.uid? 'Remove' : 'You can remove only your own learning content' }}">
+                  tooltip="{{isAnonymous? 'Login to be able to remove' : selectedProgram.isEdited? 'Another user is editing this content. To avoid content loss, removing has been disabled' : selectedProgram.userId==afAuth.auth.currentUser?.uid? 'Remove' : 'You can remove only your own educational offers' }}">
                   <button type="button" class="btn btn-block btn-link" data-toggle="modal" (click)="dangerModal.show()"
                     [disabled]="isAnonymous || (currentUser?.organizations?.indexOf(selectedProgram.orgId) == -1) || selectedProgram.isEdited">
                     <i class="fa fa-trash-o fa-lg mt-4" [ngClass]="selectedProgram.isEdited? 'icon-editing' : '' "></i>
@@ -241,7 +241,7 @@
                       </div>
 
                       <div *ngIf="model.children && model.children.length > 0">
-                        <span><b>Children learning content:</b></span>
+                        <span><b>Children educational offers:</b></span>
                         <ul>
                           <div *ngFor="let ch of model.children">
                             <li>{{ ch.data.name }}</li>
@@ -253,7 +253,7 @@
                         margin-right: -20px;
                         margin-left: -20px;
                         padding: 20px;">
-                        <span><b>Annotated BoK knowledge in this learning content:</b></span>
+                        <span><b>Annotated BoK knowledge in this educational offer:</b></span>
                         <ul>
                           <div *ngFor="let lb of allLinksToBok">
                             <li><a href="https://bok.eo4geo.eu/{{ lb.concept_id }}">{{ lb.name }}</a> </li>
@@ -283,7 +283,7 @@
   <div class="modal-dialog modal-danger" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Are you sure you want to delete this Curricula Item?</h4>
+        <h4 class="modal-title">Are you sure you want to delete this Educational Offer?</h4>
         <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
