@@ -11,6 +11,7 @@ import { LoginComponent } from './views/login/login.component';
 import { ListComponent } from './views/list/list.component';
 import { DetailComponent } from './views/detail/detail.component';
 import { NewspComponent } from './views/newsp/newsp.component';
+import { FaqComponent } from './components/faq/faq.component';
 
 import { AngularFireAuthGuard } from '@angular/fire/auth-guard';
 import { UserComponent } from './views/user/user.component';
@@ -63,6 +64,13 @@ export const routes: Routes = [
           title: 'List'
         },
         component: ListComponent
+      },
+      {
+        path: 'faq',
+        data: {
+          title: 'FAQ'
+        },
+        component: FaqComponent
       },
       {
         path: 'user',

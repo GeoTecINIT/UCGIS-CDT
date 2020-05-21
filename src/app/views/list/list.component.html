@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-sm-12 col-md-12">
       <h1 class="title">
-        Learning Content
+        Educational Offers
       </h1>
       <div class="text-center" [hidden]="!isAnonymous">
         <h5>You have limited functionality because you are not logged in. <a href="#" routerLink="/login"> Login </a> to
@@ -19,7 +19,7 @@
       <div class="card card-accent-primary">
         <div class="card-header">
           <div class="row mb-2">
-            <div class="col-sm-4 col-md-3" tooltip="{{isAnonymous? 'Login to be able to add curricula items' : ''}}">
+            <div class="col-sm-4 col-md-3" tooltip="{{isAnonymous? 'Login to be able to add Educational Offers' : ''}}">
               <button type="button" class="btn btn-block btn-primary" routerLink="/newsp/empty"
                 [disabled]="isAnonymous">
                 New
@@ -225,7 +225,7 @@
                         </button>
                       </div>
                       <div class="col-3 col-sm-3 col-md-3 no-padding"
-                        tooltip="{{isAnonymous? 'Login to be able to edit' : sp.isEdited? 'Another user is editing this content. To avoid content loss, editing has been disabled' : sp.userId==afAuth.auth.currentUser?.uid? 'Edit' : 'You can edit only your own learning content' }}">
+                        tooltip="{{isAnonymous? 'Login to be able to edit' : sp.isEdited? 'Another user is editing this content. To avoid content loss, editing has been disabled' : sp.userId==afAuth.auth.currentUser?.uid? 'Edit' : 'You can edit only your own educational offers' }}">
                         <button type="button" class="btn btn-block btn-link" routerLink="/newsp/copy/{{ sp._id }}"
                           [disabled]="isAnonymous || (currentUser?.organizations?.indexOf(sp.orgId) == -1) || sp.isEdited">
                           <i class="fa fa-edit fa-lg mt-4" [ngClass]="sp.isEdited? 'icon-editing' : '' "></i>
@@ -233,7 +233,7 @@
                         </button>
                       </div>
                       <div class="col-3 col-sm-3 col-md-3 no-padding"
-                        tooltip="{{isAnonymous? 'Login to be able to remove' : sp.isEdited? 'Another user is editing this content. To avoid content loss, removing has been disabled' : sp.userId==afAuth.auth.currentUser?.uid? 'Remove' : 'You can remove only your own learning content' }}">
+                        tooltip="{{isAnonymous? 'Login to be able to remove' : sp.isEdited? 'Another user is editing this content. To avoid content loss, removing has been disabled' : sp.userId==afAuth.auth.currentUser?.uid? 'Remove' : 'You can remove only your own educational offers' }}">
                         <button type="button" class="btn btn-block btn-link" data-toggle="modal"
                           (click)="dangerModal.show()"
                           [disabled]="isAnonymous || (currentUser?.organizations?.indexOf(sp.orgId) == -1) || sp.isEdited">
@@ -255,7 +255,7 @@
               <div class="modal-dialog modal-danger" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h4 class="modal-title">Are you sure you want to delete this Curricula Item?</h4>
+                    <h4 class="modal-title">Are you sure you want to delete this Educational Offer?</h4>
                     <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>

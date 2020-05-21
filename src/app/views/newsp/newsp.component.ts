@@ -240,13 +240,13 @@ export class NewspComponent implements OnInit, OnDestroy {
     this.mode = this.route.snapshot.paramMap.get('mode');
     if (this.mode === 'duplicate' || this.mode === 'copy') {
       if (this.mode === 'copy') {
-        this.title = 'Edit Curriculum Item';
+        this.title = 'Edit Educational Offer';
       } else {
-        this.title = 'Duplicate Curriculum Item';
+        this.title = 'Duplicate Educational Offer';
       }
       this.fillForm();
     } else {
-      this.title = 'Add New Curriculum Item';
+      this.title = 'Add New Educational Offer';
       this.displayTree();
     }
   }
