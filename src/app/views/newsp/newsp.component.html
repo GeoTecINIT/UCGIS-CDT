@@ -1797,7 +1797,7 @@
 
           <div class="card-body" style="background-color: #faf9f8">
             <div class="row text-center">
-              <div class="col-lg-4 col-sm-6">
+              <div class="col-lg-6 col-sm-6">
                 <div class="row text-center">
                   <div class="col-md-12">
                     <div class="input-group">
@@ -1814,15 +1814,19 @@
                 <div id="bubbles">
                 </div>
               </div>
-              <div class="col-lg-8 col-sm-6 text-justify">
+              <div class="col-lg-6 col-sm-6 text-justify">
 
                 <a (click)="navigateToConcept('GIST')" *ngIf="!(!hasResults && currentConcept != 'GIST')">
                   < To full BoK </a>
                     <a (click)="hasResults = !hasResults; currentConcept=''"
                       *ngIf="!hasResults && currentConcept != 'GIST'">
-                      < Back to results </a> <br>
+                      < Back to results </a>
+                      <a (click)="hasResults = false"
+                      *ngIf="hasResults">
+                      &nbsp; < Show current concept </a>
+                      <br>
                         <h5 [hidden]="currentConcept == '' && currentConcept != 'GIST'">Knowledge</h5>
-                        <div #textBoK id="textBoK" [hidden]="currentConcept == '' && currentConcept != 'GIST'">
+                        <div #textBoK id="textBoK" [hidden]="hasResults">
                         </div>
                         <div class="col" *ngIf="hasResults">
                           <h3 class="center">
