@@ -315,7 +315,7 @@ export class NewspComponent implements OnInit, OnDestroy {
 
   searchInBok(text: string) {
     this.selectedNodes = bok.searchInBoK(text);
-    this.hasResults = this.selectedNodes.length > 0 ? true : false;
+    this.hasResults = true;
     this.currentConcept = '';
   }
 
