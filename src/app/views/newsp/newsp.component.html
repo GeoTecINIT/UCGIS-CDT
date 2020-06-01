@@ -212,7 +212,7 @@
                           <div *ngFor="let f of model.fields; index as i ">
                             <li>
                               <p>{{f.name}} ({{f.grandparent}}) <button type="button" class="btn btn-link btn-xs"
-                                  (click)="model.fields.splice(i, 1)">
+                                  (click)="model.fields.splice(i, 1); updateFields()" tooltip="Click to remove">
                                   <i class="fa fa-remove"></i>
                                 </button></p>
                             </li>
@@ -528,7 +528,7 @@
                           <div *ngFor="let f of modelModule.fields; index as i ">
                             <li>
                               <p>{{f.name}} ({{f.grandparent}}) <button type="button" class="btn btn-link btn-xs"
-                                  (click)="modelModule.fields.splice(i, 1)">
+                                  (click)="modelModule.fields.splice(i, 1); updateFields()" tooltip="Click to remove">
                                   <i class="fa fa-remove"></i>
                                 </button></p>
                             </li>
@@ -897,7 +897,7 @@
                           <div *ngFor="let f of modelCourse.fields; index as i ">
                             <li>
                               <p>{{f.name}} ({{f.grandparent}}) <button type="button" class="btn btn-link btn-xs"
-                                  (click)="modelCourse.fields.splice(i, 1)">
+                                  (click)="modelCourse.fields.splice(i, 1); updateFields()" tooltip="Click to remove">
                                   <i class="fa fa-remove"></i>
                                 </button></p>
                             </li>
@@ -1355,7 +1355,7 @@
                           <div *ngFor="let f of modelLecture.fields; index as i ">
                             <li>
                               <p>{{f.name}} ({{f.grandparent}}) <button type="button" class="btn btn-link btn-xs"
-                                  (click)="modelLecture.fields.splice(i, 1)">
+                                  (click)="modelLecture.fields.splice(i, 1); updateFields()" tooltip="Click to remove">
                                   <i class="fa fa-remove"></i>
                                 </button></p>
                             </li>
