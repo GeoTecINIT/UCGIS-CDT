@@ -602,7 +602,7 @@ export class NewspComponent implements OnInit, OnDestroy {
     modelToAdd.customCompetences.push(comp);
     this.escoService.allcompetences = [...this.escoService.allcompetences, { preferredLabel: comp }];
     this.escoService.basicCompetences = [...this.escoService.basicCompetences, { preferredLabel: comp }];
-    console.log('add competence: ' + comp + ' model' + modelToAdd.name);
+   // console.log('add competence: ' + comp + ' model' + modelToAdd.name);
     this.updateTreeStudyProgram();
   }
 
@@ -613,6 +613,36 @@ export class NewspComponent implements OnInit, OnDestroy {
         array.splice(index, 1);
       }
     });
+
+    // update model selects
+    if (this.model) {
+      this.model.competences = [...this.model.competences];
+    }
+    if (this.modelModule) {
+      this.modelModule.competences = [...this.modelModule.competences];
+    }
+    if (this.modelCourse) {
+      this.modelCourse.competences = [...this.modelCourse.competences];
+    }
+    if (this.modelLecture) {
+      this.modelLecture.competences = [...this.modelLecture.competences];
+    }
+  }
+
+  updateFields() {
+    // update model selects
+    if (this.model) {
+      this.model.fields = [...this.model.fields];
+    }
+    if (this.modelModule) {
+      this.modelModule.fields = [...this.modelModule.fields];
+    }
+    if (this.modelCourse) {
+      this.modelCourse.fields = [...this.modelCourse.fields];
+    }
+    if (this.modelLecture) {
+      this.modelLecture.fields = [...this.modelLecture.fields];
+    }
   }
 
   fullListESCO() {
