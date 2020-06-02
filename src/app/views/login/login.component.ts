@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
     this.afAuth.auth.onAuthStateChanged(user => {
       if (user) {
         // User is signed in.
-        //  console.log('login inside ' + this.afAuth.auth.currentUser.email + ' - route:' + this.return );
+       // console.log('login inside ' + this.afAuth.auth.currentUser.email + ' - route:' + this.return );
         this.ngZone.run(() => this.router.navigateByUrl(this.return)).then();
       }
     });
@@ -62,6 +62,12 @@ export class LoginComponent implements OnInit {
     const provider = new firebase.auth.GoogleAuthProvider();
 
     this.afAuth.auth.signInWithPopup(provider).then(result => {
+      console.log('login with google');
+      console.log(result);
+      if (result.additionalUserInfo.isNewUser) {
+        // deletes and signout user
+        this.afAuth.auth.currentUser.delete();
+      }
       // This gives you a Google Access Token. You can use it to access the Google API.
       const token = result.credential;
       // The signed-in user info.
