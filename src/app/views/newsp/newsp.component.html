@@ -375,7 +375,8 @@
                               tooltip="Click here to add to the dropdown full list of ESCO skills." data-checked="✓"
                               data-unchecked="X"></span>
                           </label>
-                          <div class="pl-1">Search full <a href="https://ec.europa.eu/esco/portal/skill" target="_blank">ESCO</a>
+                          <div class="pl-1">Search full <a href="https://ec.europa.eu/esco/portal/skill"
+                              target="_blank">ESCO</a>
                             skills
                           </div>
                         </span>
@@ -396,7 +397,8 @@
                     <div class="row pt-1">
                       <div class="col-md-12">
 
-                        This service uses the <a href="http://ec.europa.eu/esco"  target="_blank"> ESCO </a> classification of the
+                        This service uses the <a href="http://ec.europa.eu/esco" target="_blank"> ESCO </a>
+                        classification of the
                         European Commission. <br> If you cannot find the specified transversal skill, you can also add
                         your own here:
 
@@ -745,7 +747,8 @@
                               tooltip="Click here to add to the dropdown full list of ESCO skills." data-checked="✓"
                               data-unchecked="X"></span>
                           </label>
-                          <div class="pl-1">Search full <a href="https://ec.europa.eu/esco/portal/skill" target="_blank">ESCO</a>
+                          <div class="pl-1">Search full <a href="https://ec.europa.eu/esco/portal/skill"
+                              target="_blank">ESCO</a>
                             skills
                           </div>
                         </span>
@@ -766,7 +769,8 @@
                     <div class="row pt-1">
                       <div class="col-md-12">
 
-                        This service uses the <a href="http://ec.europa.eu/esco" target="_blank"> ESCO </a> classification of the
+                        This service uses the <a href="http://ec.europa.eu/esco" target="_blank"> ESCO </a>
+                        classification of the
                         European Commission. <br> If you cannot find the specified transversal skill, you can also add
                         your own here:
 
@@ -1148,7 +1152,8 @@
                               tooltip="Click here to add to the dropdown full list of ESCO skills." data-checked="✓"
                               data-unchecked="X"></span>
                           </label>
-                          <div class="pl-1">Search full <a href="https://ec.europa.eu/esco/portal/skill" target="_blank">ESCO</a>
+                          <div class="pl-1">Search full <a href="https://ec.europa.eu/esco/portal/skill"
+                              target="_blank">ESCO</a>
                             skills
                           </div>
                         </span>
@@ -1169,7 +1174,8 @@
                     <div class="row pt-1">
                       <div class="col-md-12">
 
-                        This service uses the <a href="http://ec.europa.eu/esco" target="_blank"> ESCO </a> classification of the
+                        This service uses the <a href="http://ec.europa.eu/esco" target="_blank"> ESCO </a>
+                        classification of the
                         European Commission. <br> If you cannot find the specified transversal skill, you can also add
                         your own here:
 
@@ -1511,7 +1517,8 @@
                               tooltip="Click here to add to the dropdown full list of ESCO skills." data-checked="✓"
                               data-unchecked="X"></span>
                           </label>
-                          <div class="pl-1">Search full <a href="https://ec.europa.eu/esco/portal/skill" target="_blank">ESCO</a>
+                          <div class="pl-1">Search full <a href="https://ec.europa.eu/esco/portal/skill"
+                              target="_blank">ESCO</a>
                             skills
                           </div>
                         </span>
@@ -1532,7 +1539,8 @@
                     <div class="row pt-1">
                       <div class="col-md-12">
 
-                        This service uses the <a href="http://ec.europa.eu/esco" target="_blank"> ESCO </a> classification of the
+                        This service uses the <a href="http://ec.europa.eu/esco" target="_blank"> ESCO </a>
+                        classification of the
                         European Commission. <br> If you cannot find the specified transversal skill, you can also add
                         your own here:
 
@@ -1619,7 +1627,8 @@
                   <div class="card-header">
                     Explore existing educational offers
                     <!--  {{textByDepth}}s -->
-                    <span tooltip="These items have been added by other user, and can be re-used in your educational offer."
+                    <span
+                      tooltip="These items have been added by other user, and can be re-used in your educational offer."
                       class="badge badge-primary badge-pill">i</span>
                     <button class="btn btn-link float-right pull-right"
                       (click)="NodeDiv.classList.contains('col-md-12') ? NodeDiv.className = 'col-md-6' : NodeDiv.className = 'col-md-12'">
@@ -1670,7 +1679,8 @@
                 <div class="card card-accent-secondary">
                   <div class="card-header">
                     <h5>{{currentStudyProgram.name}}</h5>
-                    <span tooltip="This item has been added by other user, and can be re-used in your educational offer."
+                    <span
+                      tooltip="This item has been added by other user, and can be re-used in your educational offer."
                       class="badge badge-primary badge-pill">i</span>
                     <button class="btn btn-link float-right pull-right"
                       (click)="NodeDiv.classList.contains('col-md-12') ? NodeDiv.className = 'col-md-6' : NodeDiv.className = 'col-md-12'">
@@ -1807,7 +1817,8 @@
                         </button>
                       </div>
                       <input #searchInput type="text" id="input-competence-filter" name="input-competence-filter"
-                        class="form-control" (keyup)="searchInBok(searchInput.value)" placeholder="Search Knowledge" />
+                        class="form-control" [(ngModel)]="searchInputField" (keyup)="searchInBok(searchInput.value)"
+                        placeholder="Search Knowledge" />
                     </div>
                   </div>
                 </div>
@@ -1815,45 +1826,60 @@
                 </div>
               </div>
               <div class="col-lg-6 col-sm-6 text-justify">
-
-                <a (click)="navigateToConcept('GIST')" *ngIf="!(!hasResults && currentConcept != 'GIST')">
-                  < To full BoK </a>
+                <div class="row text-left">
+                  <div class="col-md-4">
+                    <a (click)="navigateToConcept('GIST')" [hidden]="!hasResults || currentConcept == 'GIST'">
+                      < To full BoK </a>
+                  </div>
+                  <div class="col-md-4">
                     <a (click)="hasResults = !hasResults; currentConcept=''"
                       *ngIf="!hasResults && currentConcept != 'GIST'">
-                      < Back to results </a>
-                      <a (click)="hasResults = false"
-                      *ngIf="hasResults">
-                      &nbsp; < Show current concept </a>
-                      <br>
-                        <h5 [hidden]="currentConcept == '' && currentConcept != 'GIST'">Knowledge</h5>
-                        <div #textBoK id="textBoK" [hidden]="hasResults">
-                        </div>
-                        <div class="col" *ngIf="hasResults">
-                          <h3 class="center">
-                            {{ selectedNodes.length }} result(s) for
-                            {{ searchInput.value }}
-                          </h3>
-                          <div *ngFor="let item of selectedNodes; index as i">
-                            <div *ngIf="i < limitSearch">
-                              <div class="inline">{{ item.nameShort }}</div>
-                              <div class="inline" [innerHTML]="
+                      < Back to search results </a>
+                  </div>
+                  <div class="col-md-4">
+                    <a (click)="hasResults = false; cleanResults()" *ngIf="hasResults">
+                      &nbsp; X Clear search results </a>
+                  </div>
+                </div>
+
+                <br>
+                <h5 [hidden]="currentConcept == '' && currentConcept != 'GIST'">Knowledge</h5>
+                <div #textBoK id="textBoK" [hidden]="hasResults">
+                </div>
+                <div class="col" *ngIf="hasResults">
+                  <h3 class="center">
+                    {{ selectedNodes.length }} result(s) for
+                    {{ searchInput.value }}
+                  </h3>
+                  <div *ngFor="let item of selectedNodes; index as i">
+                    <div *ngIf="i < limitSearchTo && i >= limitSearchFrom">
+                      <div class="inline">{{ item.nameShort }}</div>
+                      <div class="inline" [innerHTML]="
                             item.name | truncate: 100:searchInput.value
                           "></div>
-                              <a class="inline" (click)="navigateToConcept(item.nameShort)">
-                                Details
-                              </a>
-                              <div class="small" [innerHTML]="
+                      <a class="inline" (click)="navigateToConcept(item.nameShort)">
+                        Details
+                      </a>
+                      <div class="small" [innerHTML]="
                             item.description | truncate: 100:searchInput.value
                           "></div>
-                            </div>
-                          </div>
-                          <div>
-                            <br />
-                            <a *ngIf="limitSearch < selectedNodes.length" (click)="incrementLimit()">
-                              Show more ...
-                            </a>
-                          </div>
-                        </div>
+                    </div>
+                  </div>
+                  <div>
+                    <br />
+                    <div class="row">
+                      <div class="col-md-6 text-right">
+                        <a *ngIf="limitSearchFrom > 0" (click)="decrementLimit()">
+                          << Previous </a>
+                      </div>
+                      <div class="col-md-6 text-left"> <a *ngIf="limitSearchTo < selectedNodes.length"
+                          (click)="incrementLimit()">
+                          Next >>
+                        </a></div>
+                    </div>
+                    
+                  </div>
+                </div>
 
               </div>
             </div>
