@@ -56,7 +56,14 @@ export class NewspComponent implements OnInit, OnDestroy {
 
   selectedNodes = [];
   hasResults = false;
-  limitSearch = 5;
+  limitSearchFrom = 0;
+  limitSearchTo = 10;
+
+  observer: MutationObserver;
+  lastBoKTitle = 'GIST';
+
+  searchInputField = '';
+
   currentConcept = 'GIST';
 
   isfullESCOcompetences = false;
@@ -189,6 +196,19 @@ export class NewspComponent implements OnInit, OnDestroy {
     console.log('Display existing tree : ');
     bok.visualizeBOKData('#bubbles', '#textBoK');
     this.analytics.logEvent('NewSP', { 'mode': this.mode });
+
+    this.observer = new MutationObserver(mutations => {
+      mutations.forEach(mutation => {
+        if ((<any>mutation.target).children[1].innerText !== this.lastBoKTitle) {
+          this.lastBoKTitle = (<any>mutation.target).children[1].innerText;
+          this.hasResults = false;
+        }
+      });
+    });
+    const config = { attributes: true, childList: true, characterData: true };
+
+     this.observer.observe(this.textBoK.nativeElement, config);
+
   }
 
   ngOnDestroy(): void {
@@ -326,8 +346,20 @@ export class NewspComponent implements OnInit, OnDestroy {
     console.log('Navigate to concept :' + conceptName);
   }
 
+  cleanResults() {
+    this.searchInputField = '';
+    bok.searchInBoK('');
+    this.navigateToConcept('GIST');
+  }
+
   incrementLimit() {
-    this.limitSearch = this.limitSearch + 5;
+    this.limitSearchTo = this.limitSearchTo + 10;
+    this.limitSearchFrom = this.limitSearchFrom + 10;
+  }
+
+   decrementLimit() {
+    this.limitSearchTo = this.limitSearchTo - 10;
+    this.limitSearchFrom = this.limitSearchFrom - 10;
   }
 
   displayTree(program = null) {
