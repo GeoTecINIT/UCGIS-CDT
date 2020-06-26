@@ -156,7 +156,7 @@ export class NewspComponent implements OnInit, OnDestroy {
     public analytics: AngularFireAnalytics
   ) {
     this.competences = this.escoService.basicCompetences;
-    this.filteredCompetences = this.competences;
+    this.filteredCompetences = this.escoService.basicCompetences;
     this.studyprogramService
       .subscribeToStudyPrograms()
       .subscribe(res => {
@@ -207,7 +207,7 @@ export class NewspComponent implements OnInit, OnDestroy {
     });
     const config = { attributes: true, childList: true, characterData: true };
 
-     this.observer.observe(this.textBoK.nativeElement, config);
+    this.observer.observe(this.textBoK.nativeElement, config);
 
   }
 
@@ -357,7 +357,7 @@ export class NewspComponent implements OnInit, OnDestroy {
     this.limitSearchFrom = this.limitSearchFrom + 10;
   }
 
-   decrementLimit() {
+  decrementLimit() {
     this.limitSearchTo = this.limitSearchTo - 10;
     this.limitSearchFrom = this.limitSearchFrom - 10;
   }
@@ -630,11 +630,13 @@ export class NewspComponent implements OnInit, OnDestroy {
 
   // Add custom competence to model to force updating component, and to competences lists to find it again if removed
   addExtraCompetence(comp, modelToAdd) {
-    modelToAdd.competences = [...modelToAdd.competences, { preferredLabel: comp }];
+    modelToAdd.competences = [...modelToAdd.competences, { preferredLabel: comp, reuseLevel: 'custom' }];
+    this.competences = [...this.competences, { preferredLabel: comp, reuseLevel: 'custom' }];
     modelToAdd.customCompetences.push(comp);
-    this.escoService.allcompetences = [...this.escoService.allcompetences, { preferredLabel: comp }];
-    this.escoService.basicCompetences = [...this.escoService.basicCompetences, { preferredLabel: comp }];
-   // console.log('add competence: ' + comp + ' model' + modelToAdd.name);
+    this.escoService.allcompetences = [...this.escoService.allcompetences, { preferredLabel: comp, reuseLevel: 'custom' }];
+    this.escoService.basicCompetences = [...this.escoService.basicCompetences, { preferredLabel: comp, reuseLevel: 'custom' }];
+
+    console.log('add competence: ' + comp + ' model' + modelToAdd.name);
     this.updateTreeStudyProgram();
   }
 

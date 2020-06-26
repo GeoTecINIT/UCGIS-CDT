@@ -226,7 +226,8 @@
                         <b>Transversal Skills ({{model.competences.length}}):</b></span>
                         <ul #showCom>
                           <div *ngFor="let c of model.competences">
-                            <li>{{ c.preferredLabel }}</li>
+                            <li *ngIf="!c.uri">{{ c.preferredLabel }} </li>
+                            <li *ngIf="c.uri && c.uri != ''"> <a href="{{c.uri}}" target="_blank">{{ c.preferredLabel }} </a> </li>
                           </div>
                         </ul>
                       </div>
