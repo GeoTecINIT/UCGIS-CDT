@@ -334,9 +334,13 @@ export class NewspComponent implements OnInit, OnDestroy {
   }
 
   searchInBok(text: string) {
-    this.selectedNodes = bok.searchInBoK(text);
-    this.hasResults = true;
-    this.currentConcept = '';
+    if (text === '' || text === ' ') {
+      this.cleanResults();
+    } else {
+      this.selectedNodes = bok.searchInBoK(text);
+      this.hasResults = true;
+      this.currentConcept = '';
+    }
   }
 
   navigateToConcept(conceptName) {
@@ -634,7 +638,7 @@ export class NewspComponent implements OnInit, OnDestroy {
     this.competences = [...this.competences, { preferredLabel: comp, reuseLevel: 'custom' }];
     modelToAdd.customCompetences.push(comp);
     this.escoService.allcompetences = [...this.escoService.allcompetences, { preferredLabel: comp, reuseLevel: 'custom' }];
-    this.escoService.basicCompetences = [...this.escoService.basicCompetences, { preferredLabel: comp, reuseLevel: 'custom' }];
+    this.escoService.basicCompetences = [...this.escoService.basicCompetences, { preferredLabel: comp, reuseLevel: 'custom', uri: null }];
 
     console.log('add competence: ' + comp + ' model' + modelToAdd.name);
     this.updateTreeStudyProgram();
