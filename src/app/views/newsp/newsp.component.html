@@ -1845,21 +1845,16 @@
               </div>
               <div class="col-lg-6 col-sm-6 text-justify">
                 <div class="row text-left">
-                  <div class="col-md-4">
-                    <a (click)="navigateToConcept('GIST')" [hidden]="!hasResults || currentConcept == 'GIST'">
-                      < To full BoK </a>
-                  </div>
-                  <div class="col-md-4">
+                  <div class="col-md-6">
                     <a (click)="hasResults = !hasResults; currentConcept=''"
                       *ngIf="!hasResults && currentConcept != 'GIST'">
                       < Back to search results </a>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-6">
                     <a (click)="hasResults = false; cleanResults()" *ngIf="hasResults">
                       &nbsp; X Clear search results </a>
                   </div>
                 </div>
-
                 <br>
                 <h5 [hidden]="currentConcept == '' && currentConcept != 'GIST'">Knowledge</h5>
                 <div #textBoK id="textBoK" [hidden]="hasResults">
