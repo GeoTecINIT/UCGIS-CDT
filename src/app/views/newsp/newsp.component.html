@@ -352,17 +352,11 @@
                             name="competences" bindLabel="preferredLabel" groupBy="reuseLevel" [multiple]="true"
                             [searchFn]="customSearchFn" placeholder="Search..." [clearSearchOnAdd]="true"
                             [(ngModel)]="model.competences" [clearable]="false" (change)="updateTreeStudyProgram()">
-                            <ng-template ng-optgroup-tmp let-item="item">
-                              {{item.reuseLevel || 'Unnamed group'}}
-                            </ng-template>
                           </ng-select>
                           <ng-select *ngIf="!isfullESCOcompetences" [items]="competences" name="competences"
                             bindLabel="preferredLabel" groupBy="reuseLevel" [multiple]="true"
                             [searchFn]="customSearchFn" placeholder="Search..." [clearSearchOnAdd]="true"
                             [(ngModel)]="model.competences" [clearable]="false" (change)="updateTreeStudyProgram()">
-                            <ng-template ng-optgroup-tmp let-item="item">
-                              {{item.reuseLevel || 'Unnamed group'}}
-                            </ng-template>
                           </ng-select>
                         </div>
                       </div>
@@ -386,7 +380,13 @@
                       <div class="col-md-12">
                         <ul>
                           <div *ngFor="let mc of model.competences; index as i ">
-                            <li>{{ mc.preferredLabel }} <button type="button" class="btn btn-link"
+                            <li *ngIf="!mc.uri">{{ mc.preferredLabel }}
+                              <button type="button" class="btn btn-link"
+                                tooltip="Click to remove" (click)="removeCompetence(mc, model.competences)">
+                                <i class="fa fa-remove"></i>
+                              </button></li>
+                            <li *ngIf="mc.uri && mc.uri != ''"> <a href="{{mc.uri}}" target="_blank">{{ mc.preferredLabel }} </a> 
+                              <button type="button" class="btn btn-link"
                                 tooltip="Click to remove" (click)="removeCompetence(mc, model.competences)">
                                 <i class="fa fa-remove"></i>
                               </button></li>
@@ -758,8 +758,14 @@
                       <div class="col-md-12">
                         <ul>
                           <div *ngFor="let mc of modelModule.competences; index as i ">
-                            <li>{{ mc.preferredLabel }} <button type="button" class="btn btn-link"
-                                tooltip="Click to remove" (click)="removeCompetence(mc, modelModule.competences)">
+                            <li *ngIf="!mc.uri">{{ mc.preferredLabel }}
+                              <button type="button" class="btn btn-link"
+                                tooltip="Click to remove" (click)="removeCompetence(mc, model.competences)">
+                                <i class="fa fa-remove"></i>
+                              </button></li>
+                            <li *ngIf="mc.uri && mc.uri != ''"> <a href="{{mc.uri}}" target="_blank">{{ mc.preferredLabel }} </a> 
+                              <button type="button" class="btn btn-link"
+                                tooltip="Click to remove" (click)="removeCompetence(mc, model.competences)">
                                 <i class="fa fa-remove"></i>
                               </button></li>
                           </div>
@@ -1163,8 +1169,14 @@
                       <div class="col-md-12">
                         <ul>
                           <div *ngFor="let mc of modelCourse.competences; index as i ">
-                            <li>{{ mc.preferredLabel }} <button type="button" class="btn btn-link"
-                                tooltip="Click to remove" (click)="removeCompetence(mc, modelCourse.competences)">
+                            <li *ngIf="!mc.uri">{{ mc.preferredLabel }}
+                              <button type="button" class="btn btn-link"
+                                tooltip="Click to remove" (click)="removeCompetence(mc, model.competences)">
+                                <i class="fa fa-remove"></i>
+                              </button></li>
+                            <li *ngIf="mc.uri && mc.uri != ''"> <a href="{{mc.uri}}" target="_blank">{{ mc.preferredLabel }} </a> 
+                              <button type="button" class="btn btn-link"
+                                tooltip="Click to remove" (click)="removeCompetence(mc, model.competences)">
                                 <i class="fa fa-remove"></i>
                               </button></li>
                           </div>
@@ -1528,8 +1540,14 @@
                       <div class="col-md-12">
                         <ul>
                           <div *ngFor="let mc of modelLecture.competences; index as i ">
-                            <li>{{ mc.preferredLabel }} <button type="button" class="btn btn-link"
-                                tooltip="Click to remove" (click)="removeCompetence(mc, modelLecture.competences)">
+                            <li *ngIf="!mc.uri">{{ mc.preferredLabel }}
+                              <button type="button" class="btn btn-link"
+                                tooltip="Click to remove" (click)="removeCompetence(mc, model.competences)">
+                                <i class="fa fa-remove"></i>
+                              </button></li>
+                            <li *ngIf="mc.uri && mc.uri != ''"> <a href="{{mc.uri}}" target="_blank">{{ mc.preferredLabel }} </a> 
+                              <button type="button" class="btn btn-link"
+                                tooltip="Click to remove" (click)="removeCompetence(mc, model.competences)">
                                 <i class="fa fa-remove"></i>
                               </button></li>
                           </div>
