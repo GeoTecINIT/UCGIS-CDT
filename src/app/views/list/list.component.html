@@ -159,6 +159,12 @@
                 <span [ngClass]="sortedBy == 'organization'? 'bolder' : ''">Organization</span>
               </button>
             </div>
+            <div class="col-sm-3 col-md-2 text-center">
+              <button type="button" class="btn btn-block btn-link" (click)="sortSPby('eqf');">
+                <i [ngClass]="sortOrgAsc? 'fa fa-arrow-down' : 'fa fa-arrow-up'"></i>
+                <span [ngClass]="sortedBy == 'eqf'? 'bolder' : ''">EQF</span>
+              </button>
+            </div>
 
             <div class="col-sm-0 col-md-2"></div>
           </div>
