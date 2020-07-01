@@ -71,6 +71,27 @@ export class ListComponent implements OnInit {
       .subscribe(studyPrograms => {
         this.studyPrograms = studyPrograms;
         this.filteredStudyPrograms = studyPrograms;
+
+       /*  this.studyPrograms.forEach(sp => {
+          console.log('***---***');
+          console.log(sp.name);
+          console.log('***');
+          console.log(sp.orgName);
+          console.log('***');
+          if (sp.competences) {
+            sp.competences.forEach(c => {
+              console.log(c.preferredLabel + ' --  uri:' + c.uri);
+              console.log('***');
+            });
+          }
+          if (sp.customCompetences) {
+            sp.customCompetences.forEach(c => {
+              console.log(c);
+              console.log('***');
+            });
+          }
+        }); */
+
         this.sortSPby(this.sortedBy);
       });
 
@@ -110,6 +131,13 @@ export class ListComponent implements OnInit {
         this.sortOrgAsc = !this.sortOrgAsc;
         this.sortedBy = 'organization';
         this.filteredStudyPrograms.sort((a, b) => (a.orgName.toLowerCase() > b.orgName.toLowerCase()) ? this.sortOrgAsc ? 1 : -1 : this.sortOrgAsc ? -1 : 1);
+        break;
+
+      case 'eqf':
+        console.log('Sort by: ' + attr + ' eqf: ' + this.sortOrgAsc);
+        this.sortOrgAsc = !this.sortOrgAsc;
+        this.sortedBy = 'eqf';
+        this.filteredStudyPrograms.sort((a, b) => (a.eqf > b.eqf) ? this.sortOrgAsc ? 1 : -1 : this.sortOrgAsc ? -1 : 1);
         break;
     }
   }

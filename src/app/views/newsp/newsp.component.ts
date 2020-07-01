@@ -645,9 +645,13 @@ export class NewspComponent implements OnInit, OnDestroy {
   }
 
   removeCompetence(name: string, array: string[]) {
+
+    console.log('try to remove concept' + name);
+    console.log(name);
     array.forEach((item, index) => {
       if (item === name) {
-        //  console.log('removing concept' + name);
+        console.log('removing concept' + name);
+        console.log(name);
         array.splice(index, 1);
       }
     });
