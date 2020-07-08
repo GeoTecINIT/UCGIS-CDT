@@ -331,6 +331,48 @@
                                   </button>
                                 </div>
                               </div>
+
+                              <div style="text-align: center">
+                                <a (click)="openModal(template)">Please see the guidelines to define skills</a>
+                              </div>
+                              <ng-template #template>
+                                <div class="modal-primary ">
+                                  <div class="modal-header">
+                                    <h4 class="modal-title pull-left">Guidelines</h4>
+                                    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <p style="text-align:justify;"> A learning outcome is a statement of what a learner knows, understands and is able to do on completion of a learning process (Source: European Commission)
+                                      In the context of EO4GEO, it is formulated as <strong> verb + (BoK) concept relevant statement </strong>, using active voice, by the use of verbs from the Bloom's revised taxonomy. <br>
+                                      Some examples of learning outcomes associated to BoK concepts: </p>
+
+                                    <p style="text-align:justify;"> <span>&#8226;</span> BoK Concept  - Learning outcome <br>
+                                      <span>&#8226;</span> Spatial simulation modelling - Perform a simulation experiment using available simulation software <br>
+                                      <span>&#8226;</span> Data model and format conversion - Convert a data set from the native format of one GIS product to another <br>
+                                      <span>&#8226;</span> Vagueness - Evaluate vagueness in the locations, time, attributes, and other aspects of geographic phenomena </p>
+
+                                    <table class="table">
+                                      <thead>
+                                      <tr>
+                                        <th *ngFor="let tax of taxonomy"> {{tax.name}}</th>
+                                      </tr>
+                                      </thead>
+                                      <tbody>
+                                      <ng-container *ngFor="let tax of taxonomy; index as a" >
+                                        <td>
+                                          <tr  *ngFor="let obj of tax.content; index as b" >
+                                            {{obj}}
+                                          </tr>
+                                        </td>
+                                      </ng-container>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </ng-template>
+
                             </div>
                           </div>
                         </div>
@@ -385,7 +427,7 @@
                                 tooltip="Click to remove" (click)="removeCompetence(mc, model.competences)">
                                 <i class="fa fa-remove"></i>
                               </button></li>
-                            <li *ngIf="mc.uri && mc.uri != ''"> <a href="{{mc.uri}}" target="_blank">{{ mc.preferredLabel }} </a> 
+                            <li *ngIf="mc.uri && mc.uri != ''"> <a href="{{mc.uri}}" target="_blank">{{ mc.preferredLabel }} </a>
                               <button type="button" class="btn btn-link"
                                 tooltip="Click to remove" (click)="removeCompetence(mc, model.competences)">
                                 <i class="fa fa-remove"></i>
@@ -701,6 +743,46 @@
                                   </button>
                                 </div>
                               </div>
+                              <div style="text-align: center">
+                                <a (click)="openModal(template)">Please see the guidelines to define skills</a>
+                              </div>
+                              <ng-template #template>
+                                <div class="modal-primary ">
+                                  <div class="modal-header">
+                                    <h4 class="modal-title pull-left">Guidelines</h4>
+                                    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <p style="text-align:justify;"> A learning outcome is a statement of what a learner knows, understands and is able to do on completion of a learning process (Source: European Commission)
+                                      In the context of EO4GEO, it is formulated as <strong> verb + (BoK) concept relevant statement </strong>, using active voice, by the use of verbs from the Bloom's revised taxonomy. <br>
+                                      Some examples of learning outcomes associated to BoK concepts: </p>
+
+                                    <p style="text-align:justify;"> <span>&#8226;</span> BoK Concept  - Learning outcome <br>
+                                      <span>&#8226;</span> Spatial simulation modelling - Perform a simulation experiment using available simulation software <br>
+                                      <span>&#8226;</span> Data model and format conversion - Convert a data set from the native format of one GIS product to another <br>
+                                      <span>&#8226;</span> Vagueness - Evaluate vagueness in the locations, time, attributes, and other aspects of geographic phenomena </p>
+
+                                    <table class="table">
+                                      <thead>
+                                      <tr>
+                                        <th *ngFor="let tax of taxonomy"> {{tax.name}}</th>
+                                      </tr>
+                                      </thead>
+                                      <tbody>
+                                      <ng-container *ngFor="let tax of taxonomy; index as a" >
+                                        <td>
+                                          <tr  *ngFor="let obj of tax.content; index as b" >
+                                            {{obj}}
+                                          </tr>
+                                        </td>
+                                      </ng-container>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </ng-template>
                             </div>
                           </div>
                         </div>
@@ -763,7 +845,7 @@
                                 tooltip="Click to remove" (click)="removeCompetence(mc, modelModule.competences)">
                                 <i class="fa fa-remove"></i>
                               </button></li>
-                            <li *ngIf="mc.uri && mc.uri != ''"> <a href="{{mc.uri}}" target="_blank">{{ mc.preferredLabel }} </a> 
+                            <li *ngIf="mc.uri && mc.uri != ''"> <a href="{{mc.uri}}" target="_blank">{{ mc.preferredLabel }} </a>
                               <button type="button" class="btn btn-link"
                                 tooltip="Click to remove" (click)="removeCompetence(mc, modelModule.competences)">
                                 <i class="fa fa-remove"></i>
@@ -1112,6 +1194,46 @@
                                   </button>
                                 </div>
                               </div>
+                              <div style="text-align: center">
+                                <a (click)="openModal(template)">Please see the guidelines to define skills</a>
+                              </div>
+                              <ng-template #template>
+                                <div class="modal-primary ">
+                                  <div class="modal-header">
+                                    <h4 class="modal-title pull-left">Guidelines</h4>
+                                    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <p style="text-align:justify;"> A learning outcome is a statement of what a learner knows, understands and is able to do on completion of a learning process (Source: European Commission)
+                                      In the context of EO4GEO, it is formulated as <strong> verb + (BoK) concept relevant statement </strong>, using active voice, by the use of verbs from the Bloom's revised taxonomy. <br>
+                                      Some examples of learning outcomes associated to BoK concepts: </p>
+
+                                    <p style="text-align:justify;"> <span>&#8226;</span> BoK Concept  - Learning outcome <br>
+                                      <span>&#8226;</span> Spatial simulation modelling - Perform a simulation experiment using available simulation software <br>
+                                      <span>&#8226;</span> Data model and format conversion - Convert a data set from the native format of one GIS product to another <br>
+                                      <span>&#8226;</span> Vagueness - Evaluate vagueness in the locations, time, attributes, and other aspects of geographic phenomena </p>
+
+                                    <table class="table">
+                                      <thead>
+                                      <tr>
+                                        <th *ngFor="let tax of taxonomy"> {{tax.name}}</th>
+                                      </tr>
+                                      </thead>
+                                      <tbody>
+                                      <ng-container *ngFor="let tax of taxonomy; index as a" >
+                                        <td>
+                                          <tr  *ngFor="let obj of tax.content; index as b" >
+                                            {{obj}}
+                                          </tr>
+                                        </td>
+                                      </ng-container>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </ng-template>
                             </div>
                           </div>
                         </div>
@@ -1174,7 +1296,7 @@
                                 tooltip="Click to remove" (click)="removeCompetence(mc, modelCourse.competences)">
                                 <i class="fa fa-remove"></i>
                               </button></li>
-                            <li *ngIf="mc.uri && mc.uri != ''"> <a href="{{mc.uri}}" target="_blank">{{ mc.preferredLabel }} </a> 
+                            <li *ngIf="mc.uri && mc.uri != ''"> <a href="{{mc.uri}}" target="_blank">{{ mc.preferredLabel }} </a>
                               <button type="button" class="btn btn-link"
                                 tooltip="Click to remove" (click)="removeCompetence(mc, modelCourse.competences)">
                                 <i class="fa fa-remove"></i>
@@ -1483,6 +1605,46 @@
                                   </button>
                                 </div>
                               </div>
+                              <div style="text-align: center">
+                                <a (click)="openModal(template)">Please see the guidelines to define skills</a>
+                              </div>
+                              <ng-template #template>
+                                <div class="modal-primary ">
+                                  <div class="modal-header">
+                                    <h4 class="modal-title pull-left">Guidelines</h4>
+                                    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <p style="text-align:justify;"> A learning outcome is a statement of what a learner knows, understands and is able to do on completion of a learning process (Source: European Commission)
+                                      In the context of EO4GEO, it is formulated as <strong> verb + (BoK) concept relevant statement </strong>, using active voice, by the use of verbs from the Bloom's revised taxonomy. <br>
+                                      Some examples of learning outcomes associated to BoK concepts: </p>
+
+                                    <p style="text-align:justify;"> <span>&#8226;</span> BoK Concept  - Learning outcome <br>
+                                      <span>&#8226;</span> Spatial simulation modelling - Perform a simulation experiment using available simulation software <br>
+                                      <span>&#8226;</span> Data model and format conversion - Convert a data set from the native format of one GIS product to another <br>
+                                      <span>&#8226;</span> Vagueness - Evaluate vagueness in the locations, time, attributes, and other aspects of geographic phenomena </p>
+
+                                    <table class="table">
+                                      <thead>
+                                      <tr>
+                                        <th *ngFor="let tax of taxonomy"> {{tax.name}}</th>
+                                      </tr>
+                                      </thead>
+                                      <tbody>
+                                      <ng-container *ngFor="let tax of taxonomy; index as a" >
+                                        <td>
+                                          <tr  *ngFor="let obj of tax.content; index as b" >
+                                            {{obj}}
+                                          </tr>
+                                        </td>
+                                      </ng-container>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </ng-template>
                             </div>
                           </div>
                         </div>
@@ -1545,7 +1707,7 @@
                                 tooltip="Click to remove" (click)="removeCompetence(mc, modelLecture.competences)">
                                 <i class="fa fa-remove"></i>
                               </button></li>
-                            <li *ngIf="mc.uri && mc.uri != ''"> <a href="{{mc.uri}}" target="_blank">{{ mc.preferredLabel }} </a> 
+                            <li *ngIf="mc.uri && mc.uri != ''"> <a href="{{mc.uri}}" target="_blank">{{ mc.preferredLabel }} </a>
                               <button type="button" class="btn btn-link"
                                 tooltip="Click to remove" (click)="removeCompetence(mc, modelLecture.competences)">
                                 <i class="fa fa-remove"></i>
@@ -1890,7 +2052,7 @@
                           Next >>
                         </a></div>
                     </div>
-                    
+
                   </div>
                 </div>
 
