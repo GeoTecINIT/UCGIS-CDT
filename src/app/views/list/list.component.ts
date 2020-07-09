@@ -72,25 +72,25 @@ export class ListComponent implements OnInit {
         this.studyPrograms = studyPrograms;
         this.filteredStudyPrograms = studyPrograms;
 
-       /*  this.studyPrograms.forEach(sp => {
-          console.log('***---***');
-          console.log(sp.name);
-          console.log('***');
-          console.log(sp.orgName);
-          console.log('***');
-          if (sp.competences) {
-            sp.competences.forEach(c => {
-              console.log(c.preferredLabel + ' --  uri:' + c.uri);
-              console.log('***');
-            });
-          }
-          if (sp.customCompetences) {
-            sp.customCompetences.forEach(c => {
-              console.log(c);
-              console.log('***');
-            });
-          }
-        }); */
+        /*  this.studyPrograms.forEach(sp => {
+           console.log('***---***');
+           console.log(sp.name);
+           console.log('***');
+           console.log(sp.orgName);
+           console.log('***');
+           if (sp.competences) {
+             sp.competences.forEach(c => {
+               console.log(c.preferredLabel + ' --  uri:' + c.uri);
+               console.log('***');
+             });
+           }
+           if (sp.customCompetences) {
+             sp.customCompetences.forEach(c => {
+               console.log(c);
+               console.log('***');
+             });
+           }
+         }); */
 
         this.sortSPby(this.sortedBy);
       });
@@ -150,12 +150,13 @@ export class ListComponent implements OnInit {
     this.filteredStudyPrograms = [];
     if (this.advancedSearch) {
       this.applyFilters();
+    } else {
+      this.filteredStudyPrograms = this.studyPrograms.filter(
+        it =>
+          it.name.toLowerCase().includes(search) ||
+          it.description.toLowerCase().includes(search)
+      );
     }
-    this.filteredStudyPrograms = this.studyPrograms.filter(
-      it =>
-        it.name.toLowerCase().includes(search) ||
-        it.description.toLowerCase().includes(search)
-    );
   }
 
   applyFilters() {
@@ -163,7 +164,9 @@ export class ListComponent implements OnInit {
       console.log(sp);
       if (!this.affiliationFilter && !this.knowledgeFilter && !this.skillFilter && !this.fieldFilter || this.searchText === '') {
         // if no filters checked, return all
-        this.filteredStudyPrograms.push(sp);
+        this.advancedSearch = false;
+        this.filter();
+        // this.filteredStudyPrograms.push(sp);
       } else {
         console.log('apply filters');
         if (this.affiliationFilter) {
