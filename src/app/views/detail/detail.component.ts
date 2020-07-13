@@ -125,4 +125,10 @@ export class DetailComponent implements OnInit {
     console.log(this.model);
   }
 
+  unlock() {
+    this.model.isEdited = false;
+    this.selectedProgram.isEdited = false;
+    this.studyprogramService.updateStudyProgramIsEdited(this.model._id, false);
+  }
+
 }
