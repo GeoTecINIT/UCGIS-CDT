@@ -96,6 +96,9 @@ export class DetailComponent implements OnInit {
         this.saveBoKCodes(child);
       });
     }
+    // sort by concept_id
+    node.linksToBok.sort((a, b) => a.concept_id.localeCompare(b.concept_id));
+    this.allLinksToBok.sort((a, b) => a.concept_id.localeCompare(b.concept_id));
   }
 
   refreshTreeSize() {

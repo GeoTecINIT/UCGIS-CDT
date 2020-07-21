@@ -75,9 +75,10 @@
               </div>
             </div>
           </div>
-          <div class="row" *ngIf="selectedProgram.isEdited">
+          <div class="row" *ngIf="selectedProgram && selectedProgram.isEdited">
             <div class="col-md-12 text-center text-secondary">
-              If you think this content blocked is a bug, click <a href="javascript:;" (click)="unlock()"> here </a> to unlock it.
+              If you think this content blocked is a bug, click <a href="javascript:;" (click)="unlock()"> here </a> to
+              unlock it.
             </div>
           </div>
         </div>
@@ -157,8 +158,11 @@
                         <p class="text-justify">{{ model.description }}</p>
                         <p><b>Is practical:</b> {{ model.isPractical }}</p>
                       </div>
+
                       <!-- Common attributes -->
                       <div *ngIf="model.fields && model.fields.length > 0">
+                        <hr>
+
                         <p><b>Study areas ({{model.fields.length}})</b></p>
                         <ul>
                           <div *ngFor="let f of model.fields; index as i ">
@@ -197,6 +201,7 @@
                         </ul>
                       </div>
                       <div *ngIf="model.inheritedLearningObjectives && model.inheritedLearningObjectives.length > 0">
+                        <hr>
                         <span> <button type="button" class="btn btn-link btn-xs"
                             (click)="showILO.classList.contains('hidden') ? showILO.className = '' : showILO.className = 'hidden' ">
                             <i [tooltip]="showILO.classList.contains('hidden')? 'Show' : 'Hide'"
@@ -238,16 +243,18 @@
                         </ul>
                       </div>
                       <div *ngIf="model.linksToBok && model.linksToBok.length > 0">
+                        <hr>
                         <span><b>BoK annotations:</b></span>
                         <ul>
                           <div *ngFor="let lb of model.linksToBok">
-                            <li>Link in {{ lb.linkedTo }}: <a
-                                href="https://bok.eo4geo.eu/{{ lb.concept_id }}">{{ lb.name }}</a> </li>
+                            <li><a href="https://bok.eo4geo.eu/{{ lb.concept_id }}" target="_blank">{{ lb.name }}</a>
+                            </li>
                           </div>
                         </ul>
                       </div>
 
                       <div *ngIf="model.children && model.children.length > 0">
+                        <hr>
                         <span><b>Children educational offers:</b></span>
                         <ul>
                           <div *ngFor="let ch of model.children">
@@ -260,10 +267,13 @@
                         margin-right: -20px;
                         margin-left: -20px;
                         padding: 20px;">
+                        <hr>
+
                         <span><b>Annotated BoK knowledge in this educational offer:</b></span>
                         <ul>
                           <div *ngFor="let lb of allLinksToBok">
-                            <li><a href="https://bok.eo4geo.eu/{{ lb.concept_id }}">{{ lb.name }}</a> </li>
+                            <li><a href="https://bok.eo4geo.eu/{{ lb.concept_id }}" target="_blank">{{ lb.name }}</a>
+                            </li>
                           </div>
                         </ul>
                       </div>

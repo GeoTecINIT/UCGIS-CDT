@@ -14,7 +14,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { Organization, OrganizationService } from '../../services/organization.service';
 import { User, UserService } from '../../services/user.service';
-import { BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 
 @Component({
@@ -104,6 +104,8 @@ export class NewspComponent implements OnInit, OnDestroy {
 
   otherUserEditingWarningText = '';
 
+  reuseOrAnnotate = 'Re-use';
+
   configFields = {
     displayKey: 'concatName', // if objects array passed which key to be displayed defaults to description
     search: true, // true/false for the search functionlity defaults to false,
@@ -146,36 +148,36 @@ export class NewspComponent implements OnInit, OnDestroy {
       content: ['choose', 'define', 'find', 'identify', 'list', 'locate', 'name', 'recognize', 'relate', 'remember', 'select', 'state', 'write']
     },
     {
-      name :  'Understand',
-      content : [
+      name: 'Understand',
+      content: [
         'cite', 'classify', 'compare', 'contrast', 'deliver', 'demonstrate', 'discuss', 'estimate', 'explain', 'illustrate', 'indicate',
         'interpret', 'outline', 'relate', 'report', 'review', 'understand'
       ]
     },
     {
-      name :  'Apply',
-      content : [
+      name: 'Apply',
+      content: [
         'apply', 'build', 'calculate', 'choose', 'classify', 'construct', 'correlate', 'demonstrate', 'develop', 'identify', 'illustrate', 'implement', 'interpret',
         'model', 'organise', 'perform', 'plan', 'relate', 'represent', 'select', 'solve', 'teach', 'use'
       ]
     },
     {
-      name :  'Analyze',
-      content : [
+      name: 'Analyze',
+      content: [
         'analyse', 'arrange', 'choose', 'classify', 'compare', 'differentiate', 'distinguish', 'examine', 'find', 'install', 'list',
         'order', 'prioritize', 'query', 'research', 'select'
       ]
     },
     {
-      name :  'Evaluate',
-      content : [
+      name: 'Evaluate',
+      content: [
         'assess', 'check', 'choose', 'compare', 'decide', 'defend', 'determine', 'estimate', 'evaluate', 'explain', 'interpret', 'judge', 'justify',
         'measure', 'prioritize', 'recommend', 'select', 'test', 'validate'
       ]
     },
     {
-      name :  'Create',
-      content : [
+      name: 'Create',
+      content: [
         'add to', 'build', 'change', 'choose', 'compile', 'construct', 'convert', 'create', 'design', 'develop', 'devise', 'discuss', 'estimate',
         'manage', 'model', 'modify', 'plan', 'process', 'produce', 'propose', 'revise', 'solve', 'test', 'transform'
       ]
@@ -538,8 +540,8 @@ export class NewspComponent implements OnInit, OnDestroy {
   addBokKnowledge() {
     const concept = this.textBoK.nativeElement.getElementsByTagName('h4')[0]
       .textContent;
-
-    const newConcept = new BokInput('', concept, concept, '', [], '', []);
+    const conceptId = concept.split(']')[0].substring(1);
+    const newConcept = new BokInput('', concept, conceptId, '', [], '', []);
 
     const divs = this.textBoK.nativeElement.getElementsByTagName('div');
     if (divs['bokskills'] != null) {
@@ -608,9 +610,21 @@ export class NewspComponent implements OnInit, OnDestroy {
           });
         }
         break;
+      default:
+        newConcept.linkedTo = 'general';
+        break;
     }
-    modelToUpdate.linksToBok.push(newConcept);
-    modelToUpdate.concepts.push(newConcept.concept_id);
+    let found = false;
+    modelToUpdate.linksToBok.forEach(c => {
+      if (c.concept_id === newConcept.concept_id) {
+        found = true;
+      }
+    });
+
+    if (!found) {
+      modelToUpdate.linksToBok.push(newConcept);
+      modelToUpdate.concepts.push(newConcept.name);
+    }
 
     this.bokModal.hide();
     this.updateTreeStudyProgram();
@@ -762,7 +776,7 @@ export class NewspComponent implements OnInit, OnDestroy {
   }
 
   openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template, {class: 'modal-lg'});
+    this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
 
 }
