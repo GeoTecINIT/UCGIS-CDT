@@ -244,7 +244,7 @@
                       </div>
                       <div *ngIf="model.linksToBok && model.linksToBok.length > 0">
                         <hr>
-                        <span><b>BoK annotations:</b></span>
+                        <span><b>Annotated BoK concepts (current educational unit - this node):</b></span>
                         <ul>
                           <div *ngFor="let lb of model.linksToBok">
                             <li><a href="https://bok.eo4geo.eu/{{ lb.concept_id }}" target="_blank">{{ lb.name }}</a>
@@ -269,7 +269,7 @@
                         padding: 20px;">
                         <hr>
 
-                        <span><b>Annotated BoK knowledge in this educational offer:</b></span>
+                        <span><b>Annotated BoK concepts (complete educational offer - all nodes):</b></span>
                         <ul>
                           <div *ngFor="let lb of allLinksToBok">
                             <li><a href="https://bok.eo4geo.eu/{{ lb.concept_id }}" target="_blank">{{ lb.name }}</a>
