@@ -100,6 +100,8 @@ export class NewspComponent implements OnInit, OnDestroy {
   currentUser: User;
 
   isSaved = false;
+  isSavedBB = false;
+  isSavedBBText = 'Unit promoted and now available as independent educational offer';
   levelPublic = true;
 
   otherUserEditingWarningText = '';
@@ -210,12 +212,13 @@ export class NewspComponent implements OnInit, OnDestroy {
   ) {
     this.competences = this.escoService.basicCompetences;
     this.filteredCompetences = this.escoService.basicCompetences;
-    this.studyprogramService
+    const allObs = this.studyprogramService
       .subscribeToStudyPrograms()
       .subscribe(res => {
         this.allStudyPrograms = res;
         // this is for the exploring existing
         this.exploreChildrenToAddItems();
+        allObs.unsubscribe();
       });
     this.afAuth.auth.onAuthStateChanged(user => {
       if (user) {
@@ -284,14 +287,14 @@ export class NewspComponent implements OnInit, OnDestroy {
         modelToSave = this.modelModule;
         break;
       case 2:
-        modelToSave = this.modelCourse; // JSON.parse(JSON.stringify(this.modelCourse));
+        modelToSave = this.modelCourse;
         break;
       case 3:
         modelToSave = this.modelLecture;
         break;
     }
     console.log('Save model with depth: ' + this.highestItemLevel);
-    console.log(modelToSave);
+    console.log('Saved model: ' + modelToSave);
 
     modelToSave.userId = this.afAuth.auth.currentUser.uid;
     modelToSave.orgId = this.saveOrg._id;
@@ -307,6 +310,50 @@ export class NewspComponent implements OnInit, OnDestroy {
     this.mode = 'copy'; // if it's second time editing change to
     this._id = modelToSave._id;
     this.refreshTreeSize();
+  }
+
+  saveCurrentNode() {
+    let modelToSave = null;
+    switch (this.currentTreeNode.depth + this.highestItemLevel) { // absolute depth
+      case 0:
+        modelToSave = this.model;
+        break;
+      case 1:
+        modelToSave = this.modelModule;
+        break;
+      case 2:
+        modelToSave = this.modelCourse;
+        break;
+      case 3:
+        modelToSave = this.modelLecture;
+        break;
+    }
+    console.log('Saved model: ' + modelToSave);
+    console.log(modelToSave);
+
+    modelToSave.userId = this.afAuth.auth.currentUser.uid;
+    modelToSave.orgId = this.saveOrg._id;
+    modelToSave.orgName = this.saveOrg.name;
+    modelToSave.levelPublic = this.levelPublic;
+
+    this.studyprogramService.addNewStudyProgram(modelToSave);
+    this.isSavedBB = true;
+
+  }
+
+  saveBoKCodes(node) {
+    node.linksToBok.forEach(l => {
+      if (l.concept_id[0] === '[') {
+        l.concept_id = l.name.split(']')[0].substring(1);
+      }
+    });
+    if (node.children) {
+      node.children.forEach(child => {
+        this.saveBoKCodes(child);
+      });
+    }
+    // sort by concept_id
+    node.linksToBok.sort((a, b) => a.concept_id.localeCompare(b.concept_id));
   }
 
   getMode(): void {
@@ -345,6 +392,7 @@ export class NewspComponent implements OnInit, OnDestroy {
         this.isSaved = true;
         if (this.model == null) {
           this.model = sp;
+          this.saveBoKCodes(this.model);
           switch (sp.depth) {
             case 0:
               this.model = sp;
@@ -361,17 +409,19 @@ export class NewspComponent implements OnInit, OnDestroy {
           }
           this.highestItemLevel = this.model.depth;
           this.depthSearching = this.highestItemLevel + 1;
+          this.levelPublic = this.model.levelPublic;
           this.setOrganization();
           this.displayTree(sp);
           console.log(sp);
           console.log('Highest item level: ' + this.highestItemLevel);
+
         } else {
           if (this.currentUser._id !== sp.userId) {
             // warn of other user editing it
             this.otherUserEditingWarningText = 'It looks like other user is editing this content. Despite the fact that automatic save is done frequently, some content may be lost.';
           }
         }
-        // spObs.unsubscribe(); // do not recieve more notifications
+        spObs.unsubscribe(); // do not recieve more notifications
       });
   }
 
@@ -464,6 +514,7 @@ export class NewspComponent implements OnInit, OnDestroy {
     console.log('refresh currrent node');
     console.log(this.currentTreeNode);
     this.isSearchingExisting = false;
+    this.isSavedBB = false;
     this.currentTreeNode = cv.getCurrentNode();
     console.log(this.currentTreeNode);
     this.depthSearching = this.currentTreeNode.data.depth + 1;
@@ -495,6 +546,8 @@ export class NewspComponent implements OnInit, OnDestroy {
   addNodeInTree(depth) {
     if (this.highestItemLevel === -1) {
       this.highestItemLevel = depth;
+      console.log('highestItemLevel ' + this.highestItemLevel);
+
       this.depthSearching = this.highestItemLevel + 1;
     }
     cv.addNewNodeWithDepth('New', depth);
@@ -510,6 +563,7 @@ export class NewspComponent implements OnInit, OnDestroy {
 
   removeNodeInTree() {
     this.isSaved = false;
+    this.isSavedBB = false;
     cv.removeSelectedNode();
   }
 
@@ -519,6 +573,7 @@ export class NewspComponent implements OnInit, OnDestroy {
 
   updateTreeStudyProgram() {
     this.isSaved = false;
+    this.isSavedBB = false;
     if (this.currentTreeNode && this.currentTreeNode.data) {
       switch (this.currentTreeNode.data.depth) {
         case 0:
@@ -582,7 +637,7 @@ export class NewspComponent implements OnInit, OnDestroy {
         break;
       case 'description':
         // tslint:disable-next-line:max-line-length
-        const desc = this.textBoK.nativeElement.children[2].children.length > 0 ? this.textBoK.nativeElement.children[2].children[1].textContent : '';
+        const desc = divs['currentDescription'].textContent;
         newConcept.linkedTo = 'description';
         modelToUpdate[this.linkBoKto] = modelToUpdate[this.linkBoKto] + ' ' + desc;  // currentDescription
         break;

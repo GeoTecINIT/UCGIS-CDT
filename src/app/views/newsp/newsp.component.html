@@ -128,6 +128,7 @@
                     <span
                       tooltip="Fill in here your Study Program information. To link BoK concepts to your content click on the link BoK buttons."
                       class="badge badge-primary badge-pill">i</span>
+
                     <button class="btn btn-link float-right pull-right"
                       (click)="NodeDiv.classList.contains('col-md-12') ? NodeDiv.className = 'col-md-6' : NodeDiv.className = 'col-md-12'">
                       <i class="float-right pull-right fa "
@@ -252,6 +253,7 @@
 
                     <div class="row">
                       <div class="col-md-9">
+                        <hr>
                         <div class="form-group">
                           <label for="title">
                             <button type="button" class="btn btn-link btn-xs"
@@ -287,6 +289,7 @@
                     </div>
                     <div class="row">
                       <div class="col-md-9">
+                        <hr>
                         <div class="form-group">
                           <label for="title">
                             <button type="button" class="btn btn-link btn-xs"
@@ -389,6 +392,7 @@
                     </div>
                     <div class="row">
                       <div class="col-md-12">
+                        <hr>
                         <label for="description">Transversal skills</label>
                       </div>
                       <div class="col-md-6">
@@ -500,18 +504,34 @@
                 <!-- <form #newOPForm="ngForm"> -->
                 <div class="card card-accent-secondary">
                   <div class="card-header">
-                    Module Information
-                    <span
-                      tooltip="Fill in here your Module information. To link BoK concepts to your content click on the link BoK buttons."
-                      class="badge badge-primary badge-pill">i</span>
-                    <button class="btn btn-link float-right pull-right"
-                      (click)="NodeDiv.classList.contains('col-md-12') ? NodeDiv.className = 'col-md-6' : NodeDiv.className = 'col-md-12'">
-                      <i class="float-right pull-right fa "
-                        [ngClass]="{'fa-window-minimize': NodeDiv?.classList.contains('col-md-12'), 'fa-window-maximize': NodeDiv?.classList.contains('col-md-6')}"></i>
-                    </button>
+                    <div class="row text-center">
+                      <div class="col-md-4">
+                        Module Information
+                        <span
+                          tooltip="Fill in here your Module information. To link BoK concepts to your content click on the link BoK buttons."
+                          class="badge badge-primary badge-pill">i</span>
+                      </div>
+                      <div class="col-md-4">
+                        <button type="submit" class="btn btn-pill btn-primary btn-sm ml-2" (click)="saveCurrentNode()"
+                          [hidden]="highestItemLevel==1" [ngClass]="{'success': isSavedBB}">
+                          <i class="fa fa-save"></i> Promote
+                        </button>
+                        <span [hidden]="highestItemLevel==1"
+                          tooltip="By promoting a unit (= the current node), it will be saved as an independent educational offer, which will then show up in searches and can be re-used."
+                          class="badge badge-primary badge-pill">i</span>
+                      </div>
+                      <div class="col-md-4">
+                        <button class="btn btn-link float-right pull-right"
+                          (click)="NodeDiv.classList.contains('col-md-12') ? NodeDiv.className = 'col-md-6' : NodeDiv.className = 'col-md-12'">
+                          <i class="float-right pull-right fa "
+                            [ngClass]="{'fa-window-minimize': NodeDiv?.classList.contains('col-md-12'), 'fa-window-maximize': NodeDiv?.classList.contains('col-md-6')}"></i>
+                        </button>
+                      </div>
+                    </div>
                   </div>
                   <div class="card-body" style="background-color: #faf9f8">
                     <div class="row form-group">
+                      <p *ngIf="isSavedBB" class="success"> {{isSavedBBText}}</p>
                       <div class="col-md-4">
                         <button type="submit" class="btn btn-primary btn-sm"
                           tooltip="Browse the BoK to annotate concepts."
@@ -637,14 +657,14 @@
                     </div>
                     <div class="row">
                       <div class="col-md-9">
+                        <hr>
                         <div class="form-group">
                           <label for="prerequisites">Prerequisites</label>
                           <div class="col-md-12">
                             <div *ngIf="modelModule && modelModule.prerequisites">
                               <ul>
                                 <div *ngFor="let p of modelModule.prerequisites; index as i ">
-                                  <li>{{p.concept_id}} <button type="button" class="btn btn-link"
-                                      tooltip="Click to remove"
+                                  <li>{{p.name}} <button type="button" class="btn btn-link" tooltip="Click to remove"
                                       (click)="removeBokKnowledge(modelModule, i, 'prerequisites')">
                                       <i class="fa fa-remove"></i>
                                     </button></li>
@@ -667,6 +687,7 @@
                     </div>
                     <div class="row">
                       <div class="col-md-9">
+                        <hr>
                         <div class="form-group">
                           <label for="title">
                             <button type="button" class="btn btn-link btn-xs"
@@ -702,6 +723,7 @@
                     </div>
                     <div class="row">
                       <div class="col-md-9">
+                        <hr>
                         <div class="form-group">
                           <label for="title">
                             <button type="button" class="btn btn-link btn-xs"
@@ -803,6 +825,7 @@
                     </div>
                     <div class="row">
                       <div class="col-md-12">
+                        <hr>
                         <label for="description">Transversal skills</label>
                       </div>
                       <div class="col-md-6">
@@ -922,18 +945,34 @@
                 <!-- <form #newOPForm="ngForm"> -->
                 <div class="card card-accent-secondary">
                   <div class="card-header">
-                    Course Information
-                    <span
-                      tooltip="Fill in here your Course information. To link BoK concepts to your content click on the link BoK buttons."
-                      class="badge badge-primary badge-pill">i</span>
-                    <button class="btn btn-link float-right pull-right"
-                      (click)="NodeDiv.classList.contains('col-md-12') ? NodeDiv.className = 'col-md-6' : NodeDiv.className = 'col-md-12'">
-                      <i class="float-right pull-right fa "
-                        [ngClass]="{'fa-window-minimize': NodeDiv?.classList.contains('col-md-12'), 'fa-window-maximize': NodeDiv?.classList.contains('col-md-6')}"></i>
-                    </button>
+                    <div class="row text-center">
+                      <div class="col-md-4">
+                        Course Information
+                        <span
+                          tooltip="Fill in here your Course information. To link BoK concepts to your content click on the link BoK buttons."
+                          class="badge badge-primary badge-pill">i</span>
+                      </div>
+                      <div class="col-md-4">
+                        <button type="submit" class="btn btn-pill btn-primary btn-sm ml-2" (click)="saveCurrentNode()"
+                          [hidden]="highestItemLevel==2" [ngClass]="{'success': isSavedBB}">
+                          <i class="fa fa-save"></i> Promote
+                        </button>
+                        <span [hidden]="highestItemLevel==2"
+                          tooltip="By promoting a unit (= the current node), it will be saved as an independent educational offer, which will then show up in searches and can be re-used."
+                          class="badge badge-primary badge-pill">i</span>
+                      </div>
+                      <div class="col-md-4">
+                        <button class="btn btn-link float-right pull-right"
+                          (click)="NodeDiv.classList.contains('col-md-12') ? NodeDiv.className = 'col-md-6' : NodeDiv.className = 'col-md-12'">
+                          <i class="float-right pull-right fa "
+                            [ngClass]="{'fa-window-minimize': NodeDiv?.classList.contains('col-md-12'), 'fa-window-maximize': NodeDiv?.classList.contains('col-md-6')}"></i>
+                        </button>
+                      </div>
+                    </div>
                   </div>
                   <div class="card-body" style="background-color: #faf9f8">
                     <div class="row form-group">
+                      <p *ngIf="isSavedBB" class="success"> {{isSavedBBText}}</p>
                       <div class="col-md-4">
                         <button type="submit" class="btn btn-primary btn-sm"
                           tooltip="Browse the BoK to annotate concepts."
@@ -1051,6 +1090,7 @@
                     </div>
                     <div class="row">
                       <div class="col-md-9">
+                        <hr>
                         <div class="form-group">
                           <label for="title">Prerequisites</label>
                           <div class="row">
@@ -1058,8 +1098,7 @@
                               <div *ngIf="modelCourse && modelCourse.prerequisites">
                                 <ul>
                                   <div *ngFor="let p of modelCourse.prerequisites; index as i ">
-                                    <li>{{p.concept_id}} <button type="button" class="btn btn-link"
-                                        tooltip="Click to remove"
+                                    <li>{{p.name}} <button type="button" class="btn btn-link" tooltip="Click to remove"
                                         (click)="removeBokKnowledge(modelCourse, i, 'prerequisites')">
                                         <i class="fa fa-remove"></i>
                                       </button></li>
@@ -1117,6 +1156,7 @@
                     </div>
                     <div class="row">
                       <div class="col-md-9">
+                        <hr>
                         <div class="form-group">
                           <label for="title">
                             <button type="button" class="btn btn-link btn-xs"
@@ -1152,6 +1192,7 @@
                     </div>
                     <div class="row">
                       <div class="col-md-9">
+                        <hr>
                         <div class="form-group">
                           <label for="title">
                             <button type="button" class="btn btn-link btn-xs"
@@ -1253,6 +1294,7 @@
                     </div>
                     <div class="row">
                       <div class="col-md-12">
+                        <hr>
                         <label for="description">Transversal skills</label>
                       </div>
                       <div class="col-md-6">
@@ -1340,6 +1382,7 @@
                     </div>
                     <div class="row">
                       <div class="col-md-9">
+                        <hr>
                         <div class="form-group">
                           <label for="bibliography">Bibliography</label>
                           <span
@@ -1418,18 +1461,34 @@
                 <!-- <form #newOPForm="ngForm"> -->
                 <div class="card card-accent-secondary">
                   <div class="card-header">
-                    Lecture Information
-                    <span
-                      tooltip="Fill in here your Lecture information. To link BoK concepts to your content click on the link BoK buttons."
-                      class="badge badge-primary badge-pill">i</span>
-                    <button class="btn btn-link float-right pull-right"
-                      (click)="NodeDiv.classList.contains('col-md-12') ? NodeDiv.className = 'col-md-6' : NodeDiv.className = 'col-md-12'">
-                      <i class="float-right pull-right fa "
-                        [ngClass]="{'fa-window-minimize': NodeDiv?.classList.contains('col-md-12'), 'fa-window-maximize': NodeDiv?.classList.contains('col-md-6')}"></i>
-                    </button>
+                    <div class="row text-center">
+                      <div class="col-md-4">
+                        Lecture Information
+                        <span
+                          tooltip="Fill in here your Lecture information. To link BoK concepts to your content click on the link BoK buttons."
+                          class="badge badge-primary badge-pill">i</span>
+                      </div>
+                      <div class="col-md-4">
+                        <button type="submit" class="btn btn-pill btn-primary btn-sm ml-2" (click)="saveCurrentNode()"
+                          [hidden]="highestItemLevel==3" [ngClass]="{'success': isSavedBB}">
+                          <i class="fa fa-save"></i> Promote
+                        </button>
+                        <span [hidden]="highestItemLevel==3"
+                          tooltip="By promoting a unit (= the current node), it will be saved as an independent educational offer, which will then show up in searches and can be re-used."
+                          class="badge badge-primary badge-pill">i</span>
+                      </div>
+                      <div class="col-md-4">
+                        <button class="btn btn-link float-right pull-right"
+                          (click)="NodeDiv.classList.contains('col-md-12') ? NodeDiv.className = 'col-md-6' : NodeDiv.className = 'col-md-12'">
+                          <i class="float-right pull-right fa "
+                            [ngClass]="{'fa-window-minimize': NodeDiv?.classList.contains('col-md-12'), 'fa-window-maximize': NodeDiv?.classList.contains('col-md-6')}"></i>
+                        </button>
+                      </div>
+                    </div>
                   </div>
                   <div class="card-body" style="background-color: #faf9f8">
                     <div class="row form-group">
+                      <p *ngIf="isSavedBB" class="success"> {{isSavedBBText}}</p>
                       <div class="col-md-4">
                         <button type="submit" class="btn btn-primary btn-sm"
                           tooltip="Browse the BoK to annotate concepts."
@@ -1558,6 +1617,7 @@
                     </div>
                     <div class="row">
                       <div class="col-md-9">
+                        <hr>
                         <div class="form-group">
                           <label for="title">
                             <button type="button" class="btn btn-link btn-xs"
@@ -1660,6 +1720,7 @@
                     </div>
                     <div class="row">
                       <div class="col-md-12">
+                        <hr>
                         <label for="description">Transversal skills</label>
                       </div>
                       <div class="col-md-6">
@@ -1747,6 +1808,7 @@
                     </div>
                     <div class="row">
                       <div class="col-md-9">
+                        <hr>
                         <div class="form-group">
                           <label for="bibliography">Bibliography</label>
                           <span
