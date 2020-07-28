@@ -101,7 +101,8 @@ export class NewspComponent implements OnInit, OnDestroy {
 
   isSaved = false;
   isSavedBB = false;
-  isSavedBBText = 'Unit promoted and now available as independent educational offer';
+  isSavedBBText = 'Unit promoted and now available as independent educational offer - ';
+  promotedId = '';
   levelPublic = true;
 
   otherUserEditingWarningText = '';
@@ -249,7 +250,6 @@ export class NewspComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getMode();
     this.currentTreeNode = cv.getCurrentNode();
-    console.log('Display existing tree : ');
     bok.visualizeBOKData('#bubbles', '#textBoK');
     this.analytics.logEvent('NewSP', { 'mode': this.mode });
 
@@ -293,8 +293,6 @@ export class NewspComponent implements OnInit, OnDestroy {
         modelToSave = this.modelLecture;
         break;
     }
-    console.log('Save model with depth: ' + this.highestItemLevel);
-    console.log('Saved model: ' + modelToSave);
 
     modelToSave.userId = this.afAuth.auth.currentUser.uid;
     modelToSave.orgId = this.saveOrg._id;
@@ -328,15 +326,28 @@ export class NewspComponent implements OnInit, OnDestroy {
         modelToSave = this.modelLecture;
         break;
     }
-    console.log('Saved model: ' + modelToSave);
-    console.log(modelToSave);
+
+    switch (this.highestItemLevel) { // absolute depth
+      case 0:
+        modelToSave.affiliation = this.model.affiliation;
+        modelToSave.eqf = this.model.eqf;
+        break;
+      case 1:
+        modelToSave.affiliation = this.modelModule.affiliation;
+        modelToSave.eqf = this.modelModule.eqf;
+        break;
+      case 2:
+        modelToSave.affiliation = this.modelCourse.affiliation;
+        modelToSave.eqf = this.modelCourse.eqf;
+        break;
+    }
 
     modelToSave.userId = this.afAuth.auth.currentUser.uid;
     modelToSave.orgId = this.saveOrg._id;
     modelToSave.orgName = this.saveOrg.name;
     modelToSave.levelPublic = this.levelPublic;
 
-    this.studyprogramService.addNewStudyProgram(modelToSave);
+    this.promotedId = '' + this.studyprogramService.addNewStudyProgram(modelToSave);
     this.isSavedBB = true;
 
   }
@@ -412,8 +423,6 @@ export class NewspComponent implements OnInit, OnDestroy {
           this.levelPublic = this.model.levelPublic;
           this.setOrganization();
           this.displayTree(sp);
-          console.log(sp);
-          console.log('Highest item level: ' + this.highestItemLevel);
 
         } else {
           if (this.currentUser._id !== sp.userId) {
@@ -443,6 +452,9 @@ export class NewspComponent implements OnInit, OnDestroy {
       this.selectedNodes = bok.searchInBoK(text);
       this.hasResults = true;
       this.currentConcept = '';
+
+      this.limitSearchFrom = 0;
+      this.limitSearchTo = 10;
     }
   }
 
@@ -450,7 +462,6 @@ export class NewspComponent implements OnInit, OnDestroy {
     bok.browseToConcept(conceptName);
     this.currentConcept = conceptName;
     this.hasResults = false;
-    console.log('Navigate to concept :' + conceptName);
   }
 
   cleanResults() {
@@ -472,15 +483,12 @@ export class NewspComponent implements OnInit, OnDestroy {
   displayTree(program = null) {
     const width = this.graphTreeDiv.nativeElement.clientWidth > 0 ? this.graphTreeDiv.nativeElement.clientWidth : 400;
     if (program) {
-      console.log('Display existing tree : ');
-      console.log(program);
       program.parent = null;
       program.proportions = [];
       program.r = 10;
       cv.displayCurricula('graphTree', program, width, 650);
       this.refreshCurrentNode();
     } else {
-      console.log('Display new tree');
       cv.displayCurricula('graphTree', null, width, 650);
       this.currentTreeNode = cv.getCurrentNode();
     }
@@ -511,12 +519,9 @@ export class NewspComponent implements OnInit, OnDestroy {
   }
 
   refreshCurrentNode() {
-    console.log('refresh currrent node');
-    console.log(this.currentTreeNode);
     this.isSearchingExisting = false;
     this.isSavedBB = false;
     this.currentTreeNode = cv.getCurrentNode();
-    console.log(this.currentTreeNode);
     this.depthSearching = this.currentTreeNode.data.depth + 1;
     switch (this.currentTreeNode.data.depth) {
       case 0:
@@ -546,8 +551,6 @@ export class NewspComponent implements OnInit, OnDestroy {
   addNodeInTree(depth) {
     if (this.highestItemLevel === -1) {
       this.highestItemLevel = depth;
-      console.log('highestItemLevel ' + this.highestItemLevel);
-
       this.depthSearching = this.highestItemLevel + 1;
     }
     cv.addNewNodeWithDepth('New', depth);
@@ -742,8 +745,6 @@ export class NewspComponent implements OnInit, OnDestroy {
       if (left.name < right.name) { return -1; }
       if (left.name > right.name) { return 1; } else { return 0; }
     });
-
-    // console.log(this.allItems);
   }
 
   listSorted(result) {
@@ -760,18 +761,13 @@ export class NewspComponent implements OnInit, OnDestroy {
     this.escoService.allcompetences = [...this.escoService.allcompetences, { preferredLabel: comp, reuseLevel: 'custom' }];
     this.escoService.basicCompetences = [...this.escoService.basicCompetences, { preferredLabel: comp, reuseLevel: 'custom', uri: null }];
 
-    console.log('add competence: ' + comp + ' model' + modelToAdd.name);
     this.updateTreeStudyProgram();
   }
 
   removeCompetence(name: string, array: string[]) {
 
-    console.log('try to remove concept' + name);
-    console.log(name);
     array.forEach((item, index) => {
       if (item === name) {
-        console.log('removing concept' + name);
-        console.log(name);
         array.splice(index, 1);
       }
     });

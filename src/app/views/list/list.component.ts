@@ -25,7 +25,7 @@ export class ListComponent implements OnInit {
   skillFilter = false;
   fieldFilter = false;
   filteredStudyPrograms: any[];
-  searchText: string;
+  searchText = '';
   isAnonymous = null;
   ownUsrId = null;
   showOnlyDepth = -1;
@@ -70,28 +70,7 @@ export class ListComponent implements OnInit {
       .subscribeToStudyPrograms()
       .subscribe(studyPrograms => {
         this.studyPrograms = studyPrograms;
-        this.filteredStudyPrograms = studyPrograms;
-
-        /*  this.studyPrograms.forEach(sp => {
-           console.log('***---***');
-           console.log(sp.name);
-           console.log('***');
-           console.log(sp.orgName);
-           console.log('***');
-           if (sp.competences) {
-             sp.competences.forEach(c => {
-               console.log(c.preferredLabel + ' --  uri:' + c.uri);
-               console.log('***');
-             });
-           }
-           if (sp.customCompetences) {
-             sp.customCompetences.forEach(c => {
-               console.log(c);
-               console.log('***');
-             });
-           }
-         }); */
-
+        this.filterAll();
         this.sortSPby(this.sortedBy);
       });
 
@@ -112,29 +91,21 @@ export class ListComponent implements OnInit {
     this.currentPage = 0;
     switch (attr) {
       case 'name':
-        console.log('Sort by: ' + attr + ' asc: ' + this.sortNameAsc);
-
         this.sortNameAsc = !this.sortNameAsc;
         this.sortedBy = 'name';
         this.filteredStudyPrograms.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? this.sortNameAsc ? 1 : -1 : this.sortNameAsc ? -1 : 1);
         break;
       case 'lastUpdated':
-        console.log('Sort by: ' + attr + ' asc: ' + this.sortUpdAsc);
-
         this.sortUpdAsc = !this.sortUpdAsc;
         this.sortedBy = 'lastUpdated';
         this.filteredStudyPrograms.sort((a, b) => (a.updatedAt > b.updatedAt) ? this.sortUpdAsc ? 1 : -1 : this.sortUpdAsc ? -1 : 1);
         break;
       case 'organization':
-        console.log('Sort by: ' + attr + ' asc: ' + this.sortOrgAsc);
-
         this.sortOrgAsc = !this.sortOrgAsc;
         this.sortedBy = 'organization';
         this.filteredStudyPrograms.sort((a, b) => (a.orgName.toLowerCase() > b.orgName.toLowerCase()) ? this.sortOrgAsc ? 1 : -1 : this.sortOrgAsc ? -1 : 1);
         break;
-
       case 'eqf':
-        console.log('Sort by: ' + attr + ' eqf: ' + this.sortOrgAsc);
         this.sortOrgAsc = !this.sortOrgAsc;
         this.sortedBy = 'eqf';
         this.filteredStudyPrograms.sort((a, b) => (a.eqf > b.eqf) ? this.sortOrgAsc ? 1 : -1 : this.sortOrgAsc ? -1 : 1);
@@ -154,21 +125,34 @@ export class ListComponent implements OnInit {
       this.filteredStudyPrograms = this.studyPrograms.filter(
         it =>
           it.name.toLowerCase().includes(search) ||
-          it.description.toLowerCase().includes(search)
+          it.description.toLowerCase().includes(search) ||
+          it.orgName.toLowerCase().includes(search)
+      );
+    }
+  }
+
+  filterByPrivate() {
+    if (!this.currentUser) {
+      this.filteredStudyPrograms = this.filteredStudyPrograms.filter(
+        it =>
+          it.levelPublic
+      );
+    } else {
+      this.filteredStudyPrograms = this.filteredStudyPrograms.filter(
+        sp =>
+          sp.userId === this.currentUser._id || (this.currentUser.organizations.indexOf(sp.orgId) > -1)
       );
     }
   }
 
   applyFilters() {
     this.studyPrograms.forEach(sp => {
-      console.log(sp);
       if (!this.affiliationFilter && !this.knowledgeFilter && !this.skillFilter && !this.fieldFilter || this.searchText === '') {
         // if no filters checked, return all
         this.advancedSearch = false;
         this.filter();
         // this.filteredStudyPrograms.push(sp);
       } else {
-        console.log('apply filters');
         if (this.affiliationFilter) {
           if (sp.affiliation.toLowerCase().includes(this.searchText.toLowerCase())) {
             if (this.filteredStudyPrograms.indexOf(sp) === -1) {
@@ -275,17 +259,11 @@ export class ListComponent implements OnInit {
   }
 
   filterByDepth(depth) {
-    this.filteredStudyPrograms = [];
     this.paginationLimitFrom = 0;
     this.paginationLimitTo = 6;
     this.currentPage = 0;
-    if (this.advancedSearch) {
-      this.applyFilters();
-    }
-    if (depth === -1) {
-      this.filteredStudyPrograms = this.studyPrograms;
-    } else {
-      this.filteredStudyPrograms = this.studyPrograms.filter(
+    if (depth > -1) {
+      this.filteredStudyPrograms = this.filteredStudyPrograms.filter(
         it =>
           it.depth === depth
       );
@@ -293,26 +271,27 @@ export class ListComponent implements OnInit {
   }
 
   filterByAuthor(author) {
-    this.filteredStudyPrograms = [];
     this.paginationLimitFrom = 0;
     this.paginationLimitTo = 6;
     this.currentPage = 0;
-    if (this.advancedSearch) {
-      this.applyFilters();
-    }
-    if (author === -1) { // all
-      this.filteredStudyPrograms = this.studyPrograms;
-    } else if (author === 0) { // mine
-      this.filteredStudyPrograms = this.studyPrograms.filter(
+    if (author === 0) { // mine
+      this.filteredStudyPrograms = this.filteredStudyPrograms.filter(
         it =>
           it.userId === this.currentUser._id
       );
     } else if (author === 1) { // my orgs
-      this.filteredStudyPrograms = this.studyPrograms.filter(
+      this.filteredStudyPrograms = this.filteredStudyPrograms.filter(
         it =>
           this.currentUser.organizations.includes(it.orgId)
       );
     }
+  }
+
+  filterAll() {
+    this.filter();
+    this.filterByPrivate();
+    this.filterByAuthor(this.showOnlyAuthor);
+    this.filterByDepth(this.showOnlyDepth);
   }
 
   range(size, startAt = 0) {
@@ -329,7 +308,6 @@ export class ListComponent implements OnInit {
       this.paginationLimitTo = this.paginationLimitTo + this.LIMIT_PER_PAGE;
       this.currentPage++;
     }
-    console.log('Next Page: ' + this.paginationLimitFrom + ' to ' + this.paginationLimitTo + ' Current Page : ' + this.currentPage);
   }
 
   previousPage() {
@@ -338,6 +316,5 @@ export class ListComponent implements OnInit {
       this.paginationLimitTo = this.paginationLimitTo - this.LIMIT_PER_PAGE;
       this.currentPage--;
     }
-    console.log('Previous Page: ' + this.paginationLimitFrom + ' to ' + this.paginationLimitTo + ' Current Page : ' + this.currentPage);
   }
 }

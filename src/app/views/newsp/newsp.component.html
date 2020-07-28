@@ -472,7 +472,7 @@
                     </div>
                     <div class="row">
                       <div class="col-md-12">
-                        <div *ngIf="model.children && model.children.length > 0">
+                        <div *ngIf="model && model.children && model.children.length > 0">
                           <label for="children">
                             <button type="button" class="btn btn-link btn-xs"
                               (click)="sortableChildren.classList.contains('hidden') ? sortableChildren.className = '' : sortableChildren.className = 'hidden' ">
@@ -484,7 +484,7 @@
                               tooltip="Select and drag item to reorder children. Or use arrows to move them up and down."
                               class="badge badge-primary badge-pill">i</span></label>
                           <div #sortableChildren>
-                            <ngx-sortable [items]="model.children" [name]="''" (listSorted)="listSorted($event)">
+                            <ngx-sortable [items]="model.children" [name]="''" (listSorted)="listSorted($event)" *ngIf="model && model.children && model.children.length > 0">
                               <ng-template let-item>
                                 <div class="sortable-list-item">
                                   {{item.data.name}}
@@ -530,8 +530,8 @@
                     </div>
                   </div>
                   <div class="card-body" style="background-color: #faf9f8">
+                    <p *ngIf="isSavedBB" class="success"> {{isSavedBBText}} <a href="https://eo4geo-cdt-v2.web.app/detail/{{promotedId}}" target="_blank">edit it here</a></p>
                     <div class="row form-group">
-                      <p *ngIf="isSavedBB" class="success"> {{isSavedBBText}}</p>
                       <div class="col-md-4">
                         <button type="submit" class="btn btn-primary btn-sm"
                           tooltip="Browse the BoK to annotate concepts."
@@ -913,7 +913,7 @@
                     </div>
                     <div class="row">
                       <div class="col-md-12">
-                        <div *ngIf="modelModule.children && modelModule.children.length > 0">
+                        <div *ngIf="modelModule && modelModule.children && modelModule.children.length > 0">
                           <label for="children">
                             <button type="button" class="btn btn-link btn-xs"
                               (click)="sortableChildren.classList.contains('hidden') ? sortableChildren.className = '' : sortableChildren.className = 'hidden' ">
@@ -925,7 +925,7 @@
                               tooltip="Select and drag item to reorder children. Or use arrows to move them up and down."
                               class="badge badge-primary badge-pill">i</span></label>
                           <div #sortableChildren>
-                            <ngx-sortable [items]="modelModule.children" [name]="''" (listSorted)="listSorted($event)">
+                            <ngx-sortable [items]="modelModule.children" [name]="''" (listSorted)="listSorted($event)" *ngIf="modelModule && modelModule.children && modelModule.children.length > 0">
                               <ng-template let-item>
                                 <div class="sortable-list-item">
                                   {{item.data.name}}
@@ -971,8 +971,8 @@
                     </div>
                   </div>
                   <div class="card-body" style="background-color: #faf9f8">
+                    <p *ngIf="isSavedBB" class="success"> {{isSavedBBText}} <a href="https://eo4geo-cdt.web.app/detail/{{promotedId}}" target="_blank">edit it here</a></p>
                     <div class="row form-group">
-                      <p *ngIf="isSavedBB" class="success"> {{isSavedBBText}}</p>
                       <div class="col-md-4">
                         <button type="submit" class="btn btn-primary btn-sm"
                           tooltip="Browse the BoK to annotate concepts."
@@ -1428,7 +1428,7 @@
                     </div>
                     <div class="row">
                       <div class="col-md-12">
-                        <div *ngIf="modelCourse.children && modelCourse.children.length > 0">
+                        <div *ngIf="modelCourse && modelCourse.children && modelCourse.children.length > 0">
                           <label for="children">
                             <button type="button" class="btn btn-link btn-xs"
                               (click)="sortableChildren.classList.contains('hidden') ? sortableChildren.className = '' : sortableChildren.className = 'hidden' ">
@@ -1440,7 +1440,7 @@
                               tooltip="Select and drag item to reorder children. Or use arrows to move them up and down."
                               class="badge badge-primary badge-pill">i</span></label>
                           <div #sortableChildren>
-                            <ngx-sortable [items]="modelCourse.children" [name]="''" (listSorted)="listSorted($event)">
+                            <ngx-sortable [items]="modelCourse.children" [name]="''" (listSorted)="listSorted($event)"  *ngIf="modelCourse && modelCourse.children && modelCourse.children.length > 0">
                               <ng-template let-item>
                                 <div class="sortable-list-item">
                                   {{item.data.name}}
@@ -1487,8 +1487,8 @@
                     </div>
                   </div>
                   <div class="card-body" style="background-color: #faf9f8">
+                    <p *ngIf="isSavedBB" class="success"> {{isSavedBBText}} <a href="https://eo4geo-cdt-v2.web.app/detail/{{promotedId}}" target="_blank">edit it here</a></p>
                     <div class="row form-group">
-                      <p *ngIf="isSavedBB" class="success"> {{isSavedBBText}}</p>
                       <div class="col-md-4">
                         <button type="submit" class="btn btn-primary btn-sm"
                           tooltip="Browse the BoK to annotate concepts."
