@@ -140,7 +140,9 @@ export class ListComponent implements OnInit {
     } else {
       this.filteredStudyPrograms = this.filteredStudyPrograms.filter(
         sp =>
-          sp.userId === this.currentUser._id || (this.currentUser.organizations.indexOf(sp.orgId) > -1)
+          sp.userId === this.currentUser._id ||
+          sp.levelPublic ||
+          (this.currentUser.organizations.indexOf(sp.orgId) > -1)
       );
     }
   }
