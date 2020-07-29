@@ -14,7 +14,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { Organization, OrganizationService } from '../../services/organization.service';
 import { User, UserService } from '../../services/user.service';
-import { BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 
 @Component({
@@ -100,9 +100,14 @@ export class NewspComponent implements OnInit, OnDestroy {
   currentUser: User;
 
   isSaved = false;
+  isSavedBB = false;
+  isSavedBBText = 'Unit promoted and now available as independent educational offer - ';
+  promotedId = '';
   levelPublic = true;
 
   otherUserEditingWarningText = '';
+
+  reuseOrAnnotate = 'Re-use';
 
   configFields = {
     displayKey: 'concatName', // if objects array passed which key to be displayed defaults to description
@@ -146,36 +151,36 @@ export class NewspComponent implements OnInit, OnDestroy {
       content: ['choose', 'define', 'find', 'identify', 'list', 'locate', 'name', 'recognize', 'relate', 'remember', 'select', 'state', 'write']
     },
     {
-      name :  'Understand',
-      content : [
+      name: 'Understand',
+      content: [
         'cite', 'classify', 'compare', 'contrast', 'deliver', 'demonstrate', 'discuss', 'estimate', 'explain', 'illustrate', 'indicate',
         'interpret', 'outline', 'relate', 'report', 'review', 'understand'
       ]
     },
     {
-      name :  'Apply',
-      content : [
+      name: 'Apply',
+      content: [
         'apply', 'build', 'calculate', 'choose', 'classify', 'construct', 'correlate', 'demonstrate', 'develop', 'identify', 'illustrate', 'implement', 'interpret',
         'model', 'organise', 'perform', 'plan', 'relate', 'represent', 'select', 'solve', 'teach', 'use'
       ]
     },
     {
-      name :  'Analyze',
-      content : [
+      name: 'Analyze',
+      content: [
         'analyse', 'arrange', 'choose', 'classify', 'compare', 'differentiate', 'distinguish', 'examine', 'find', 'install', 'list',
         'order', 'prioritize', 'query', 'research', 'select'
       ]
     },
     {
-      name :  'Evaluate',
-      content : [
+      name: 'Evaluate',
+      content: [
         'assess', 'check', 'choose', 'compare', 'decide', 'defend', 'determine', 'estimate', 'evaluate', 'explain', 'interpret', 'judge', 'justify',
         'measure', 'prioritize', 'recommend', 'select', 'test', 'validate'
       ]
     },
     {
-      name :  'Create',
-      content : [
+      name: 'Create',
+      content: [
         'add to', 'build', 'change', 'choose', 'compile', 'construct', 'convert', 'create', 'design', 'develop', 'devise', 'discuss', 'estimate',
         'manage', 'model', 'modify', 'plan', 'process', 'produce', 'propose', 'revise', 'solve', 'test', 'transform'
       ]
@@ -208,12 +213,13 @@ export class NewspComponent implements OnInit, OnDestroy {
   ) {
     this.competences = this.escoService.basicCompetences;
     this.filteredCompetences = this.escoService.basicCompetences;
-    this.studyprogramService
+    const allObs = this.studyprogramService
       .subscribeToStudyPrograms()
       .subscribe(res => {
         this.allStudyPrograms = res;
         // this is for the exploring existing
         this.exploreChildrenToAddItems();
+        allObs.unsubscribe();
       });
     this.afAuth.auth.onAuthStateChanged(user => {
       if (user) {
@@ -244,7 +250,6 @@ export class NewspComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getMode();
     this.currentTreeNode = cv.getCurrentNode();
-    console.log('Display existing tree : ');
     bok.visualizeBOKData('#bubbles', '#textBoK');
     this.analytics.logEvent('NewSP', { 'mode': this.mode });
 
@@ -282,14 +287,12 @@ export class NewspComponent implements OnInit, OnDestroy {
         modelToSave = this.modelModule;
         break;
       case 2:
-        modelToSave = this.modelCourse; // JSON.parse(JSON.stringify(this.modelCourse));
+        modelToSave = this.modelCourse;
         break;
       case 3:
         modelToSave = this.modelLecture;
         break;
     }
-    console.log('Save model with depth: ' + this.highestItemLevel);
-    console.log(modelToSave);
 
     modelToSave.userId = this.afAuth.auth.currentUser.uid;
     modelToSave.orgId = this.saveOrg._id;
@@ -305,6 +308,63 @@ export class NewspComponent implements OnInit, OnDestroy {
     this.mode = 'copy'; // if it's second time editing change to
     this._id = modelToSave._id;
     this.refreshTreeSize();
+  }
+
+  saveCurrentNode() {
+    let modelToSave = null;
+    switch (this.currentTreeNode.depth + this.highestItemLevel) { // absolute depth
+      case 0:
+        modelToSave = this.model;
+        break;
+      case 1:
+        modelToSave = this.modelModule;
+        break;
+      case 2:
+        modelToSave = this.modelCourse;
+        break;
+      case 3:
+        modelToSave = this.modelLecture;
+        break;
+    }
+
+    switch (this.highestItemLevel) { // absolute depth
+      case 0:
+        modelToSave.affiliation = this.model.affiliation;
+        modelToSave.eqf = this.model.eqf;
+        break;
+      case 1:
+        modelToSave.affiliation = this.modelModule.affiliation;
+        modelToSave.eqf = this.modelModule.eqf;
+        break;
+      case 2:
+        modelToSave.affiliation = this.modelCourse.affiliation;
+        modelToSave.eqf = this.modelCourse.eqf;
+        break;
+    }
+
+    modelToSave.userId = this.afAuth.auth.currentUser.uid;
+    modelToSave.orgId = this.saveOrg._id;
+    modelToSave.orgName = this.saveOrg.name;
+    modelToSave.levelPublic = this.levelPublic;
+
+    this.promotedId = '' + this.studyprogramService.addNewStudyProgram(modelToSave);
+    this.isSavedBB = true;
+
+  }
+
+  saveBoKCodes(node) {
+    node.linksToBok.forEach(l => {
+      if (l.concept_id[0] === '[') {
+        l.concept_id = l.name.split(']')[0].substring(1);
+      }
+    });
+    if (node.children) {
+      node.children.forEach(child => {
+        this.saveBoKCodes(child);
+      });
+    }
+    // sort by concept_id
+    node.linksToBok.sort((a, b) => a.concept_id.localeCompare(b.concept_id));
   }
 
   getMode(): void {
@@ -343,6 +403,7 @@ export class NewspComponent implements OnInit, OnDestroy {
         this.isSaved = true;
         if (this.model == null) {
           this.model = sp;
+          this.saveBoKCodes(this.model);
           switch (sp.depth) {
             case 0:
               this.model = sp;
@@ -359,17 +420,17 @@ export class NewspComponent implements OnInit, OnDestroy {
           }
           this.highestItemLevel = this.model.depth;
           this.depthSearching = this.highestItemLevel + 1;
+          this.levelPublic = this.model.levelPublic;
           this.setOrganization();
           this.displayTree(sp);
-          console.log(sp);
-          console.log('Highest item level: ' + this.highestItemLevel);
+
         } else {
           if (this.currentUser._id !== sp.userId) {
             // warn of other user editing it
             this.otherUserEditingWarningText = 'It looks like other user is editing this content. Despite the fact that automatic save is done frequently, some content may be lost.';
           }
         }
-        // spObs.unsubscribe(); // do not recieve more notifications
+        spObs.unsubscribe(); // do not recieve more notifications
       });
   }
 
@@ -391,6 +452,9 @@ export class NewspComponent implements OnInit, OnDestroy {
       this.selectedNodes = bok.searchInBoK(text);
       this.hasResults = true;
       this.currentConcept = '';
+
+      this.limitSearchFrom = 0;
+      this.limitSearchTo = 10;
     }
   }
 
@@ -398,7 +462,6 @@ export class NewspComponent implements OnInit, OnDestroy {
     bok.browseToConcept(conceptName);
     this.currentConcept = conceptName;
     this.hasResults = false;
-    console.log('Navigate to concept :' + conceptName);
   }
 
   cleanResults() {
@@ -420,15 +483,12 @@ export class NewspComponent implements OnInit, OnDestroy {
   displayTree(program = null) {
     const width = this.graphTreeDiv.nativeElement.clientWidth > 0 ? this.graphTreeDiv.nativeElement.clientWidth : 400;
     if (program) {
-      console.log('Display existing tree : ');
-      console.log(program);
       program.parent = null;
       program.proportions = [];
       program.r = 10;
       cv.displayCurricula('graphTree', program, width, 650);
       this.refreshCurrentNode();
     } else {
-      console.log('Display new tree');
       cv.displayCurricula('graphTree', null, width, 650);
       this.currentTreeNode = cv.getCurrentNode();
     }
@@ -459,11 +519,9 @@ export class NewspComponent implements OnInit, OnDestroy {
   }
 
   refreshCurrentNode() {
-    console.log('refresh currrent node');
-    console.log(this.currentTreeNode);
     this.isSearchingExisting = false;
+    this.isSavedBB = false;
     this.currentTreeNode = cv.getCurrentNode();
-    console.log(this.currentTreeNode);
     this.depthSearching = this.currentTreeNode.data.depth + 1;
     switch (this.currentTreeNode.data.depth) {
       case 0:
@@ -508,6 +566,7 @@ export class NewspComponent implements OnInit, OnDestroy {
 
   removeNodeInTree() {
     this.isSaved = false;
+    this.isSavedBB = false;
     cv.removeSelectedNode();
   }
 
@@ -517,6 +576,7 @@ export class NewspComponent implements OnInit, OnDestroy {
 
   updateTreeStudyProgram() {
     this.isSaved = false;
+    this.isSavedBB = false;
     if (this.currentTreeNode && this.currentTreeNode.data) {
       switch (this.currentTreeNode.data.depth) {
         case 0:
@@ -538,8 +598,8 @@ export class NewspComponent implements OnInit, OnDestroy {
   addBokKnowledge() {
     const concept = this.textBoK.nativeElement.getElementsByTagName('h4')[0]
       .textContent;
-
-    const newConcept = new BokInput('', concept, concept, '', [], '', []);
+    const conceptId = concept.split(']')[0].substring(1);
+    const newConcept = new BokInput('', concept, conceptId, '', [], '', []);
 
     const divs = this.textBoK.nativeElement.getElementsByTagName('div');
     if (divs['bokskills'] != null) {
@@ -580,7 +640,7 @@ export class NewspComponent implements OnInit, OnDestroy {
         break;
       case 'description':
         // tslint:disable-next-line:max-line-length
-        const desc = this.textBoK.nativeElement.children[2].children.length > 0 ? this.textBoK.nativeElement.children[2].children[1].textContent : '';
+        const desc = divs['currentDescription'].textContent;
         newConcept.linkedTo = 'description';
         modelToUpdate[this.linkBoKto] = modelToUpdate[this.linkBoKto] + ' ' + desc;  // currentDescription
         break;
@@ -608,9 +668,21 @@ export class NewspComponent implements OnInit, OnDestroy {
           });
         }
         break;
+      default:
+        newConcept.linkedTo = 'general';
+        break;
     }
-    modelToUpdate.linksToBok.push(newConcept);
-    modelToUpdate.concepts.push(newConcept.concept_id);
+    let found = false;
+    modelToUpdate.linksToBok.forEach(c => {
+      if (c.concept_id === newConcept.concept_id) {
+        found = true;
+      }
+    });
+
+    if (!found) {
+      modelToUpdate.linksToBok.push(newConcept);
+      modelToUpdate.concepts.push(newConcept.name);
+    }
 
     this.bokModal.hide();
     this.updateTreeStudyProgram();
@@ -673,8 +745,6 @@ export class NewspComponent implements OnInit, OnDestroy {
       if (left.name < right.name) { return -1; }
       if (left.name > right.name) { return 1; } else { return 0; }
     });
-
-    // console.log(this.allItems);
   }
 
   listSorted(result) {
@@ -691,18 +761,13 @@ export class NewspComponent implements OnInit, OnDestroy {
     this.escoService.allcompetences = [...this.escoService.allcompetences, { preferredLabel: comp, reuseLevel: 'custom' }];
     this.escoService.basicCompetences = [...this.escoService.basicCompetences, { preferredLabel: comp, reuseLevel: 'custom', uri: null }];
 
-    console.log('add competence: ' + comp + ' model' + modelToAdd.name);
     this.updateTreeStudyProgram();
   }
 
   removeCompetence(name: string, array: string[]) {
 
-    console.log('try to remove concept' + name);
-    console.log(name);
     array.forEach((item, index) => {
       if (item === name) {
-        console.log('removing concept' + name);
-        console.log(name);
         array.splice(index, 1);
       }
     });
@@ -762,7 +827,7 @@ export class NewspComponent implements OnInit, OnDestroy {
   }
 
   openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template, {class: 'modal-lg'});
+    this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
   }
 
 }

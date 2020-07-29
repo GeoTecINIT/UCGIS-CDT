@@ -7,14 +7,14 @@
             <div class="col-sm-4 col-md-2">
               Detail
             </div>
-            <div *ngIf="!selectedProgram.levelPublic" class="col-sm-4 offset-md-2 col-md-6">
+            <div *ngIf="!selectedProgram.levelPublic" class="col-sm-4 offset-md-2 col-md-4">
               <label>Private Educational Offer</label>
               <span
                 tooltip="This Educational Offer will not be listed in the main view for other users. You can only access with the link."
                 class="badge badge-primary badge-pill">i</span>
             </div>
-            <div *ngIf="selectedProgram.levelPublic" class="col-sm-4 offset-md-2 col-md-6"></div>
-            <div class="col-sm-4 col-md-2">
+            <div *ngIf="selectedProgram.levelPublic" class="col-sm-4 offset-md-2 col-md-4"></div>
+            <div class="col-sm-4 col-md-4">
               <div *ngIf="currentTreeNode && selectedProgram" class="row">
 
                 <div class="col-3 col-sm-3 col-md-3 no-padding">
@@ -73,6 +73,12 @@
                   </button>
                 </div> -->
               </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="selectedProgram && selectedProgram.isEdited">
+            <div class="col-md-12 text-center text-secondary">
+              If you think this content blocked is a bug, click <a href="javascript:;" (click)="unlock()"> here </a> to
+              unlock it.
             </div>
           </div>
         </div>
@@ -152,8 +158,11 @@
                         <p class="text-justify">{{ model.description }}</p>
                         <p><b>Is practical:</b> {{ model.isPractical }}</p>
                       </div>
+
                       <!-- Common attributes -->
                       <div *ngIf="model.fields && model.fields.length > 0">
+                        <hr>
+
                         <p><b>Study areas ({{model.fields.length}})</b></p>
                         <ul>
                           <div *ngFor="let f of model.fields; index as i ">
@@ -192,12 +201,13 @@
                         </ul>
                       </div>
                       <div *ngIf="model.inheritedLearningObjectives && model.inheritedLearningObjectives.length > 0">
-                        <span>  <button type="button" class="btn btn-link btn-xs"
-                          (click)="showILO.classList.contains('hidden') ? showILO.className = '' : showILO.className = 'hidden' ">
-                          <i [tooltip]="showILO.classList.contains('hidden')? 'Show' : 'Hide'"
-                            [ngClass]="showILO.classList.contains('hidden')? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
-                        </button>
-                        <b>Inherited Learning Outcomes ({{model.inheritedLearningObjectives.length}}):</b></span>
+                        <hr>
+                        <span> <button type="button" class="btn btn-link btn-xs"
+                            (click)="showILO.classList.contains('hidden') ? showILO.className = '' : showILO.className = 'hidden' ">
+                            <i [tooltip]="showILO.classList.contains('hidden')? 'Show' : 'Hide'"
+                              [ngClass]="showILO.classList.contains('hidden')? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
+                          </button>
+                          <b>Inherited Learning Outcomes ({{model.inheritedLearningObjectives.length}}):</b></span>
                         <ul #showILO>
                           <div *ngFor="let l of model.inheritedLearningObjectives">
                             <li>{{ l.name }}</li>
@@ -206,11 +216,11 @@
                       </div>
                       <div *ngIf="model.learningObjectives && model.learningObjectives.length > 0">
                         <span><button type="button" class="btn btn-link btn-xs"
-                          (click)="showLO.classList.contains('hidden') ? showLO.className = '' : showLO.className = 'hidden' ">
-                          <i [tooltip]="showLO.classList.contains('hidden')? 'Show' : 'Hide'"
-                            [ngClass]="showLO.classList.contains('hidden')? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
-                        </button>
-                        <b>Learning Outcomes ({{model.learningObjectives.length}}):</b></span>
+                            (click)="showLO.classList.contains('hidden') ? showLO.className = '' : showLO.className = 'hidden' ">
+                            <i [tooltip]="showLO.classList.contains('hidden')? 'Show' : 'Hide'"
+                              [ngClass]="showLO.classList.contains('hidden')? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
+                          </button>
+                          <b>Learning Outcomes ({{model.learningObjectives.length}}):</b></span>
                         <ul #showLO>
                           <div *ngFor="let l of model.learningObjectives">
                             <li>{{ l.name }}</li>
@@ -219,29 +229,32 @@
                       </div>
                       <div *ngIf="model.competences && model.competences.length > 0">
                         <span><button type="button" class="btn btn-link btn-xs"
-                          (click)="showCom.classList.contains('hidden') ? showCom.className = '' : showCom.className = 'hidden' ">
-                          <i [tooltip]="showCom.classList.contains('hidden')? 'Show' : 'Hide'"
-                            [ngClass]="showCom.classList.contains('hidden')? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
-                        </button>
-                        <b>Transversal Skills ({{model.competences.length}}):</b></span>
+                            (click)="showCom.classList.contains('hidden') ? showCom.className = '' : showCom.className = 'hidden' ">
+                            <i [tooltip]="showCom.classList.contains('hidden')? 'Show' : 'Hide'"
+                              [ngClass]="showCom.classList.contains('hidden')? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
+                          </button>
+                          <b>Transversal Skills ({{model.competences.length}}):</b></span>
                         <ul #showCom>
                           <div *ngFor="let c of model.competences">
                             <li *ngIf="!c.uri">{{ c.preferredLabel }} </li>
-                            <li *ngIf="c.uri && c.uri != ''"> <a href="{{c.uri}}" target="_blank">{{ c.preferredLabel }} </a> </li>
+                            <li *ngIf="c.uri && c.uri != ''"> <a href="{{c.uri}}" target="_blank">{{ c.preferredLabel }}
+                              </a> </li>
                           </div>
                         </ul>
                       </div>
                       <div *ngIf="model.linksToBok && model.linksToBok.length > 0">
-                        <span><b>BoK annotations:</b></span>
+                        <hr>
+                        <span><b>Annotated BoK concepts (current educational unit - this node):</b></span>
                         <ul>
                           <div *ngFor="let lb of model.linksToBok">
-                            <li>Link in {{ lb.linkedTo }}: <a
-                                href="https://bok.eo4geo.eu/{{ lb.concept_id }}">{{ lb.name }}</a> </li>
+                            <li><a href="https://bok.eo4geo.eu/{{ lb.concept_id }}" target="_blank">{{ lb.name }}</a>
+                            </li>
                           </div>
                         </ul>
                       </div>
 
                       <div *ngIf="model.children && model.children.length > 0">
+                        <hr>
                         <span><b>Children educational offers:</b></span>
                         <ul>
                           <div *ngFor="let ch of model.children">
@@ -254,10 +267,13 @@
                         margin-right: -20px;
                         margin-left: -20px;
                         padding: 20px;">
-                        <span><b>Annotated BoK knowledge in this educational offer:</b></span>
+                        <hr>
+
+                        <span><b>Annotated BoK concepts (complete educational offer - all nodes):</b></span>
                         <ul>
                           <div *ngFor="let lb of allLinksToBok">
-                            <li><a href="https://bok.eo4geo.eu/{{ lb.concept_id }}">{{ lb.name }}</a> </li>
+                            <li><a href="https://bok.eo4geo.eu/{{ lb.concept_id }}" target="_blank">{{ lb.name }}</a>
+                            </li>
                           </div>
                         </ul>
                       </div>

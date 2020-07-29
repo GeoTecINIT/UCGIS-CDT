@@ -37,7 +37,7 @@
                   </button>
                 </span>
                 <input class="form-control" id="input1-group2" type="search" name="input1-group2" placeholder="Search"
-                  autocomplete="search" [(ngModel)]="searchText" (keyup)="filter()" />
+                  autocomplete="search" [(ngModel)]="searchText" (keyup)="filterAll()" />
               </div>
             </div>
             <div class="col-sm-4 col-md-3">
@@ -110,26 +110,26 @@
             <div class="col-sm-6 col-md-6">
               <div class="text-center">
                 <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyDepth==-1}"
-                  (click)="showOnlyDepth=-1; filterByDepth(-1)">All</button>
+                  (click)="showOnlyDepth=-1; filterAll()">All</button>
                 <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyDepth==0}"
-                  (click)="showOnlyDepth=0; filterByDepth(0)">Study Programs</button>
+                  (click)="showOnlyDepth=0; filterAll()">Study Programs</button>
                 <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyDepth==1}"
-                  (click)="showOnlyDepth=1; filterByDepth(1)">Modules</button>
+                  (click)="showOnlyDepth=1; filterAll()">Modules</button>
                 <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyDepth==2}"
-                  (click)="showOnlyDepth=2; filterByDepth(2)">Courses</button>
+                  (click)="showOnlyDepth=2; filterAll()">Courses</button>
                 <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyDepth==3}"
-                  (click)="showOnlyDepth=3; filterByDepth(3)">Lectures</button>
+                  (click)="showOnlyDepth=3; filterAll()">Lectures</button>
               </div>
             </div>
 
             <div class="col-sm-6 col-md-6">
               <div class="text-center">
                 <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyAuthor==-1}"
-                  (click)="showOnlyAuthor=-1; filterByAuthor(-1)" [disabled]="isAnonymous">All</button>
+                  (click)="showOnlyAuthor=-1; filterAll()" [disabled]="isAnonymous">All</button>
                 <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyAuthor==0}"
-                  (click)="showOnlyAuthor=0; filterByAuthor(0)" [disabled]="isAnonymous">My content</button>
+                  (click)="showOnlyAuthor=0; filterAll()" [disabled]="isAnonymous">My content</button>
                 <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyAuthor==1}"
-                  (click)="showOnlyAuthor=1; filterByAuthor(1)" [disabled]="isAnonymous">My organization's
+                  (click)="showOnlyAuthor=1; filterAll()" [disabled]="isAnonymous">My organization's
                   content</button>
               </div>
             </div>
@@ -181,13 +181,13 @@
             </div>
           </div>
           <div *ngFor="let sp of filteredStudyPrograms | slice:paginationLimitFrom:paginationLimitTo; let i=index">
-            <div *ngIf="(showOnlyDepth === -1 || sp.depth === showOnlyDepth) ">
+            <div> <!-- *ngIf="(showOnlyDepth === -1 || sp.depth === showOnlyDepth)  -->
               <!-- Filter by depth -->
-              <div
-                *ngIf=" (showOnlyAuthor === -1 || (showOnlyAuthor === 0 && sp.userId===currentUser?._id) || (showOnlyAuthor === 1 && currentUser?.organizations.indexOf(sp.orgId) > -1)) ">
+              <div>
+                <!-- *ngIf=" (showOnlyAuthor === -1 || (showOnlyAuthor === 0 && sp.userId===currentUser?._id) || (showOnlyAuthor === 1 && currentUser?.organizations.indexOf(sp.orgId) > -1)) " -->
                 <!-- Filter by author -->
-                <div class="row"
-                  *ngIf="sp.levelPublic || currentUser != null && (sp.userId==currentUser?._id || (currentUser?.organizations?.indexOf(sp.orgId) > -1))">
+                <div class="row">
+                  <!-- *ngIf="sp.levelPublic || currentUser != null && (sp.userId==currentUser?._id || (currentUser?.organizations?.indexOf(sp.orgId) > -1))" -->
                   <div class="col-md-10">
                     <button type="button" class="btn text-justify" routerLink="/detail/{{ sp._id }}">
                       <span>
@@ -234,7 +234,7 @@
                         </button>
                       </div>
                       <div class="col-3 col-sm-3 col-md-3 no-padding"
-                        tooltip="{{isAnonymous? 'Login to be able to edit' : sp.isEdited? 'Another user is editing this content. To avoid content loss, editing has been disabled' : sp.userId==afAuth.auth.currentUser?.uid? 'Edit' : 'You can edit only your own educational offers' }}">
+                        tooltip="{{isAnonymous? 'Login to be able to edit' : sp.isEdited? 'Another user is editing this content. To avoid content loss, editing has been disabled. If you think this is a bug, open content details to unlock it.' : sp.userId==afAuth.auth.currentUser?.uid? 'Edit' : 'You can edit only your own educational offers' }}">
                         <button type="button" class="btn btn-block btn-link" routerLink="/newsp/copy/{{ sp._id }}"
                           [disabled]="isAnonymous || (currentUser?.organizations?.indexOf(sp.orgId) == -1) || sp.isEdited">
                           <i class="fa fa-edit fa-lg mt-4" [ngClass]="sp.isEdited? 'icon-editing' : '' "></i>
@@ -242,7 +242,7 @@
                         </button>
                       </div>
                       <div class="col-3 col-sm-3 col-md-3 no-padding"
-                        tooltip="{{isAnonymous? 'Login to be able to remove' : sp.isEdited? 'Another user is editing this content. To avoid content loss, removing has been disabled' : sp.userId==afAuth.auth.currentUser?.uid? 'Remove' : 'You can remove only your own educational offers' }}">
+                        tooltip="{{isAnonymous? 'Login to be able to remove' : sp.isEdited? 'Another user is editing this content. To avoid content loss, removing has been disabled. If you think this is a bug, open content details to unlock it.' : sp.userId==afAuth.auth.currentUser?.uid? 'Remove' : 'You can remove only your own educational offers' }}">
                         <button type="button" class="btn btn-block btn-link" data-toggle="modal"
                           (click)="dangerModal.show()"
                           [disabled]="isAnonymous || (currentUser?.organizations?.indexOf(sp.orgId) == -1) || sp.isEdited">

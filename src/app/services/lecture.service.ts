@@ -30,6 +30,7 @@ export class Lecture extends Object {
   public learningObjectives: BokInput[];
   public customCompetences: string[];
   public competences: Competence[];
+  public isEdited: Boolean;
 
   data: any;
 
@@ -63,6 +64,7 @@ export class Lecture extends Object {
       this.learningObjectives = currentNode.data.learningObjectives ? currentNode.data.learningObjectives : [];
       this.competences = currentNode.data.competences ? currentNode.data.competences : [];
       this.customCompetences = currentNode.data.customCompetences ? currentNode.data.customCompetences : [];
+      this.isEdited = currentNode.data.isEdited != null ? currentNode.data.isEdited : false;
 
     } else {
       this._id = '';
@@ -86,6 +88,7 @@ export class Lecture extends Object {
       this.learningObjectives = [];
       this.competences = [];
       this.customCompetences = [];
+      this.isEdited = false;
     }
   }
 }

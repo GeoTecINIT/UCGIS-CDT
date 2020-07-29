@@ -85,10 +85,12 @@ export class DetailComponent implements OnInit {
 
   saveBoKCodes(node) {
     node.linksToBok.forEach(l => {
-      l.concept_id = l.name.split(']')[0].substring(1);
-      if (!this.allIdLinksToBok.includes(l.concept_id)) {
-        this.allLinksToBok.push(l);
-        this.allIdLinksToBok.push(l.concept_id);
+      if (l.concept_id[0] === '[') {
+        l.concept_id = l.name.split(']')[0].substring(1);
+        if (!this.allIdLinksToBok.includes(l.concept_id)) {
+          this.allLinksToBok.push(l);
+          this.allIdLinksToBok.push(l.concept_id);
+        }
       }
     });
     if (node.children) {
@@ -96,6 +98,9 @@ export class DetailComponent implements OnInit {
         this.saveBoKCodes(child);
       });
     }
+    // sort by concept_id
+    node.linksToBok.sort((a, b) => a.concept_id.localeCompare(b.concept_id));
+    this.allLinksToBok.sort((a, b) => a.concept_id.localeCompare(b.concept_id));
   }
 
   refreshTreeSize() {
@@ -123,6 +128,12 @@ export class DetailComponent implements OnInit {
         break;
     }
     console.log(this.model);
+  }
+
+  unlock() {
+    this.model.isEdited = false;
+    this.selectedProgram.isEdited = false;
+    this.studyprogramService.updateStudyProgramIsEdited(this.model._id, false);
   }
 
 }

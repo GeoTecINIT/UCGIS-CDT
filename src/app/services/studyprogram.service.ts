@@ -8,6 +8,8 @@ import { Field } from './fields.service';
 import { BokInput } from '../model/bokinput';
 import { Competence } from './esco-competence.service';
 import * as firebase from 'firebase';
+import * as cloneDeep from 'lodash/cloneDeep';
+
 
 
 
@@ -65,7 +67,7 @@ export class StudyProgram extends Object {
       this.userId = currentNode.data.userId ? currentNode.data.userId : '';
       this.orgId = currentNode.data.orgId ? currentNode.data.orgId : '';
       this.orgName = currentNode.data.orgName ? currentNode.data.orgName : '';
-      this.isEdited = currentNode.data.isEdited != null ? currentNode.data.isEdited : true;
+      this.isEdited = currentNode.data.isEdited != null ? currentNode.data.isEdited : false;
       this.learningObjectives = currentNode.data.learningObjectives ? currentNode.data.learningObjectives : [];
       this.inheritedLearningObjectives = [];
       // Modules
@@ -121,7 +123,7 @@ export class StudyProgram extends Object {
       this.bibliography = [];
       this.orgId = '';
       this.orgName = '';
-      this.isEdited = true;
+      this.isEdited = false;
       this.learningObjectives = [];
       this.inheritedLearningObjectives = [];
       this.competences = [];
@@ -161,15 +163,18 @@ export class StudyProgramService {
 
   addNewStudyProgram(newSP: StudyProgram) {
     const id = this.db.createId();
-    newSP._id = id;
-    newSP = this.convertNodeChildren(newSP);
+    let copyNewSP = cloneDeep(newSP);
+
+    copyNewSP._id = id;
+    copyNewSP = this.convertNodeChildren(copyNewSP);
     const timestamp = firebase.firestore.FieldValue.serverTimestamp();
-    newSP.updatedAt = timestamp;
-    newSP.createdAt = timestamp;
+    copyNewSP.updatedAt = timestamp;
+    copyNewSP.createdAt = timestamp;
     this.db
       .collection(collection)
       .doc(id)
-      .set(Object.assign({}, newSP));
+      .set(Object.assign({}, copyNewSP));
+    return id;
   }
 
   removeStudyProgram(studyProgId: string) {
