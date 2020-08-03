@@ -34,6 +34,7 @@ export class StudyProgram extends Object {
   public bibliography: BokInput[];
   public orgId: string;
   public orgName: string;
+  public division: string;
   public isEdited: Boolean;
   public learningObjectives: BokInput[];
   public inheritedLearningObjectives: BokInput[];
@@ -67,6 +68,7 @@ export class StudyProgram extends Object {
       this.userId = currentNode.data.userId ? currentNode.data.userId : '';
       this.orgId = currentNode.data.orgId ? currentNode.data.orgId : '';
       this.orgName = currentNode.data.orgName ? currentNode.data.orgName : '';
+      this.division = currentNode.data.division ? currentNode.data.division : '';
       this.isEdited = currentNode.data.isEdited != null ? currentNode.data.isEdited : false;
       this.learningObjectives = currentNode.data.learningObjectives ? currentNode.data.learningObjectives : [];
       this.inheritedLearningObjectives = [];
@@ -123,6 +125,7 @@ export class StudyProgram extends Object {
       this.bibliography = [];
       this.orgId = '';
       this.orgName = '';
+      this.division = '';
       this.isEdited = false;
       this.learningObjectives = [];
       this.inheritedLearningObjectives = [];

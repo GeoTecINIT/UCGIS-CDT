@@ -10,7 +10,9 @@
                 &nbsp;You need to join or create an organization before you can save an occupational profile.
               </button>
             </div>
-            <div *ngIf="userOrgs.length > 0" class="col-md-12 text-center mb-3">
+            <div *ngIf="userOrgs.length > 0" class="col-md-9 text-center mb-3">
+
+
               <div class="btn-group" dropdown>
                 <button id="button-animated" dropdownToggle type="button"
                   class="btn btn-pill btn-primary dropdown-toggle" aria-controls="dropdown-animated">
@@ -41,25 +43,54 @@
                 <i class="fa fa-search"></i> Explore existing educational offers
                 <!-- {{textByDepth}}s -->
               </button>
+
               <button type="submit" class="btn btn-pill btn-danger" (click)="removeNodeInTree()"
                 [hidden]="!currentTreeNode || currentTreeNode.parent == null">
                 <i class="fa fa-minus"></i> Remove {{textByDepthRemove}}
               </button>
             </div>
+            <div *ngIf="userOrgs.length > 0" class="col-sm-6 col-md-3 text-right">
+              <!-- <div>{{textSaved}}</div>-->
+              <button type="submit" class="btn btn-pill btn-primary" (click)="saveStudyProgram()"
+                [hidden]="!currentTreeNode" [ngClass]="{'success': isSaved}">
+                <i class="fa fa-save"></i> Save
+              </button>
+              <button type="submit" class="btn btn-pill btn-primary" (click)="saveStudyProgram()" routerLink="/list"
+                [hidden]="!currentTreeNode">
+                <i class="icon-home"></i> Save and Exit
+              </button>
+            </div>
+
           </div>
 
           <div class="row" [hidden]="!currentTreeNode">
-            <div class="col-sm-6 col-md-2">
-              <p *ngIf="userOrgs.length > 0" class="text-primary text-right">Save under organization </p>
+            <div class="col-sm-6 col-md-3">
+
+              <p *ngIf="userOrgs.length > 0" class="text-primary text-right"> <span
+                  style="display:inline-table; margin:2px"
+                  tooltip="You can select an organization if you are member of it. Select a division or leave it empty. Division is not compulsory but it's useful to have the content organized."
+                  class="badge badge-primary badge-pill">i</span>Save under organization </p>
             </div>
             <div class="col-sm-6 col-md-3">
               <ng-select *ngIf="userOrgs.length > 0 && userOrgs.length == currentUser.organizations.length"
                 [items]="userOrgs" name="userOrgs" bindLabel="name" [multiple]="false" [(ngModel)]="saveOrg"
-                (change)="isSaved = false">
+                (change)="isSaved = false; loadDivisions()">
                 <ng-template ng-optgroup-tmp let-item="item">
                   {{item.name}}
                 </ng-template>
               </ng-select>
+            </div>
+            <div class="col-sm-6 col-md-1">
+              <p *ngIf="userOrgs.length > 0" class="text-primary text-right"> division </p>
+            </div>
+            <div class="col-sm-6 col-md-2">
+              <ng-select *ngIf="userDivisions.length > 0" [items]="userDivisions" name="userDivisions" bindLabel="name"
+                [multiple]="false" [(ngModel)]="saveDiv" (change)="isSaved = false">
+                <ng-template ng-optgroup-tmp let-item="item">
+                  {{item}}
+                </ng-template>
+              </ng-select>
+
             </div>
             <div *ngIf="userOrgs.length == 0" class="col-sm-12 col-md-12">
               <button type="button" class="btn btn-block btn-link text-secondary" routerLink="/organization">
@@ -81,17 +112,7 @@
                 tooltip="If visibility is private, users in this organization can still see it. But users not logged in won't be able to see it. Visibility by default is public."
                 class="badge badge-primary badge-pill">i</span>
             </div>
-            <div *ngIf="userOrgs.length > 0" class="col-sm-6 col-md-4 text-right">
-              <!-- <div>{{textSaved}}</div>-->
-              <button type="submit" class="btn btn-pill btn-primary" (click)="saveStudyProgram()"
-                [hidden]="!currentTreeNode" [ngClass]="{'success': isSaved}">
-                <i class="fa fa-save"></i> Save
-              </button>
-              <button type="submit" class="btn btn-pill btn-primary" (click)="saveStudyProgram()" routerLink="/list"
-                [hidden]="!currentTreeNode">
-                <i class="icon-home"></i> Save and Exit
-              </button>
-            </div>
+
           </div>
           <div class="row">
             <div class="col-md-12">
@@ -484,7 +505,8 @@
                               tooltip="Select and drag item to reorder children. Or use arrows to move them up and down."
                               class="badge badge-primary badge-pill">i</span></label>
                           <div #sortableChildren>
-                            <ngx-sortable [items]="model.children" [name]="''" (listSorted)="listSorted($event)" *ngIf="model && model.children && model.children.length > 0">
+                            <ngx-sortable [items]="model.children" [name]="''" (listSorted)="listSorted($event)"
+                              *ngIf="model && model.children && model.children.length > 0">
                               <ng-template let-item>
                                 <div class="sortable-list-item">
                                   {{item.data.name}}
@@ -530,7 +552,8 @@
                     </div>
                   </div>
                   <div class="card-body" style="background-color: #faf9f8">
-                    <p *ngIf="isSavedBB" class="success"> {{isSavedBBText}} <a href="https://eo4geo-cdt-v2.web.app/detail/{{promotedId}}" target="_blank">edit it here</a></p>
+                    <p *ngIf="isSavedBB" class="success"> {{isSavedBBText}} <a
+                        href="https://eo4geo-cdt-v2.web.app/detail/{{promotedId}}" target="_blank">edit it here</a></p>
                     <div class="row form-group">
                       <div class="col-md-4">
                         <button type="submit" class="btn btn-primary btn-sm"
@@ -925,7 +948,8 @@
                               tooltip="Select and drag item to reorder children. Or use arrows to move them up and down."
                               class="badge badge-primary badge-pill">i</span></label>
                           <div #sortableChildren>
-                            <ngx-sortable [items]="modelModule.children" [name]="''" (listSorted)="listSorted($event)" *ngIf="modelModule && modelModule.children && modelModule.children.length > 0">
+                            <ngx-sortable [items]="modelModule.children" [name]="''" (listSorted)="listSorted($event)"
+                              *ngIf="modelModule && modelModule.children && modelModule.children.length > 0">
                               <ng-template let-item>
                                 <div class="sortable-list-item">
                                   {{item.data.name}}
@@ -971,7 +995,8 @@
                     </div>
                   </div>
                   <div class="card-body" style="background-color: #faf9f8">
-                    <p *ngIf="isSavedBB" class="success"> {{isSavedBBText}} <a href="https://eo4geo-cdt.web.app/detail/{{promotedId}}" target="_blank">edit it here</a></p>
+                    <p *ngIf="isSavedBB" class="success"> {{isSavedBBText}} <a
+                        href="https://eo4geo-cdt.web.app/detail/{{promotedId}}" target="_blank">edit it here</a></p>
                     <div class="row form-group">
                       <div class="col-md-4">
                         <button type="submit" class="btn btn-primary btn-sm"
@@ -1440,7 +1465,8 @@
                               tooltip="Select and drag item to reorder children. Or use arrows to move them up and down."
                               class="badge badge-primary badge-pill">i</span></label>
                           <div #sortableChildren>
-                            <ngx-sortable [items]="modelCourse.children" [name]="''" (listSorted)="listSorted($event)"  *ngIf="modelCourse && modelCourse.children && modelCourse.children.length > 0">
+                            <ngx-sortable [items]="modelCourse.children" [name]="''" (listSorted)="listSorted($event)"
+                              *ngIf="modelCourse && modelCourse.children && modelCourse.children.length > 0">
                               <ng-template let-item>
                                 <div class="sortable-list-item">
                                   {{item.data.name}}
@@ -1487,7 +1513,8 @@
                     </div>
                   </div>
                   <div class="card-body" style="background-color: #faf9f8">
-                    <p *ngIf="isSavedBB" class="success"> {{isSavedBBText}} <a href="https://eo4geo-cdt-v2.web.app/detail/{{promotedId}}" target="_blank">edit it here</a></p>
+                    <p *ngIf="isSavedBB" class="success"> {{isSavedBBText}} <a
+                        href="https://eo4geo-cdt-v2.web.app/detail/{{promotedId}}" target="_blank">edit it here</a></p>
                     <div class="row form-group">
                       <div class="col-md-4">
                         <button type="submit" class="btn btn-primary btn-sm"
