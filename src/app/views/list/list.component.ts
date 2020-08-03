@@ -9,7 +9,7 @@ import { ModalDirective, ModalOptions } from 'ngx-bootstrap/modal';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { SlicePipe } from '@angular/common';
 import { User, UserService } from '../../services/user.service';
-import { OrganizationService } from '../../services/organization.service';
+import { OrganizationService, Organization } from '../../services/organization.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -19,6 +19,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ListComponent implements OnInit {
   studyPrograms: StudyProgram[];
+  organizations: Organization[];
+  filterOrg: Organization = null;
   advancedSearch = false;
   affiliationFilter = false;
   knowledgeFilter = false;
@@ -63,6 +65,9 @@ export class ListComponent implements OnInit {
         this.ownUsrId = null;
       }
     });
+    this.organizationService.subscribeToOrganizations().subscribe(orgs => {
+      this.organizations = orgs.sort((a, b) => (a.name.trim().toLowerCase() > b.name.trim().toLowerCase()) ? 1 : -1);
+    });
   }
 
   ngOnInit() {
@@ -70,6 +75,16 @@ export class ListComponent implements OnInit {
       .subscribeToStudyPrograms()
       .subscribe(studyPrograms => {
         this.studyPrograms = studyPrograms;
+
+        /*  this.studyPrograms.forEach(sp => {
+           console.log('Educational offer: ' + sp.name + ' - id: ' + sp._id);
+           if (sp.competences) {
+             sp.competences.forEach(comp => {
+               console.log('Competence: ' + comp.preferredLabel + ' - URI: ' + comp.uri + ' - reuse level: ' + comp.reuseLevel);
+             });
+           }
+         });
+  */
         this.filterAll();
         this.sortSPby(this.sortedBy);
       });
@@ -117,6 +132,11 @@ export class ListComponent implements OnInit {
     this.paginationLimitFrom = 0;
     this.paginationLimitTo = 6;
     this.currentPage = 0;
+    this.studyPrograms.forEach(sp => {
+      if (!sp.division) {
+        sp.division = '';
+      }
+    });
     const search = this.searchText.toLowerCase();
     this.filteredStudyPrograms = [];
     if (this.advancedSearch) {
@@ -126,7 +146,8 @@ export class ListComponent implements OnInit {
         it =>
           it.name.toLowerCase().includes(search) ||
           it.description.toLowerCase().includes(search) ||
-          it.orgName.toLowerCase().includes(search)
+          it.orgName.toLowerCase().includes(search) ||
+          it.division.toLowerCase().includes(search)
       );
     }
   }
@@ -276,7 +297,11 @@ export class ListComponent implements OnInit {
     this.paginationLimitFrom = 0;
     this.paginationLimitTo = 6;
     this.currentPage = 0;
+    if (author === -1) { // mine
+      this.filterOrg = null;
+    }
     if (author === 0) { // mine
+      this.filterOrg = null;
       this.filteredStudyPrograms = this.filteredStudyPrograms.filter(
         it =>
           it.userId === this.currentUser._id
@@ -284,7 +309,8 @@ export class ListComponent implements OnInit {
     } else if (author === 1) { // my orgs
       this.filteredStudyPrograms = this.filteredStudyPrograms.filter(
         it =>
-          this.currentUser.organizations.includes(it.orgId)
+          it.orgId === this.filterOrg._id
+        // this.currentUser.organizations.includes(it.orgId)
       );
     }
   }

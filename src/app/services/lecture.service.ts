@@ -27,6 +27,7 @@ export class Lecture extends Object {
   public fields: Field[];
   public orgId: string;
   public orgName: string;
+  public division: string;
   public learningObjectives: BokInput[];
   public customCompetences: string[];
   public competences: Competence[];
@@ -61,6 +62,7 @@ export class Lecture extends Object {
       }
       this.orgId = currentNode.data.orgId ? currentNode.data.orgId : '';
       this.orgName = currentNode.data.orgName ? currentNode.data.orgName : '';
+      this.division = currentNode.data.division ? currentNode.data.division : '';
       this.learningObjectives = currentNode.data.learningObjectives ? currentNode.data.learningObjectives : [];
       this.competences = currentNode.data.competences ? currentNode.data.competences : [];
       this.customCompetences = currentNode.data.customCompetences ? currentNode.data.customCompetences : [];
@@ -85,6 +87,7 @@ export class Lecture extends Object {
       this.fields = [];
       this.orgId = '';
       this.orgName = '';
+      this.division = '';
       this.learningObjectives = [];
       this.competences = [];
       this.customCompetences = [];

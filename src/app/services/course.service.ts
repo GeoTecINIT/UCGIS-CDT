@@ -33,6 +33,7 @@ export class Course extends Object {
   public fields: Field[];
   public orgId: string;
   public orgName: string;
+  public division: string;
   public type: string;
   public customCompetences: string[];
   public competences: Competence[];
@@ -69,6 +70,7 @@ export class Course extends Object {
       }
       this.orgId = currentNode.data.orgId ? currentNode.data.orgId : '';
       this.orgName = currentNode.data.orgName ? currentNode.data.orgName : '';
+      this.division = currentNode.data.division ? currentNode.data.division : '';
       this.type = currentNode.data.type ? currentNode.data.type : '';
       this.learningObjectives = currentNode.data.learningObjectives ? currentNode.data.learningObjectives : [];
       this.inheritedLearningObjectives = [];
@@ -108,7 +110,7 @@ export class Course extends Object {
       this.fields = [];
       this.orgId = '';
       this.orgName = '';
-      this.orgName = '';
+      this.division = '';
       this.type = '';
       this.competences = [];
       this.customCompetences = [];

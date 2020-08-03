@@ -98,6 +98,8 @@ export class NewspComponent implements OnInit, OnDestroy {
   userOrgs: Organization[] = [];
   saveOrg: Organization;
   currentUser: User;
+  userDivisions: string[] = [];
+  saveDiv = '';
 
   isSaved = false;
   isSavedBB = false;
@@ -232,6 +234,7 @@ export class NewspComponent implements OnInit, OnDestroy {
                   this.userOrgs.push(org);
                   this.saveOrg = this.userOrgs[0];
                   this.setOrganization();
+                  this.loadDivisions();
                 } else { // this org has been deleted. remove
                   const indexToRemove = this.currentUser.organizations.indexOf(orgId);
                   if (indexToRemove !== -1) {
@@ -298,6 +301,7 @@ export class NewspComponent implements OnInit, OnDestroy {
     modelToSave.orgId = this.saveOrg._id;
     modelToSave.orgName = this.saveOrg.name;
     modelToSave.levelPublic = this.levelPublic;
+    modelToSave.division = this.saveDiv;
 
     if (this.mode === 'copy') {
       this.studyprogramService.updateStudyProgram(this._id, modelToSave);
@@ -440,6 +444,7 @@ export class NewspComponent implements OnInit, OnDestroy {
       this.userOrgs.forEach(o => {
         if (o._id === this.model.orgId) {
           this.saveOrg = o;
+          this.loadDivisions();
         }
       });
     }
@@ -828,6 +833,12 @@ export class NewspComponent implements OnInit, OnDestroy {
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
+  }
+
+  loadDivisions() {
+    this.userDivisions = this.saveOrg.divisions ? this.saveOrg.divisions : [];
+    this.userDivisions.push(' ');
+    this.saveDiv = this.userDivisions[0];
   }
 
 }

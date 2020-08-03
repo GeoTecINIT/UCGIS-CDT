@@ -32,6 +32,7 @@ export class Module extends Object {
   public bibliography: BokInput[];
   public orgId: string;
   public orgName: string;
+  public division: string;
   public customCompetences: string[];
   public competences: Competence[];
   public isEdited: Boolean;
@@ -89,6 +90,7 @@ export class Module extends Object {
       this.bibliography = currentNode.data.bibliography ? currentNode.data.bibliography : [];
       this.orgId = currentNode.data.orgId ? currentNode.data.orgId : '';
       this.orgName = currentNode.data.orgName ? currentNode.data.orgName : '';
+      this.division = currentNode.data.division ? currentNode.data.division : '';
       this.competences = currentNode.data.competences ? currentNode.data.competences : [];
       this.customCompetences = currentNode.data.customCompetences ? currentNode.data.customCompetences : [];
       this.isEdited = currentNode.data.isEdited != null ? currentNode.data.isEdited : false;
@@ -115,6 +117,7 @@ export class Module extends Object {
       this.bibliography = [];
       this.orgId = '';
       this.orgName = '';
+      this.division = '';
       this.competences = [];
       this.customCompetences = [];
       this.isEdited = false;
