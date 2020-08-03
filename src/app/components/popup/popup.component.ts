@@ -659,13 +659,15 @@ export class PopupComponent implements OnInit {
 
     getFields(data: any) {
         let resultFields = '';
-        resultFields = resultFields + '<rdf:li>' + data.field.greatgrandparent + ' </rdf:li>' +
+        if ( data.field !== null && data.field.greatgrandparent !== null ) {
+          resultFields = resultFields + '<rdf:li>' + data.field.greatgrandparent + ' </rdf:li>' +
             '<rdf:li>' + data.field.code + ' </rdf:li>' +
             '<rdf:li>' + data.field.grandparent + ' </rdf:li>' +
             '<rdf:li>' + data.field.name + ' </rdf:li>' +
             '<rdf:li>' + data.field.concatName + ' </rdf:li>' +
             '<rdf:li>' + data.field.parent + ' </rdf:li>';
-        return resultFields;
+          return resultFields;
+        }
     }
 
     getSkills(data: any) {
@@ -686,7 +688,7 @@ export class PopupComponent implements OnInit {
                 '<bok:concept_id>' + link.concept_id + '</bok:concept_id>' +
                 '<bok:definition>' + link.definition + '</bok:definition>' +
                 '<bok:linkedTo>' + link.linkedTo + '</bok:linkedTo>' +
-                '<bok:name>' + link.name + '</bok:name>';
+                '<bok:name>' + link.name.replace('&', ' ')  + '</bok:name>';
             if (link.skills.length > 0) {
                 resultLinks = resultLinks + '<bok:skills> <rdf:Bag>' + skills +
                     '</rdf:Bag> </bok:skills>';
@@ -705,7 +707,7 @@ export class PopupComponent implements OnInit {
                 '<lObj:concept_id>' + objective.concept_id + '</lObj:concept_id>' +
                 '<lObj:definition>' + objective.definition + '</lObj:definition>' +
                 '<lObj:linkedTo>' + objective.linkedTo + '</lObj:linkedTo>' +
-                '<lObj:name>' + objective.name + '</lObj:name>' +
+                '<lObj:name>' + objective.name.replace('&', ' ') + '</lObj:name>' +
                 '</rdf:Description>' + ' </rdf:li>';
         });
         return resultLearningObjectives;
@@ -714,7 +716,7 @@ export class PopupComponent implements OnInit {
     getConcepts(data: any) {
         let resultConcepts = '';
         data.concepts.forEach(concept => {
-            resultConcepts = resultConcepts + '<rdf:li>' + concept + ' </rdf:li>';
+            resultConcepts = resultConcepts + '<rdf:li>' + concept.replace('&', ' ') + ' </rdf:li>';
         });
         return resultConcepts;
     }
@@ -738,19 +740,23 @@ export class PopupComponent implements OnInit {
                 children = children + '<children:assesment>' + child.assesment + '</children:assesment>';
             }
             if (typeof child.bibliography !== 'undefined' && child.bibliography !== '') {
-                children = children + '<children:bibliography>' + child.bibliography + '</children:bibliography>';
+              children = children + '<children:bibliography> <rdf:Bag rdf:ID="bibliography"> ';
+              child.bibliography.forEach( b => {
+                children = children + '<rdf:li>' + b.name.replace('&', ' ') + '</rdf:li>';
+              });
+              children = children + '</rdf:Bag> </children:bibliography>';
             }
-            if (child.children.length > 0) {
+            if (child.children !== null && child.children.length > 0) {
                 children = children + '<children:children> <rdf:Bag rdf:ID="' + module + '"> ' + this.getChildren(child) +
                     '</rdf:Bag> </children:children>';
             }
-            if (child.linksToBok.length > 0) {
+            if (child.linksToBok !== null && child.linksToBok.length > 0) {
                 children = children + '<children:linksToBok> <rdf:Bag>' + linksToBok + '</rdf:Bag> </children:linksToBok>';
             }
-            if (child.learningObjectives.length > 0) {
+            if (child.learningObjectives !== null && child.learningObjectives.length > 0) {
                 children = children + '<children:learningObjectives> <rdf:Bag>' + learningObjectives + '</rdf:Bag> </children:learningObjectives>';
             }
-            if (child.concepts.length > 0) {
+            if (child.concepts !== null && child.concepts.length > 0) {
                 children = children + '<children:concepts> <rdf:Bag>' + concepts + '</rdf:Bag> </children:concepts>';
             }
             children = children + '</rdf:Description> </rdf:li>';
@@ -785,10 +791,10 @@ export class PopupComponent implements OnInit {
             '<cdt:eqf> ' + data.eqf + '</cdt:eqf>' +
             '<cdt:numSemesters> ' + data.numSemesters + '</cdt:numSemesters>' +
             '<cdt:fields> <rdf:Bag rdf:ID="fields">' + fields + '</rdf:Bag> </cdt:fields>';
-        if (data.linksToBok.length > 0) {
+        if (data.linksToBok !== null && data.linksToBok.length > 0) {
             description = description + '<cdt:linksToBok> <rdf:Bag rdf:ID="linksToBok">' + linksToBok + '</rdf:Bag> </cdt:linksToBok>';
         }
-        if (data.concepts.length > 0) {
+        if (data.concepts !== null && data.concepts.length > 0) {
             description = description + '<cdt:concepts> <rdf:Bag rdf:ID="concepts">' + concepts + '</rdf:Bag> </cdt:concepts>';
         }
         description = description + '</rdf:Description>';
