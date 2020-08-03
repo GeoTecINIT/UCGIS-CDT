@@ -46,7 +46,7 @@ export class OrganizationComponent implements OnInit {
             // Load organizations
             this.organizationService.subscribeToOrganizations()
               .subscribe(res => {
-                this.allOrgs = res;
+                this.allOrgs = res.sort((a, b) => (a.name.trim().toLowerCase() > b.name.trim().toLowerCase()) ? 1 : -1);
                 this.filterOrgs();
               });
           }
