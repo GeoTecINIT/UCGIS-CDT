@@ -254,7 +254,7 @@ export class NewspComponent implements OnInit, OnDestroy {
     this.getMode();
     this.currentTreeNode = cv.getCurrentNode();
     bok.visualizeBOKData('#bubbles', '#textBoK');
-    this.analytics.logEvent('NewSP', { 'mode': this.mode });
+    this.analytics.logEvent('New Educational Offer', { 'mode': this.mode });
 
     this.observer = new MutationObserver(mutations => {
       mutations.forEach(mutation => {
@@ -312,11 +312,12 @@ export class NewspComponent implements OnInit, OnDestroy {
     this.mode = 'copy'; // if it's second time editing change to
     this._id = modelToSave._id;
     this.refreshTreeSize();
+    this.analytics.logEvent('Save Educational Offer', { 'mode': this._id });
   }
 
   saveCurrentNode() {
     let modelToSave = null;
-    switch (this.currentTreeNode.depth + this.highestItemLevel) { // absolute depth
+    switch (this.currentTreeNode.depth) { // absolute depth  + this.highestItemLevel
       case 0:
         modelToSave = this.model;
         break;
@@ -353,6 +354,8 @@ export class NewspComponent implements OnInit, OnDestroy {
 
     this.promotedId = '' + this.studyprogramService.addNewStudyProgram(modelToSave);
     this.isSavedBB = true;
+
+    this.analytics.logEvent('Promoted Educational Offer', { 'mode': this.promotedId });
 
   }
 
@@ -750,6 +753,7 @@ export class NewspComponent implements OnInit, OnDestroy {
       if (left.name < right.name) { return -1; }
       if (left.name > right.name) { return 1; } else { return 0; }
     });
+    this.analytics.logEvent('Explore Educational Offer', { 'mode': this.mode });
   }
 
   listSorted(result) {
@@ -837,8 +841,7 @@ export class NewspComponent implements OnInit, OnDestroy {
 
   loadDivisions() {
     this.userDivisions = this.saveOrg.divisions ? this.saveOrg.divisions : [];
-    this.userDivisions.push(' ');
-    this.saveDiv = this.userDivisions[0];
+    this.saveDiv = this.model ? this.model.division ? this.model.division : '' : '';
   }
 
 }
