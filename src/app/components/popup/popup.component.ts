@@ -667,8 +667,8 @@ export class PopupComponent implements OnInit {
             '<rdf:li>' + data.field.name + ' </rdf:li>' +
             '<rdf:li>' + data.field.concatName + ' </rdf:li>' +
             '<rdf:li>' + data.field.parent + ' </rdf:li>';
-          return resultFields;
         }
+      return resultFields;
     }
 
     getSkills(data: any) {
@@ -731,11 +731,12 @@ export class PopupComponent implements OnInit {
             const linksToBok = this.getLinksToBok(child);
             const learningObjectives = this.getLearningObjectives(child);
             const concepts = this.getConcepts(child);
+            const numSemesters = typeof child.numSemester !== undefined ? child.numSemester : 0;
             children = children + '<rdf:li> <rdf:Description ' +
               'rdf:about="' + urlChildren + child._id + '">' +
               '<children:name>' + child.name + '</children:name>' +
               '<children:description>' + child.description + '</children:description>' +
-              '<children:numSemester>' + child.numSemester + '</children:numSemester>';
+              '<children:numSemester>' + numSemesters + '</children:numSemester>';
             children = (typeof child.eqf !== 'undefined') ? children + '<children:eqf>' + child.eqf + '</children:eqf>' : children + '<children:ects>' + child.ects + '</children:ects>';
             module = (child.depth === 1) ? module = 'course' : module = 'lecture';
             if (typeof child.assesment !== 'undefined' && child.assesment !== '') {
@@ -785,13 +786,14 @@ export class PopupComponent implements OnInit {
         const header = this.headerRDF(data);
         const concepts = this.getConcepts(data);
         const linksToBok = this.getLinksToBok(data);
-        let description = '<cdt:children> <rdf:Bag rdf:ID="modules"> ' + this.getChildren(data) +
+        const numSemesters = data.numSemesters ? data.numSemesters : 0 ;
+          let description = '<cdt:children> <rdf:Bag rdf:ID="modules"> ' + this.getChildren(data) +
             '</rdf:Bag> </cdt:children>' +
             '<cdt:name>' + data.name + ' </cdt:name>' +
             '<cdt:description> ' + data.description + ' </cdt:description>' +
             '<cdt:affiliation> ' + data.affiliation + '</cdt:affiliation>' +
             '<cdt:eqf> ' + data.eqf + '</cdt:eqf>' +
-            '<cdt:numSemesters> ' + data.numSemesters + '</cdt:numSemesters>' +
+            '<cdt:numSemesters> ' + numSemesters + '</cdt:numSemesters>' +
             '<cdt:fields> <rdf:Bag rdf:ID="fields">' + fields + '</rdf:Bag> </cdt:fields>';
         if (data.linksToBok !== null && data.linksToBok.length > 0) {
             description = description + '<cdt:linksToBok> <rdf:Bag rdf:ID="linksToBok">' + linksToBok + '</rdf:Bag> </cdt:linksToBok>';
