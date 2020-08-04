@@ -74,47 +74,48 @@ export class PopupComponent implements OnInit {
             subject = subject + '  ] .';
         }
 
-        this.selectedSP.children.forEach(module => {
+        if ( this.selectedSP.children !== null && this.selectedSP.children.length > 0 ) {
+          this.selectedSP.children.forEach(module => {
             if (module.concepts && module.concepts.length > 0) {
-                subject = subject + '<> dc:hasPart [ dc:type "Module"; dc:title "' + module.name + '"';
-                module.concepts.forEach(concept => {
-                    const bokCode = concept.split(']', 1)[0].split('[', 2)[1];
-                    if (bokCode) {
-                        subject = subject + '; dc:relation eo4geo:' + bokCode;
-                    }
-                });
-                subject = subject + '  ]';
+              subject = subject + '<> dc:hasPart [ dc:type "Module"; dc:title "' + module.name + '"';
+              module.concepts.forEach(concept => {
+                const bokCode = concept.split(']', 1)[0].split('[', 2)[1];
+                if (bokCode) {
+                  subject = subject + '; dc:relation eo4geo:' + bokCode;
+                }
+              });
+              subject = subject + '  ]';
             }
             if (module.children && module.children.length > 0) {
-                module.children.forEach(course => {
-                    if (course.concepts && course.concepts.length > 0) {
-                        subject = subject + '<> dc:hasPart [  dc:type "Course"; dc:title "' + course.name + '"';
-                        course.concepts.forEach(concept => {
-                            const bokCode = concept.split(']', 1)[0].split('[', 2)[1];
-                            if (bokCode) {
-                                subject = subject + '; dc:relation eo4geo:' + bokCode;
-                            }
-                        });
-                        subject = subject + '  ]';
+              module.children.forEach(course => {
+                if (course.concepts && course.concepts.length > 0) {
+                  subject = subject + '<> dc:hasPart [  dc:type "Course"; dc:title "' + course.name + '"';
+                  course.concepts.forEach(concept => {
+                    const bokCode = concept.split(']', 1)[0].split('[', 2)[1];
+                    if (bokCode) {
+                      subject = subject + '; dc:relation eo4geo:' + bokCode;
                     }
-                    if (course.children && course.children.length > 0) {
-                        course.children.forEach(lecture => {
-                            if (lecture.concepts && lecture.concepts.length > 0) {
-                                subject = subject + '<> dc:hasPart [  dc:type "Lecture"; dc:title "' + lecture.name + '"';
-                                lecture.concepts.forEach(concept => {
-                                    const bokCode = concept.split(']', 1)[0].split('[', 2)[1];
-                                    if (bokCode) {
-                                        subject = subject + '; dc:relation eo4geo:' + bokCode;
-                                    }
-                                });
-                                subject = subject + '  ]';
-                            }
-                        });
+                  });
+                  subject = subject + '  ]';
+                }
+                if (course.children && course.children.length > 0) {
+                  course.children.forEach(lecture => {
+                    if (lecture.concepts && lecture.concepts.length > 0) {
+                      subject = subject + '<> dc:hasPart [  dc:type "Lecture"; dc:title "' + lecture.name + '"';
+                      lecture.concepts.forEach(concept => {
+                        const bokCode = concept.split(']', 1)[0].split('[', 2)[1];
+                        if (bokCode) {
+                          subject = subject + '; dc:relation eo4geo:' + bokCode;
+                        }
+                      });
+                      subject = subject + '  ]';
                     }
-                });
+                  });
+                }
+              });
             }
-        });
-
+          });
+        }
         return subject;
     }
 
@@ -725,43 +726,44 @@ export class PopupComponent implements OnInit {
 
         let children = '';
         let module = '';
-        data.children.forEach(child => {
+        if ( data.children !== null && data.children.length > 0 ) {
+          data.children.forEach(child => {
             const linksToBok = this.getLinksToBok(child);
             const learningObjectives = this.getLearningObjectives(child);
             const concepts = this.getConcepts(child);
             children = children + '<rdf:li> <rdf:Description ' +
-                'rdf:about="' + urlChildren + child._id + '">' +
-                '<children:name>' + child.name + '</children:name>' +
-                '<children:description>' + child.description + '</children:description>' +
-                '<children:numSemester>' + child.numSemester + '</children:numSemester>';
+              'rdf:about="' + urlChildren + child._id + '">' +
+              '<children:name>' + child.name + '</children:name>' +
+              '<children:description>' + child.description + '</children:description>' +
+              '<children:numSemester>' + child.numSemester + '</children:numSemester>';
             children = (typeof child.eqf !== 'undefined') ? children + '<children:eqf>' + child.eqf + '</children:eqf>' : children + '<children:ects>' + child.ects + '</children:ects>';
             module = (child.depth === 1) ? module = 'course' : module = 'lecture';
             if (typeof child.assesment !== 'undefined' && child.assesment !== '') {
-                children = children + '<children:assesment>' + child.assesment + '</children:assesment>';
+              children = children + '<children:assesment>' + child.assesment + '</children:assesment>';
             }
             if (typeof child.bibliography !== 'undefined' && child.bibliography !== '') {
               children = children + '<children:bibliography> <rdf:Bag rdf:ID="bibliography"> ';
-              child.bibliography.forEach( b => {
+              child.bibliography.forEach(b => {
                 children = children + '<rdf:li>' + b.name.replace('&', ' ') + '</rdf:li>';
               });
               children = children + '</rdf:Bag> </children:bibliography>';
             }
             if (child.children !== null && child.children.length > 0) {
-                children = children + '<children:children> <rdf:Bag rdf:ID="' + module + '"> ' + this.getChildren(child) +
-                    '</rdf:Bag> </children:children>';
+              children = children + '<children:children> <rdf:Bag rdf:ID="' + module + '"> ' + this.getChildren(child) +
+                '</rdf:Bag> </children:children>';
             }
             if (child.linksToBok !== null && child.linksToBok.length > 0) {
-                children = children + '<children:linksToBok> <rdf:Bag>' + linksToBok + '</rdf:Bag> </children:linksToBok>';
+              children = children + '<children:linksToBok> <rdf:Bag>' + linksToBok + '</rdf:Bag> </children:linksToBok>';
             }
             if (child.learningObjectives !== null && child.learningObjectives.length > 0) {
-                children = children + '<children:learningObjectives> <rdf:Bag>' + learningObjectives + '</rdf:Bag> </children:learningObjectives>';
+              children = children + '<children:learningObjectives> <rdf:Bag>' + learningObjectives + '</rdf:Bag> </children:learningObjectives>';
             }
             if (child.concepts !== null && child.concepts.length > 0) {
-                children = children + '<children:concepts> <rdf:Bag>' + concepts + '</rdf:Bag> </children:concepts>';
+              children = children + '<children:concepts> <rdf:Bag>' + concepts + '</rdf:Bag> </children:concepts>';
             }
             children = children + '</rdf:Description> </rdf:li>';
-        });
-
+          });
+        }
         return children;
     }
     headerRDF(data: any) {
