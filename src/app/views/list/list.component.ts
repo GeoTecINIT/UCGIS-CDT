@@ -11,6 +11,7 @@ import { SlicePipe } from '@angular/common';
 import { User, UserService } from '../../services/user.service';
 import { OrganizationService, Organization } from '../../services/organization.service';
 import { ActivatedRoute } from '@angular/router';
+import * as cloneDeep from 'lodash/cloneDeep';
 
 @Component({
   selector: 'app-list',
@@ -66,7 +67,22 @@ export class ListComponent implements OnInit {
       }
     });
     this.organizationService.subscribeToOrganizations().subscribe(orgs => {
-      this.organizations = orgs.sort((a, b) => (a.name.trim().toLowerCase() > b.name.trim().toLowerCase()) ? 1 : -1);
+      let allOrgsWithDiv = [];
+      orgs.forEach(o => {
+        let copyOrg = cloneDeep(o);
+        copyOrg.description = o.name;
+        allOrgsWithDiv.push(copyOrg);
+        if (o.divisions) {
+          o.divisions.forEach(d => {
+            let copyOrg = cloneDeep(o);
+            copyOrg.description = o.name + ' - ' + d;
+            allOrgsWithDiv.push(copyOrg);
+          });
+        }
+      });
+
+      //  this.organizations = allOrgsWithDiv;
+      this.organizations = allOrgsWithDiv.sort((a, b) => (a.name.trim().toLowerCase() > b.name.trim().toLowerCase()) ? 1 : -1);
     });
   }
 
@@ -307,11 +323,20 @@ export class ListComponent implements OnInit {
           it.userId === this.currentUser._id
       );
     } else if (author === 1) { // my orgs
-      this.filteredStudyPrograms = this.filteredStudyPrograms.filter(
-        it =>
-          it.orgId === this.filterOrg._id
-        // this.currentUser.organizations.includes(it.orgId)
-      );
+      let filter = [];
+      this.filteredStudyPrograms.forEach(sp => {
+        if (sp.orgId === this.filterOrg._id) {
+          if (this.filterOrg.description.indexOf(' - ') > -1) {
+            if (sp.division && sp.division === this.filterOrg.description.split(' - ')[1]) {
+              filter.push(sp);
+            }
+          } else {
+            filter.push(sp);
+          }
+        }
+      });
+
+      this.filteredStudyPrograms = filter;
     }
   }
 

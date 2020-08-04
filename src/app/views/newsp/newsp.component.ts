@@ -837,8 +837,7 @@ export class NewspComponent implements OnInit, OnDestroy {
 
   loadDivisions() {
     this.userDivisions = this.saveOrg.divisions ? this.saveOrg.divisions : [];
-    this.userDivisions.push(' ');
-    this.saveDiv = this.userDivisions[0];
+    this.saveDiv = this.model ? this.model.division ? this.model.division : '' : '';
   }
 
 }
