@@ -317,7 +317,7 @@ export class NewspComponent implements OnInit, OnDestroy {
 
   saveCurrentNode() {
     let modelToSave = null;
-    switch (this.currentTreeNode.depth + this.highestItemLevel) { // absolute depth
+    switch (this.currentTreeNode.depth) { // absolute depth  + this.highestItemLevel
       case 0:
         modelToSave = this.model;
         break;
