@@ -122,21 +122,21 @@
               </div>
             </div>
 
-            <div class="col-sm-4 col-md-3">
+            <div class="col-sm-4 col-md-3" style="padding-right: 0;">
               <div class="text-right">
                 <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyAuthor==-1}"
                   (click)="showOnlyAuthor=-1; filterAll()" [disabled]="isAnonymous">All</button>
                 <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyAuthor==0}"
                   (click)="showOnlyAuthor=0; filterAll()" [disabled]="isAnonymous">My content</button>
-                  <span class="ml-3"> By organization: </span> 
+                  <span class="ml-3 mr-1"> By organization: </span> 
                 <!--    <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyAuthor==1}"
                   (click)="showOnlyAuthor=1; filterAll()" [disabled]="isAnonymous">My organization's
                   content</button> -->
               </div>
             </div>
-            <div class="col-sm-4 col-md-3">
+            <div class="col-sm-4 col-md-3" style="padding-left: 0;">
               <ng-select *ngIf="organizations && organizations.length > 0" id="filter" [items]="organizations"
-                name="userOrgs" bindLabel="description" [multiple]="false" [(ngModel)]="filterOrg" groupBy="name"
+                name="userOrgs" bindLabel="description" [multiple]="false" [(ngModel)]="filterOrg"
                 (change)="showOnlyAuthor=1; filterAll()">
                 <ng-template ng-optgroup-tmp let-item="item">
                   {{item.name || 'Unnamed group'}}
@@ -181,7 +181,7 @@
             <div class="col-sm-0 col-md-2"></div>
           </div>
         </div>
-        <div class="card-body">
+        <div class="card-body" style="padding-top: 0;">
           <div *ngIf="filteredStudyPrograms && filteredStudyPrograms.length == 0">
             <div class="text-center">
               <h5> Your search did not return any result. Try with advanced search to search in more attributes.</h5>
