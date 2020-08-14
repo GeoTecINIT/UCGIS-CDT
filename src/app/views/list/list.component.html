@@ -128,7 +128,7 @@
                   (click)="showOnlyAuthor=-1; filterAll()" [disabled]="isAnonymous">All</button>
                 <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyAuthor==0}"
                   (click)="showOnlyAuthor=0; filterAll()" [disabled]="isAnonymous">My content</button>
-                  <span class="ml-3 mr-1"> By organization: </span> 
+                <span class="ml-3 mr-1"> By organization: </span>
                 <!--    <button class="btn btn-pill btn-outline-primary" [ngClass]="{'active': showOnlyAuthor==1}"
                   (click)="showOnlyAuthor=1; filterAll()" [disabled]="isAnonymous">My organization's
                   content</button> -->
@@ -201,21 +201,22 @@
                 <!-- Filter by author -->
                 <div class="row">
                   <!-- *ngIf="sp.levelPublic || currentUser != null && (sp.userId==currentUser?._id || (currentUser?.organizations?.indexOf(sp.orgId) > -1))" -->
-                  <div class="col-md-10">
-                    <button type="button" class="btn text-justify" routerLink="/detail/{{ sp._id }}">
+                  <div class="col-md-10" style="margin-bottom: 0.75em;">
+                    <a href="#" class="no-decoration" routerLink="/detail/{{ sp._id }}">
                       <span>
                         <h1 style="display: inline;">{{ sp.name }}</h1>
-                        <h6 *ngIf="sp.depth==0" style="display: inline;">Study Program</h6>
-                        <h6 *ngIf="sp.depth==1" style="display: inline;">Module</h6>
-                        <h6 *ngIf="sp.depth==2" style="display: inline;">Course</h6>
-                        <h6 *ngIf="sp.depth==3" style="display: inline;">Lecture</h6>
+                        <h6 *ngIf="sp.depth==0" style="display: inline;" class="text-normal">Study Program</h6>
+                        <h6 *ngIf="sp.depth==1" style="display: inline;" class="text-normal">Module</h6>
+                        <h6 *ngIf="sp.depth==2" style="display: inline;" class="text-normal">Course</h6>
+                        <h6 *ngIf="sp.depth==3" style="display: inline;" class="text-normal">Lecture</h6>
                         <!-- <h6 *ngIf="sp.levelPublic" style="display: inline;" class="text-level">Public</h6> -->
                         <h6 *ngIf="!sp.levelPublic" style="display: inline;" class="text-level">Private</h6>
                         <h6 style="display: inline;" class="text-level text-secondary">{{ sp.orgName }}
-                         <span *ngIf="sp.division"> - {{ sp.division }} </span></h6>
-                        <h6>{{ sp.affiliation }}</h6>
+                          <span *ngIf="sp.division"> - {{ sp.division }} </span></h6>
+                        <h6 class="text-normal">{{ sp.affiliation }}</h6>
                         <p class="text-muted">{{ sp.description | slice:0:300 }} ... </p>
-                        EQF Level: {{ sp.eqf }} <span *ngIf="sp.updatedAt" class="text-lastupdated ">| Last updated:
+                        <span class="text-normal"> EQF Level: {{ sp.eqf }} </span> <span *ngIf="sp.updatedAt"
+                          class="text-lastupdated ">| Last updated:
                           {{sp.updatedAt.toDate() | date:'dd-MMM-yyyy'}}
                         </span>
                       </span>
@@ -230,7 +231,7 @@
                 >
                   {{ mk }}
                 </span> -->
-                    </button>
+                    </a>
                   </div>
                   <div class="col-md-2">
                     <div class="row">
@@ -248,19 +249,19 @@
                         </button>
                       </div>
                       <div class="col-3 col-sm-3 col-md-3 no-padding"
-                        tooltip="{{isAnonymous? 'Login to be able to edit' : sp.isEdited? 'Another user is editing this content. To avoid content loss, editing has been disabled. If you think this is a bug, open content details to unlock it.' : sp.userId==afAuth.auth.currentUser?.uid? 'Edit' : 'You can edit only your own educational offers' }}">
+                        tooltip="{{isAnonymous? 'Login to be able to edit' : sp.isEdited? 'Another user is editing this content. To avoid content loss, editing has been disabled. If you think this is a bug, open content details to unlock it.' : (currentUser?.organizations?.indexOf(sp.orgId) > -1)? 'Edit' : 'You can edit only your own or your organization educational offers' }}">
                         <button type="button" class="btn btn-block btn-link" routerLink="/newsp/copy/{{ sp._id }}"
                           [disabled]="isAnonymous || (currentUser?.organizations?.indexOf(sp.orgId) == -1) || sp.isEdited">
-                          <i class="fa fa-edit fa-lg mt-4" [ngClass]="sp.isEdited? 'icon-editing' : '' "></i>
+                          <i class="fa fa-edit fa-lg mt-4" [ngClass]="!isAnonymous && sp.isEdited? 'icon-editing' : '' "></i>
                           <!--    [disabled]="isAnonymous  || sp.userId!=afAuth.auth.currentUser?.uid"> -->
                         </button>
                       </div>
                       <div class="col-3 col-sm-3 col-md-3 no-padding"
-                        tooltip="{{isAnonymous? 'Login to be able to remove' : sp.isEdited? 'Another user is editing this content. To avoid content loss, removing has been disabled. If you think this is a bug, open content details to unlock it.' : sp.userId==afAuth.auth.currentUser?.uid? 'Remove' : 'You can remove only your own educational offers' }}">
+                        tooltip="{{isAnonymous? 'Login to be able to remove' : sp.isEdited? 'Another user is editing this content. To avoid content loss, removing has been disabled. If you think this is a bug, open content details to unlock it.' : (currentUser?.organizations?.indexOf(sp.orgId) > -1)? 'Remove' : 'You can remove only your own or your organization educational offers' }}">
                         <button type="button" class="btn btn-block btn-link" data-toggle="modal"
                           (click)="dangerModal.show()"
                           [disabled]="isAnonymous || (currentUser?.organizations?.indexOf(sp.orgId) == -1) || sp.isEdited">
-                          <i class="fa fa-trash-o fa-lg mt-4" [ngClass]="sp.isEdited? 'icon-editing' : '' "></i>
+                          <i class="fa fa-trash-o fa-lg mt-4" [ngClass]="!isAnonymous && sp.isEdited? 'icon-editing' : '' "></i>
                         </button>
                       </div>
                     </div>
