@@ -249,19 +249,19 @@
                         </button>
                       </div>
                       <div class="col-3 col-sm-3 col-md-3 no-padding"
-                        tooltip="{{isAnonymous? 'Login to be able to edit' : sp.isEdited? 'Another user is editing this content. To avoid content loss, editing has been disabled. If you think this is a bug, open content details to unlock it.' : sp.userId==afAuth.auth.currentUser?.uid? 'Edit' : 'You can edit only your own educational offers' }}">
+                        tooltip="{{isAnonymous? 'Login to be able to edit' : sp.isEdited? 'Another user is editing this content. To avoid content loss, editing has been disabled. If you think this is a bug, open content details to unlock it.' : (currentUser.organizations.indexOf(sp.orgId) > -1)? 'Edit' : 'You can edit only your own or your organization educational offers' }}">
                         <button type="button" class="btn btn-block btn-link" routerLink="/newsp/copy/{{ sp._id }}"
                           [disabled]="isAnonymous || (currentUser?.organizations?.indexOf(sp.orgId) == -1) || sp.isEdited">
-                          <i class="fa fa-edit fa-lg mt-4" [ngClass]="sp.isEdited? 'icon-editing' : '' "></i>
+                          <i class="fa fa-edit fa-lg mt-4" [ngClass]="!isAnonymous && sp.isEdited? 'icon-editing' : '' "></i>
                           <!--    [disabled]="isAnonymous  || sp.userId!=afAuth.auth.currentUser?.uid"> -->
                         </button>
                       </div>
                       <div class="col-3 col-sm-3 col-md-3 no-padding"
-                        tooltip="{{isAnonymous? 'Login to be able to remove' : sp.isEdited? 'Another user is editing this content. To avoid content loss, removing has been disabled. If you think this is a bug, open content details to unlock it.' : sp.userId==afAuth.auth.currentUser?.uid? 'Remove' : 'You can remove only your own educational offers' }}">
+                        tooltip="{{isAnonymous? 'Login to be able to remove' : sp.isEdited? 'Another user is editing this content. To avoid content loss, removing has been disabled. If you think this is a bug, open content details to unlock it.' : (currentUser.organizations.indexOf(sp.orgId) > -1)? 'Remove' : 'You can remove only your own or your organization educational offers' }}">
                         <button type="button" class="btn btn-block btn-link" data-toggle="modal"
                           (click)="dangerModal.show()"
                           [disabled]="isAnonymous || (currentUser?.organizations?.indexOf(sp.orgId) == -1) || sp.isEdited">
-                          <i class="fa fa-trash-o fa-lg mt-4" [ngClass]="sp.isEdited? 'icon-editing' : '' "></i>
+                          <i class="fa fa-trash-o fa-lg mt-4" [ngClass]="!isAnonymous && sp.isEdited? 'icon-editing' : '' "></i>
                         </button>
                       </div>
                     </div>
