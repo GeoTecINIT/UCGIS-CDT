@@ -190,7 +190,6 @@ export class ListComponent implements OnInit {
         // if no filters checked, return all
         this.advancedSearch = false;
         this.filter();
-        // this.filteredStudyPrograms.push(sp);
       } else {
         if (this.affiliationFilter) {
           if (sp.affiliation.toLowerCase().includes(this.searchText.toLowerCase())) {
