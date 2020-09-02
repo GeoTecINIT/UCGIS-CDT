@@ -38,6 +38,8 @@ export class Course extends Object {
   public customCompetences: string[];
   public competences: Competence[];
   public isEdited: Boolean;
+  public urlAff: string;
+  public urlTM: string;
 
   data: any;
 
@@ -87,6 +89,8 @@ export class Course extends Object {
       this.competences = currentNode.data.competences ? currentNode.data.competences : [];
       this.customCompetences = currentNode.data.customCompetences ? currentNode.data.customCompetences : [];
       this.isEdited = currentNode.data.isEdited != null ? currentNode.data.isEdited : false;
+      this.urlAff = currentNode.data.urlAff ? currentNode.data.urlAff : '';
+      this.urlTM = currentNode.data.urlTM ? currentNode.data.urlTM : '';
 
     } else {
       this._id = '';
@@ -115,6 +119,8 @@ export class Course extends Object {
       this.competences = [];
       this.customCompetences = [];
       this.isEdited = false;
+      this.urlAff = '';
+      this.urlTM = '';
     }
   }
 }

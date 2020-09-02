@@ -42,6 +42,9 @@ export class StudyProgram extends Object {
   public competences: Competence[];
   public updatedAt: any;
   public createdAt: any;
+  public urlAff: string;
+  public urlTM: string;
+
 
   constructor(public currentNode: any = null) {
     super();
@@ -106,6 +109,8 @@ export class StudyProgram extends Object {
       this.customCompetences = currentNode.data.customCompetences ? currentNode.data.customCompetences : [];
       this.updatedAt = currentNode.data.updatedAt ? currentNode.data.updatedAt : new Date();
       this.createdAt = currentNode.data.createdAt ? currentNode.data.createdAt : new Date();
+      this.urlAff = currentNode.data.urlAff ? currentNode.data.urlAff : '';
+      this.urlTM = currentNode.data.urlTM ? currentNode.data.urlTM : '';
 
     } else {
       this._id = '';
@@ -133,6 +138,8 @@ export class StudyProgram extends Object {
       this.customCompetences = [];
       this.updatedAt = new Date();
       this.createdAt = new Date();
+      this.urlAff = '';
+      this.urlTM = '';
     }
   }
 }

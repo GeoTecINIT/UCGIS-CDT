@@ -89,8 +89,9 @@
               <!-- -->
               <div class="col-md-10">
                 <h1>{{ selectedProgram.name }}</h1>
-                <h5>{{ selectedProgram.affiliation }} </h5>
+                <h5>{{ selectedProgram.affiliation }}  <a *ngIf="selectedProgram.urlAff != ''" href="{{selectedProgram.urlAff}}" target="_blank" rel="noopener noreferrer">{{selectedProgram.urlAff}}</a></h5> 
                 <h6 style="display: inline;" class="text-level text-secondary">{{ selectedProgram.orgName }}</h6>
+                <h5><a *ngIf="selectedProgram.urlTM != ''" href="{{selectedProgram.urlTM}}" target="_blank" rel="noopener noreferrer">{{selectedProgram.urlTM}}</a></h5> 
               </div>
               <div class="col-md-2 text-right">
                 <button type="button" class="btn btn-default btn-secondary"

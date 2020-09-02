@@ -183,7 +183,8 @@
                         <div class="form-group">
                           <label for="title">Title</label>
                           <input type="text" class="form-control" id="title" placeholder="Title"
-                            [(ngModel)]="model.name" name="title" required (keyup)="updateTreeStudyProgram()" maxlength="100" />
+                            [(ngModel)]="model.name" name="title" required (keyup)="updateTreeStudyProgram()"
+                            maxlength="100" />
                         </div>
                       </div>
                       <div class="col-md-2 align-middle m-auto">
@@ -196,9 +197,9 @@
                       <div class="col-md-10">
                         <div class="form-group">
                           <label for="title">Affiliation</label>
-                          <input type="text" class="form-control" id="affiliation" placeholder="Affiliation"
-                            [(ngModel)]="model.affiliation" name="affiliation" required
-                            (keyup)="updateTreeStudyProgram()" />
+                          <input type="text" class="form-control" id="affiliation"
+                            placeholder="Fill in affiliation name" [(ngModel)]="model.affiliation" name="affiliation"
+                            required (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
                       <div class="col-md-2">
@@ -211,6 +212,14 @@
                             min="1" max="8" (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <!--     <label for="title">Affiliation webpage</label> -->
+                          <input type="text" class="form-control" id="urlAff" placeholder="Fill in affiliation webpage"
+                            [(ngModel)]="model.urlAff" name="urlAff" (keyup)="updateTreeStudyProgram()" />
+                        </div>
+                      </div>
+
                     </div>
                     <div class="row">
                       <div class="col-md-9">
@@ -251,6 +260,15 @@
                             </li>
                           </div>
                         </ul>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="title">Additional information</label>
+                          <input type="text" class="form-control" id="urlTM" placeholder="Fill in the URL"
+                            [(ngModel)]="model.urlTM" name="urlTM" (keyup)="updateTreeStudyProgram()" />
+                        </div>
                       </div>
                     </div>
                     <div class="row">
@@ -339,11 +357,12 @@
                               <div class="row">
                                 <div class="col-md-2"></div>
                                 <div class="col-md-6">
-                                  <input type="text" class="form-control" id="customLO" maxlength="150" 
+                                  <input type="text" class="form-control" id="customLO" maxlength="150"
                                     placeholder="Add custom learning outcome" [(ngModel)]="customLO" name="customLO" />
                                 </div>
                                 <div class="col-md-4">
-                                  <button type="button" class="btn btn-primary btn-sm" (click)="addCustomLO(model)" [disabled]="customLO.length < 1" >
+                                  <button type="button" class="btn btn-primary btn-sm" (click)="addCustomLO(model)"
+                                    [disabled]="customLO.length < 1">
                                     Add custom LO
                                   </button>
                                 </div>
@@ -477,7 +496,7 @@
                     <div class="row pt-1 form-group">
                       <div class="col-md-6">
                         <input #competenceExtra type="text" class="form-control" id="competenceExtra"
-                          placeholder="Custom transversal skill" name="competenceExtra" maxlength="150" 
+                          placeholder="Custom transversal skill" name="competenceExtra" maxlength="150"
                           (keyup)="competenceExtraAdd.disabled = false"
                           (keydown.enter)="addExtraCompetence(competenceExtra.value, model); competenceExtra.value= ''; competenceExtraAdd.disabled = true" />
                       </div>
@@ -595,9 +614,9 @@
                       <div class="col-md-10">
                         <div class="form-group">
                           <label for="title">Affiliation</label>
-                          <input type="text" class="form-control" id="affiliation" placeholder="Affiliation"
-                            [(ngModel)]="modelModule.affiliation" name="affiliation" required
-                            (keyup)="updateTreeStudyProgram()" />
+                          <input type="text" class="form-control" id="affiliation"
+                            placeholder="Fill in affiliation name" [(ngModel)]="modelModule.affiliation"
+                            name="affiliation" required (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
                       <div class="col-md-2">
@@ -608,6 +627,13 @@
                             class="badge badge-primary badge-pill">i</span>
                           <input type="number" size="1" class="form-control" id="eqf" [(ngModel)]="modelModule.eqf"
                             name="eqf" min="1" max="8" (keyup)="updateTreeStudyProgram()" />
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <!--                           <label for="title">Affiliation webpage</label>
+ --> <input type="text" class="form-control" id="urlAff" placeholder="Fill in affiliation webpage"
+                            [(ngModel)]="modelModule.urlAff" name="urlAff" (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
                       <div class="col-md-12">
@@ -636,6 +662,14 @@
                             </li>
                           </div>
                         </ul>
+                      </div>
+
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="title">Additional information</label>
+                          <input type="text" class="form-control" id="urlTM" placeholder="Fill in the URL"
+                            [(ngModel)]="modelModule.urlTM" name="urlTM" (keyup)="updateTreeStudyProgram()" />
+                        </div>
                       </div>
                     </div>
                     <div class="row">
@@ -775,11 +809,11 @@
                               <div class="row">
                                 <div class="col-md-2"></div>
                                 <div class="col-md-6">
-                                  <input type="text" class="form-control" id="customLO" maxlength="150" 
+                                  <input type="text" class="form-control" id="customLO" maxlength="150"
                                     placeholder="Add custom learning outcome" [(ngModel)]="customLO" name="customLO" />
                                 </div>
                                 <div class="col-md-4">
-                                  <button type="button" class="btn btn-primary btn-sm" [disabled]="customLO.length < 1" 
+                                  <button type="button" class="btn btn-primary btn-sm" [disabled]="customLO.length < 1"
                                     (click)="addCustomLO(modelModule)">
                                     Add custom LO
                                   </button>
@@ -921,7 +955,7 @@
                       <div class="col-md-6">
                         <input #competenceExtra type="text" class="form-control" id="competenceExtra"
                           placeholder="Custom transversal skill" name="competenceExtra"
-                          (keyup)="competenceExtraAdd.disabled = false" maxlength="150" 
+                          (keyup)="competenceExtraAdd.disabled = false" maxlength="150"
                           (keydown.enter)="addExtraCompetence(competenceExtra.value, modelModule); competenceExtra.value= ''; competenceExtraAdd.disabled = true" />
                       </div>
                       <div class="col-md-6">
@@ -1038,9 +1072,9 @@
                       <div class="col-md-10">
                         <div class="form-group">
                           <label for="title">Affiliation</label>
-                          <input type="text" class="form-control" id="affiliation" placeholder="Affiliation"
-                            [(ngModel)]="modelCourse.affiliation" name="affiliation" required
-                            (keyup)="updateTreeStudyProgram()" />
+                          <input type="text" class="form-control" id="affiliation"
+                            placeholder="Fill in affiliation name" [(ngModel)]="modelCourse.affiliation"
+                            name="affiliation" required (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
                       <div class="col-md-2">
@@ -1051,6 +1085,13 @@
                             class="badge badge-primary badge-pill">i</span>
                           <input type="number" size="1" class="form-control" id="eqf" [(ngModel)]="modelCourse.eqf"
                             name="eqf" min="1" max="8" (keyup)="updateTreeStudyProgram()" />
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <!--   <label for="title">Affiliation webpage</label> -->
+                          <input type="text" class="form-control" id="urlAff" placeholder="Fill in affiliation webpage"
+                            [(ngModel)]="modelCourse.urlAff" name="urlAff" (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
                       <div class="col-md-12">
@@ -1079,6 +1120,14 @@
                             </li>
                           </div>
                         </ul>
+                      </div>
+
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="title">Additional information</label>
+                          <input type="text" class="form-control" id="urlTM" placeholder="Fill in the URL"
+                            [(ngModel)]="modelCourse.urlTM" name="urlTM" (keyup)="updateTreeStudyProgram()" />
+                        </div>
                       </div>
                     </div>
                     <div class="row">
@@ -1246,11 +1295,11 @@
                               <div class="row">
                                 <div class="col-md-2"></div>
                                 <div class="col-md-6">
-                                  <input type="text" class="form-control" id="customLO" maxlength="150" 
+                                  <input type="text" class="form-control" id="customLO" maxlength="150"
                                     placeholder="Add custom learning outcome" [(ngModel)]="customLO" name="customLO" />
                                 </div>
                                 <div class="col-md-4">
-                                  <button type="button" class="btn btn-primary btn-sm" [disabled]="customLO.length < 1" 
+                                  <button type="button" class="btn btn-primary btn-sm" [disabled]="customLO.length < 1"
                                     (click)="addCustomLO(modelCourse)">
                                     Add custom LO
                                   </button>
@@ -1392,7 +1441,7 @@
                       <div class="col-md-6">
                         <input #competenceExtra type="text" class="form-control" id="competenceExtra"
                           placeholder="Custom transversal skill" name="competenceExtra"
-                          (keyup)="competenceExtraAdd.disabled = false" maxlength="150" 
+                          (keyup)="competenceExtraAdd.disabled = false" maxlength="150"
                           (keydown.enter)="addExtraCompetence(competenceExtra.value, modelCourse); competenceExtra.value= ''; competenceExtraAdd.disabled = true" />
                       </div>
                       <div class="col-md-6">
@@ -1431,8 +1480,8 @@
 
                             </div>
                             <div class="col-md-8">
-                              <input type="text" class="form-control" id="bibliography" placeholder="Bibliography" maxlength="150" 
-                                [(ngModel)]="customBib" name="bibliography" />
+                              <input type="text" class="form-control" id="bibliography" placeholder="Bibliography"
+                                maxlength="150" [(ngModel)]="customBib" name="bibliography" />
                             </div>
                             <div class="col-md-4">
                               <button type="button" class="btn btn-primary btn-sm" (click)="addCustomBib(modelCourse)">
@@ -1556,9 +1605,9 @@
                       <div class="col-md-10">
                         <div class="form-group">
                           <label for="title">Affiliation</label>
-                          <input type="text" class="form-control" id="affiliation" placeholder="Affiliation"
-                            [(ngModel)]="modelLecture.affiliation" name="affiliation" required
-                            (keyup)="updateTreeStudyProgram()" />
+                          <input type="text" class="form-control" id="affiliation"
+                            placeholder="Fill in affiliation name" [(ngModel)]="modelLecture.affiliation"
+                            name="affiliation" required (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
                       <div class="col-md-2">
@@ -1569,6 +1618,13 @@
                             class="badge badge-primary badge-pill">i</span>
                           <input type="number" size="1" class="form-control" id="eqf" [(ngModel)]="modelLecture.eqf"
                             name="eqf" min="1" max="8" (keyup)="updateTreeStudyProgram()" />
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <!--  <label for="title">Affiliation webpage</label> -->
+                          <input type="text" class="form-control" id="urlAff" placeholder="Fill in affiliation webpage"
+                            [(ngModel)]="modelLecture.urlAff" name="urlAff" (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
                       <div class="col-md-12">
@@ -1597,6 +1653,13 @@
                             </li>
                           </div>
                         </ul>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="title">Additional information</label>
+                          <input type="text" class="form-control" id="urlTM" placeholder="Fill in the URL"
+                            [(ngModel)]="modelLecture.urlTM" name="urlTM" (keyup)="updateTreeStudyProgram()" />
+                        </div>
                       </div>
                     </div>
                     <div class="row">
@@ -1674,11 +1737,11 @@
                               <div class="row">
                                 <div class="col-md-2"></div>
                                 <div class="col-md-6">
-                                  <input type="text" class="form-control" id="customLO" maxlength="150" 
+                                  <input type="text" class="form-control" id="customLO" maxlength="150"
                                     placeholder="Add custom learning outcome" [(ngModel)]="customLO" name="customLO" />
                                 </div>
                                 <div class="col-md-4">
-                                  <button type="button" class="btn btn-primary btn-sm" [disabled]="customLO.length < 1" 
+                                  <button type="button" class="btn btn-primary btn-sm" [disabled]="customLO.length < 1"
                                     (click)="addCustomLO(modelLecture)">
                                     Add custom LO
                                   </button>
@@ -1820,7 +1883,7 @@
                       <div class="col-md-6">
                         <input #competenceExtra type="text" class="form-control" id="competenceExtra"
                           placeholder="Custom transversal skill" name="competenceExtra"
-                          (keyup)="competenceExtraAdd.disabled = false" maxlength="150" 
+                          (keyup)="competenceExtraAdd.disabled = false" maxlength="150"
                           (keydown.enter)="addExtraCompetence(competenceExtra.value, modelLecture); competenceExtra.value= ''; competenceExtraAdd.disabled = true" />
                       </div>
                       <div class="col-md-6">
@@ -1860,10 +1923,11 @@
                             </div>
                             <div class="col-md-8">
                               <input type="text" class="form-control" id="bibliography" placeholder="Bibliography"
-                                [(ngModel)]="customBib" name="bibliography"  maxlength="150"  />
+                                [(ngModel)]="customBib" name="bibliography" maxlength="150" />
                             </div>
                             <div class="col-md-4">
-                              <button type="button" class="btn btn-primary btn-sm" (click)="addCustomBib(modelLecture)" [disabled]="customBib.length < 1" >
+                              <button type="button" class="btn btn-primary btn-sm" (click)="addCustomBib(modelLecture)"
+                                [disabled]="customBib.length < 1">
                                 Add custom Bibliography
                               </button>
                             </div>

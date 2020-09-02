@@ -180,6 +180,18 @@ export class PopupComponent implements OnInit {
               doc.text(30, currentLinePoint, this.selectedSP.affiliation);
               currentLinePoint = currentLinePoint + 8; */
         }
+        if (this.selectedSP.urlAff != null && this.selectedSP.urlAff !== '') {
+            const linePre = doc.setFontSize(9).splitTextToSize( this.selectedSP.urlAff + '', 150);
+            doc.text(30, currentLinePoint, linePre);
+            doc.link(30, currentLinePoint - 2, 150, linePre.length + 5, { url: this.selectedSP.urlAff });
+            currentLinePoint = currentLinePoint + 1 + (3 * linePre.length);
+        }
+        if (this.selectedSP.urlTM != null && this.selectedSP.urlTM !== '') {
+            const linePre = doc.setFontSize(9).splitTextToSize( this.selectedSP.urlTM + '', 150);
+            doc.text(30, currentLinePoint, linePre);
+            doc.link(30, currentLinePoint - 2, 150, linePre.length + 5, { url: this.selectedSP.urlTM });
+            currentLinePoint = currentLinePoint + 1 + (3 * linePre.length);
+        }
         if (this.selectedSP.eqf && this.selectedSP.eqf > 0) {
             doc.setFontSize(12).setTextColor('#1a80b6').setFontType('bold'); // headline
             doc.text(30, currentLinePoint, 'EQF: ' + this.selectedSP.eqf);
