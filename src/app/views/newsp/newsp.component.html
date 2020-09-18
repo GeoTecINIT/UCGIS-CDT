@@ -305,7 +305,10 @@
                               <div *ngIf="model && model.inheritedLearningObjectives">
                                 <ul>
                                   <div *ngFor="let p of model.inheritedLearningObjectives; index as i ">
-                                    <li>{{p.name}}
+                                    <li *ngIf="p.name == p.concept_id">{{p.name}}
+                                    </li>
+                                    <li *ngIf="p.name != p.concept_id">
+                                      <a href="https://bok.eo4geo.eu/{{p.concept_id}}" target="_blank">{{p.name}}</a>
                                     </li>
                                   </div>
                                 </ul>
@@ -341,8 +344,14 @@
                               <div *ngIf="model && model.learningObjectives">
                                 <ul>
                                   <div *ngFor="let p of model.learningObjectives; index as i ">
-                                    <li>{{p.name}} <button type="button" class="btn btn-link" tooltip="Click to remove"
+                                    <li *ngIf="p.name == p.concept_id">{{p.name}} <button type="button" class="btn btn-link" tooltip="Click to remove"
                                         (click)="removeBokKnowledge(model, i, 'learningObjectives')">
+                                        <i class="fa fa-remove"></i>
+                                      </button></li>
+                                    <li *ngIf="p.name != p.concept_id"> <a href="https://bok.eo4geo.eu/{{p.concept_id}}"
+                                                                           target="_blank">{{p.name}}</a>
+                                      <button type="button" class="btn btn-link" tooltip="Click to remove"
+                                              (click)="removeBokKnowledge(model, i, 'learningObjectives')">
                                         <i class="fa fa-remove"></i>
                                       </button></li>
                                   </div>
@@ -757,7 +766,10 @@
                               <div *ngIf="modelModule && modelModule.inheritedLearningObjectives">
                                 <ul>
                                   <div *ngFor="let p of modelModule.inheritedLearningObjectives; index as i ">
-                                    <li>{{p.name}}
+                                    <li *ngIf="p.name == p.concept_id">{{p.name}}
+                                    </li>
+                                    <li *ngIf="p.name != p.concept_id">
+                                      <a href="https://bok.eo4geo.eu/{{p.concept_id}}" target="_blank">{{p.name}}</a>
                                     </li>
                                   </div>
                                 </ul>
@@ -793,8 +805,12 @@
                               <div *ngIf="modelModule && modelModule.learningObjectives">
                                 <ul>
                                   <div *ngFor="let p of modelModule.learningObjectives; index as i ">
-                                    <li>{{p.name}} <button type="button" class="btn btn-link" tooltip="Click to remove"
-                                        (click)="removeBokKnowledge(modelModule, i, 'learningObjectives')">
+                                    <li *ngIf="p.name == p.concept_id">{{p.name}} <button type="button" class="btn btn-link" tooltip="Click to remove" (click)="removeBokKnowledge(model, i, 'learningObjectives')">
+                                      <i class="fa fa-remove"></i>
+                                    </button></li>
+                                    <li *ngIf="p.name != p.concept_id"> <a href="https://bok.eo4geo.eu/{{p.concept_id}}" target="_blank">{{p.name}}</a>
+                                      <button type="button" class="btn btn-link" tooltip="Click to remove"
+                                              (click)="removeBokKnowledge(model, i, 'learningObjectives')">
                                         <i class="fa fa-remove"></i>
                                       </button></li>
                                   </div>
@@ -1243,7 +1259,10 @@
                               <div *ngIf="modelCourse && modelCourse.inheritedLearningObjectives">
                                 <ul>
                                   <div *ngFor="let p of modelCourse.inheritedLearningObjectives; index as i ">
-                                    <li>{{p.name}}
+                                    <li *ngIf="p.name == p.concept_id">{{p.name}}
+                                    </li>
+                                    <li *ngIf="p.name != p.concept_id">
+                                      <a href="https://bok.eo4geo.eu/{{p.concept_id}}" target="_blank">{{p.name}}</a>
                                     </li>
                                   </div>
                                 </ul>
@@ -1279,8 +1298,14 @@
                               <div *ngIf="modelCourse && modelCourse.learningObjectives">
                                 <ul>
                                   <div *ngFor="let p of modelCourse.learningObjectives; index as i ">
-                                    <li>{{p.name}} <button type="button" class="btn btn-link" tooltip="Click to remove"
-                                        (click)="removeBokKnowledge(modelCourse, i, 'learningObjectives')">
+                                    <li *ngIf="p.name == p.concept_id">{{p.name}} <button type="button" class="btn btn-link" tooltip="Click to remove"
+                                                                                                       (click)="removeBokKnowledge(model, i, 'learningObjectives')">
+                                      <i class="fa fa-remove"></i>
+                                    </button></li>
+                                    <li *ngIf="p.name != p.concept_id"> <a href="https://bok.eo4geo.eu/{{p.concept_id}}"
+                                                                                                                             target="_blank">{{p.name}}</a>
+                                      <button type="button" class="btn btn-link" tooltip="Click to remove"
+                                              (click)="removeBokKnowledge(model, i, 'learningObjectives')">
                                         <i class="fa fa-remove"></i>
                                       </button></li>
                                   </div>
@@ -1720,8 +1745,14 @@
                               <div *ngIf="modelLecture && modelLecture.learningObjectives">
                                 <ul>
                                   <div *ngFor="let p of modelLecture.learningObjectives; index as i ">
-                                    <li>{{p.name}} <button type="button" class="btn btn-link" tooltip="Click to remove"
-                                        (click)="removeBokKnowledge(modelLecture, i, 'learningObjectives')">
+                                    <li *ngIf="p.name == p.concept_id">{{p.name}} <button type="button" class="btn btn-link" tooltip="Click to remove"
+                                                                                                       (click)="removeBokKnowledge(model, i, 'learningObjectives')">
+                                      <i class="fa fa-remove"></i>
+                                    </button></li>
+                                    <li *ngIf="p.name != p.concept_id"> <a href="https://bok.eo4geo.eu/{{p.concept_id}}"
+                                                                                                                             target="_blank">{{p.name}}</a>
+                                      <button type="button" class="btn btn-link" tooltip="Click to remove"
+                                              (click)="removeBokKnowledge(model, i, 'learningObjectives')">
                                         <i class="fa fa-remove"></i>
                                       </button></li>
                                   </div>
