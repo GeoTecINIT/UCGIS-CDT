@@ -47,7 +47,7 @@
                 </div>
 
 
-                <!-- 
+                <!--
                 <div class="cols-xs-2 col-md-3">
                   <button type="button" class="btn btn-block btn-link" [popover]="popTemplate" tooltip="Share"
                     popoverTitle="Copy link, export to PDF or XML" placement="top" [outsideClick]="true">
@@ -89,9 +89,9 @@
               <!-- -->
               <div class="col-md-10">
                 <h1>{{ selectedProgram.name }}</h1>
-                <h5>{{ selectedProgram.affiliation }}  <a *ngIf="selectedProgram.urlAff != ''" href="{{selectedProgram.urlAff}}" target="_blank" rel="noopener noreferrer">{{selectedProgram.urlAff}}</a></h5> 
+                <h5>{{ selectedProgram.affiliation }}  <a *ngIf="selectedProgram.urlAff != ''" href="{{selectedProgram.urlAff}}" target="_blank" rel="noopener noreferrer">{{selectedProgram.urlAff}}</a></h5>
                 <h6 style="display: inline;" class="text-level text-secondary">{{ selectedProgram.orgName }}</h6>
-                <h5><a *ngIf="selectedProgram.urlTM != ''" href="{{selectedProgram.urlTM}}" target="_blank" rel="noopener noreferrer">{{selectedProgram.urlTM}}</a></h5> 
+                <h5><a *ngIf="selectedProgram.urlTM != ''" href="{{selectedProgram.urlTM}}" target="_blank" rel="noopener noreferrer">{{selectedProgram.urlTM}}</a></h5>
               </div>
               <div class="col-md-2 text-right">
                 <button type="button" class="btn btn-default btn-secondary"
@@ -211,7 +211,9 @@
                           <b>Inherited Learning Outcomes ({{model.inheritedLearningObjectives.length}}):</b></span>
                         <ul #showILO>
                           <div *ngFor="let l of model.inheritedLearningObjectives">
-                            <li>{{ l.name }}</li>
+                            <li *ngIf="l.name == l.concept_id">{{ l.name }}</li>
+                            <li *ngIf="l.name != l.concept_id"><a href="https://bok.eo4geo.eu/{{l.concept_id}}"
+                                                                                                                     target="_blank">{{l.name}}</a></li>
                           </div>
                         </ul>
                       </div>
@@ -224,7 +226,8 @@
                           <b>Learning Outcomes ({{model.learningObjectives.length}}):</b></span>
                         <ul #showLO>
                           <div *ngFor="let l of model.learningObjectives">
-                            <li>{{ l.name }}</li>
+                            <li *ngIf="l.name == l.concept_id">{{ l.name }}</li>
+                            <li *ngIf="l.name != l.concept_id"><a href="https://bok.eo4geo.eu/{{l.concept_id}}" target="_blank">{{l.name}}</a></li>
                           </div>
                         </ul>
                       </div>
@@ -264,7 +267,7 @@
                         </ul>
                       </div>
 
-                      <div *ngIf="allLinksToBok && allLinksToBok.length > 0" style="background-color: #faf9f8; 
+                      <div *ngIf="allLinksToBok && allLinksToBok.length > 0" style="background-color: #faf9f8;
                         margin-right: -20px;
                         margin-left: -20px;
                         padding: 20px;">

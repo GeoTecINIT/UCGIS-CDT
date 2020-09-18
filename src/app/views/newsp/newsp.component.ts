@@ -677,7 +677,13 @@ export class NewspComponent implements OnInit, OnDestroy {
         break;
       case 'learningObjectives':
         newConcept.linkedTo = 'learningObjectives';
-        if (!modelToUpdate.learningObjectives.includes(newConcept)) {
+        let loFound = false;
+        modelToUpdate.learningObjectives.forEach( lo => {
+          if ( newConcept.concept_id == lo.concept_id ) {
+            loFound = true;
+          }
+        });
+        if (!loFound) {
           newConcept.skills.forEach(sk => {
             const newSkill = new BokInput('', sk, newConcept.concept_id, '', [], 'learningObjectives', []);
             modelToUpdate.learningObjectives.push(newSkill);
