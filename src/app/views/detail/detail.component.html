@@ -212,8 +212,10 @@
                         <ul #showILO>
                           <div *ngFor="let l of model.inheritedLearningObjectives">
                             <li *ngIf="l.name == l.concept_id">{{ l.name }}</li>
-                            <li *ngIf="l.name != l.concept_id"><a href="https://bok.eo4geo.eu/{{l.concept_id.split(']')[0].split('[')[1]}}"
+                            <li *ngIf="l.name != l.concept_id && l.concept_id.split(']').length > 1"><a href="https://bok.eo4geo.eu/{{l.concept_id.split(']')[0].split('[')[1]}}"
                                                                                                                      target="_blank">{{l.name}}</a></li>
+                            <li *ngIf="l.name != l.concept_id && l.concept_id.split(']').length <= 1"><a href="https://bok.eo4geo.eu/{{l.concept_id}}"
+                                                                  target="_blank">{{l.name}}</a></li>
                           </div>
                         </ul>
                       </div>
@@ -227,7 +229,9 @@
                         <ul #showLO>
                           <div *ngFor="let l of model.learningObjectives">
                             <li *ngIf="l.name == l.concept_id">{{ l.name }}</li>
-                            <li *ngIf="l.name != l.concept_id"><a href="https://bok.eo4geo.eu/{{l.concept_id.split(']')[0].split('[')[1]}}" target="_blank">{{l.name}}</a></li>
+                            <li *ngIf="l.name != l.concept_id && l.concept_id.split(']').length > 1"><a href="https://bok.eo4geo.eu/{{l.concept_id.split(']')[0].split('[')[1]}}" target="_blank">{{l.name}}</a></li>
+                            <li *ngIf="l.name != l.concept_id && l.concept_id.split(']').length <= 1"><a href="https://bok.eo4geo.eu/{{l.concept_id}}"
+                                                                                                         target="_blank">{{l.name}}</a></li>
                           </div>
                         </ul>
                       </div>
