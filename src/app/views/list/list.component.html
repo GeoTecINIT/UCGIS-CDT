@@ -28,7 +28,7 @@
                 New
               </button>
             </div>
-            <div class="col-sm-4 col-md-6">
+            <div class="col-sm-4 col-md-5">
               <!-- offset-md-2  -->
               <div class="input-group">
                 <span class="input-group-prepend">
@@ -40,9 +40,15 @@
                   autocomplete="search" [(ngModel)]="searchText" (keyup)="filterAll()" />
               </div>
             </div>
-            <div class="col-sm-4 col-md-3">
+            <div class="col-sm-4 col-md-2">
               <button type="button" class="btn btn-block btn-link" (click)="advancedSearch = !advancedSearch">
                 Advanced Search
+              </button>
+            </div>
+            <div class="col-sm-4 col-md-2">
+              <button type="submit" class="btn btn-block btn-link"
+                      (click)="bokModal.show(); customSelect = 1">
+                Search by BoK concepts
               </button>
             </div>
             <!-- Advanced search -->
@@ -106,6 +112,26 @@
               </div>
             </ng-container>
           </div>
+          <!-- concepts selected from bok -->
+          <div *ngIf="conceptsToSearch.length > 0" >
+            <hr>
+            <div class="row">
+              <div class="col-sm-3 col-md-2 text-center mt-2">
+                Filter by BoK concepts:
+              </div>
+              <div class="row mb-2 text-center ma col-sm-9 col-md-9">
+                <button *ngFor="let mk of conceptsToSearch" type="button" class="btn btn-pill mb-2"
+                        [ngClass]="'bok-' + ( mk.code | slice:0:2 )">
+                  <a (click)="removeConceptSelected(mk)"> <i class="fa fa-close"></i> </a>
+                  <a href="{{this.BOK_PERMALINK_PREFIX}}{{mk.code}}" target="_blank">
+                    {{mk.name}} </a>
+                </button>
+              </div>
+            </div>
+            <hr>
+          </div>
+
+
           <div class="row mb-2">
             <div class="col-sm-4 col-md-6">
               <div class="text-center">
@@ -325,5 +351,136 @@
   </div>
   <!--/.col-->
 </div>
+<div bsModal #bokModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     id="bokModal" aria-hidden="true">
+  <div class="modal-dialog modal-info modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Search by BoK concepts</h4>
+        <button type="button" class="close" (click)="bokModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Search Knowledge and skills card  [hidden]="!isDisplayBoK" -->
+        <div class="card card-accent-secondary">
+          <div class="card-header">
+            Body of Knowledge - Search knowledge and skills
+            <span
+              tooltip="Browse in the BoK for knowledge required for your search. Once in the required knowledge, press the button 'Add' it will link the concept and the learning outcomes dependent on it."
+              class="badge badge-primary badge-pill">i</span>
+
+            <div class="row text-center mb-1">
+              <div class="col-md-12">
+                <div
+                  *ngIf="customSelect == 1 "
+                  class="row text-center ma">
+                  <button *ngFor="let mk of conceptsToSearch" type="button" class="btn btn-pill"
+                          [ngClass]="'bok-' + ( mk.code | slice:0:2 )">
+                    <a (click)="removeConceptSelected(mk)"> <i class="fa fa-close"></i> </a>
+                    <a href="" target="_blank">
+                      {{mk.name}} </a>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <p class="text-center mt-1 mb-0 text-success" *ngIf="customSelect == 1 "> Select as many BoK concepts as required, click “Finish” to finish selecting. </p>
+
+          </div>
+
+          <div class="card-body" style="background-color: #faf9f8">
+            <div class="row text-center">
+              <div class="col-lg-6 col-sm-6">
+                <div class="row text-center mb-1">
+                  <div class="col-md-8">
+                    <div class="input-group">
+                      <div class="input-group-prepend" dropdown>
+                        <button type="button" class="btn btn-primary">
+                          <i class="fa fa-search"></i>
+                        </button>
+                      </div>
+                      <input #searchInput type="text" id="input-competence-filter" name="input-competence-filter"
+                             class="form-control" [(ngModel)]="searchInputField" (keyup)="searchInBok(searchInput.value)"
+                             placeholder="Search Knowledge" />
+                    </div>
+                  </div>
+                  <div class="col-md-2" style="margin-right: 0;margin-left: auto;">
+                    <button type="button" class="btn btn-primary" (click)="addBokConcept()" > Select </button>
+                  </div>
+                  <div class="col-md-2" style="margin-right: 0;margin-left: auto;">
+                    <button type="button" class="btn btn-danger" (click)="bokModal.hide()">Finish</button> </div>
+                </div>
+                <div id="bubbles">
+                </div>
+              </div>
+              <div class="col-lg-6 col-sm-6 text-justify">
+                <div class="row text-left">
+                  <div class="col-md-6">
+                    <a (click)="hasResults = !hasResults; currentConcept=''"
+                       *ngIf="!hasResults && currentConcept != 'GIST'">
+                      < Back to search results </a>
+                  </div>
+                  <div class="col-md-6">
+                    <a (click)="hasResults = false; cleanResults()" *ngIf="hasResults">
+                      &nbsp; X Clear search results </a>
+                  </div>
+                </div>
+                <br>
+                <h5 [hidden]="currentConcept == '' && currentConcept != 'GIST'">Knowledge</h5>
+                <div #textBoK id="textBoK" [hidden]="hasResults">
+                </div>
+                <div class="col" *ngIf="hasResults">
+                  <h3 class="center">
+                    {{ selectedNodes.length }} result(s) for
+                    {{ searchInput.value }}
+                  </h3>
+                  <div *ngFor="let item of selectedNodes; index as i">
+                    <div *ngIf="i < limitSearchTo && i >= limitSearchFrom">
+                      <div class="inline">{{ item.nameShort }}</div>
+                      <div class="inline" [innerHTML]="
+                            item.name | truncate: 100:searchInput.value
+                          "></div>
+                      <a class="inline" (click)="navigateToConcept(item.nameShort)">
+                        Details
+                      </a>
+                      <div class="small" [innerHTML]="
+                            item.description | truncate: 100:searchInput.value
+                          "></div>
+                    </div>
+                  </div>
+                  <div>
+                    <br />
+                    <div class="row">
+                      <div class="col-md-6 text-right">
+                        <a *ngIf="limitSearchFrom > 0" (click)="decrementLimit()">
+                          << Previous </a>
+                      </div>
+                      <div class="col-md-6 text-left"> <a *ngIf="limitSearchTo < selectedNodes.length"
+                                                          (click)="incrementLimit()">
+                        Next >>
+                      </a></div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <p class="text-center mt-1 mb-0 text-success" *ngIf="customSelect == 1"> You have
+          selected  concepts, continue selecting and close BoK window when finished. </p>
+
+        <button type="button" class="btn btn-primary" (click)="addBokConcept()" > Select </button>
+        <button type="button" class="btn btn-danger" (click)="bokModal.hide()">Finish</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <!--/.row-->
 <app-release-notes #releaseNotesModal></app-release-notes>
