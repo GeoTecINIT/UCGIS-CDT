@@ -194,7 +194,7 @@
                         </button>
                       </div>
 
-                      <div class="col-md-10">
+                      <div class="col-md-9">
                         <div class="form-group">
                           <label for="title">Affiliation</label>
                           <input type="text" class="form-control" id="affiliation"
@@ -202,12 +202,13 @@
                             required (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
-                      <div class="col-md-2">
+                      <div class="col-md-3">
                         <div class="form-group">
                           <label for="eqf">EQF</label>
                           <span
                             tooltip="The core of the EQF concerns eight reference levels describing what a learner knows, understands and is able to do – 'learning outcomes', ranging from basic (Level 1) to advanced (Level 8)."
                             class="badge badge-primary badge-pill">i</span>
+                          <a style="text-align: right" href="https://www.cedefop.europa.eu/en/events-and-projects/projects/european-qualifications-framework-eqf" target="_blank" >What is EQF?</a>
                           <input type="number" size="1" class="form-control" id="eqf" [(ngModel)]="model.eqf" name="eqf"
                             min="1" max="8" (keyup)="updateTreeStudyProgram()" />
                         </div>
@@ -228,6 +229,7 @@
                           <span
                             tooltip="The term relates directly to a specific area of study. The International Standard Classification of Education: Fields of Education and Training 2013 (ISCED-F). Maintained by the UNESCO Institute for Statistics."
                             class="badge badge-primary badge-pill">i</span>
+                          <a href="https://circabc.europa.eu/sd/a/286ebac6-aa7c-4ada-a42b-ff2cf3a442bf/ISCED-F 2013 - Detailed field descriptions.pdf" target="_blank">What is a Study area?</a>
                           <ng-select [items]="fieldsService.allfields" name="fields" bindLabel="name"
                             groupBy="grandparent" [multiple]="true" [(ngModel)]="model.fields">
                             <ng-template ng-optgroup-tmp let-item="item">
@@ -620,7 +622,7 @@
                       </div>
                     </div>
                     <div class="row" *ngIf="highestItemLevel == 1">
-                      <div class="col-md-10">
+                      <div class="col-md-9">
                         <div class="form-group">
                           <label for="title">Affiliation</label>
                           <input type="text" class="form-control" id="affiliation"
@@ -628,12 +630,13 @@
                             name="affiliation" required (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
-                      <div class="col-md-2">
+                      <div class="col-md-3">
                         <div class="form-group">
                           <label for="eqf">EQF</label>
                           <span
                             tooltip="The core of the EQF concerns eight reference levels describing what a learner knows, understands and is able to do – 'learning outcomes', ranging from basic (Level 1) to advanced (Level 8)."
                             class="badge badge-primary badge-pill">i</span>
+                          <a style="text-align: right" href="https://www.cedefop.europa.eu/en/events-and-projects/projects/european-qualifications-framework-eqf" target="_blank" >What is EQF?</a>
                           <input type="number" size="1" class="form-control" id="eqf" [(ngModel)]="modelModule.eqf"
                             name="eqf" min="1" max="8" (keyup)="updateTreeStudyProgram()" />
                         </div>
@@ -651,6 +654,7 @@
                           <span
                             tooltip="The term relates directly to a specific area of study. The International Standard Classification of Education: Fields of Education and Training 2013 (ISCED-F). Maintained by the UNESCO Institute for Statistics."
                             class="badge badge-primary badge-pill">i</span>
+                          <a href="https://circabc.europa.eu/sd/a/286ebac6-aa7c-4ada-a42b-ff2cf3a442bf/ISCED-F 2013 - Detailed field descriptions.pdf" target="_blank">What is a Study area?</a>
                           <ng-select [items]="fieldsService.allfields" name="fields" bindLabel="name"
                             groupBy="grandparent" [multiple]="true" [(ngModel)]="modelModule.fields">
                             <ng-template ng-optgroup-tmp let-item="item">
@@ -697,6 +701,7 @@
                           <span
                             tooltip="European Credit Transfer and Accumulation System (ECTS) is a standard means for comparing academic credits for higher education. One academic year corresponds to 60 ECTS credits that are normally equivalent to 1500–1800 hours of total workload."
                             class="badge badge-primary badge-pill">i</span>
+                          <a style="text-align: right" href="https://ec.europa.eu/education/resources-and-tools/european-credit-transfer-and-accumulation-system-ects_en" target="_blank" >What is ECTS?</a>
                           <input type="number" class="form-control" id="ects" [(ngModel)]="modelModule.ects" name="ects"
                             min="0" (keyup)="updateTreeStudyProgram()" />
                         </div>
@@ -1085,7 +1090,7 @@
                       </div>
                     </div>
                     <div class="row" *ngIf="highestItemLevel == 2">
-                      <div class="col-md-10">
+                      <div class="col-md-9">
                         <div class="form-group">
                           <label for="title">Affiliation</label>
                           <input type="text" class="form-control" id="affiliation"
@@ -1093,7 +1098,7 @@
                             name="affiliation" required (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
-                      <div class="col-md-2">
+                      <div class="col-md-3">
                         <div class="form-group">
                           <label for="eqf">EQF</label>
                           <span
@@ -1116,6 +1121,7 @@
                           <span
                             tooltip="The term relates directly to a specific area of study. The International Standard Classification of Education: Fields of Education and Training 2013 (ISCED-F). Maintained by the UNESCO Institute for Statistics."
                             class="badge badge-primary badge-pill">i</span>
+                          <a href="https://circabc.europa.eu/sd/a/286ebac6-aa7c-4ada-a42b-ff2cf3a442bf/ISCED-F 2013 - Detailed field descriptions.pdf" target="_blank">What is a Study area?</a>
                           <ng-select [items]="fieldsService.allfields" name="fields" bindLabel="name"
                             groupBy="grandparent" [multiple]="true" [(ngModel)]="modelCourse.fields">
                             <ng-template ng-optgroup-tmp let-item="item">
@@ -1217,6 +1223,7 @@
                           <span
                             tooltip="European Credit Transfer and Accumulation System (ECTS) is a standard means for comparing academic credits for higher education. One academic year corresponds to 60 ECTS credits that are normally equivalent to 1500–1800 hours of total workload."
                             class="badge badge-primary badge-pill">i</span>
+                          <a style="text-align: right" href="https://ec.europa.eu/education/resources-and-tools/european-credit-transfer-and-accumulation-system-ects_en" target="_blank" >What is ECTS?</a>
                           <input type="number" class="form-control" name="ects" id="ects" [(ngModel)]="modelCourse.ects"
                             name="ects" min="0" (keyup)="updateTreeStudyProgram()" />
                         </div>
@@ -1627,7 +1634,7 @@
                       </div>
                     </div>
                     <div class="row" *ngIf="highestItemLevel == 3">
-                      <div class="col-md-10">
+                      <div class="col-md-9">
                         <div class="form-group">
                           <label for="title">Affiliation</label>
                           <input type="text" class="form-control" id="affiliation"
@@ -1635,12 +1642,13 @@
                             name="affiliation" required (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
-                      <div class="col-md-2">
+                      <div class="col-md-3">
                         <div class="form-group">
                           <label for="eqf">EQF</label>
                           <span
                             tooltip="The core of the EQF concerns eight reference levels describing what a learner knows, understands and is able to do – 'learning outcomes', ranging from basic (Level 1) to advanced (Level 8)."
                             class="badge badge-primary badge-pill">i</span>
+                          <a style="text-align: right" href="https://www.cedefop.europa.eu/en/events-and-projects/projects/european-qualifications-framework-eqf" target="_blank" >What is EQF?</a>
                           <input type="number" size="1" class="form-control" id="eqf" [(ngModel)]="modelLecture.eqf"
                             name="eqf" min="1" max="8" (keyup)="updateTreeStudyProgram()" />
                         </div>
@@ -1658,6 +1666,7 @@
                           <span
                             tooltip="The term relates directly to a specific area of study. The International Standard Classification of Education: Fields of Education and Training 2013 (ISCED-F). Maintained by the UNESCO Institute for Statistics."
                             class="badge badge-primary badge-pill">i</span>
+                          <a href="https://circabc.europa.eu/sd/a/286ebac6-aa7c-4ada-a42b-ff2cf3a442bf/ISCED-F 2013 - Detailed field descriptions.pdf" target="_blank">What is a Study area?</a>
                           <ng-select [items]="fieldsService.allfields" name="fields" bindLabel="name"
                             groupBy="grandparent" [multiple]="true" [(ngModel)]="modelLecture.fields">
                             <ng-template ng-optgroup-tmp let-item="item">
@@ -1712,6 +1721,7 @@
                           <span
                             tooltip="European Credit Transfer and Accumulation System (ECTS) is a standard means for comparing academic credits for higher education. One academic year corresponds to 60 ECTS credits that are normally equivalent to 1500–1800 hours of total workload."
                             class="badge badge-primary badge-pill">i</span>
+                          <a style="text-align: right" href="https://ec.europa.eu/education/resources-and-tools/european-credit-transfer-and-accumulation-system-ects_en" target="_blank" >What is ECTS?</a>
                           <input type="number" class="form-control" id="ects" [(ngModel)]="modelLecture.ects"
                             name="ects" min="0" (keyup)="updateTreeStudyProgram()" />
                         </div>
