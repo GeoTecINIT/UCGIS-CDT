@@ -75,7 +75,7 @@
               </div>
             </div>
           </div>
-          <div class="row" *ngIf="selectedProgram && selectedProgram.isEdited">
+          <div class="row" *ngIf="!isAnonymous && selectedProgram && selectedProgram.isEdited">
             <div class="col-md-12 text-center text-secondary">
               If you think this content blocked is a bug, click <a href="javascript:;" (click)="unlock()"> here </a> to
               unlock it.
