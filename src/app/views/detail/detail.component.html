@@ -164,7 +164,7 @@
                       <div *ngIf="model.fields && model.fields.length > 0">
                         <hr>
                         <div class="row">
-                          <p class="col-md-2"><b>Study areas ({{model.fields.length}})</b></p>
+                          <p class="col-md-3"><b>Study areas ({{model.fields.length}})</b></p>
                           <a href="https://circabc.europa.eu/sd/a/286ebac6-aa7c-4ada-a42b-ff2cf3a442bf/ISCED-F 2013 - Detailed field descriptions.pdf" target="_blank" class="col-md-5">What is a Study area?</a>
                         </div>
                         <ul>
@@ -179,9 +179,11 @@
                         <p><b> In semester:</b> {{ model.numSemester }}</p>
                       </div>
                       <div *ngIf="model.ects">
-                        <a style="text-align: right" href="https://ec.europa.eu/education/resources-and-tools/european-credit-transfer-and-accumulation-system-ects_en" target="_blank" >What is ECTS?</a>
-                        <p><b> ECTS:</b> {{ model.ects }}</p>
-                      </div>
+                        <div class="row">
+                          <p class="col-md-2"><b> ECTS:</b> {{ model.ects }}</p>
+                          <a style="text-align: right" href="https://ec.europa.eu/education/resources-and-tools/european-credit-transfer-and-accumulation-system-ects_en" target="_blank" >What is ECTS?</a>
+                        </div>
+                         </div>
                       <div *ngIf="model.assessment">
                         <p><b>Assessment:</b> {{ model.assessment }}</p>
                       </div>
