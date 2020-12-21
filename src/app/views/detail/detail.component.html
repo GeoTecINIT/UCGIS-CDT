@@ -94,11 +94,11 @@
                 <h5><a *ngIf="selectedProgram.urlTM != ''" href="{{selectedProgram.urlTM}}" target="_blank" rel="noopener noreferrer">{{selectedProgram.urlTM}}</a></h5>
               </div>
               <div class="col-md-2 text-right">
-                <button type="button" class="btn btn-default btn-secondary"
-                  tooltip="The threshold of knowledge by which a person is capable to understand the information given in a certain domain."
-                  placement="left" (click)="displayTree()">
+                <a role="button" class="btn btn-default btn-secondary" href="https://www.cedefop.europa.eu/en/events-and-projects/projects/european-qualifications-framework-eqf" target="_blank"
+                   tooltip="EQF concerns the level of what a learner knows, understands (knowledge) and is able to do (skills). It ranges from 1 (basic) to 8 (advanced)"
+                   placement="left">
                   EQF: {{ selectedProgram.eqf }}
-                </button>
+                </a>
               </div>
             </div>
 
