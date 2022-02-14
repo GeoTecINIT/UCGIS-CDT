@@ -720,6 +720,7 @@ export class NewspComponent implements OnInit, OnDestroy {
   }
 
   removeBokKnowledge(model, index, attrTxt) {
+    console.log('remove ')
     model[attrTxt].splice(index, 1);
     model.concepts.splice(index, 1);
     this.updateTreeStudyProgram();
