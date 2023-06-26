@@ -665,7 +665,7 @@ export class NewspComponent implements OnInit, OnDestroy {
         break;
       case 'description':
         // tslint:disable-next-line:max-line-length
-        const desc = divs['currentDescription'].textContent;
+        const desc = divs['bokCurrentDescription'].textContent;
         newConcept.linkedTo = 'description';
         modelToUpdate[this.linkBoKto] = modelToUpdate[this.linkBoKto] + ' ' + desc;  // currentDescription
         break;
