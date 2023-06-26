@@ -1,5 +1,5 @@
 {
-  "name": "@eo4geo/cdt",
+  "name": "@ucgis/cdt",
   "version": "1.0.0",
   "description": "Curriculum Design Tool",
   "author": {
@@ -9,8 +9,8 @@
     "twitter": "https://twitter.com/geotecUJI"
   },
   "contributors": [],
-  "homepage": "http://eo4geo.uji.es",
-  "copyright": "Copyright 2019",
+  "homepage": "http://ucgis-tools-cdt.web.app",
+  "copyright": "Copyright 2023",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -37,8 +37,8 @@
     "@coreui/coreui": "^2.1.8",
     "@coreui/coreui-plugin-chartjs-custom-tooltips": "^1.2.0",
     "@coreui/icons": "0.3.0",
-    "@eo4geo/bok-dataviz": "^5.2.9",
-    "@eo4geo/curr-viz": "^5.0.0",
+    "@ucgis/find-in-bok-dataviz-tools": "^1.0.0",
+    "@ucgis/curr-viz" : "1.0.0",
     "@ng-select/ng-select": "^2.20.0",
     "bootstrap": "^4.3.1",
     "chart.js": "^2.8.0",

@@ -17,8 +17,8 @@ export class PopupComponent implements OnInit {
         private route: ActivatedRoute) { }
 
     public static END_PAGE_LINE = 255;
-    public static URL_BOK = 'https://bok.eo4geo.eu/';
-    public static URL_CDT = 'https://eo4geo-cdt.web.app/detail/';
+    public static URL_BOK = 'https://ucgis-bok.web.app/';
+    public static URL_CDT = 'https://ucgis-tools-cdt.web.app/detail/';
 
     @Input() idOP: any;
     selectedSP: StudyProgram;

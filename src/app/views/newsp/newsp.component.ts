@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy, HostListener, TemplateRef } from '@angular/core';
-import * as bok from '@eo4geo/bok-dataviz';
+import * as bok from '@ucgis/find-in-bok-dataviz-tools';
 import { StudyProgram, StudyProgramService } from '../../services/studyprogram.service';
 import { FieldsService } from '../../services/fields.service';
 import { EscoCompetenceService, Competence } from '../../services/esco-competence.service';
 import { ActivatedRoute } from '@angular/router';
-import * as cv from '@eo4geo/curr-viz';
+import * as cv from '@ucgis/curr-viz';
 import { Module } from '../../services/module.service';
 import { Course } from '../../services/course.service';
 import { Lecture } from '../../services/lecture.service';
@@ -62,12 +62,12 @@ export class NewspComponent implements OnInit, OnDestroy {
   limitSearchFrom = 0;
   limitSearchTo = 10;
 
-  observer: MutationObserver;
-  lastBoKTitle = 'GIST';
+/*   observer: MutationObserver; */
+  lastBoKTitle = 'UCGIS';
 
   searchInputField = '';
 
-  currentConcept = 'GIST';
+  currentConcept = 'UCGIS';
 
   isfullESCOcompetences = false;
   isSearchingExisting = false;
@@ -192,7 +192,7 @@ export class NewspComponent implements OnInit, OnDestroy {
   modalRef: BsModalRef;
 
 
-  @ViewChild('textBoK') textBoK: ElementRef;
+  @ViewChild('textInfo') textInfo: ElementRef;
   @ViewChild('graphTreeDiv') public graphTreeDiv: ElementRef;
   @ViewChild('bokModal') public bokModal: ModalDirective;
 
@@ -253,10 +253,10 @@ export class NewspComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getMode();
     this.currentTreeNode = cv.getCurrentNode();
-    bok.visualizeBOKData('#bubbles', '#textBoK');
+    bok.visualizeBOKData('https://ucgis-bok-default-rtdb.firebaseio.com/', 'current');
     this.analytics.logEvent('New Educational Offer', { 'mode': this.mode });
 
-    this.observer = new MutationObserver(mutations => {
+/*     this.observer = new MutationObserver(mutations => {
       mutations.forEach(mutation => {
         if ((<any>mutation.target).children[1].innerText !== this.lastBoKTitle) {
           this.lastBoKTitle = (<any>mutation.target).children[1].innerText;
@@ -266,7 +266,7 @@ export class NewspComponent implements OnInit, OnDestroy {
     });
     const config = { attributes: true, childList: true, characterData: true };
 
-    this.observer.observe(this.textBoK.nativeElement, config);
+    this.observer.observe(this.textInfo.nativeElement, config); */
 
   }
 
@@ -492,7 +492,7 @@ export class NewspComponent implements OnInit, OnDestroy {
   cleanResults() {
     this.searchInputField = '';
     bok.searchInBoK('');
-    this.navigateToConcept('GIST');
+    this.navigateToConcept('UCGIS');
   }
 
   incrementLimit() {
@@ -621,21 +621,21 @@ export class NewspComponent implements OnInit, OnDestroy {
   }
 
   addBokKnowledge() {
-    const concept = this.textBoK.nativeElement.getElementsByTagName('h4')[0]
+    const concept = this.textInfo.nativeElement.getElementsByTagName('h4')[0]
       .textContent;
     const conceptId = concept.split(']')[0].substring(1);
     const newConcept = new BokInput('', concept, conceptId, '', [], '', []);
 
-    const divs = this.textBoK.nativeElement.getElementsByTagName('div');
+    const divs = this.textInfo.nativeElement.getElementsByTagName('div');
     if (divs['bokskills'] != null) {
-      const shortCode = this.textBoK.nativeElement.getElementsByTagName('h4')[0].innerText.split(' ')[0];
+      const shortCode = this.textInfo.nativeElement.getElementsByTagName('h4')[0].innerText.split(' ')[0];
       const as = divs['bokskills'].getElementsByTagName('a');
       for (const skill of as) {
         newConcept.skills.push(skill.innerText);
       }
     }
     if (divs['boksource'] != null) {
-      const shortCode = this.textBoK.nativeElement.getElementsByTagName('h4')[0].innerText.split(' ')[0];
+      const shortCode = this.textInfo.nativeElement.getElementsByTagName('h4')[0].innerText.split(' ')[0];
       const as = divs['boksource'].getElementsByTagName('a');
       for (const bib of as) {
         newConcept.bibliography.push(bib.innerText);

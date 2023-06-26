@@ -6,7 +6,7 @@ import { Lecture } from '../../services/lecture.service';
 import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import * as cv from '@eo4geo/curr-viz';
+import * as cv from '@ucgis/curr-viz';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { UserService, User } from '../../services/user.service';
 

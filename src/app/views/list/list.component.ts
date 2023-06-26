@@ -12,7 +12,7 @@ import { User, UserService } from '../../services/user.service';
 import { OrganizationService, Organization } from '../../services/organization.service';
 import { ActivatedRoute } from '@angular/router';
 import * as cloneDeep from 'lodash/cloneDeep';
-import * as bok from '@eo4geo/bok-dataviz';
+import * as bok from '@ucgis/find-in-bok-dataviz-tools';
 
 @Component({
   selector: 'app-list',
@@ -63,7 +63,7 @@ export class ListComponent implements OnInit {
   public paginationLimitTo = 6;
   public LIMIT_PER_PAGE = 6;
   public currentPage = 0;
-  public BOK_PERMALINK_PREFIX = 'https://bok.eo4geo.eu/';
+  public BOK_PERMALINK_PREFIX = 'https://ucgis-bok.web.app/';
 
   @ViewChild('dangerModal') public dangerModal: ModalDirective;
   @ViewChild('releaseNotesModal') public releaseNotesModal: any;
