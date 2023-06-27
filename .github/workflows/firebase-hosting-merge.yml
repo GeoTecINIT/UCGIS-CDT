@@ -23,16 +23,18 @@ jobs:
           echo ""authDomain: '${{ secrets.AUTHDOMAIN }}',"" >> environment.ts
           echo ""projectId: '${{ secrets.PROJECTID }}',"" >> environment.ts
           echo ""storageBucket: '${{ secrets.STORAGEBUCKET }}',"" >> environment.ts
+          echo ""messagingSenderId: '${{ secrets.MESSAGINGSENDERID }}',"" >> environment.ts
           echo ""appId: '${{ secrets.APPID }}',"" >> environment.ts
           echo ""measurementId: '${{ secrets.MEASUREMENTID }}'\}\};"" >> environment.ts
           touch environment.prod.ts
-          "echo ""export const environment = \{ production\: true\, firebase\: \{ "" >> environment.prod.ts "
-          "echo ""apiKey: '${{ secrets.APIKEY }}',"" >> environment.prod.ts "
-          "echo ""authDomain: '${{ secrets.AUTHDOMAIN }}',"" >> environment.prod.ts "
-          "echo ""projectId: '${{ secrets.PROJECTID }}',"" >> environment.prod.ts "
-          "echo ""storageBucket: '${{ secrets.STORAGEBUCKET }}',"" >> environment.prod.ts "
-          "echo ""appId: '${{ secrets.APPID }}',"" >> environment.prod.ts "
-          "echo ""measurementId: '${{ secrets.MEASUREMENTID }}'\}\};"" >> environment.prod.ts "
+          echo ""export const environment = \{ production\: true\, firebase\: \{ "" >> environment.prod.ts "
+          echo ""apiKey: '${{ secrets.APIKEY }}',"" >> environment.prod.ts "
+          echo ""authDomain: '${{ secrets.AUTHDOMAIN }}',"" >> environment.prod.ts "
+          echo ""projectId: '${{ secrets.PROJECTID }}',"" >> environment.prod.ts "
+          echo ""storageBucket: '${{ secrets.STORAGEBUCKET }}',"" >> environment.ts
+          echo ""storageBucket: '${{ secrets.STORAGEBUCKET }}',"" >> environment.prod.ts "
+          echo ""appId: '${{ secrets.APPID }}',"" >> environment.prod.ts "
+          echo ""measurementId: '${{ secrets.MEASUREMENTID }}'\}\};"" >> environment.prod.ts "
 
       - uses: actions/setup-node@v3
         with:
