@@ -11,6 +11,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+       # Environment variables
+      - name: create environments file
+        run: |
+          cd src
+          mkdir environments
+          cd environments
+          touch environment.ts
+          echo "export const environment = { production: false, firebase: { " >> environment.ts
+          echo "apiKey: '${{ secrets.APIKEY }}'," >> environment.ts
+          echo "authDomain: '${{ secrets.AUTHDOMAIN }}'," >> environment.ts
+          echo "projectId: '${{ secrets.PROJECTID }}'," >> environment.ts
+          echo "storageBucket: '${{ secrets.STORAGEBUCKET }}'," >> environment.ts
+          echo "appId: '${{ secrets.APPID }}'," >> environment.ts
+          echo "measurementId: '${{ secrets.MEASUREMENTID }}'}};" >> environment.ts
+
       - run: npm ci && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
