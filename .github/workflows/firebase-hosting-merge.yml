@@ -18,7 +18,7 @@ jobs:
           mkdir environments
           cd environments
           touch environment.ts
-          echo ""export const environment = \{ production\: false, firebase: \{ "" >> environment.ts
+          echo ""export const environment = \{ production\: false, firebase\: \{ "" >> environment.ts
           echo ""apiKey: '${{ secrets.APIKEY }}',"" >> environment.ts
           echo ""authDomain: '${{ secrets.AUTHDOMAIN }}',"" >> environment.ts
           echo ""projectId: '${{ secrets.PROJECTID }}',"" >> environment.ts
