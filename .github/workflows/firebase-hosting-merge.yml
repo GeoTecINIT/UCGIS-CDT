@@ -37,6 +37,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '8.x'
+
+      - name: build app
         run: npm ci && npm run build
 
       - uses: FirebaseExtended/action-hosting-deploy@v0
