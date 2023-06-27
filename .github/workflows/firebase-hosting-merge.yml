@@ -35,9 +35,12 @@ jobs:
           echo "measurementId: '${{ secrets.MEASUREMENTID }}'}};" >> environment.prod.ts
 
       - run: npm ci && npm run build
+        with:
+          node-version: '8.13.0'
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_UCGIS_TOOLS }}'
           channelId: live
           projectId: ucgis-tools
+          node-version: '18.16.0'
