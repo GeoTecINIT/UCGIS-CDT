@@ -34,7 +34,7 @@ jobs:
           "echo ""appId: '${{ secrets.APPID }}',"" >> environment.prod.ts "
           "echo ""measurementId: '${{ secrets.MEASUREMENTID }}'}};"" >> environment.prod.ts "
 
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: '8.x'
         run: npm ci && npm run build
