@@ -79,6 +79,7 @@ import { ReleaseNotesComponent } from './components/release-notes/release-notes.
 import { NgxSortableModule } from 'ngx-sortable';
 import { FaqComponent } from './components/faq/faq.component';
 import { HowComponent } from './components/how/how.component';
+import { RegisterComponent } from './views/register/register.component';
 
 
 @NgModule({
@@ -116,6 +117,7 @@ import { HowComponent } from './components/how/how.component';
     P404Component,
     P500Component,
     LoginComponent,
+    RegisterComponent,
     UserComponent,
     ListComponent,
     DetailComponent,
