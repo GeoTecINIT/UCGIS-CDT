@@ -353,7 +353,7 @@
 </div>
 <div bsModal #bokModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      id="bokModal" aria-hidden="true">
-  <div class="modal-dialog modal-info modal-xl" role="document">
+  <div class="modal-dialog modal-secondary modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">Search by BoK concepts</h4>
@@ -412,7 +412,7 @@
                   <div class="col-md-2" style="margin-right: 0;margin-left: auto;">
                     <button type="button" class="btn btn-danger" (click)="bokModal.hide()">Finish</button> </div>
                 </div>
-                <div id="bubbles">
+                <div id="graph">
                 </div>
               </div>
               <div class="col-lg-6 col-sm-6 text-justify">
@@ -429,7 +429,7 @@
                 </div>
                 <br>
                 <h5 [hidden]="currentConcept == '' && currentConcept != 'GIST'">Knowledge</h5>
-                <div #textBoK id="textBoK" [hidden]="hasResults">
+                <div #textInfo id="textInfo" [hidden]="hasResults">
                 </div>
                 <div class="col" *ngIf="hasResults">
                   <h3 class="center">

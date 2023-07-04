@@ -68,7 +68,7 @@ export class ListComponent implements OnInit {
   @ViewChild('dangerModal') public dangerModal: ModalDirective;
   @ViewChild('releaseNotesModal') public releaseNotesModal: any;
   @ViewChild('bokModal') public bokModal: ModalDirective;
-  @ViewChild('textBoK') textBoK: ElementRef;
+  @ViewChild('textInfo') textInfo: ElementRef;
 
   constructor(private studyprogramService: StudyProgramService,
     private userService: UserService,
@@ -132,7 +132,7 @@ export class ListComponent implements OnInit {
       this.releaseNotesModal.basicModal.config = config;
       this.releaseNotesModal.basicModal.show({});
     }
-    bok.visualizeBOKData('#bubbles', '#textBoK');
+    bok.visualizeBOKData('https://ucgis-bok-default-rtdb.firebaseio.com/', 'current');
   }
 
   removeStudyProgram(id: string) {
@@ -449,7 +449,7 @@ export class ListComponent implements OnInit {
     }
   }
   addBokConcept() {
-    const concept = this.textBoK.nativeElement.getElementsByTagName('h4')[0]
+    const concept = this.textInfo.nativeElement.getElementsByTagName('h4')[0]
       .textContent;
     const conceptId = concept.split(']')[0].substring(1);
     let itExist = false;

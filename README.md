@@ -1,12 +1,12 @@
-## EO4GEO - Curriculum Design Tool (CDT)
+## UCGIS - Curriculum Design Tool (CDT)
 
 #### Introduction
 
-The [Curriculum Design Tool](https://eo4geo-cdt.web.app) (CDT) allows users to create, edit and find educational offers in the field of Earth Observation and Geographic Information. Educational offers may benefit from the EO4GEO BoK, by re-using descriptions of related BoK concepts and link specific EO/GI BoK concepts and skills. The modularity of the tool allows to create educational offers at different levels of granularity, from an entire study program to a single lecture or lesson. 
-This allows its use by a broad range of educational offers by various providers, ranging from academia programs to high school curricula or VET trainings. It also allows re-use of educational offers, by duplicating or promoting existing offers and adapting them to the user’s needs. The tool displays a list of innovative training offers, populated by EO4GEO partners. The [European Skills/Competences and Occupation (ESCO)](https://ec.europa.eu/esco/portal/skill) classification is used for the inclusion of transversal skills. 
+The [Curriculum Design Tool](https://ucgis-tools-cdt.web.app/) (CDT) allows users to create, edit and find educational offers in the field of Earth Observation and Geographic Information. Educational offers may benefit from the UCGIS BoK, by re-using descriptions of related BoK concepts and link specific EO/GI BoK concepts and skills. The modularity of the tool allows to create educational offers at different levels of granularity, from an entire study program to a single lecture or lesson. 
+This allows its use by a broad range of educational offers by various providers, ranging from academia programs to high school curricula or VET trainings. It also allows re-use of educational offers, by duplicating or promoting existing offers and adapting them to the user’s needs. The tool displays a list of innovative training offers, populated by UCGIS partners. The [European Skills/Competences and Occupation (ESCO)](https://ec.europa.eu/esco/portal/skill) classification is used for the inclusion of transversal skills. 
 
 #### Authors
-The EO4GEO BoK tools are developed by the [Geospatial Technologies Research Group](http://geotec.uji.es/) (GEOTEC) from the University Jaume I, Castellón (Spain) and are Licenced under GNU GPLv3.
+The UCGIS BoK tools are developed by the [Geospatial Technologies Research Group](http://geotec.uji.es/) (GEOTEC) from the University Jaume I, Castellón (Spain) and are Licenced under GNU GPLv3.
 
 [![DOI](https://zenodo.org/badge/211871500.svg)](https://zenodo.org/badge/latestdoi/211871500)
 
@@ -32,7 +32,7 @@ npm install -g @angular/cli
 
 ``` bash
 # clone the repo
-$ git clone https://github.com/GeoTecINIT/EO4GEO-CDT.git my-project
+$ git clone https://github.com/GeoTecINIT/UCGIS-CDT.git my-project
 
 # go into app's directory
 $ cd my-project
