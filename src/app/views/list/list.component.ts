@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, ViewChild, ElementRef,  TemplateRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewChild, ElementRef, TemplateRef } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { NgForOf } from '@angular/common';
 import { Observable, Subscription } from 'rxjs';
@@ -81,7 +81,11 @@ export class ListComponent implements OnInit {
         this.isAnonymous = user.isAnonymous;
         this.ownUsrId = user.uid;
         this.userService.getUserById(user.uid).subscribe(userDB => {
-          this.currentUser = new User(userDB);
+          if (userDB) {
+            this.currentUser = new User(userDB);
+          } else {
+            this.userService.addNewUser(user);
+          }
         });
       } else {
         this.isAnonymous = true;
@@ -188,7 +192,7 @@ export class ListComponent implements OnInit {
           it.orgName.toLowerCase().includes(search) ||
           it.division.toLowerCase().includes(search)
       );
-      if ( search.length > 0 ) {
+      if (search.length > 0) {
         this.isFiltered = true;
       } else {
         this.isFiltered = this.isFiltered ? true : false;
@@ -384,7 +388,7 @@ export class ListComponent implements OnInit {
     this.filterByPrivate();
     this.filterByAuthor(this.showOnlyAuthor);
     this.filterByDepth(this.showOnlyDepth);
-    if ( this.conceptsToSearch.length > 0  && !this.filterClean ) {
+    if (this.conceptsToSearch.length > 0 && !this.filterClean) {
       this.filterByBokConcept();
     }
   }
@@ -453,10 +457,10 @@ export class ListComponent implements OnInit {
       .textContent;
     const conceptId = concept.split(']')[0].substring(1);
     let itExist = false;
-    this.conceptsToSearch.forEach( cpt => {
-      if ( cpt.code == conceptId) itExist = true;
+    this.conceptsToSearch.forEach(cpt => {
+      if (cpt.code == conceptId) itExist = true;
     });
-    if ( !itExist ) {
+    if (!itExist) {
       this.conceptsToSearch.push({ code: conceptId, name: concept });
     }
     this.filterByBokConcept();
@@ -464,7 +468,7 @@ export class ListComponent implements OnInit {
   removeConceptSelected(concept) {
     const index = this.conceptsToSearch.indexOf(concept);
     this.conceptsToSearch.splice(index, 1);
-    this.filterClean = this.conceptsToSearch.length == 0 ? true : false ;
+    this.filterClean = this.conceptsToSearch.length == 0 ? true : false;
     this.filterByBokConcept();
   }
 
@@ -474,39 +478,39 @@ export class ListComponent implements OnInit {
     this.currentPage = 0;
 
     //check if the complete selection was removed
-    if ( this.filterClean ) {
+    if (this.filterClean) {
       this.filteredStudyPrograms = this.studyPrograms;
     }
     //Check if the filter by depth is active
-    if ( this.spFilterDepth.length > 0 && this.conceptsToSearch.length == 0 ) {
+    if (this.spFilterDepth.length > 0 && this.conceptsToSearch.length == 0) {
       this.filteredStudyPrograms = this.spFilterDepth;
     }
     let toFilter = this.isFiltered ? this.filteredStudyPrograms : this.studyPrograms;
-    for ( let node of this.conceptsToSearch ) {
+    for (let node of this.conceptsToSearch) {
       let found = false;
       let filteredConcepts = [];
       toFilter.forEach(sp => {
-        sp.linksToBok.forEach( cpt => {
+        sp.linksToBok.forEach(cpt => {
           let code = '';
-          if ( cpt.concept_id.split(']').length >= 1  ) {
+          if (cpt.concept_id.split(']').length >= 1) {
             code = cpt.concept_id.split(']')[0].split('[')[1];
           } else {
             code = cpt.concept_id;
           }
-          if ( node.code == code  ) {
+          if (node.code == code) {
             filteredConcepts.push(sp);
             found = true;
           }
         });
-        if ( !found ) { // if it was not found in the links to bok its searched in the field concepts
-          sp.concepts.forEach( cpt => {
+        if (!found) { // if it was not found in the links to bok its searched in the field concepts
+          sp.concepts.forEach(cpt => {
             let code = '';
-            if ( cpt.split(']').length >= 1  ) {
+            if (cpt.split(']').length >= 1) {
               code = cpt.split(']')[0].split('[')[1];
             } else {
               code = cpt;
             }
-            if ( node.code == code  ) {
+            if (node.code == code) {
               filteredConcepts.push(sp);
               found = true;
             }
@@ -517,18 +521,18 @@ export class ListComponent implements OnInit {
       });
       toFilter = filteredConcepts;
     }
-    if ( this.conceptsToSearch.length > 0 ) {
+    if (this.conceptsToSearch.length > 0) {
       this.filteredStudyPrograms = toFilter;
     } else {
       this.filterClean = this.filterClean ? false : true;
     }
   }
 
-  getChildrenConceptsLink ( sp, codeToSearch, filteredConcepts ) {
+  getChildrenConceptsLink(sp, codeToSearch, filteredConcepts) {
     if (sp.children) {
       sp.children.forEach(mod => {
         mod.linksToBok.forEach(linkM => { // Module links
-          if (linkM.concept_id == codeToSearch ) {
+          if (linkM.concept_id == codeToSearch) {
             if (filteredConcepts.indexOf(sp) === -1) {
               filteredConcepts.push(sp);
             }
@@ -537,7 +541,7 @@ export class ListComponent implements OnInit {
         if (mod.children) {
           mod.children.forEach(cour => {
             cour.linksToBok.forEach(linkC => { // Course links
-              if (linkC.concept_id == codeToSearch ) {
+              if (linkC.concept_id == codeToSearch) {
                 if (filteredConcepts.indexOf(sp) === -1) {
                   filteredConcepts.push(sp);
                 }
@@ -546,7 +550,7 @@ export class ListComponent implements OnInit {
             if (cour.children) {
               cour.children.forEach(lect => {
                 lect.linksToBok.forEach(linkL => { // Lecture links
-                  if (linkL.concept_id == codeToSearch ) {
+                  if (linkL.concept_id == codeToSearch) {
                     if (filteredConcepts.indexOf(sp) === -1) {
                       filteredConcepts.push(sp);
                     }
