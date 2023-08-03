@@ -63,7 +63,7 @@ export class ListComponent implements OnInit {
   public paginationLimitTo = 6;
   public LIMIT_PER_PAGE = 6;
   public currentPage = 0;
-  public BOK_PERMALINK_PREFIX = 'https://ucgis-bok.web.app/';
+  public BOK_PERMALINK_PREFIX = 'https://gistbok-bok.ucgis.org/';
 
   @ViewChild('dangerModal') public dangerModal: ModalDirective;
   @ViewChild('releaseNotesModal') public releaseNotesModal: any;
