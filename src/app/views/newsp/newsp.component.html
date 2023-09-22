@@ -109,8 +109,7 @@
               </span>
               <span style="display:inline-table; margin:2px"
                 tooltip="If visibility is private, users in this organization can still see it. But users not logged in won't be able to see it. Visibility by default is public."
-                class="badge badge-primary badge-pill"
-                style="height: fit-content;">i</span>
+                class="badge badge-primary badge-pill" style="height: fit-content;">i</span>
             </div>
 
           </div>
@@ -169,7 +168,8 @@
                         <ul>
                           <div *ngFor="let l of model.linksToBok; index as i ">
                             <li class="text-small">
-                              <a href="https://gistbok-topics.ucgis.org/{{ l.concept_id }}" target="_blank">{{l.name }} </a>
+                              <a href="https://gistbok-topics.ucgis.org/{{ l.concept_id }}" target="_blank">{{l.name }}
+                              </a>
                               <button type="button" class="btn btn-link btn-xs" tooltip="Click to remove"
                                 (click)="removeBokKnowledge(model, i, 'linksToBok')">
                                 <i class="fa fa-remove"></i>
@@ -209,7 +209,9 @@
                           <span
                             tooltip="EQF concerns the level of what a learner knows, understands (knowledge) and is able to do (skills). It ranges from 1 (basic) to 8 (advanced)"
                             class="badge badge-primary badge-pill">i</span>
-                          <a style="text-align: right" href="https://www.cedefop.europa.eu/en/events-and-projects/projects/european-qualifications-framework-eqf" target="_blank" >What is EQF?</a>
+                          <a style="text-align: right"
+                            href="https://www.cedefop.europa.eu/en/events-and-projects/projects/european-qualifications-framework-eqf"
+                            target="_blank">What is EQF?</a>
                           <input type="number" size="1" class="form-control" id="eqf" [(ngModel)]="model.eqf" name="eqf"
                             min="1" max="8" (keyup)="updateTreeStudyProgram()" />
                         </div>
@@ -217,7 +219,8 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <!--     <label for="title">Affiliation webpage</label> -->
-                          <input type="text" class="form-control" id="urlAff" placeholder="Fill in URL (to, e.g., official description, further information, ...)"
+                          <input type="text" class="form-control" id="urlAff"
+                            placeholder="Fill in URL (to, e.g., official description, further information, ...)"
                             [(ngModel)]="model.urlAff" name="urlAff" (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
@@ -230,7 +233,8 @@
                           <span
                             tooltip="The term relates directly to a specific area of study. The International Standard Classification of Education: Fields of Education and Training 2013 (ISCED-F). Maintained by the UNESCO Institute for Statistics."
                             class="badge badge-primary badge-pill">i</span>
-                          <a href="https://circabc.europa.eu/sd/a/286ebac6-aa7c-4ada-a42b-ff2cf3a442bf/ISCED-F 2013 - Detailed field descriptions.pdf" target="_blank">What is a Study area?</a>
+                          <a href="https://circabc.europa.eu/sd/a/286ebac6-aa7c-4ada-a42b-ff2cf3a442bf/ISCED-F 2013 - Detailed field descriptions.pdf"
+                            target="_blank">What is a Study area?</a>
                           <ng-select [items]="fieldsService.allfields" name="fields" bindLabel="name"
                             groupBy="grandparent" [multiple]="true" [(ngModel)]="model.fields">
                             <ng-template ng-optgroup-tmp let-item="item">
@@ -269,7 +273,8 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <label for="title">Associated training material</label>
-                          <input type="text" class="form-control" id="urlTM" placeholder="Fill in the URL (to, e.g., learning platform, online syllabus, ...)"
+                          <input type="text" class="form-control" id="urlTM"
+                            placeholder="Fill in the URL (to, e.g., learning platform, online syllabus, ...)"
                             [(ngModel)]="model.urlTM" name="urlTM" (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
@@ -311,7 +316,8 @@
                                     <li *ngIf="p.name == p.concept_id">{{p.name}}
                                     </li>
                                     <li *ngIf="p.name != p.concept_id">
-                                      <a href="https://gistbok-topics.ucgis.org/{{p.concept_id}}" target="_blank">{{p.name}}</a>
+                                      <a href="https://gistbok-topics.ucgis.org/{{p.concept_id}}"
+                                        target="_blank">{{p.name}}</a>
                                     </li>
                                   </div>
                                 </ul>
@@ -347,16 +353,19 @@
                               <div *ngIf="model && model.learningObjectives">
                                 <ul>
                                   <div *ngFor="let p of model.learningObjectives; index as i ">
-                                    <li *ngIf="p.name == p.concept_id">{{p.name}} <button type="button" class="btn btn-link" tooltip="Click to remove"
+                                    <li *ngIf="p.name == p.concept_id">{{p.name}} <button type="button"
+                                        class="btn btn-link" tooltip="Click to remove"
                                         (click)="removeBokKnowledge(model, i, 'learningObjectives')">
                                         <i class="fa fa-remove"></i>
                                       </button></li>
-                                    <li *ngIf="p.name != p.concept_id"> <a href="https://gistbok-topics.ucgis.org/{{p.concept_id}}"
-                                                                           target="_blank">{{p.name}}</a>
+                                    <li *ngIf="p.name != p.concept_id"> <a
+                                        href="https://gistbok-topics.ucgis.org/{{p.concept_id}}"
+                                        target="_blank">{{p.name}}</a>
                                       <button type="button" class="btn btn-link" tooltip="Click to remove"
-                                              (click)="removeBokKnowledge(model, i, 'learningObjectives')">
+                                        (click)="removeBokKnowledge(model, i, 'learningObjectives')">
                                         <i class="fa fa-remove"></i>
-                                      </button></li>
+                                      </button>
+                                    </li>
                                   </div>
                                 </ul>
                               </div>
@@ -408,7 +417,8 @@
                                       <span>&#8226;</span> Data model and format conversion - Convert a data set from
                                       the native format of one GIS product to another <br>
                                       <span>&#8226;</span> Vagueness - Evaluate vagueness in the locations, time,
-                                      attributes, and other aspects of geographic phenomena </p>
+                                      attributes, and other aspects of geographic phenomena
+                                    </p>
 
                                     <table class="table">
                                       <thead>
@@ -484,13 +494,15 @@
                               <button type="button" class="btn btn-link" tooltip="Click to remove"
                                 (click)="removeCompetence(mc, model.competences)">
                                 <i class="fa fa-remove"></i>
-                              </button></li>
-                            <li *ngIf="mc.uri && mc.uri != ''"> <a href="{{mc.uri}}"
-                                target="_blank">{{ mc.preferredLabel }} </a>
+                              </button>
+                            </li>
+                            <li *ngIf="mc.uri && mc.uri != ''"> <a href="{{mc.uri}}" target="_blank">{{
+                                mc.preferredLabel }} </a>
                               <button type="button" class="btn btn-link" tooltip="Click to remove"
                                 (click)="removeCompetence(mc, model.competences)">
                                 <i class="fa fa-remove"></i>
-                              </button></li>
+                              </button>
+                            </li>
                           </div>
                         </ul>
                       </div>
@@ -583,7 +595,8 @@
                   </div>
                   <div class="card-body" style="background-color: #faf9f8">
                     <p *ngIf="isSavedBB" class="success"> {{isSavedBBText}} <a
-                        href="https://ucgis-tools-cdt.web.app/detail/{{promotedId}}" target="_blank">edit it here</a></p>
+                        href="https://ucgis-tools-cdt.web.app/detail/{{promotedId}}" target="_blank">edit it here</a>
+                    </p>
                     <div class="row form-group">
                       <div class="col-md-4">
                         <button type="submit" class="btn btn-primary btn-sm"
@@ -596,7 +609,8 @@
                         <ul>
                           <div *ngFor="let l of modelModule.linksToBok; index as i ">
                             <li class="text-small">
-                              <a href="https://gistbok-topics.ucgis.org/{{ l.concept_id }}" target="_blank">{{l.name }} </a>
+                              <a href="https://gistbok-topics.ucgis.org/{{ l.concept_id }}" target="_blank">{{l.name }}
+                              </a>
                               <button type="button" class="btn btn-link btn-xs" tooltip="Click to remove"
                                 (click)="removeBokKnowledge(modelModule, i, 'linksToBok')">
                                 <i class="fa fa-remove"></i>
@@ -637,7 +651,9 @@
                           <span
                             tooltip="EQF concerns the level of what a learner knows, understands (knowledge) and is able to do (skills). It ranges from 1 (basic) to 8 (advanced)"
                             class="badge badge-primary badge-pill">i</span>
-                          <a style="text-align: right" href="https://www.cedefop.europa.eu/en/events-and-projects/projects/european-qualifications-framework-eqf" target="_blank" >What is EQF?</a>
+                          <a style="text-align: right"
+                            href="https://www.cedefop.europa.eu/en/events-and-projects/projects/european-qualifications-framework-eqf"
+                            target="_blank">What is EQF?</a>
                           <input type="number" size="1" class="form-control" id="eqf" [(ngModel)]="modelModule.eqf"
                             name="eqf" min="1" max="8" (keyup)="updateTreeStudyProgram()" />
                         </div>
@@ -645,7 +661,8 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <!--                           <label for="title">Affiliation webpage</label>
- --> <input type="text" class="form-control" id="urlAff" placeholder="Fill in URL (to, e.g., official description, further information, ...)"
+ --> <input type="text" class="form-control" id="urlAff"
+                            placeholder="Fill in URL (to, e.g., official description, further information, ...)"
                             [(ngModel)]="modelModule.urlAff" name="urlAff" (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
@@ -655,7 +672,8 @@
                           <span
                             tooltip="The term relates directly to a specific area of study. The International Standard Classification of Education: Fields of Education and Training 2013 (ISCED-F). Maintained by the UNESCO Institute for Statistics."
                             class="badge badge-primary badge-pill">i</span>
-                          <a href="https://circabc.europa.eu/sd/a/286ebac6-aa7c-4ada-a42b-ff2cf3a442bf/ISCED-F 2013 - Detailed field descriptions.pdf" target="_blank">What is a Study area?</a>
+                          <a href="https://circabc.europa.eu/sd/a/286ebac6-aa7c-4ada-a42b-ff2cf3a442bf/ISCED-F 2013 - Detailed field descriptions.pdf"
+                            target="_blank">What is a Study area?</a>
                           <ng-select [items]="fieldsService.allfields" name="fields" bindLabel="name"
                             groupBy="grandparent" [multiple]="true" [(ngModel)]="modelModule.fields">
                             <ng-template ng-optgroup-tmp let-item="item">
@@ -681,7 +699,8 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <label for="title">Associated training material</label>
-                          <input type="text" class="form-control" id="urlTM" placeholder="Fill in the URL (to, e.g., learning platform, online syllabus, ...)"
+                          <input type="text" class="form-control" id="urlTM"
+                            placeholder="Fill in the URL (to, e.g., learning platform, online syllabus, ...)"
                             [(ngModel)]="modelModule.urlTM" name="urlTM" (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
@@ -702,7 +721,9 @@
                           <span
                             tooltip="European Credit Transfer and Accumulation System (ECTS) is a standard means for comparing academic credits for higher education. One academic year corresponds to 60 ECTS credits that are normally equivalent to 1500–1800 hours of total workload."
                             class="badge badge-primary badge-pill">i</span>
-                          <a style="text-align: right" href="https://ec.europa.eu/education/resources-and-tools/european-credit-transfer-and-accumulation-system-ects_en" target="_blank" >What is ECTS?</a>
+                          <a style="text-align: right"
+                            href="https://ec.europa.eu/education/resources-and-tools/european-credit-transfer-and-accumulation-system-ects_en"
+                            target="_blank">What is ECTS?</a>
                           <input type="number" class="form-control" id="ects" [(ngModel)]="modelModule.ects" name="ects"
                             min="0" (keyup)="updateTreeStudyProgram()" />
                         </div>
@@ -775,7 +796,8 @@
                                     <li *ngIf="p.name == p.concept_id">{{p.name}}
                                     </li>
                                     <li *ngIf="p.name != p.concept_id">
-                                      <a href="https://gistbok-topics.ucgis.org/{{p.concept_id}}" target="_blank">{{p.name}}</a>
+                                      <a href="https://gistbok-topics.ucgis.org/{{p.concept_id}}"
+                                        target="_blank">{{p.name}}</a>
                                     </li>
                                   </div>
                                 </ul>
@@ -811,14 +833,19 @@
                               <div *ngIf="modelModule && modelModule.learningObjectives">
                                 <ul>
                                   <div *ngFor="let p of modelModule.learningObjectives; index as i ">
-                                    <li *ngIf="p.name == p.concept_id">{{p.name}} <button type="button" class="btn btn-link" tooltip="Click to remove" (click)="removeBokKnowledge(modelModule, i, 'learningObjectives')">
-                                      <i class="fa fa-remove"></i>
-                                    </button></li>
-                                    <li *ngIf="p.name != p.concept_id"> <a href="https://gistbok-topics.ucgis.org/{{p.concept_id}}" target="_blank">{{p.name}}</a>
-                                      <button type="button" class="btn btn-link" tooltip="Click to remove"
-                                              (click)="removeBokKnowledge(modelModule, i, 'learningObjectives')">
+                                    <li *ngIf="p.name == p.concept_id">{{p.name}} <button type="button"
+                                        class="btn btn-link" tooltip="Click to remove"
+                                        (click)="removeBokKnowledge(modelModule, i, 'learningObjectives')">
                                         <i class="fa fa-remove"></i>
                                       </button></li>
+                                    <li *ngIf="p.name != p.concept_id"> <a
+                                        href="https://gistbok-topics.ucgis.org/{{p.concept_id}}"
+                                        target="_blank">{{p.name}}</a>
+                                      <button type="button" class="btn btn-link" tooltip="Click to remove"
+                                        (click)="removeBokKnowledge(modelModule, i, 'learningObjectives')">
+                                        <i class="fa fa-remove"></i>
+                                      </button>
+                                    </li>
                                   </div>
                                 </ul>
                               </div>
@@ -869,7 +896,8 @@
                                       <span>&#8226;</span> Data model and format conversion - Convert a data set from
                                       the native format of one GIS product to another <br>
                                       <span>&#8226;</span> Vagueness - Evaluate vagueness in the locations, time,
-                                      attributes, and other aspects of geographic phenomena </p>
+                                      attributes, and other aspects of geographic phenomena
+                                    </p>
 
                                     <table class="table">
                                       <thead>
@@ -952,13 +980,15 @@
                               <button type="button" class="btn btn-link" tooltip="Click to remove"
                                 (click)="removeCompetence(mc, modelModule.competences)">
                                 <i class="fa fa-remove"></i>
-                              </button></li>
-                            <li *ngIf="mc.uri && mc.uri != ''"> <a href="{{mc.uri}}"
-                                target="_blank">{{ mc.preferredLabel }} </a>
+                              </button>
+                            </li>
+                            <li *ngIf="mc.uri && mc.uri != ''"> <a href="{{mc.uri}}" target="_blank">{{
+                                mc.preferredLabel }} </a>
                               <button type="button" class="btn btn-link" tooltip="Click to remove"
                                 (click)="removeCompetence(mc, modelModule.competences)">
                                 <i class="fa fa-remove"></i>
-                              </button></li>
+                              </button>
+                            </li>
                           </div>
                         </ul>
                       </div>
@@ -1051,7 +1081,8 @@
                   </div>
                   <div class="card-body" style="background-color: #faf9f8">
                     <p *ngIf="isSavedBB" class="success"> {{isSavedBBText}} <a
-                        href="https://ucgis-tools-cdt.web.app/detail/{{promotedId}}" target="_blank">edit it here</a></p>
+                        href="https://ucgis-tools-cdt.web.app/detail/{{promotedId}}" target="_blank">edit it here</a>
+                    </p>
                     <div class="row form-group">
                       <div class="col-md-4">
                         <button type="submit" class="btn btn-primary btn-sm"
@@ -1064,7 +1095,8 @@
                         <ul>
                           <div *ngFor="let l of modelCourse.linksToBok; index as i ">
                             <li class="text-small">
-                              <a href="https://gistbok-topics.ucgis.org/{{ l.concept_id }}" target="_blank">{{l.name }} </a>
+                              <a href="https://gistbok-topics.ucgis.org/{{ l.concept_id }}" target="_blank">{{l.name }}
+                              </a>
                               <button type="button" class="btn btn-link btn-xs" tooltip="Click to remove"
                                 (click)="removeBokKnowledge(modelCourse, i, 'linksToBok')">
                                 <i class="fa fa-remove"></i>
@@ -1112,7 +1144,8 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <!--   <label for="title">Affiliation webpage</label> -->
-                          <input type="text" class="form-control" id="urlAff" placeholder="Fill in URL (to, e.g., official description, further information, ...)"
+                          <input type="text" class="form-control" id="urlAff"
+                            placeholder="Fill in URL (to, e.g., official description, further information, ...)"
                             [(ngModel)]="modelCourse.urlAff" name="urlAff" (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
@@ -1122,7 +1155,8 @@
                           <span
                             tooltip="The term relates directly to a specific area of study. The International Standard Classification of Education: Fields of Education and Training 2013 (ISCED-F). Maintained by the UNESCO Institute for Statistics."
                             class="badge badge-primary badge-pill">i</span>
-                          <a href="https://circabc.europa.eu/sd/a/286ebac6-aa7c-4ada-a42b-ff2cf3a442bf/ISCED-F 2013 - Detailed field descriptions.pdf" target="_blank">What is a Study area?</a>
+                          <a href="https://circabc.europa.eu/sd/a/286ebac6-aa7c-4ada-a42b-ff2cf3a442bf/ISCED-F 2013 - Detailed field descriptions.pdf"
+                            target="_blank">What is a Study area?</a>
                           <ng-select [items]="fieldsService.allfields" name="fields" bindLabel="name"
                             groupBy="grandparent" [multiple]="true" [(ngModel)]="modelCourse.fields">
                             <ng-template ng-optgroup-tmp let-item="item">
@@ -1148,7 +1182,8 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <label for="title">Associated training material</label>
-                          <input type="text" class="form-control" id="urlTM" placeholder="Fill in the URL (to, e.g., learning platform, online syllabus, ...)"
+                          <input type="text" class="form-control" id="urlTM"
+                            placeholder="Fill in the URL (to, e.g., learning platform, online syllabus, ...)"
                             [(ngModel)]="modelCourse.urlTM" name="urlTM" (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
@@ -1224,7 +1259,9 @@
                           <span
                             tooltip="European Credit Transfer and Accumulation System (ECTS) is a standard means for comparing academic credits for higher education. One academic year corresponds to 60 ECTS credits that are normally equivalent to 1500–1800 hours of total workload."
                             class="badge badge-primary badge-pill">i</span>
-                          <a style="text-align: right" href="https://ec.europa.eu/education/resources-and-tools/european-credit-transfer-and-accumulation-system-ects_en" target="_blank" >What is ECTS?</a>
+                          <a style="text-align: right"
+                            href="https://ec.europa.eu/education/resources-and-tools/european-credit-transfer-and-accumulation-system-ects_en"
+                            target="_blank">What is ECTS?</a>
                           <input type="number" class="form-control" name="ects" id="ects" [(ngModel)]="modelCourse.ects"
                             name="ects" min="0" (keyup)="updateTreeStudyProgram()" />
                         </div>
@@ -1270,7 +1307,8 @@
                                     <li *ngIf="p.name == p.concept_id">{{p.name}}
                                     </li>
                                     <li *ngIf="p.name != p.concept_id">
-                                      <a href="https://gistbok-topics.ucgis.org/{{p.concept_id}}" target="_blank">{{p.name}}</a>
+                                      <a href="https://gistbok-topics.ucgis.org/{{p.concept_id}}"
+                                        target="_blank">{{p.name}}</a>
                                     </li>
                                   </div>
                                 </ul>
@@ -1306,16 +1344,19 @@
                               <div *ngIf="modelCourse && modelCourse.learningObjectives">
                                 <ul>
                                   <div *ngFor="let p of modelCourse.learningObjectives; index as i ">
-                                    <li *ngIf="p.name == p.concept_id">{{p.name}} <button type="button" class="btn btn-link" tooltip="Click to remove"
-                                                                                                       (click)="removeBokKnowledge(modelCourse, i, 'learningObjectives')">
-                                      <i class="fa fa-remove"></i>
-                                    </button></li>
-                                    <li *ngIf="p.name != p.concept_id"> <a href="https://gistbok-topics.ucgis.org/{{p.concept_id}}"
-                                                                                                                             target="_blank">{{p.name}}</a>
-                                      <button type="button" class="btn btn-link" tooltip="Click to remove"
-                                              (click)="removeBokKnowledge(modelCourse, i, 'learningObjectives')">
+                                    <li *ngIf="p.name == p.concept_id">{{p.name}} <button type="button"
+                                        class="btn btn-link" tooltip="Click to remove"
+                                        (click)="removeBokKnowledge(modelCourse, i, 'learningObjectives')">
                                         <i class="fa fa-remove"></i>
                                       </button></li>
+                                    <li *ngIf="p.name != p.concept_id"> <a
+                                        href="https://gistbok-topics.ucgis.org/{{p.concept_id}}"
+                                        target="_blank">{{p.name}}</a>
+                                      <button type="button" class="btn btn-link" tooltip="Click to remove"
+                                        (click)="removeBokKnowledge(modelCourse, i, 'learningObjectives')">
+                                        <i class="fa fa-remove"></i>
+                                      </button>
+                                    </li>
                                   </div>
                                 </ul>
                               </div>
@@ -1366,7 +1407,8 @@
                                       <span>&#8226;</span> Data model and format conversion - Convert a data set from
                                       the native format of one GIS product to another <br>
                                       <span>&#8226;</span> Vagueness - Evaluate vagueness in the locations, time,
-                                      attributes, and other aspects of geographic phenomena </p>
+                                      attributes, and other aspects of geographic phenomena
+                                    </p>
 
                                     <table class="table">
                                       <thead>
@@ -1449,13 +1491,15 @@
                               <button type="button" class="btn btn-link" tooltip="Click to remove"
                                 (click)="removeCompetence(mc, modelCourse.competences)">
                                 <i class="fa fa-remove"></i>
-                              </button></li>
-                            <li *ngIf="mc.uri && mc.uri != ''"> <a href="{{mc.uri}}"
-                                target="_blank">{{ mc.preferredLabel }} </a>
+                              </button>
+                            </li>
+                            <li *ngIf="mc.uri && mc.uri != ''"> <a href="{{mc.uri}}" target="_blank">{{
+                                mc.preferredLabel }} </a>
                               <button type="button" class="btn btn-link" tooltip="Click to remove"
                                 (click)="removeCompetence(mc, modelCourse.competences)">
                                 <i class="fa fa-remove"></i>
-                              </button></li>
+                              </button>
+                            </li>
                           </div>
                         </ul>
                       </div>
@@ -1595,7 +1639,8 @@
                   </div>
                   <div class="card-body" style="background-color: #faf9f8">
                     <p *ngIf="isSavedBB" class="success"> {{isSavedBBText}} <a
-                        href="https://ucgis-tools-cdt.web.app/detail/{{promotedId}}" target="_blank">edit it here</a></p>
+                        href="https://ucgis-tools-cdt.web.app/detail/{{promotedId}}" target="_blank">edit it here</a>
+                    </p>
                     <div class="row form-group">
                       <div class="col-md-4">
                         <button type="submit" class="btn btn-primary btn-sm"
@@ -1608,7 +1653,8 @@
                         <ul>
                           <div *ngFor="let l of modelLecture.linksToBok; index as i ">
                             <li class="text-small">
-                              <a href="https://gistbok-topics.ucgis.org/{{ l.concept_id }}" target="_blank">{{l.name }} </a>
+                              <a href="https://gistbok-topics.ucgis.org/{{ l.concept_id }}" target="_blank">{{l.name }}
+                              </a>
                               <button type="button" class="btn btn-link btn-xs" tooltip="Click to remove"
                                 (click)="removeBokKnowledge(modelLecture, i, 'linksToBok')">
                                 <i class="fa fa-remove"></i>
@@ -1649,7 +1695,9 @@
                           <span
                             tooltip="EQF concerns the level of what a learner knows, understands (knowledge) and is able to do (skills). It ranges from 1 (basic) to 8 (advanced)"
                             class="badge badge-primary badge-pill">i</span>
-                          <a style="text-align: right" href="https://www.cedefop.europa.eu/en/events-and-projects/projects/european-qualifications-framework-eqf" target="_blank" >What is EQF?</a>
+                          <a style="text-align: right"
+                            href="https://www.cedefop.europa.eu/en/events-and-projects/projects/european-qualifications-framework-eqf"
+                            target="_blank">What is EQF?</a>
                           <input type="number" size="1" class="form-control" id="eqf" [(ngModel)]="modelLecture.eqf"
                             name="eqf" min="1" max="8" (keyup)="updateTreeStudyProgram()" />
                         </div>
@@ -1657,7 +1705,8 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <!--  <label for="title">Affiliation webpage</label> -->
-                          <input type="text" class="form-control" id="urlAff" placeholder="Fill in URL (to, e.g., official description, further information, ...)"
+                          <input type="text" class="form-control" id="urlAff"
+                            placeholder="Fill in URL (to, e.g., official description, further information, ...)"
                             [(ngModel)]="modelLecture.urlAff" name="urlAff" (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
@@ -1667,7 +1716,8 @@
                           <span
                             tooltip="The term relates directly to a specific area of study. The International Standard Classification of Education: Fields of Education and Training 2013 (ISCED-F). Maintained by the UNESCO Institute for Statistics."
                             class="badge badge-primary badge-pill">i</span>
-                          <a href="https://circabc.europa.eu/sd/a/286ebac6-aa7c-4ada-a42b-ff2cf3a442bf/ISCED-F 2013 - Detailed field descriptions.pdf" target="_blank">What is a Study area?</a>
+                          <a href="https://circabc.europa.eu/sd/a/286ebac6-aa7c-4ada-a42b-ff2cf3a442bf/ISCED-F 2013 - Detailed field descriptions.pdf"
+                            target="_blank">What is a Study area?</a>
                           <ng-select [items]="fieldsService.allfields" name="fields" bindLabel="name"
                             groupBy="grandparent" [multiple]="true" [(ngModel)]="modelLecture.fields">
                             <ng-template ng-optgroup-tmp let-item="item">
@@ -1692,7 +1742,8 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <label for="title">Associated training material</label>
-                          <input type="text" class="form-control" id="urlTM" placeholder="Fill in the URL (to, e.g., learning platform, online syllabus, ...)"
+                          <input type="text" class="form-control" id="urlTM"
+                            placeholder="Fill in the URL (to, e.g., learning platform, online syllabus, ...)"
                             [(ngModel)]="modelLecture.urlTM" name="urlTM" (keyup)="updateTreeStudyProgram()" />
                         </div>
                       </div>
@@ -1722,7 +1773,9 @@
                           <span
                             tooltip="European Credit Transfer and Accumulation System (ECTS) is a standard means for comparing academic credits for higher education. One academic year corresponds to 60 ECTS credits that are normally equivalent to 1500–1800 hours of total workload."
                             class="badge badge-primary badge-pill">i</span>
-                          <a style="text-align: right" href="https://ec.europa.eu/education/resources-and-tools/european-credit-transfer-and-accumulation-system-ects_en" target="_blank" >What is ECTS?</a>
+                          <a style="text-align: right"
+                            href="https://ec.europa.eu/education/resources-and-tools/european-credit-transfer-and-accumulation-system-ects_en"
+                            target="_blank">What is ECTS?</a>
                           <input type="number" class="form-control" id="ects" [(ngModel)]="modelLecture.ects"
                             name="ects" min="0" (keyup)="updateTreeStudyProgram()" />
                         </div>
@@ -1756,16 +1809,19 @@
                               <div *ngIf="modelLecture && modelLecture.learningObjectives">
                                 <ul>
                                   <div *ngFor="let p of modelLecture.learningObjectives; index as i ">
-                                    <li *ngIf="p.name == p.concept_id">{{p.name}} <button type="button" class="btn btn-link" tooltip="Click to remove"
-                                                                                                       (click)="removeBokKnowledge(modelLecture, i, 'learningObjectives')">
-                                      <i class="fa fa-remove"></i>
-                                    </button></li>
-                                    <li *ngIf="p.name != p.concept_id"> <a href="https://gistbok-topics.ucgis.org/{{p.concept_id}}"
-                                                                                                                             target="_blank">{{p.name}}</a>
-                                      <button type="button" class="btn btn-link" tooltip="Click to remove"
-                                              (click)="removeBokKnowledge(modelLecture, i, 'learningObjectives')">
+                                    <li *ngIf="p.name == p.concept_id">{{p.name}} <button type="button"
+                                        class="btn btn-link" tooltip="Click to remove"
+                                        (click)="removeBokKnowledge(modelLecture, i, 'learningObjectives')">
                                         <i class="fa fa-remove"></i>
                                       </button></li>
+                                    <li *ngIf="p.name != p.concept_id"> <a
+                                        href="https://gistbok-topics.ucgis.org/{{p.concept_id}}"
+                                        target="_blank">{{p.name}}</a>
+                                      <button type="button" class="btn btn-link" tooltip="Click to remove"
+                                        (click)="removeBokKnowledge(modelLecture, i, 'learningObjectives')">
+                                        <i class="fa fa-remove"></i>
+                                      </button>
+                                    </li>
                                   </div>
                                 </ul>
                               </div>
@@ -1817,7 +1873,8 @@
                                       <span>&#8226;</span> Data model and format conversion - Convert a data set from
                                       the native format of one GIS product to another <br>
                                       <span>&#8226;</span> Vagueness - Evaluate vagueness in the locations, time,
-                                      attributes, and other aspects of geographic phenomena </p>
+                                      attributes, and other aspects of geographic phenomena
+                                    </p>
 
                                     <table class="table">
                                       <thead>
@@ -1900,13 +1957,15 @@
                               <button type="button" class="btn btn-link" tooltip="Click to remove"
                                 (click)="removeCompetence(mc, modelLecture.competences)">
                                 <i class="fa fa-remove"></i>
-                              </button></li>
-                            <li *ngIf="mc.uri && mc.uri != ''"> <a href="{{mc.uri}}"
-                                target="_blank">{{ mc.preferredLabel }} </a>
+                              </button>
+                            </li>
+                            <li *ngIf="mc.uri && mc.uri != ''"> <a href="{{mc.uri}}" target="_blank">{{
+                                mc.preferredLabel }} </a>
                               <button type="button" class="btn btn-link" tooltip="Click to remove"
                                 (click)="removeCompetence(mc, modelLecture.competences)">
                                 <i class="fa fa-remove"></i>
-                              </button></li>
+                              </button>
+                            </li>
                           </div>
                         </ul>
                       </div>
@@ -2032,7 +2091,8 @@
                     <ul>
                       <div *ngFor="let i of (allItems| filter:filterText); index as in">
                         <li *ngIf="i.depth==depthSearching"><a class="card-title"
-                            (click)="showExistingToStudyProgram(i); isSearchingSpecific = !isSearchingSpecific; isSearchingExisting = !isSearchingExisting">{{ i.name }}</a>
+                            (click)="showExistingToStudyProgram(i); isSearchingSpecific = !isSearchingSpecific; isSearchingExisting = !isSearchingExisting">{{
+                            i.name }}</a>
                           <h6 *ngIf="i.affiliation != ''" class="text-muted inline"> - {{ i.affiliation }}</h6>
                           <h6 *ngIf="i.eqf != 0" class="text-muted inline"> - EQF: {{ i.eqf }}</h6>
                         </li>
@@ -2177,7 +2237,7 @@
             <div class="row text-center">
               <div class="col-lg-6 col-sm-6">
                 <div class="row text-center">
-                  <div class="col-md-12">
+                  <div class="col-md-8">
                     <div class="input-group">
                       <div class="input-group-prepend" dropdown>
                         <button type="button" class="btn btn-primary">
@@ -2188,6 +2248,10 @@
                         class="form-control" [(ngModel)]="searchInputField" (keyup)="searchInBok(searchInput.value)"
                         placeholder="Search Knowledge" />
                     </div>
+                  </div>
+                  <div class="col-md-4 text-right">
+                    <button type="button" class="btn btn-primary" (click)="addBokKnowledge()">
+                      {{reuseOrAnnotate}}</button>
                   </div>
                 </div>
                 <div id="graph">

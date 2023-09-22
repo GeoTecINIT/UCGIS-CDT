@@ -68,7 +68,6 @@ export class DetailComponent implements OnInit {
           this.saveBoKCodes(this.selectedProgram);
           this.displayTree(program);
           spSub.unsubscribe();
-          //  console.log(this.selectedProgram);
         }
       });
   }
@@ -109,9 +108,7 @@ export class DetailComponent implements OnInit {
   }
 
   refreshCurrentNode() {
-    this.currentTreeNode = cv.getCurrentNode();
-    console.log('Current tree node: ');
-    console.log(this.currentTreeNode);
+    this.currentTreeNode = cv.getCurrentNode();;
 
     switch (this.currentTreeNode.data.depth) {
       case 0:
@@ -127,7 +124,6 @@ export class DetailComponent implements OnInit {
         this.model = new Lecture(this.currentTreeNode);
         break;
     }
-    console.log(this.model);
   }
 
   unlock() {
