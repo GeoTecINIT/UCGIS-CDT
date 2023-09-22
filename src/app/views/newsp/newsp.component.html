@@ -169,7 +169,7 @@
                         <ul>
                           <div *ngFor="let l of model.linksToBok; index as i ">
                             <li class="text-small">
-                              <a href="https://gistbok-bok.ucgis.org/{{ l.concept_id }}" target="_blank">{{l.name }} </a>
+                              <a href="https://gistbok-topics.ucgis.org/{{ l.concept_id }}" target="_blank">{{l.name }} </a>
                               <button type="button" class="btn btn-link btn-xs" tooltip="Click to remove"
                                 (click)="removeBokKnowledge(model, i, 'linksToBok')">
                                 <i class="fa fa-remove"></i>
@@ -311,7 +311,7 @@
                                     <li *ngIf="p.name == p.concept_id">{{p.name}}
                                     </li>
                                     <li *ngIf="p.name != p.concept_id">
-                                      <a href="https://gistbok-bok.ucgis.org/{{p.concept_id}}" target="_blank">{{p.name}}</a>
+                                      <a href="https://gistbok-topics.ucgis.org/{{p.concept_id}}" target="_blank">{{p.name}}</a>
                                     </li>
                                   </div>
                                 </ul>
@@ -351,7 +351,7 @@
                                         (click)="removeBokKnowledge(model, i, 'learningObjectives')">
                                         <i class="fa fa-remove"></i>
                                       </button></li>
-                                    <li *ngIf="p.name != p.concept_id"> <a href="https://gistbok-bok.ucgis.org/{{p.concept_id}}"
+                                    <li *ngIf="p.name != p.concept_id"> <a href="https://gistbok-topics.ucgis.org/{{p.concept_id}}"
                                                                            target="_blank">{{p.name}}</a>
                                       <button type="button" class="btn btn-link" tooltip="Click to remove"
                                               (click)="removeBokKnowledge(model, i, 'learningObjectives')">
@@ -596,7 +596,7 @@
                         <ul>
                           <div *ngFor="let l of modelModule.linksToBok; index as i ">
                             <li class="text-small">
-                              <a href="https://gistbok-bok.ucgis.org/{{ l.concept_id }}" target="_blank">{{l.name }} </a>
+                              <a href="https://gistbok-topics.ucgis.org/{{ l.concept_id }}" target="_blank">{{l.name }} </a>
                               <button type="button" class="btn btn-link btn-xs" tooltip="Click to remove"
                                 (click)="removeBokKnowledge(modelModule, i, 'linksToBok')">
                                 <i class="fa fa-remove"></i>
@@ -775,7 +775,7 @@
                                     <li *ngIf="p.name == p.concept_id">{{p.name}}
                                     </li>
                                     <li *ngIf="p.name != p.concept_id">
-                                      <a href="https://gistbok-bok.ucgis.org/{{p.concept_id}}" target="_blank">{{p.name}}</a>
+                                      <a href="https://gistbok-topics.ucgis.org/{{p.concept_id}}" target="_blank">{{p.name}}</a>
                                     </li>
                                   </div>
                                 </ul>
@@ -814,7 +814,7 @@
                                     <li *ngIf="p.name == p.concept_id">{{p.name}} <button type="button" class="btn btn-link" tooltip="Click to remove" (click)="removeBokKnowledge(modelModule, i, 'learningObjectives')">
                                       <i class="fa fa-remove"></i>
                                     </button></li>
-                                    <li *ngIf="p.name != p.concept_id"> <a href="https://gistbok-bok.ucgis.org/{{p.concept_id}}" target="_blank">{{p.name}}</a>
+                                    <li *ngIf="p.name != p.concept_id"> <a href="https://gistbok-topics.ucgis.org/{{p.concept_id}}" target="_blank">{{p.name}}</a>
                                       <button type="button" class="btn btn-link" tooltip="Click to remove"
                                               (click)="removeBokKnowledge(modelModule, i, 'learningObjectives')">
                                         <i class="fa fa-remove"></i>
@@ -1064,7 +1064,7 @@
                         <ul>
                           <div *ngFor="let l of modelCourse.linksToBok; index as i ">
                             <li class="text-small">
-                              <a href="https://gistbok-bok.ucgis.org/{{ l.concept_id }}" target="_blank">{{l.name }} </a>
+                              <a href="https://gistbok-topics.ucgis.org/{{ l.concept_id }}" target="_blank">{{l.name }} </a>
                               <button type="button" class="btn btn-link btn-xs" tooltip="Click to remove"
                                 (click)="removeBokKnowledge(modelCourse, i, 'linksToBok')">
                                 <i class="fa fa-remove"></i>
@@ -1270,7 +1270,7 @@
                                     <li *ngIf="p.name == p.concept_id">{{p.name}}
                                     </li>
                                     <li *ngIf="p.name != p.concept_id">
-                                      <a href="https://gistbok-bok.ucgis.org/{{p.concept_id}}" target="_blank">{{p.name}}</a>
+                                      <a href="https://gistbok-topics.ucgis.org/{{p.concept_id}}" target="_blank">{{p.name}}</a>
                                     </li>
                                   </div>
                                 </ul>
@@ -1310,7 +1310,7 @@
                                                                                                        (click)="removeBokKnowledge(modelCourse, i, 'learningObjectives')">
                                       <i class="fa fa-remove"></i>
                                     </button></li>
-                                    <li *ngIf="p.name != p.concept_id"> <a href="https://gistbok-bok.ucgis.org/{{p.concept_id}}"
+                                    <li *ngIf="p.name != p.concept_id"> <a href="https://gistbok-topics.ucgis.org/{{p.concept_id}}"
                                                                                                                              target="_blank">{{p.name}}</a>
                                       <button type="button" class="btn btn-link" tooltip="Click to remove"
                                               (click)="removeBokKnowledge(modelCourse, i, 'learningObjectives')">
@@ -1608,7 +1608,7 @@
                         <ul>
                           <div *ngFor="let l of modelLecture.linksToBok; index as i ">
                             <li class="text-small">
-                              <a href="https://gistbok-bok.ucgis.org/{{ l.concept_id }}" target="_blank">{{l.name }} </a>
+                              <a href="https://gistbok-topics.ucgis.org/{{ l.concept_id }}" target="_blank">{{l.name }} </a>
                               <button type="button" class="btn btn-link btn-xs" tooltip="Click to remove"
                                 (click)="removeBokKnowledge(modelLecture, i, 'linksToBok')">
                                 <i class="fa fa-remove"></i>
@@ -1760,7 +1760,7 @@
                                                                                                        (click)="removeBokKnowledge(modelLecture, i, 'learningObjectives')">
                                       <i class="fa fa-remove"></i>
                                     </button></li>
-                                    <li *ngIf="p.name != p.concept_id"> <a href="https://gistbok-bok.ucgis.org/{{p.concept_id}}"
+                                    <li *ngIf="p.name != p.concept_id"> <a href="https://gistbok-topics.ucgis.org/{{p.concept_id}}"
                                                                                                                              target="_blank">{{p.name}}</a>
                                       <button type="button" class="btn btn-link" tooltip="Click to remove"
                                               (click)="removeBokKnowledge(modelLecture, i, 'learningObjectives')">

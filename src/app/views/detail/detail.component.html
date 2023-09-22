@@ -217,9 +217,9 @@
                         <ul #showILO>
                           <div *ngFor="let l of model.inheritedLearningObjectives">
                             <li *ngIf="l.name == l.concept_id">{{ l.name }}</li>
-                            <li *ngIf="l.name != l.concept_id && l.concept_id.split(']').length > 1"><a href="https://gistbok-bok.ucgis.org/{{l.concept_id.split(']')[0].split('[')[1]}}"
+                            <li *ngIf="l.name != l.concept_id && l.concept_id.split(']').length > 1"><a href="https://gistbok-topics.ucgis.org/{{l.concept_id.split(']')[0].split('[')[1]}}"
                                                                                                                      target="_blank">{{l.name}}</a></li>
-                            <li *ngIf="l.name != l.concept_id && l.concept_id.split(']').length <= 1"><a href="https://gistbok-bok.ucgis.org/{{l.concept_id}}"
+                            <li *ngIf="l.name != l.concept_id && l.concept_id.split(']').length <= 1"><a href="https://gistbok-topics.ucgis.org/{{l.concept_id}}"
                                                                   target="_blank">{{l.name}}</a></li>
                           </div>
                         </ul>
@@ -234,8 +234,8 @@
                         <ul #showLO>
                           <div *ngFor="let l of model.learningObjectives">
                             <li *ngIf="l.name == l.concept_id">{{ l.name }}</li>
-                            <li *ngIf="l.name != l.concept_id && l.concept_id.split(']').length > 1"><a href="https://gistbok-bok.ucgis.org/{{l.concept_id.split(']')[0].split('[')[1]}}" target="_blank">{{l.name}}</a></li>
-                            <li *ngIf="l.name != l.concept_id && l.concept_id.split(']').length <= 1"><a href="https://gistbok-bok.ucgis.org/{{l.concept_id}}"
+                            <li *ngIf="l.name != l.concept_id && l.concept_id.split(']').length > 1"><a href="https://gistbok-topics.ucgis.org/{{l.concept_id.split(']')[0].split('[')[1]}}" target="_blank">{{l.name}}</a></li>
+                            <li *ngIf="l.name != l.concept_id && l.concept_id.split(']').length <= 1"><a href="https://gistbok-topics.ucgis.org/{{l.concept_id}}"
                                                                                                          target="_blank">{{l.name}}</a></li>
                           </div>
                         </ul>
@@ -260,7 +260,7 @@
                         <span><b>Annotated BoK concepts (current educational unit - this node):</b></span>
                         <ul>
                           <div *ngFor="let lb of model.linksToBok">
-                            <li><a href="https://gistbok-bok.ucgis.org/{{ lb.concept_id }}" target="_blank">{{ lb.name }}</a>
+                            <li><a href="https://gistbok-topics.ucgis.org/{{ lb.concept_id }}" target="_blank">{{ lb.name }}</a>
                             </li>
                           </div>
                         </ul>
@@ -285,7 +285,7 @@
                         <span><b>Annotated BoK concepts (complete educational offer - all nodes):</b></span>
                         <ul>
                           <div *ngFor="let lb of allLinksToBok">
-                            <li><a href="https://gistbok-bok.ucgis.org/{{ lb.concept_id }}" target="_blank">{{ lb.name }}</a>
+                            <li><a href="https://gistbok-topics.ucgis.org/{{ lb.concept_id }}" target="_blank">{{ lb.name }}</a>
                             </li>
                           </div>
                         </ul>

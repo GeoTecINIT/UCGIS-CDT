@@ -39,7 +39,7 @@
     "@coreui/icons": "0.3.0",
     "@ng-select/ng-select": "^2.20.0",
     "@ucgis/curr-viz": "^1.0.1",
-    "@ucgis/find-in-bok-dataviz-tools": "^1.0.6",
+    "@ucgis/find-in-bok-dataviz-tools": "^1.0.8",
     "bootstrap": "^4.3.1",
     "chart.js": "^2.8.0",
     "core-js": "^2.6.5",

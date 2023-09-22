@@ -17,7 +17,7 @@ export class PopupComponent implements OnInit {
         private route: ActivatedRoute) { }
 
     public static END_PAGE_LINE = 255;
-    public static URL_BOK = 'https://gistbok-bok.ucgis.org/';
+    public static URL_BOK = 'https://gistbok-topics.ucgis.org/';
     public static URL_CDT = 'https://ucgis-tools-cdt.web.app/detail/';
 
     @Input() idOP: any;
@@ -55,13 +55,13 @@ export class PopupComponent implements OnInit {
 
     getSubjectMetadata() {
         // @prefix dc: <http://purl.org/dc/terms/> .
-        // @prefix ucgis: <https://gistbok-bok.ucgis.org/> .
+        // @prefix ucgis: <https://gistbok-topics.ucgis.org/> .
         // <> dc:hasPart [ dc:type "Module";
         // dc:title "Mathematics";
         // dc:relation ucgis:AM;
         // dc:relation ucgis:GC] .
 
-        let subject = '@prefix dc: <http://purl.org/dc/terms/> . @prefix ucgis: <https://gistbok-bok.ucgis.org/> . ';
+        let subject = '@prefix dc: <http://purl.org/dc/terms/> . @prefix ucgis: <https://gistbok-topics.ucgis.org/> . ';
         if (this.selectedSP.concepts && this.selectedSP.concepts.length > 0) {
             subject = subject + '<> dc:hasPart [ dc:type "Study Program"; dc:title "' + this.selectedSP.name + '"';
             this.selectedSP.concepts.forEach(concept => {
@@ -136,7 +136,7 @@ export class PopupComponent implements OnInit {
         });
         doc.addImage(this.base64img.logo, 'PNG', 10, 7, 67, 20);
         doc.addImage(this.base64img.back, 'PNG', 0, 200, 210, 100);
-        // doc.link(15, 15, 600, 33, { url: 'https://gistbok-bok.ucgis.org/' });
+        // doc.link(15, 15, 600, 33, { url: 'https://gistbok-topics.ucgis.org/' });
         doc.setFontSize(38);
         doc.setFontType('bold');
         doc.setTextColor('#324d55');
